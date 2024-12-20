@@ -24,8 +24,8 @@ if ~exist(braph2genesis_dir, 'dir')
     unzip(zipfile, folder_tmp)
     
     % copy braph2genesis from unzipped folder
-    copyfile([fileparts(which('braph2Individual_Con_genesis.m')) filesep 'tmp_unzip' filesep 'BRAPH-2-develop' filesep 'braph2genesis'], ...
-        [fileparts(which('braph2Individual_Con_genesis.m')) filesep 'braph2Individual_Con_genesis'],"f") %'f' for linux system
+    copyfile([fileparts(which('braph2individualconnectome_genesis.m')) filesep 'tmp_unzip' filesep 'BRAPH-2-develop' filesep 'braph2genesis'], ...
+        [fileparts(which('braph2individualconnectome_genesis.m')) filesep 'braph2individualconnectome_genesis'],"f") %'f' for linux system
     
     % remove not needed directory and file
     rmdir(folder_tmp, 's')
@@ -34,9 +34,9 @@ end
 
 addpath(['.' filesep() 'braph2genesis'])
 addpath(['.' filesep() 'braph2genesis' filesep() 'genesis'])
-addpath(['.' filesep() 'braph2Individual_Con_genesis'])
+addpath(['.' filesep() 'braph2individualconnectome_genesis'])
 %% Move memorycapacity to pipelines folder
-copyfile([fileparts(which('braph2Individual_Con_genesis')) filesep 'Individual_Connectome'], [fileparts(which('braph2genesis.m')) filesep 'pipelines' filesep 'Individual_Connectome'])
+copyfile([fileparts(which('braph2individualconnectome_genesis')) filesep 'Individual_Connectome'], [fileparts(which('braph2genesis.m')) filesep 'pipelines' filesep 'Individual_Connectome'])
 
 %% Add here all included and excluded folders and elements
 % '-folder'                 the folder and its elements will be excluded
@@ -118,7 +118,7 @@ for i = 1:rollcall_per_line:length(rollcall)
 end
 disp(' ')
 
-target_dir = [fileparts(fileparts(which('braph2genesis'))) filesep 'braph2IndividualCon'];
+target_dir = [fileparts(fileparts(which('braph2genesis'))) filesep 'braph2individualconnectome'];
 if exist(target_dir, 'dir') 
     if input([ ...
         'The target directory already exists:\n' ...
