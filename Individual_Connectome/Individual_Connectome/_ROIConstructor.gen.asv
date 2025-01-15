@@ -1,0 +1,185 @@
+%% ¡header!
+SUVRConstructor < ConcreteElement (roic, ROI analysis constructor) calculates mean value of brain ROIs per subject.
+
+%%% ¡description!
+SUVRConstructor calculates mean value of brain ROIs. It loads the brain atlas for ROI identification,
+ and ROI wisely calculate mean value.
+
+%%% ¡seealso!
+Group, SubjectNifti, ExporterGroupSubjectCON_XLS, SubjectST
+
+%%% ¡build!
+1
+
+%% ¡props_update!
+
+%%% ¡prop!
+ELCLASS (constant, string) is the class of the subject ROI constructor for Nifti.
+%%%% ¡default!
+'ROIConstructor'
+
+%%% ¡prop!
+NAME (constant, string) is the name of the subject ROI constructor for Nifti.
+%%%% ¡default!
+'ROI Constructor'
+
+%%% ¡prop!
+DESCRIPTION (constant, string) is the description of the subject ROI constructor for Nifti.
+%%%% ¡default!
+'ROIConstructor calculates a group of subjects mean value of ROI from imaging data from a series of Nifti file.'
+
+%%% ¡prop!
+TEMPLATE (parameter, item) is the template of the subject ROI constructor for Nifti.
+%%%% ¡settings!
+'ROIConstructor'
+
+%%% ¡prop!
+ID (data, string) is a few-letter code for the subject ROI constructor for Nifti.
+%%%% ¡default!
+'ROIConstructor ID'
+
+%%% ¡prop!
+LABEL (metadata, string) is an extended label of subject ROI constructor for Nifti.
+%%%% ¡default!
+'ROIConstructor label'
+
+%%% ¡prop!
+NOTES (metadata, string) are some specific notes about subject ROI constructor for Nifti.
+%%%% ¡default!
+'ROIConstructor notes'
+
+
+
+%% ¡props!
+
+%%% ¡prop!
+REF_REGION_LIST (data, cell) is the list containing the label list of reference region of brain Atlas for ROI constructor.
+
+%%% ¡prop!
+ATLAS_KIND (parameter, stringlist) is the directory containing the Atlas needed for ROI analysis.
+
+%%% ¡prop!
+ATLAS_PATH_DICT (parameter, idict) is the directory containing the Atlas needed for ROI analysis.
+
+%%% ¡prop!
+GR_PET (data, item) is the subject group, which also defines the subject class SubjectNifti.
+%%%% ¡default!
+Group('SUB_CLASS', 'SubjectNifti')
+
+%%% ¡prop!
+GR_T1 (data, item) is the subject group, which also defines the subject class SubjectNifti.
+%%%% ¡default!
+Group('SUB_CLASS', 'SubjectNifti')
+
+%%% ¡prop!
+GR_PET (data, item) is the subject group, which also defines the subject class SubjectNifti.
+%%%% ¡default!
+Group('SUB_CLASS', 'SubjectNifti')
+
+%%% ¡prop!
+GR_ROI (result, item) is a group of subjects with ROI analysis data.
+%%%% ¡settings!
+'Group'
+
+%%% ¡prop!
+CALC_SUBJ_SUVR (query, cell) generates suvr....
+%%%% ¡calculate!
+if isempty(varargin)
+    return
+end
+pet_data = varargin{1};
+t1_data = varargin{2};
+
+% contrain my pet data within the T1 data
+masked_pet_data = pet_data.* (t1_data{1} > 0 or t1_data{2} > 0)
+
+% calculate suvr for ref region
+atlas = roic.get('ATLAS_DICT');
+
+% calculate normalized suvr for all unique regions
+
+return calculated_suvr_value
+
+
+
+%%%% ¡default!
+Group('SUB_CLASS', 'SubjectST', 'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectST'))
+%%%% ¡calculate!
+% creates empty Group
+gr_roi = Group( ...
+    'SUB_CLASS', 'SubjectST', ...
+    'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectST') ...
+    );
+
+gr_roi.lock('SUB_CLASS');
+gr_nifti = el.get('GR');% subject from Nifti 
+atlas_directory = el.get('ATLAS_PATH');
+atlas_kind = roic.get('ATLAS_KIND');
+ATLAS_DICT = roic.get('ATLAS_PATH_DICT');
+
+Ref_list = roic.get('REF_LIST');
+
+wb = braph2waitbar(el.get('WAITBAR'), 0, 'Reading directory ...');
+braph2waitbar(wb, .15, 'Loading subject group ...')
+
+% adds subjects
+sub_dict = gr_roi.memorize('SUB_DICT');
+for i = 1:1:gr_sub.get('SUB_DICT').get('LENGTH')
+    braph2waitbar(wb, .15 + .85 * i / gr_sub.get('SUB_DICT').get('LENGTH'), ['Loading subject directory' num2str(i) ' of ' num2str(length(files)) ' ...'])
+    sub_id = gr_nifti.get('SUB_DICT').get('IT', i);% subject ID
+    id = sub_id.get('ID');
+
+    Data_path = gr_nifti.get('SUB_DICT').get('ATLAS_PATH', i);% subject data path
+    fileid = gr_nifti.get( FILE_PATH('ID'));
+    path_nifti = gr_nifti.get(FILE_PATH('PATH'));
+    atlas = niftiread(atlas_directory);
+    
+    pet_data = niftiread(pet_path);
+    for i = 1:length(t1_path)
+        t1_data{i} = niftiread(t1_path{i)})
+    end
+    SUVR = roic.get('CALC_SUBJ_SUVR', pet_data, t1_data);
+
+    sub = SubjectST( ...
+        'ID', id, ...
+        'BA', ba,...
+        'LABEL', ['Subejct ST ' int2str(i)], ...
+        'NOTES', ['Notes on subject ST ' int2str(i)], ...
+        'ST', SUVR);
+    sub_dict.get('ADD', sub);
+end
+
+braph2waitbar(wb, 'close')
+
+
+value = gr;
+
+%% ¡tests!
+
+%%% ¡excluded_props!
+[ImporterGroupSubjectCON_XLS.GET_DIR]
+
+%%% ¡test!
+%%%% ¡name!
+% Create example files
+% %%%% ¡code!
+% create_data_CON_XLS() % only creates files if the example folder doesn't already exist
+% 
+% %%% ¡test!
+% %%%% ¡name!
+% GUI
+% %%%% ¡probability!
+% .01
+% %%%% ¡code!
+% ba = BrainAtlas();
+% 
+% im_gr = ImporterGroupSubjNifti( ...
+%     'DIRECTORY', [fileparts(which('group_data')) filesep 'Example data CON XLS' filesep 'CON_Group_1_XLS'], ...
+%     'WAITBAR', true ...
+%     );
+% 
+% gui = GUIElement('PE', gr, 'CLOSEREQ', false);
+% gui.get('DRAW')
+% gui.get('SHOW')
+% 
+% gui.get('CLOSE')
