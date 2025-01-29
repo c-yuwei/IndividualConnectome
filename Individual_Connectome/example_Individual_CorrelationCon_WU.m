@@ -46,7 +46,6 @@ gr1 = im_gr_pdf.get('GR');
 
 %% Load Groups of SubjectCON Correlation based
 g_temp  = GraphWU('STANDARDIZE_RULE', 'range');
-% a_WU1 = AnalyzeEnsemble_CON_WU('GR', deviation_connectomes_gr1,'GRAPH_TEMPLATE', g_temp);
 a_WU1 = AnalyzeEnsemble_FUN_WU( ...
     'GR', gr1, ...
     'REPETITION', 0, ...
@@ -55,8 +54,7 @@ a_WU1 = AnalyzeEnsemble_FUN_WU( ...
 gr1_corr = a_WU1.get('G_DICT');
 
 %% add test on example data
-% 
-% strength_WU1 = a_WU1.get('MEASUREENSEMBLE', 'Strength').get('M');
+
 num_subjects = a_WU1.get('G_DICT').get('LENGTH');
 for i = 1:num_subjects
     g = a_WU1.get('G_DICT').get('IT', i);

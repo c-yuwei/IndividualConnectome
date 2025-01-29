@@ -163,5 +163,5 @@ if ~exist(target_dir, 'dir')
     % test_NodalMemoryCapacity
 
     % remove genesis directory
-    rmdir(braph2genesis_dir, 's')
+    % rmdir(braph2genesis_dir, 's')
 end
