@@ -6,7 +6,7 @@ SUVRConstructor calculates mean value of brain ROIs. It loads the brain atlas fo
  and ROI wisely calculate mean value.
 
 %%% ¡seealso!
-Group, SubjectNifti, ExporterGroupSubjectCON_XLS, SubjectST
+Group, SubjectNIfTI, ExporterGroupSubjectCON_XLS, SubjectST
 
 %%% ¡build!
 1
@@ -48,8 +48,6 @@ NOTES (metadata, string) are some specific notes about subject ROI constructor f
 %%%% ¡default!
 'SUVRConstructor notes'
 
-
-
 %% ¡props!
 
 %%% ¡prop!
@@ -57,7 +55,7 @@ REF_REGION_LIST (data, cell) is the list containing the label list of reference 
 
 %%% ¡prop!
 ATLAS_KIND (parameter, stringlist) is the directory containing the Atlas needed for ROI analysis.
-%%% default!
+%%% ¡default!
 {"aal90","TD"}
 
 %%% ¡prop!
@@ -66,7 +64,7 @@ BA (data, item) is a brain atlas.
 'BrainAtlas'
 
 %%% ¡prop!
-ATLAS_SUVR_LABEL (parameter, scalar) is the index of the atlas defined by the user for SUVR ROI list.
+ATLAS_INDEX (parameter, scalar) is the index of the atlas defined by the user for SUVR ROI list.
 %%%% ¡default!
 1;
 
@@ -81,19 +79,31 @@ ATLAS_SUVR_LABEL (parameter, scalar) is the index of the atlas defined by the us
 ATLAS_PATH_DICT (parameter, idict) is the directory containing the Atlas needed for ROI analysis.
 
 %%% ¡prop!
-GR_PET (data, item) is the subject group, which also defines the subject class SubjectNifti.
+GR_PET (data, item) is the subject group, which also defines the subject class SubjectNIfTI.
 %%%% ¡default!
-Group('SUB_CLASS', 'SubjectNifti')
+Group('SUB_CLASS', 'SubjectNIfTI')
 
 %%% ¡prop!
-GR_T1 (data, item) is the subject group, which also defines the subject class SubjectNifti.
+GR_T1 (data, item) is the subject group, which also defines the subject class SubjectNIfTI.
 %%%% ¡default!
-Group('SUB_CLASS', 'SubjectNifti')
+Group('SUB_CLASS', 'SubjectNIfTI')
 
 %%% ¡prop!
 SUVR_REGION_SELECTION (parameter, stringlist) is the list of selected brain regions.
 %%%% ¡default!
-{};
+{}
+%%%% ¡postprocessing!
+ba = roic.get('BA'); % Ensure brain atlas is obtained correctly
+if isempty(roic.get('SUVR_REGION_SELECTION')) && ~isempty(ba.get('BR_DICT').get('IT_LIST'))
+    regions = ba.get('BR_DICT').get('LENGTH');
+    IT_LIST = cell(regions, 1); % Preallocate cell array
+    for i = 1:regions
+        IT_LIST{i} = ba.get('BR_DICT').get('IT', i).get('ID'); % Correct appending
+    end
+    roic.set('SUVR_REGION_SELECTION', IT_LIST)
+end
+
+
 
 %%% ¡prop!
 CALC_SUBJ_SUVR (query, cell) generates suvr vectors per subject using subject PET and T1 data.
@@ -117,7 +127,7 @@ masked_pet_data = pet_data{1}.* int16(t1_data_union_mask);
 atlas_directories = roic.get('ATLAS_PATH_DICT').get('IT_LIST');
 atlas_kind = roic.get('ATLAS_KIND');
 Ref_list = roic.get('REF_REGION_LIST');
-atlas_suvr_index = roic.get('ATLAS_SUVR_LABEL');
+atlas_suvr_index = roic.get('ATLAS_INDEX');
 for directory_index = 1: length(atlas_directories)
     directory_dict = atlas_directories{directory_index};
     directory_path = directory_dict.get('PATH');
@@ -162,18 +172,16 @@ gr_T1 = roic.get('GR_T1');% subject from Nifti
 gr_PET = roic.get('GR_PET');% subject from Nifti
 
 
-% wb = braph2waitbar(roic.get('WAITBAR'), 0, 'Reading directory ...');
-%braph2waitbar(wb, .15, 'Loading subject group ...')
-
+wb = braph2waitbar(roic.get('WAITBAR'), 0, ['Calculating SUVR for subjects ...']);
 % adds subjects
 sub_dict = gr_suvr.memorize('SUB_DICT');
 for i = 1:1:gr_PET.get('SUB_DICT').get('LENGTH')
     % braph2waitbar(wb, .15 + .85 * i / gr_sub.get('SUB_DICT').get('LENGTH'), ['Loading subject directory' num2str(i) ' of ' num2str(length(files)) ' ...'])
     sub_id_t1 = gr_T1.get('SUB_DICT').get('IT', i).get('ID');% subject ID
     sub_id_pet = gr_PET.get('SUB_DICT').get('IT', i).get('ID');% subject ID
-
+    
     if isequal(sub_id_t1, sub_id_pet)
-
+        braph2waitbar(wb, .15 + .85 * i / gr_PET.get('SUB_DICT').get('LENGTH'), ['Calculating SUVRs for subject ' num2str(i) ' of ' num2str(gr_PET.get('SUB_DICT').get('LENGTH')) ' ...'])
         t1_path = gr_T1.get('SUB_DICT').get('IT', i).get('NIFTI_PATH_DICT').get('IT_LIST');% subject T1 data path
         pet_path = gr_PET.get('SUB_DICT').get('IT', i).get('NIFTI_PATH_DICT').get('IT_LIST');% subject PET data path
         for i = 1:length(pet_path)
@@ -222,10 +230,13 @@ for i = 1:1:gr_PET.get('SUB_DICT').get('LENGTH')
     end
 end
 
-% braph2waitbar(wb, 'close')
-
-
+braph2waitbar(wb, 'close')
 value = gr_suvr;
+
+%%% ¡prop!
+WAITBAR (gui, logical) determines whether to show the waitbar.
+%%%% ¡default!
+true
 
 %% ¡tests!
 
@@ -239,7 +250,7 @@ Verify SUVR Calculation from Example Data
 % Generate example data
 example_data_dir = fullfile(fileparts(which('SUVRConstructor')), 'Example data Nifti');
 % Run the example data creation script
-create_example_Nifti();
+create_example_NIfTI();
 
 im_ba = ImporterBrainAtlasXLS( ...
     'FILE', [which('aal94_atlas.xlsx')], ...
@@ -254,12 +265,12 @@ vois_file = fullfile(example_data_dir, 'Group1.vois.xlsx');
 % Read the VOIs file
 vois_table = readtable(vois_file);
 
-im_gr1_WM_GM = ImporterGroupSubjNifti('DIRECTORY',[example_data_dir filesep 'Group1'], ...
+im_gr1_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY',[example_data_dir filesep 'Group1'], ...
     'NIFTI_TYPE', {'T1'},...
     'WAITBAR', true);
 gr1_WM_GM = im_gr1_WM_GM.get('GR');
 
-im_gr1_PET = ImporterGroupSubjNifti('DIRECTORY', [example_data_dir filesep 'Group1'], ...
+im_gr1_PET = ImporterGroupSubjNIfTI('DIRECTORY', [example_data_dir filesep 'Group1'], ...
     'NIFTI_TYPE', {'PET'},...
     'WAITBAR', true);
 gr1_PET = im_gr1_PET.get('GR');
@@ -269,16 +280,15 @@ path_dict = IndexedDictionary(...
     'IT_LIST', {FILE_PATH('PATH', which('upsampled_AAL2.nii'))} ...
     );
 
-suvr_brain_label = readtable('group_data/test/atlas/AAL2_Atlas_Labels.csv');
-suvr_brain_label = suvr_brain_label.Var4;
+% suvr_brain_label = readtable('group_data/test/atlas/AAL2_Atlas_Labels.csv');
+% suvr_brain_label = suvr_brain_label.Var4;
 ref_region_list = [2001];% reference region label
 gr = SUVRConstructor('GR_PET',gr1_PET, ...
     'GR_T1',gr1_WM_GM, ...
     'BA', ba,...
     'ATLAS_PATH_DICT' ,path_dict, ...
     'REF_REGION_LIST',{ref_region_list}, ...
-    'ATLAS_KIND', {'AAL2'},...
-    'SUVR_REGION_SELECTION',suvr_brain_label);
+    'ATLAS_KIND', {'AAL2'});
 Con_gr = gr.get('GR');
 
 for i = 1:Con_gr.get('SUB_DICT').get('LENGTH')

@@ -109,17 +109,18 @@ GRAPH_TEMPLATE (parameter, item) is the graph template to set all graph and meas
 'GraphWU'
 
 %%% ¡prop!
-G_DICT (result, idict) is the graph (GraphWU) ensemble obtained from this analysis.
+G_DICT (result, idict) is the graph (GraphWU) ensemble of Jensen–Shannon divergence individual connectivity matrix.
 %%%% ¡settings!
 'GraphWU'
 %%%% ¡calculate!
 g_dict = IndexedDictionary('IT_CLASS', 'GraphWU');
 connectivityMatrix = a.get('CONNECTOME_CONSTUCT_METHOD');
 gr_pdf = a.get('GR');
+wb = braph2waitbar(a.get('WAITBAR'), 0, ['Build up individual connectivity matrix for subjects ...']);
 for i = 1:1:gr_pdf.get('SUB_DICT').get('LENGTH')
 	sub = gr_pdf.get('SUB_DICT').get('IT', i);    
     A = connectivityMatrix{i};
-    
+    braph2waitbar(wb, .15 + .85 * i / gr_pdf.get('SUB_DICT').get('LENGTH'), ['Calculating connectivity matrix for subject ' num2str(i) ' of ' num2str(gr_pdf.get('SUB_DICT').get('LENGTH')) ' ...'])
     g = GraphWU( ...
         'ID', ['g ' sub.get('ID')], ...
         'B', A, ... 
@@ -133,11 +134,16 @@ if ~isa(a.get('GRAPH_TEMPLATE'), 'NoValue')
         g_dict.get('IT', i).set('TEMPLATE', a.get('GRAPH_TEMPLATE'))
     end
 end
-
+braph2waitbar(wb, 'close')
 value = g_dict;
 
 %%% ¡prop!
 ME_DICT (result, idict) contains the calculated measures of the graph ensemble.
+
+%%% ¡prop!
+WAITBAR (gui, logical) detemines whether to show the waitbar.
+%%%% ¡default!
+true
 
 %% ¡props!
 
@@ -181,24 +187,24 @@ value = JSdivMatrix_cross_subjects;
 %%%% ¡name!
 Example
 %%%% ¡code!
-create_example_Nifti() % only creates files if the example folder doesn't already exist
+create_example_NIfTI() % only creates files if the example folder doesn't already exist
 
 %%% ¡test!
 %%%% ¡name!
 Verify the Distance-based individual connectome pipeline 
 %%%% ¡code!
-im_ba = ImporterBrainAtlasXLS('FILE', 'aal94_atlas.xlsx');
+im_ba = ImporterBrainAtlasXLS('FILE', which('aal94_atlas.xlsx'));
 ba = im_ba.get('BA');
 
 group_dir = fullfile(fileparts(which('IndividualDeviationConConstructor')),'Example data Nifti', 'Group1');
-im_gr1_WM_GM = ImporterGroupSubjNifti( ...
+im_gr1_WM_GM = ImporterGroupSubjNIfTI( ...
     'DIRECTORY', group_dir, ...
     'NIFTI_TYPE', {'T1'}, ...
     'WAITBAR', true ...
     );
 gr1_WM_GM = im_gr1_WM_GM.get('GR');
 
-im_gr1_PET = ImporterGroupSubjNifti( ...
+im_gr1_PET = ImporterGroupSubjNIfTI( ...
     'DIRECTORY', group_dir, ...
     'NIFTI_TYPE', {'PET'}, ...
     'WAITBAR', true ...
@@ -210,8 +216,8 @@ path_dict = IndexedDictionary(...
     'IT_LIST', {FILE_PATH('PATH', which('upsampled_AAL2.nii'))} ...
     );
 
-suvr_brain_label = readtable(which('AAL2_Atlas_Labels.csv'));
-suvr_brain_label = suvr_brain_label.Var4;
+% suvr_brain_label = readtable(which('AAL2_Atlas_Labels.csv'));
+% suvr_brain_label = suvr_brain_label.Var4;
 ref_region_list = [2001];% reference region label
 
 gr1 = PDFConstructor('GR_PET',gr1_PET, ...
@@ -219,8 +225,7 @@ gr1 = PDFConstructor('GR_PET',gr1_PET, ...
     'BA', ba,...
     'ATLAS_PATH_DICT' ,path_dict, ...
     'REF_REGION_LIST',{ref_region_list}, ...
-    'ATLAS_KIND', {'AAL2'},...
-    'SUVR_REGION_SELECTION',suvr_brain_label);
+    'ATLAS_KIND', {'AAL2'});
 
 
 PDF_gr1 = gr1.get('GR');
@@ -243,8 +248,6 @@ for i = 1:num_subjects
     A = g.get('A');
     strength20_regions = sum(A{1}(1:20,1:20),2);
     strengthother_regions = sum(A{1}(21:end,21:end),2);
-    % strength20_regions = strength{1}(1:20);
-    % strengthother_regions = strength{1}(21:end);
     mean_20 = mean(strength20_regions(:));
     mean_others = mean(strengthother_regions(:));
     % Assert for each subject

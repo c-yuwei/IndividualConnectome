@@ -1,4 +1,4 @@
-function create_example_Nifti(atlas_path, output_dir, group_names, num_files_per_group, seed)
+function create_example_NIfTI(atlas_path, output_dir, group_names, num_files_per_group, seed)
     % Function to generate Gaussian-distributed NIfTI files and separate VOIs for two groups
     % Inputs:
     %   atlas_path        - Path to the atlas NIfTI file
@@ -12,7 +12,7 @@ function create_example_Nifti(atlas_path, output_dir, group_names, num_files_per
         atlas_path = which('upsampled_AAL2.nii');  % Default atlas file
     end
     if nargin < 2 || isempty(output_dir)
-        output_dir = fullfile(fileparts(which('SubjectNifti')), 'Example data Nifti');
+        output_dir = fullfile(fileparts(which('SubjectNIfTI')), 'Example data Nifti');
     end
     if nargin < 3 || isempty(group_names)
         group_names = {'Group1', 'Group2'};
@@ -145,7 +145,7 @@ function create_example_Nifti(atlas_path, output_dir, group_names, num_files_per
             sub_stds = num2cell(stds_all_regions);
             vois1 = [vois1; {sub_id, age, sex, education, sub_means{:}, sub_stds{:}}];
         end
-        im_ba = ImporterBrainAtlasXLS('FILE', 'aal94_atlas.xlsx');
+        im_ba = ImporterBrainAtlasXLS('FILE', which('aal94_atlas.xlsx'));
         ba = im_ba.get('BA');
         ex_ba = ExporterBrainAtlasXLS( ...
             'BA', ba, ...

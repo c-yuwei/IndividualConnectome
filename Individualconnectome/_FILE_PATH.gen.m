@@ -52,4 +52,4 @@ NOTES (metadata, string) are some specific notes about the variable of interest.
 %% ¡props!
 
 %%% ¡prop!
-PATH (data, string) is the value of the variable of interest.
+PATH (data, string) is the path of target files.

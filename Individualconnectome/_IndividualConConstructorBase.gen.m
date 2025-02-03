@@ -49,6 +49,11 @@ NOTES (metadata, string) are some specific notes about the Individual Connectome
 %% ¡props!
 
 %%% ¡prop!
+WAITBAR (gui, logical) detemines whether to show the waitbar.
+%%%% ¡default!
+true
+
+%%% ¡prop!
 GR_SUVR (data, item) is a group of subjects with mean SUVR data.
 %%%% ¡default!
 Group('SUB_CLASS', 'SubjectST')
@@ -61,7 +66,7 @@ Group('SUB_CLASS', 'SubjectST')
 %%% ¡prop!
 CONNECTOME_CONSTUCT_METHOD (query, cell) defines the method for individual connectome construction.
 %%%% ¡default!
-{};
+{}
 
 %%% ¡prop!
 GR (result, item) is a group of subjects with connectivity data.
@@ -83,9 +88,10 @@ gr.lock('SUB_CLASS');
 gr_suvr = base.get('GR_SUVR');
 sub_dict = gr.memorize('SUB_DICT');
 connectivityMatrix = base.get('CONNECTOME_CONSTUCT_METHOD');
+wb = braph2waitbar(base.get('WAITBAR'), 0, ['Build up individual connectivity matrix for subjects ...']);
 for i = 1:1:gr_suvr.get('SUB_DICT').get('LENGTH')
     ba = gr_suvr.get('SUB_DICT').get('IT',i).get('BA');
-    % braph2waitbar(wb, .15 + .85 * i / length(files), ['Loading subject ' num2str(i) ' of ' num2str(length(files)) ' ...'])
+    braph2waitbar(wb, .15 + .85 * i / gr_suvr.get('SUB_DICT').get('LENGTH'), ['Calculating individual connectivity for subject ' num2str(i) ' of ' num2str(gr_suvr.get('SUB_DICT').get('LENGTH')) ' ...'])
     sub_id = gr_suvr.get('SUB_DICT').get('IT',i).get('ID');
     sub = SubjectCON( ...
         'ID', sub_id, ...
@@ -94,5 +100,5 @@ for i = 1:1:gr_suvr.get('SUB_DICT').get('LENGTH')
         );
     sub_dict.get('ADD', sub);
 end
-
+braph2waitbar(wb, 'close')
 value = gr;

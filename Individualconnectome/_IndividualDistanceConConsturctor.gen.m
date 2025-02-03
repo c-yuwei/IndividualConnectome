@@ -9,7 +9,7 @@ IndividualDistanceConConsturctor imports a group of subjects with mean SUVR
  matrix of values corresponding to the intensity distribution of brain regions.
  The connectivity matrix constructed based on Mahanlanobis Distance is returned
  from ImporterIndividual_Distance_XLS.
-The variables of interest are from another XLS/XLSX file named "SUVR_GROUP_MAT.vois.xlsx" 
+The variables of interest are from another Nifti file named "SUVR_GROUP_MAT.vois.xlsx" 
  (if exisitng) consisting of the following columns: 
  Subject ID (column 1), covariates (subsequent columns). 
  The 1st row contains the headers, the 2nd row a string with the categorical
@@ -59,7 +59,7 @@ NOTES (metadata, string) are some specific notes about the subject individual di
 'IndividualDistanceConConsturctor notes'
 
 %%% ¡prop!
-CONNECTOME_CONSTUCT_METHOD (query, cell) defines the method for individual connectome construction.
+CONNECTOME_CONSTUCT_METHOD (query, cell) defines the method for Mahalanobis distance individual connectome construction.
 %%%% ¡calculate!
 if isempty(varargin) && isempty(icd.get('GR_SUVR').get('SUB_DICT').get('IT_LIST'))
     value = {};
@@ -119,24 +119,24 @@ value = scaledMahalDistMatrix_cross_subjects;
 %%%% ¡name!
 Example
 %%%% ¡code!
-create_example_Nifti()
+create_example_NIfTI()
 
 %%% ¡test!
 %%%% ¡name!
 Verify the Distance-based individual connectome pipeline 
 %%%% ¡code!
-im_ba = ImporterBrainAtlasXLS('FILE', 'aal94_atlas.xlsx');
+im_ba = ImporterBrainAtlasXLS('FILE', which('aal94_atlas.xlsx'));
 ba = im_ba.get('BA');
 
 group_dir = fullfile(fileparts(which('IndividualDeviationConConstructor')),'Example data Nifti', 'Group1');
-im_gr1_WM_GM = ImporterGroupSubjNifti( ...
+im_gr1_WM_GM = ImporterGroupSubjNIfTI( ...
     'DIRECTORY', group_dir, ...
     'NIFTI_TYPE', {'T1'}, ...
     'WAITBAR', true ...
     );
 gr1_WM_GM = im_gr1_WM_GM.get('GR');
 
-im_gr1_PET = ImporterGroupSubjNifti( ...
+im_gr1_PET = ImporterGroupSubjNIfTI( ...
     'DIRECTORY', group_dir, ...
     'NIFTI_TYPE', {'PET'}, ...
     'WAITBAR', true ...
@@ -148,8 +148,8 @@ path_dict = IndexedDictionary(...
     'IT_LIST', {FILE_PATH('PATH', which('upsampled_AAL2.nii'))} ...
     );
 
-suvr_brain_label = readtable(which('AAL2_Atlas_Labels.csv'));
-suvr_brain_label = suvr_brain_label.Var4;
+% suvr_brain_label = readtable(which('AAL2_Atlas_Labels.csv'));
+% suvr_brain_label = suvr_brain_label.Var4;
 ref_region_list = [2001];% reference region label
 
 gr1 = SUVRConstructor('GR_PET',gr1_PET, ...
@@ -157,8 +157,7 @@ gr1 = SUVRConstructor('GR_PET',gr1_PET, ...
     'BA', ba,...
     'ATLAS_PATH_DICT' ,path_dict, ...
     'REF_REGION_LIST',{ref_region_list}, ...
-    'ATLAS_KIND', {'AAL2'},...
-    'SUVR_REGION_SELECTION',suvr_brain_label);
+    'ATLAS_KIND', {'AAL2'});
 
 
 SUVR_gr1 = gr1.get('GR');

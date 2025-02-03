@@ -1,8 +1,8 @@
 %% ¡header!
-ImporterGroupSubjNifti < Importer (im, importer of SUVR subject group from .mat) imports a group of subjects with image data from a series of Nifti files.
+ImporterGroupSubjNIfTI < Importer (im, importer of SUVR subject group from .mat) imports a group of subjects with image data from a series of Nifti files.
 
 %%% ¡description!
-Importer_Image_Nifti imports the directory to a group of subjects Nifti files 
+ImporterGroupSubjNIfTI imports the directory to a group of subjects Nifti files 
  in a folder. All these files must be in the same folder; also, no other files 
  should be in the folder. Each file contains a 3D brain volume matrix.
 The variables of interest are from another XLS/XLSX file named "SUVR_GROUP_MAT.vois.xlsx" 
@@ -22,7 +22,7 @@ Group, SubjectCON, ExporterGroupSubjectCON_XLS
 %%% ¡prop!
 ELCLASS (constant, string) is the class of the subject image group importer for Nifti.
 %%%% ¡default!
-'ImporterGroupSubjNifti'
+'ImporterGroupSubjNIfTI'
 
 %%% ¡prop!
 NAME (constant, string) is the name of the subject image group importer for Nifti.
@@ -32,27 +32,27 @@ NAME (constant, string) is the name of the subject image group importer for Nift
 %%% ¡prop!
 DESCRIPTION (constant, string) is the description of the subject image importer for Nifti.
 %%%% ¡default!
-'ImporterGroupSubjNifti imports a group of subjects with image data from a series of Nifti file.'
+'ImporterGroupSubjNIfTI imports a group of subjects with image data from a series of Nifti file.'
 
 %%% ¡prop!
 TEMPLATE (parameter, item) is the template of the subject image importer for Nifti.
 %%%% ¡settings!
-'ImporterGroupSubjNifti'
+'ImporterGroupSubjNIfTI'
 
 %%% ¡prop!
 ID (data, string) is a few-letter code for the subject image importer for Nifti.
 %%%% ¡default!
-'ImporterGroupSubjNifti ID'
+'ImporterGroupSubjNIfTI ID'
 
 %%% ¡prop!
 LABEL (metadata, string) is an extended label of subject image importer for Nifti.
 %%%% ¡default!
-'ImporterGroupSubjNifti label'
+'ImporterGroupSubjNIfTI label'
 
 %%% ¡prop!
 NOTES (metadata, string) are some specific notes about subject image importer for Nifti.
 %%%% ¡default!
-'ImporterGroupSubjNifti notes'
+'ImporterGroupSubjNIfTI notes'
 
 %% ¡props!
 
@@ -69,7 +69,7 @@ NIFTI_TYPE (data, stringlist) describes the including modality types of each Nif
 %%% ¡prop!
 GET_DIR (query, item) opens a dialog box to set the directory from where to load the Nifti files of the subject group.
 %%%% ¡settings!
-'ImporterGroupSubjNifti'
+'ImporterGroupSubjNIfTI'
 %%%% ¡calculate!
 directory = uigetdir('Select directory');
 if ischar(directory) && isfolder(directory)
@@ -82,14 +82,14 @@ GR (result, item) is a group of subjects with Nifti image data.
 %%%% ¡settings!
 'Group'
 %%%% ¡check_value!
-check = any(strcmp(value.get(Group.SUB_CLASS_TAG), subclasses('SubjectNifti', [], [], true))); % Format.checkFormat(Format.ITEM, value, 'Group') already checked
+check = any(strcmp(value.get(Group.SUB_CLASS_TAG), subclasses('SubjectNIfTI', [], [], true))); % Format.checkFormat(Format.ITEM, value, 'Group') already checked
 %%%% ¡default!
-Group('SUB_CLASS', 'SubjectNifti', 'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectNifti'))
+Group('SUB_CLASS', 'SubjectNIfTI', 'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectNIfTI'))
 %%%% ¡calculate!
 % creates empty Group
 gr = Group( ...
-    'SUB_CLASS', 'SubjectNifti', ...
-    'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectNifti') ...
+    'SUB_CLASS', 'SubjectNIfTI', ...
+    'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectNIfTI') ...
     );
 
 gr.lock('SUB_CLASS');
@@ -121,7 +121,7 @@ if isfolder(directory)
                 subject_nifty_folder = [files(i).folder filesep files(i).name];
                 subject_nifty_file = dir(fullfile(subject_nifty_folder, '*.nii'));
                 subject_nifty_full_path = strcat(subject_nifty_file(1).folder, filesep,{subject_nifty_file.name});
-                sub = SubjectNifti( ...
+                sub = SubjectNIfTI( ...
                     'ID', sub_id);
                 hasMatch  = false;
                 for f = 1:length(subject_nifty_full_path)
@@ -240,7 +240,7 @@ value = gr;
 %%%% ¡name!
 Create example files
 %%%% ¡code!
-create_example_Nifti() % only creates files if the example folder doesn't already exist
+create_example_NIfTI() % only creates files if the example folder doesn't already exist
 
 %%% ¡test!
 %%%% ¡name!
@@ -249,7 +249,7 @@ GUI
 .01
 %%%% ¡code!
 example_data_dir = fullfile(fileparts(which('SUVRConstructor')), 'Example data Nifti');
-im_gr1 = ImporterGroupSubjNifti('DIRECTORY',[example_data_dir filesep 'Group1'], ...
+im_gr1 = ImporterGroupSubjNIfTI('DIRECTORY',[example_data_dir filesep 'Group1'], ...
     'NIFTI_TYPE', {'T1'},...
     'WAITBAR', true);
 gr = im_gr1.get('GR');
