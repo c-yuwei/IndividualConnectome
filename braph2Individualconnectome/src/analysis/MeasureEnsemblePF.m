@@ -324,7 +324,7 @@ classdef MeasureEnsemblePF < PanelFig
 			%
 			% See also subclasses.
 			
-			subclass_list = { 'MeasureEnsemblePF'  'MeasureEnsemblePF_GU'  'MeasureEnsemblePF_NU' }; %CET: Computational Efficiency Trick
+			subclass_list = { 'MeasureEnsemblePF'  'MeasureEnsemblePF_BB'  'MeasureEnsemblePF_BS'  'MeasureEnsemblePF_BU'  'MeasureEnsemblePF_GB'  'MeasureEnsemblePF_GS'  'MeasureEnsemblePF_GU'  'MeasureEnsemblePF_NB'  'MeasureEnsemblePF_NS'  'MeasureEnsemblePF_NU' }; %CET: Computational Efficiency Trick
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of panel ensemble-based comparison figure.

@@ -268,7 +268,7 @@ classdef MeasureEnsembleBrainPF < BrainAtlasPF
 			%
 			% See also subclasses.
 			
-			subclass_list = { 'MeasureEnsembleBrainPF'  'MeasureEnsembleBrainPF_GU'  'MeasureEnsembleBrainPF_NU' }; %CET: Computational Efficiency Trick
+			subclass_list = { 'MeasureEnsembleBrainPF'  'MeasureEnsembleBrainPF_BB'  'MeasureEnsembleBrainPF_BS'  'MeasureEnsembleBrainPF_BU'  'MeasureEnsembleBrainPF_GB'  'MeasureEnsembleBrainPF_GS'  'MeasureEnsembleBrainPF_GU'  'MeasureEnsembleBrainPF_NB'  'MeasureEnsembleBrainPF_NS'  'MeasureEnsembleBrainPF_NU' }; %CET: Computational Efficiency Trick
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of panel figure for measure group brain.

@@ -733,7 +733,7 @@ classdef ImporterGroupSubjNIfTI < Importer
 					        );
 					
 					    try
-					        braph2waitbar(wb, .15, 'Loading subject group ...')
+					        braph2waitbar(wb, .15, 'Loading subject group ...') % making a waitbar for VOIs
 					        
 					        % analyzes file
 					        files = [dir(fullfile(directory))];
@@ -796,6 +796,7 @@ classdef ImporterGroupSubjNIfTI < Importer
 					        end
 					        if ~isempty(vois)
 					            for i = 3:1:size(vois, 1)
+					                braph2waitbar(wb, .15 + .85 * (i-2) / (size(vois, 1)-2), ['Loading VOIs of subject ' num2str(i-2) ' of ' num2str(size(vois, 1)-2) ' ...'])
 					                % Extract the subject ID string from the 'vois' data
 					                target_id = vois{i, 1};
 					

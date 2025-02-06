@@ -897,15 +897,15 @@ classdef PDFConstructor < ConcreteElement
 					    sub_id_pet = gr_PET.get('SUB_DICT').get('IT', i).get('ID');% subject ID
 					
 					    if isequal(sub_id_t1, sub_id_pet)
-					        braph2waitbar(wb, .15 + .85 * i / gr_PET.get('SUB_DICT').get('LENGTH'), ['Calculating PDFs for subject ' num2str(i) ' of ' num2str(gr_PET.get('SUB_DICT').get('LENGTH')) ' ...'])
+					
 					        t1_path = gr_T1.get('SUB_DICT').get('IT', i).get('NIFTI_PATH_DICT').get('IT_LIST');% subject T1 data path
 					        pet_path = gr_PET.get('SUB_DICT').get('IT', i).get('NIFTI_PATH_DICT').get('IT_LIST');% subject PET data path
-					        for i = 1:length(pet_path)
-					            pet_data{i} = niftiread(pet_path{i}.get('PATH'));
+					        for j = 1:length(pet_path)
+					            pet_data{j} = niftiread(pet_path{j}.get('PATH'));
 					        end
 					
-					        for i = 1:length(t1_path)
-					            t1_data{i} = niftiread(t1_path{i}.get('PATH'));
+					        for j = 1:length(t1_path)
+					            t1_data{j} = niftiread(t1_path{j}.get('PATH'));
 					        end
 					        PDF = pdfc.get('CALC_SUBJ_PDF', pet_data, t1_data);
 					
@@ -919,18 +919,18 @@ classdef PDFConstructor < ConcreteElement
 					        region_names = cell(num_regions, 1);
 					
 					        % Iterate through each region and get its name
-					        for i = 1:ba.get('BR_DICT').get('LENGTH')
+					        for j = 1:ba.get('BR_DICT').get('LENGTH')
 					            % Get the brain region element from the BrainAtlas
-					            brain_region = ba.get('BR_DICT').get('IT', i);
+					            brain_region = ba.get('BR_DICT').get('IT', j);
 					
 					            % Get the name of the brain region
-					            region_names{i} = brain_region.get('ID');
+					            region_names{j} = brain_region.get('ID');
 					        end
 					
 					        selected_suvr_region = pdfc.get('SUVR_REGION_SELECTION');
 					        matched_indices = [];
-					        for i = 1:length(region_names)
-					            match_idx = find(strcmp(selected_suvr_region, region_names{i}));
+					        for j = 1:length(region_names)
+					            match_idx = find(strcmp(selected_suvr_region, region_names{j}));
 					            if ~isempty(match_idx)
 					                matched_indices = [matched_indices, match_idx];
 					            end
@@ -943,6 +943,7 @@ classdef PDFConstructor < ConcreteElement
 					            'BA', ba,...
 					            'FUN', PDF);
 					        sub_dict.get('ADD', sub);
+					        braph2waitbar(wb, .15 + .85 * i / gr_PET.get('SUB_DICT').get('LENGTH'), ['Calculating PDFs for subject ' num2str(i) ' of ' num2str(gr_PET.get('SUB_DICT').get('LENGTH')) ' ...'])
 					    end
 					end
 					
