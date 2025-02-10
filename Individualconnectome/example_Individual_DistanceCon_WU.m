@@ -12,7 +12,7 @@ ba = im_ba.get('BA');
 
 %% load Nifty images
 %%group1
-create_example_NIfTI()
+% create_example_NIfTI()
 
 group_dir = fullfile(fileparts(which('IndividualDeviationConConstructor')),'Example data Nifti', 'Group1');
 im_gr1_WM_GM = ImporterGroupSubjNIfTI( ...
@@ -93,7 +93,13 @@ a_WU2 = AnalyzeEnsemble_CON_WU( ...
 a_WU1.memorize('G_DICT');
 a_WU2.memorize('G_DICT');
 
+c_WU = CompareEnsemble('P', 1000, 'A1', a_WU1, 'A2', a_WU2, 'MEMORIZE', true); % Compare Groups % Group Comparison
 
+degree_WU_diff = c_WU.get('COMPARISON', 'Degree').get('DIFF');
+degree_WU_p1 = c_WU.get('COMPARISON', 'Degree').get('P1');
+degree_WU_p2 = c_WU.get('COMPARISON', 'Degree').get('P2');
+degree_WU_cil = c_WU.get('COMPARISON', 'Degree').get('CIL');
+degree_WU_ciu = c_WU.get('COMPARISON', 'Degree').get('CIU');
 %% NN CV classification on 3 classes
 it_list1 = cellfun(@(x) NNDataPoint_CON_CLA( ...
     'ID', x.get('ID'), ...

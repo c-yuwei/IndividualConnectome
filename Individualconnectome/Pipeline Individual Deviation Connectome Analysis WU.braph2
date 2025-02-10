@@ -27,6 +27,5 @@ suvr_con_healthy = SUVRConstructor('GR_PET',gr_pet_healthy,'GR_T1',gr_t1_healthy
 %% Devitation Connectome Construction
 im_gr1 = IndividualDeviationConConstructor('GR_SUVR', suvr_con.get('GR'),'GR_SUVR_REF', suvr_con_healthy.get('GR')); % Construct deviation based individual connectome % Group Deviation Connectivity
 
-
 %% Analysis
 a_WU1 = AnalyzeEnsemble_CON_WU('GR', im_gr1.get('GR')); % Analyze Group % Group Analysis
