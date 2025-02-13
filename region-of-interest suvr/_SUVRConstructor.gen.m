@@ -250,7 +250,9 @@ Verify SUVR Calculation from Example Data
 % Generate example data
 example_data_dir = fullfile(fileparts(which('SUVRConstructor')), 'Example data Nifti');
 % Run the example data creation script
-create_example_NIfTI();
+if ~exist(example_data_dir, 'dir')
+    create_example_NIfTI([], example_data_dir);
+end
 
 im_ba = ImporterBrainAtlasXLS( ...
     'FILE', [which('aal94_atlas.xlsx')], ...
@@ -259,11 +261,8 @@ im_ba = ImporterBrainAtlasXLS( ...
 
 ba = im_ba.get('BA');
 
-% Path to generated VOIs file
-vois_file = fullfile(example_data_dir, 'Group1.vois.xlsx');
-
-% Read the VOIs file
-vois_table = readtable(vois_file);
+% Read the VOIs file while preserving original column headers
+vois_table = readtable(vois_file, 'VariableNamingRule', 'preserve');
 
 im_gr1_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY',[example_data_dir filesep 'Group1'], ...
     'NIFTI_TYPE', {'T1'},...
@@ -312,7 +311,7 @@ region_col_idx = find(contains(headers, strcat(string(ref_region_list),'_Mean'))
 % Extract Region means for all subjects
 region_means = table2array(vois_table(2:end, region_col_idx));
 
-expected_subject_ids = vois_table.SubjectID(2:end); % Assuming 'SubjectID' column exists
+expected_subject_ids = vois_table.("Subject ID")(2:end); % Assuming 'SubjectID' column exists
 % Initialize a matrix for reordered means
 reordered_calculated_means = zeros(size(expected_means));
 
