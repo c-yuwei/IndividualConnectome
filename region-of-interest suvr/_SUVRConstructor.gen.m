@@ -261,6 +261,7 @@ im_ba = ImporterBrainAtlasXLS( ...
 
 ba = im_ba.get('BA');
 
+vois_file = [example_data_dir,filesep,'Group1.vois.xlsx'];
 % Read the VOIs file while preserving original column headers
 vois_table = readtable(vois_file, 'VariableNamingRule', 'preserve');
 
