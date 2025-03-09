@@ -138,7 +138,19 @@ ref_region_union_mask = ref_region_masks{1};
 for i = 2:length(ref_region_masks)
     ref_region_union_mask = ref_region_union_mask | ref_region_masks{i};
 end
-ref_region_meanvalue = mean(masked_pet_data(ref_region_union_mask));
+SUVR_values_ref = masked_pet_data(ref_region_union_mask);
+
+% % Sort the values in descending order
+sorted_values = sort(SUVR_values_ref, 'descend');
+
+% Calculate the number of values that constitute the top 50%
+num_values = length(sorted_values);
+top_50_percent_count = ceil(num_values / 2);
+
+% Select the top 50% of the values
+top_50_percent_values = sorted_values(1:top_50_percent_count);
+
+ref_region_meanvalue = mean(top_50_percent_values);
 
 % atlas_index = find(contains(atlas_kind{atlas_suvr{1}}));% here user can define refine the atlas_suvr option
 % atlas_roi = atlas{atlas_index};
@@ -224,7 +236,8 @@ for i = 1:1:gr_PET.get('SUB_DICT').get('LENGTH')
             'LABEL', ['Subejct ST ' int2str(i)], ...
             'NOTES', ['Notes on subject ST ' int2str(i)], ...
             'BA', roic.get('BA'),...
-            'ST', SUVR);
+            'ST', SUVR, ...
+            'VOI_DICT', gr_T1.get('SUB_DICT').get('IT', i).get('VOI_DICT'));
         sub_dict.get('ADD', sub);
         braph2waitbar(wb, .15 + .85 * i / gr_PET.get('SUB_DICT').get('LENGTH'), ['Calculating SUVRs for subject ' num2str(i) ' of ' num2str(gr_PET.get('SUB_DICT').get('LENGTH')) ' ...'])
     end
@@ -261,6 +274,7 @@ im_ba = ImporterBrainAtlasXLS( ...
 
 ba = im_ba.get('BA');
 
+vois_file = [example_data_dir filesep 'Group1.vois.xlsx'];
 % Read the VOIs file while preserving original column headers
 vois_table = readtable(vois_file, 'VariableNamingRule', 'preserve');
 

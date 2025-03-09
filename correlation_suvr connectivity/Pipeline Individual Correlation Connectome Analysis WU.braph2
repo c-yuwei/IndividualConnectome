@@ -13,8 +13,8 @@
 ba = ImporterBrainAtlasXLS('WAITBAR', true).get('GET_FILE').get('BA'); % Load Brain Atlas from XLS % Brain Atlas
 
 %% Group NIfTI
-gr_t1 = ImporterGroupSubjNIfTI('NIFTI_TYPE', {'T1'}, 'WAITBAR', true).get('GET_DIR').get('GR'); % Load Group T1 from NIfTI % Group T1
-gr_pet = ImporterGroupSubjNIfTI('NIFTI_TYPE', {'PET'}, 'WAITBAR', true).get('GET_DIR').get('GR'); % Load Group PET from NIfTI % Group PET
+gr_t1 = ImporterGroupSubjNIfTI('NIFTI_TYPE', {'WM','GM'}, 'WAITBAR', true).get('GET_DIR').get('GR'); % Load Group T1 from NIfTI % Group T1
+gr_pet = ImporterGroupSubjNIfTI('NIFTI_TYPE', {'wroriented_raw_pet'}, 'WAITBAR', true).get('GET_DIR').get('GR'); % Load Group PET from NIfTI % Group PET
 
 %% Group PDF
 pdf_con = PDFConstructor('GR_PET',gr_pet,'GR_T1',gr_t1,'BA', ba,'ATLAS_PATH_DICT' ,IndexedDictionary('IT_CLASS', 'FILE_PATH','IT_LIST', {FILE_PATH('PATH', '/home/hang/GitHub/IndividualConnectome-WithYuwei/Individualconnectome/group_data/test/atlas/upsampled_AAL2.nii'),FILE_PATH('PATH', '/home/hang/GitHub/IndividualConnectome-WithYuwei/Individualconnectome/group_data/test/atlas/upsampled_TD.nii')}), 'REF_REGION_LIST',{[9100,9110,9120,9130,9140,9150,9160,9170], 7},'ATLAS_KIND', {'AAL2','TD'}); % Construct Group Probability Density Function % Group PDF
