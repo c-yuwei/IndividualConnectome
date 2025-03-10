@@ -326,7 +326,7 @@ classdef NNClassifierMLP_EvaluatorPF_ROC < PanelFig
 			%
 			% See also subclasses.
 			
-			subclass_list = { 'NNClassifierMLP_EvaluatorPF_ROC' }; %CET: Computational Efficiency Trick
+			subclass_list = { 'NNClassifierMLP_EvaluatorPF_ROC'  'NNClassifierMLP_EvaluatorPF_ROC_VOIs' }; %CET: Computational Efficiency Trick
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of panel receiver operating characteristic figure.

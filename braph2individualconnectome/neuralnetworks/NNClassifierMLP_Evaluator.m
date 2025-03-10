@@ -217,7 +217,7 @@ classdef NNClassifierMLP_Evaluator < NNEvaluator
 			%
 			% See also subclasses.
 			
-			subclass_list = { 'NNClassifierMLP_Evaluator' }; %CET: Computational Efficiency Trick
+			subclass_list = { 'NNClassifierMLP_Evaluator'  'NNClassifierMLP_Evaluator_VOIs' }; %CET: Computational Efficiency Trick
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of neural network evaluator for multi-layer perceptron classifier.

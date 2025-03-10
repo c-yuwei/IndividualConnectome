@@ -855,7 +855,20 @@ classdef PDFConstructor < ConcreteElement
 					for i = 2:length(ref_region_masks)
 					    ref_region_union_mask = ref_region_union_mask | ref_region_masks{i};
 					end
-					ref_region_meanvalue = mean(masked_pet_data(ref_region_union_mask));
+					
+					SUVR_values_ref = masked_pet_data(ref_region_union_mask);
+					
+					% % Sort the values in descending order
+					sorted_values = sort(SUVR_values_ref, 'descend');
+					
+					% Calculate the number of values that constitute the top 50%
+					num_values = length(sorted_values);
+					top_50_percent_count = ceil(num_values / 2);
+					
+					% Select the top 50% of the values
+					top_50_percent_values = sorted_values(1:top_50_percent_count);
+					
+					ref_region_meanvalue = mean(top_50_percent_values);
 					
 					% atlas_index = find(contains(atlas_kind{atlas_suvr{1}}));% here user can define refine the atlas_suvr option
 					% atlas_roi = atlas{atlas_index};
@@ -863,7 +876,7 @@ classdef PDFConstructor < ConcreteElement
 					% calculate normalized suvr for all unique regions
 					ROI_list = unique(atlas_roi);
 					ROI_list = ROI_list(ROI_list>0);% remove background which is represented by label "0"
-					for roi_list_index = 1:length(ROI_list)
+					parfor roi_list_index = 1:length(ROI_list)
 					    roi_index = ROI_list(roi_list_index);
 					    roi_mask = atlas_roi==roi_index;
 					    roi_data = masked_pet_data.*int16(roi_mask);
@@ -941,7 +954,8 @@ classdef PDFConstructor < ConcreteElement
 					            'LABEL', ['Subejct FUN ' int2str(i)], ...
 					            'NOTES', ['Notes on subject FUN ' int2str(i)], ...
 					            'BA', ba,...
-					            'FUN', PDF);
+					            'FUN', PDF, ...
+					            'VOI_DICT', gr_T1.get('SUB_DICT').get('IT', i).get('VOI_DICT'));
 					        sub_dict.get('ADD', sub);
 					        braph2waitbar(wb, .15 + .85 * i / gr_PET.get('SUB_DICT').get('LENGTH'), ['Calculating PDFs for subject ' num2str(i) ' of ' num2str(gr_PET.get('SUB_DICT').get('LENGTH')) ' ...'])
 					    end

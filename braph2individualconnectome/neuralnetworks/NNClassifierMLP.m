@@ -29,13 +29,11 @@ classdef NNClassifierMLP < NNBase
 	%  <strong>19</strong> <strong>VERBOSE</strong> 	VERBOSE (gui, logical) is an indicator to display training progress information.
 	%  <strong>20</strong> <strong>PLOT_TRAINING</strong> 	PLOT_TRAINING (metadata, option) determines whether to plot the training progress.
 	%  <strong>21</strong> <strong>PREDICT</strong> 	PREDICT (query, cell) returns the predictions of the trained neural network for a dataset.
-	%  <strong>22</strong> <strong>VOI_SELECTION</strong> 	VOI_SELECTION (parameter, stringlist) defines which VOIs should be included in the analysis.
-	%  <strong>23</strong> <strong>VOI_INTERGRATION</strong> 	VOI_INTERGRATION (query, cell) extracts VOI values based on the selection list.
-	%  <strong>24</strong> <strong>TARGET_CLASSES</strong> 	TARGET_CLASSES (query, stringlist) constructs the target classes which represent the class of each data point.
-	%  <strong>25</strong> <strong>LAYERS</strong> 	LAYERS (data, rvector) defines the number of layers and their neurons.
-	%  <strong>26</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) detemines whether to show the waitbar.
-	%  <strong>27</strong> <strong>INTERRUPTIBLE</strong> 	INTERRUPTIBLE (gui, scalar) sets whether the comparison computation is interruptible for multitasking.
-	%  <strong>28</strong> <strong>FEATURE_IMPORTANCE</strong> 	FEATURE_IMPORTANCE (query, cell) evaluates the average significance of each feature by iteratively shuffling its values P times and measuring the resulting average decrease in model performance.
+	%  <strong>22</strong> <strong>TARGET_CLASSES</strong> 	TARGET_CLASSES (query, stringlist) constructs the target classes which represent the class of each data point.
+	%  <strong>23</strong> <strong>LAYERS</strong> 	LAYERS (data, rvector) defines the number of layers and their neurons.
+	%  <strong>24</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) detemines whether to show the waitbar.
+	%  <strong>25</strong> <strong>INTERRUPTIBLE</strong> 	INTERRUPTIBLE (gui, scalar) sets whether the comparison computation is interruptible for multitasking.
+	%  <strong>26</strong> <strong>FEATURE_IMPORTANCE</strong> 	FEATURE_IMPORTANCE (query, cell) evaluates the average significance of each feature by iteratively shuffling its values P times and measuring the resulting average decrease in model performance.
 	%
 	% NNClassifierMLP methods (constructor):
 	%  NNClassifierMLP - constructor
@@ -128,37 +126,27 @@ classdef NNClassifierMLP < NNBase
 	% BUILD BRAPH2 7 class_name 1
 	
 	properties (Constant) % properties
-		VOI_SELECTION = 22; %CET: Computational Efficiency Trick
-		VOI_SELECTION_TAG = 'VOI_SELECTION';
-		VOI_SELECTION_CATEGORY = 3;
-		VOI_SELECTION_FORMAT = 3;
-		
-		VOI_INTERGRATION = 23; %CET: Computational Efficiency Trick
-		VOI_INTERGRATION_TAG = 'VOI_INTERGRATION';
-		VOI_INTERGRATION_CATEGORY = 6;
-		VOI_INTERGRATION_FORMAT = 16;
-		
-		TARGET_CLASSES = 24; %CET: Computational Efficiency Trick
+		TARGET_CLASSES = 22; %CET: Computational Efficiency Trick
 		TARGET_CLASSES_TAG = 'TARGET_CLASSES';
 		TARGET_CLASSES_CATEGORY = 6;
 		TARGET_CLASSES_FORMAT = 3;
 		
-		LAYERS = 25; %CET: Computational Efficiency Trick
+		LAYERS = 23; %CET: Computational Efficiency Trick
 		LAYERS_TAG = 'LAYERS';
 		LAYERS_CATEGORY = 4;
 		LAYERS_FORMAT = 12;
 		
-		WAITBAR = 26; %CET: Computational Efficiency Trick
+		WAITBAR = 24; %CET: Computational Efficiency Trick
 		WAITBAR_TAG = 'WAITBAR';
 		WAITBAR_CATEGORY = 9;
 		WAITBAR_FORMAT = 4;
 		
-		INTERRUPTIBLE = 27; %CET: Computational Efficiency Trick
+		INTERRUPTIBLE = 25; %CET: Computational Efficiency Trick
 		INTERRUPTIBLE_TAG = 'INTERRUPTIBLE';
 		INTERRUPTIBLE_CATEGORY = 9;
 		INTERRUPTIBLE_FORMAT = 11;
 		
-		FEATURE_IMPORTANCE = 28; %CET: Computational Efficiency Trick
+		FEATURE_IMPORTANCE = 26; %CET: Computational Efficiency Trick
 		FEATURE_IMPORTANCE_TAG = 'FEATURE_IMPORTANCE';
 		FEATURE_IMPORTANCE_CATEGORY = 6;
 		FEATURE_IMPORTANCE_FORMAT = 16;
@@ -196,13 +184,11 @@ classdef NNClassifierMLP < NNBase
 			%  <strong>19</strong> <strong>VERBOSE</strong> 	VERBOSE (gui, logical) is an indicator to display training progress information.
 			%  <strong>20</strong> <strong>PLOT_TRAINING</strong> 	PLOT_TRAINING (metadata, option) determines whether to plot the training progress.
 			%  <strong>21</strong> <strong>PREDICT</strong> 	PREDICT (query, cell) returns the predictions of the trained neural network for a dataset.
-			%  <strong>22</strong> <strong>VOI_SELECTION</strong> 	VOI_SELECTION (parameter, stringlist) defines which VOIs should be included in the analysis.
-			%  <strong>23</strong> <strong>VOI_INTERGRATION</strong> 	VOI_INTERGRATION (query, cell) extracts VOI values based on the selection list.
-			%  <strong>24</strong> <strong>TARGET_CLASSES</strong> 	TARGET_CLASSES (query, stringlist) constructs the target classes which represent the class of each data point.
-			%  <strong>25</strong> <strong>LAYERS</strong> 	LAYERS (data, rvector) defines the number of layers and their neurons.
-			%  <strong>26</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) detemines whether to show the waitbar.
-			%  <strong>27</strong> <strong>INTERRUPTIBLE</strong> 	INTERRUPTIBLE (gui, scalar) sets whether the comparison computation is interruptible for multitasking.
-			%  <strong>28</strong> <strong>FEATURE_IMPORTANCE</strong> 	FEATURE_IMPORTANCE (query, cell) evaluates the average significance of each feature by iteratively shuffling its values P times and measuring the resulting average decrease in model performance.
+			%  <strong>22</strong> <strong>TARGET_CLASSES</strong> 	TARGET_CLASSES (query, stringlist) constructs the target classes which represent the class of each data point.
+			%  <strong>23</strong> <strong>LAYERS</strong> 	LAYERS (data, rvector) defines the number of layers and their neurons.
+			%  <strong>24</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) detemines whether to show the waitbar.
+			%  <strong>25</strong> <strong>INTERRUPTIBLE</strong> 	INTERRUPTIBLE (gui, scalar) sets whether the comparison computation is interruptible for multitasking.
+			%  <strong>26</strong> <strong>FEATURE_IMPORTANCE</strong> 	FEATURE_IMPORTANCE (query, cell) evaluates the average significance of each feature by iteratively shuffling its values P times and measuring the resulting average decrease in model performance.
 			%
 			% See also Category, Format.
 			
@@ -255,7 +241,7 @@ classdef NNClassifierMLP < NNBase
 			%
 			% See also subclasses.
 			
-			subclass_list = { 'NNClassifierMLP' }; %CET: Computational Efficiency Trick
+			subclass_list = { 'NNClassifierMLP'  'NNClassifierMLP_VOIs' }; %CET: Computational Efficiency Trick
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of multi-layer perceptron classifier.
@@ -279,7 +265,7 @@ classdef NNClassifierMLP < NNBase
 			%CET: Computational Efficiency Trick
 			
 			if nargin == 0
-				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28];
+				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26];
 				return
 			end
 			
@@ -289,15 +275,15 @@ classdef NNClassifierMLP < NNBase
 				case 2 % Category.METADATA
 					prop_list = [6 7 20];
 				case 3 % Category.PARAMETER
-					prop_list = [4 10 11 12 13 14 22];
+					prop_list = [4 10 11 12 13 14];
 				case 4 % Category.DATA
-					prop_list = [5 9 25];
+					prop_list = [5 9 23];
 				case 5 % Category.RESULT
 					prop_list = 15;
 				case 6 % Category.QUERY
-					prop_list = [8 16 17 18 21 23 24 28];
+					prop_list = [8 16 17 18 21 22 26];
 				case 9 % Category.GUI
-					prop_list = [19 26 27];
+					prop_list = [19 24 25];
 				otherwise
 					prop_list = [];
 			end
@@ -323,7 +309,7 @@ classdef NNClassifierMLP < NNBase
 			%CET: Computational Efficiency Trick
 			
 			if nargin == 0
-				prop_number = 28;
+				prop_number = 26;
 				return
 			end
 			
@@ -333,13 +319,13 @@ classdef NNClassifierMLP < NNBase
 				case 2 % Category.METADATA
 					prop_number = 3;
 				case 3 % Category.PARAMETER
-					prop_number = 7;
+					prop_number = 6;
 				case 4 % Category.DATA
 					prop_number = 3;
 				case 5 % Category.RESULT
 					prop_number = 1;
 				case 6 % Category.QUERY
-					prop_number = 8;
+					prop_number = 7;
 				case 9 % Category.GUI
 					prop_number = 3;
 				otherwise
@@ -372,7 +358,7 @@ classdef NNClassifierMLP < NNBase
 			%
 			% See also getProps, existsTag.
 			
-			check = prop >= 1 && prop <= 28 && round(prop) == prop; %CET: Computational Efficiency Trick
+			check = prop >= 1 && prop <= 26 && round(prop) == prop; %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
@@ -410,7 +396,7 @@ classdef NNClassifierMLP < NNBase
 			%
 			% See also getProps, existsTag.
 			
-			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'D'  'DP_CLASSES'  'EPOCHS'  'BATCH'  'SHUFFLE'  'SOLVER'  'MODEL'  'INPUTS'  'TARGETS'  'TRAIN'  'VERBOSE'  'PLOT_TRAINING'  'PREDICT'  'VOI_SELECTION'  'VOI_INTERGRATION'  'TARGET_CLASSES'  'LAYERS'  'WAITBAR'  'INTERRUPTIBLE'  'FEATURE_IMPORTANCE' })); %CET: Computational Efficiency Trick
+			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'D'  'DP_CLASSES'  'EPOCHS'  'BATCH'  'SHUFFLE'  'SOLVER'  'MODEL'  'INPUTS'  'TARGETS'  'TRAIN'  'VERBOSE'  'PLOT_TRAINING'  'PREDICT'  'TARGET_CLASSES'  'LAYERS'  'WAITBAR'  'INTERRUPTIBLE'  'FEATURE_IMPORTANCE' })); %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
@@ -443,7 +429,7 @@ classdef NNClassifierMLP < NNBase
 			%  getPropSettings, getPropDefault, checkProp.
 			
 			if ischar(pointer)
-				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'D'  'DP_CLASSES'  'EPOCHS'  'BATCH'  'SHUFFLE'  'SOLVER'  'MODEL'  'INPUTS'  'TARGETS'  'TRAIN'  'VERBOSE'  'PLOT_TRAINING'  'PREDICT'  'VOI_SELECTION'  'VOI_INTERGRATION'  'TARGET_CLASSES'  'LAYERS'  'WAITBAR'  'INTERRUPTIBLE'  'FEATURE_IMPORTANCE' })); % tag = pointer %CET: Computational Efficiency Trick
+				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'D'  'DP_CLASSES'  'EPOCHS'  'BATCH'  'SHUFFLE'  'SOLVER'  'MODEL'  'INPUTS'  'TARGETS'  'TRAIN'  'VERBOSE'  'PLOT_TRAINING'  'PREDICT'  'TARGET_CLASSES'  'LAYERS'  'WAITBAR'  'INTERRUPTIBLE'  'FEATURE_IMPORTANCE' })); % tag = pointer %CET: Computational Efficiency Trick
 			else % numeric
 				prop = pointer;
 			end
@@ -472,7 +458,7 @@ classdef NNClassifierMLP < NNBase
 				tag = pointer;
 			else % numeric
 				%CET: Computational Efficiency Trick
-				nnclassifiermlp_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'D'  'DP_CLASSES'  'EPOCHS'  'BATCH'  'SHUFFLE'  'SOLVER'  'MODEL'  'INPUTS'  'TARGETS'  'TRAIN'  'VERBOSE'  'PLOT_TRAINING'  'PREDICT'  'VOI_SELECTION'  'VOI_INTERGRATION'  'TARGET_CLASSES'  'LAYERS'  'WAITBAR'  'INTERRUPTIBLE'  'FEATURE_IMPORTANCE' };
+				nnclassifiermlp_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'D'  'DP_CLASSES'  'EPOCHS'  'BATCH'  'SHUFFLE'  'SOLVER'  'MODEL'  'INPUTS'  'TARGETS'  'TRAIN'  'VERBOSE'  'PLOT_TRAINING'  'PREDICT'  'TARGET_CLASSES'  'LAYERS'  'WAITBAR'  'INTERRUPTIBLE'  'FEATURE_IMPORTANCE' };
 				tag = nnclassifiermlp_tag_list{pointer}; % prop = pointer
 			end
 		end
@@ -499,7 +485,7 @@ classdef NNClassifierMLP < NNBase
 			prop = NNClassifierMLP.getPropProp(pointer);
 			
 			%CET: Computational Efficiency Trick
-			nnclassifiermlp_category_list = { 1  1  1  3  4  2  2  6  4  3  3  3  3  3  5  6  6  6  9  2  6  3  6  6  4  9  9  6 };
+			nnclassifiermlp_category_list = { 1  1  1  3  4  2  2  6  4  3  3  3  3  3  5  6  6  6  9  2  6  6  4  9  9  6 };
 			prop_category = nnclassifiermlp_category_list{prop};
 		end
 		function prop_format = getPropFormat(pointer)
@@ -525,7 +511,7 @@ classdef NNClassifierMLP < NNBase
 			prop = NNClassifierMLP.getPropProp(pointer);
 			
 			%CET: Computational Efficiency Trick
-			nnclassifiermlp_format_list = { 2  2  2  8  2  2  2  2  8  7  11  11  5  5  17  16  16  1  4  5  16  3  16  3  12  4  11  16 };
+			nnclassifiermlp_format_list = { 2  2  2  8  2  2  2  2  8  7  11  11  5  5  17  16  16  1  4  5  16  3  12  4  11  16 };
 			prop_format = nnclassifiermlp_format_list{prop};
 		end
 		function prop_description = getPropDescription(pointer)
@@ -551,7 +537,7 @@ classdef NNClassifierMLP < NNBase
 			prop = NNClassifierMLP.getPropProp(pointer);
 			
 			%CET: Computational Efficiency Trick
-			nnclassifiermlp_description_list = { 'ELCLASS (constant, string) is the class of the neural network multi-layer perceptron classifier.'  'NAME (constant, string) is the name of the neural network multi-layer perceptron classifier.'  'DESCRIPTION (constant, string) is the description of the neural network multi-layer perceptron classifier.'  'TEMPLATE (parameter, item) is the template of the neural network multi-layer perceptron classifier.'  'ID (data, string) is a few-letter code for the neural network multi-layer perceptron classifier.'  'LABEL (metadata, string) is an extended label of the neural network multi-layer perceptron classifier.'  'NOTES (metadata, string) are some specific notes about the neural network multi-layer perceptron classifier.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'D (data, item) is the dataset to train the neural network model, and its data point class DP_CLASS defaults to one of the compatible classes within the set of DP_CLASSES.'  'DP_CLASSES (parameter, classlist) is the list of compatible data points.'  'EPOCHS (parameter, scalar) is the maximum number of epochs.'  'BATCH (parameter, scalar) is the size of the mini-batch used for each training iteration.'  'SHUFFLE (parameter, option) is an option for data shuffling.'  'SOLVER (parameter, option) is an option for the solver.'  'MODEL (result, net) is a trained neural network model.'  'INPUTS (query, cell) constructs the data in the CB (channel-batch) format.'  'TARGETS (query, cell) constructs the targets in the CB (channel-batch) format with one-hot vectors.'  'TRAIN (query, empty) trains the neural network model with the given dataset.'  'VERBOSE (gui, logical) is an indicator to display training progress information.'  'PLOT_TRAINING (metadata, option) determines whether to plot the training progress.'  'PREDICT (query, cell) returns the predictions of the trained neural network for a dataset.'  'VOI_SELECTION (parameter, stringlist) defines which VOIs should be included in the analysis.'  'VOI_INTERGRATION (query, cell) extracts VOI values based on the selection list.'  'TARGET_CLASSES (query, stringlist) constructs the target classes which represent the class of each data point.'  'LAYERS (data, rvector) defines the number of layers and their neurons.'  'WAITBAR (gui, logical) detemines whether to show the waitbar.'  'INTERRUPTIBLE (gui, scalar) sets whether the comparison computation is interruptible for multitasking.'  'FEATURE_IMPORTANCE (query, cell) evaluates the average significance of each feature by iteratively shuffling its values P times and measuring the resulting average decrease in model performance.' };
+			nnclassifiermlp_description_list = { 'ELCLASS (constant, string) is the class of the neural network multi-layer perceptron classifier.'  'NAME (constant, string) is the name of the neural network multi-layer perceptron classifier.'  'DESCRIPTION (constant, string) is the description of the neural network multi-layer perceptron classifier.'  'TEMPLATE (parameter, item) is the template of the neural network multi-layer perceptron classifier.'  'ID (data, string) is a few-letter code for the neural network multi-layer perceptron classifier.'  'LABEL (metadata, string) is an extended label of the neural network multi-layer perceptron classifier.'  'NOTES (metadata, string) are some specific notes about the neural network multi-layer perceptron classifier.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'D (data, item) is the dataset to train the neural network model, and its data point class DP_CLASS defaults to one of the compatible classes within the set of DP_CLASSES.'  'DP_CLASSES (parameter, classlist) is the list of compatible data points.'  'EPOCHS (parameter, scalar) is the maximum number of epochs.'  'BATCH (parameter, scalar) is the size of the mini-batch used for each training iteration.'  'SHUFFLE (parameter, option) is an option for data shuffling.'  'SOLVER (parameter, option) is an option for the solver.'  'MODEL (result, net) is a trained neural network model.'  'INPUTS (query, cell) constructs the data in the CB (channel-batch) format.'  'TARGETS (query, cell) constructs the targets in the CB (channel-batch) format with one-hot vectors.'  'TRAIN (query, empty) trains the neural network model with the given dataset.'  'VERBOSE (gui, logical) is an indicator to display training progress information.'  'PLOT_TRAINING (metadata, option) determines whether to plot the training progress.'  'PREDICT (query, cell) returns the predictions of the trained neural network for a dataset.'  'TARGET_CLASSES (query, stringlist) constructs the target classes which represent the class of each data point.'  'LAYERS (data, rvector) defines the number of layers and their neurons.'  'WAITBAR (gui, logical) detemines whether to show the waitbar.'  'INTERRUPTIBLE (gui, scalar) sets whether the comparison computation is interruptible for multitasking.'  'FEATURE_IMPORTANCE (query, cell) evaluates the average significance of each feature by iteratively shuffling its values P times and measuring the resulting average decrease in model performance.' };
 			prop_description = nnclassifiermlp_description_list{prop};
 		end
 		function prop_settings = getPropSettings(pointer)
@@ -577,19 +563,15 @@ classdef NNClassifierMLP < NNBase
 			prop = NNClassifierMLP.getPropProp(pointer);
 			
 			switch prop %CET: Computational Efficiency Trick
-				case 22 % NNClassifierMLP.VOI_SELECTION
+				case 22 % NNClassifierMLP.TARGET_CLASSES
 					prop_settings = Format.getFormatSettings(3);
-				case 23 % NNClassifierMLP.VOI_INTERGRATION
-					prop_settings = Format.getFormatSettings(16);
-				case 24 % NNClassifierMLP.TARGET_CLASSES
-					prop_settings = Format.getFormatSettings(3);
-				case 25 % NNClassifierMLP.LAYERS
+				case 23 % NNClassifierMLP.LAYERS
 					prop_settings = Format.getFormatSettings(12);
-				case 26 % NNClassifierMLP.WAITBAR
+				case 24 % NNClassifierMLP.WAITBAR
 					prop_settings = Format.getFormatSettings(4);
-				case 27 % NNClassifierMLP.INTERRUPTIBLE
+				case 25 % NNClassifierMLP.INTERRUPTIBLE
 					prop_settings = Format.getFormatSettings(11);
-				case 28 % NNClassifierMLP.FEATURE_IMPORTANCE
+				case 26 % NNClassifierMLP.FEATURE_IMPORTANCE
 					prop_settings = Format.getFormatSettings(16);
 				case 4 % NNClassifierMLP.TEMPLATE
 					prop_settings = 'NNClassifierMLP';
@@ -622,19 +604,15 @@ classdef NNClassifierMLP < NNBase
 			prop = NNClassifierMLP.getPropProp(pointer);
 			
 			switch prop %CET: Computational Efficiency Trick
-				case 22 % NNClassifierMLP.VOI_SELECTION
-					prop_default = {'Age', 'Sex','Education'} % Example: Default selected VOIs;
-				case 23 % NNClassifierMLP.VOI_INTERGRATION
-					prop_default = Format.getFormatDefault(16, NNClassifierMLP.getPropSettings(prop));
-				case 24 % NNClassifierMLP.TARGET_CLASSES
+				case 22 % NNClassifierMLP.TARGET_CLASSES
 					prop_default = Format.getFormatDefault(3, NNClassifierMLP.getPropSettings(prop));
-				case 25 % NNClassifierMLP.LAYERS
+				case 23 % NNClassifierMLP.LAYERS
 					prop_default = [32 32];
-				case 26 % NNClassifierMLP.WAITBAR
+				case 24 % NNClassifierMLP.WAITBAR
 					prop_default = true;
-				case 27 % NNClassifierMLP.INTERRUPTIBLE
+				case 25 % NNClassifierMLP.INTERRUPTIBLE
 					prop_default = .001;
-				case 28 % NNClassifierMLP.FEATURE_IMPORTANCE
+				case 26 % NNClassifierMLP.FEATURE_IMPORTANCE
 					prop_default = Format.getFormatDefault(16, NNClassifierMLP.getPropSettings(prop));
 				case 1 % NNClassifierMLP.ELCLASS
 					prop_default = 'NNClassifierMLP';
@@ -718,19 +696,15 @@ classdef NNClassifierMLP < NNBase
 			prop = NNClassifierMLP.getPropProp(pointer);
 			
 			switch prop
-				case 22 % NNClassifierMLP.VOI_SELECTION
+				case 22 % NNClassifierMLP.TARGET_CLASSES
 					check = Format.checkFormat(3, value, NNClassifierMLP.getPropSettings(prop));
-				case 23 % NNClassifierMLP.VOI_INTERGRATION
-					check = Format.checkFormat(16, value, NNClassifierMLP.getPropSettings(prop));
-				case 24 % NNClassifierMLP.TARGET_CLASSES
-					check = Format.checkFormat(3, value, NNClassifierMLP.getPropSettings(prop));
-				case 25 % NNClassifierMLP.LAYERS
+				case 23 % NNClassifierMLP.LAYERS
 					check = Format.checkFormat(12, value, NNClassifierMLP.getPropSettings(prop));
-				case 26 % NNClassifierMLP.WAITBAR
+				case 24 % NNClassifierMLP.WAITBAR
 					check = Format.checkFormat(4, value, NNClassifierMLP.getPropSettings(prop));
-				case 27 % NNClassifierMLP.INTERRUPTIBLE
+				case 25 % NNClassifierMLP.INTERRUPTIBLE
 					check = Format.checkFormat(11, value, NNClassifierMLP.getPropSettings(prop));
-				case 28 % NNClassifierMLP.FEATURE_IMPORTANCE
+				case 26 % NNClassifierMLP.FEATURE_IMPORTANCE
 					check = Format.checkFormat(16, value, NNClassifierMLP.getPropSettings(prop));
 				case 4 % NNClassifierMLP.TEMPLATE
 					check = Format.checkFormat(8, value, NNClassifierMLP.getPropSettings(prop));
@@ -770,36 +744,7 @@ classdef NNClassifierMLP < NNBase
 			%  postset, postprocessing, checkValue.
 			
 			switch prop
-				case 23 % NNClassifierMLP.VOI_INTERGRATION
-					dp_dict = a.get('DP_DICT');
-					it_list = dp_dict.get('IT_LIST');
-					num_subjects = length(it_list);
-					selected_vois = a.get('VOI_SELECTION'); % Get user-defined VOI list
-					processed_data = zeros(num_subjects, length(selected_vois)); % Preallocate as a numerical matrix
-					
-					for subj_idx = 1:num_subjects
-					    sub = it_list{subj_idx}.get('SUB'); % Get subject data
-					    voi_dict = sub.get('VOI_DICT');
-					    
-					    selected_values = nan(1, length(selected_vois)); % Initialize with NaNs to handle missing VOIs
-					    
-					    for voi_idx = 1:voi_dict.get('LENGTH')
-					        voi = voi_dict.get('IT', voi_idx);
-					        voi_id = voi.get('ID'); % Extract VOI ID
-					        
-					        % If the VOI ID is in the selected list, store its value
-					        match_idx = find(strcmp(selected_vois, voi_id), 1);
-					        if ~isempty(match_idx)
-					            selected_values(match_idx) = voi.get('V'); % Assign value to the corresponding column
-					        end
-					    end
-					    
-					    processed_data(subj_idx, :) = selected_values; % Store extracted VOI values
-					end
-					
-					value = processed_data;
-					
-				case 24 % NNClassifierMLP.TARGET_CLASSES
+				case 22 % NNClassifierMLP.TARGET_CLASSES
 					% target_classes = nn.get('TARGET_CLASSES', D) returns a cell array with the
 					%  target classes for all data points in dataset D.
 					if isempty(varargin)
@@ -819,7 +764,7 @@ classdef NNClassifierMLP < NNBase
 					    value = nn_targets;
 					end
 					
-				case 28 % NNClassifierMLP.FEATURE_IMPORTANCE
+				case 26 % NNClassifierMLP.FEATURE_IMPORTANCE
 					% fi = nn.get('FEATURE_IMPORTANCE', D, P, SEED) retrieves a cell array containing
 					%  the feature importance values for the trained model, as assessed by
 					%  evaluating it on the input dataset D.
@@ -925,65 +870,40 @@ classdef NNClassifierMLP < NNBase
 					
 					inputs = cell2mat(nn.get('INPUTS', nn.get('D')));
 					targets = nn.get('TARGET_CLASSES', nn.get('D'));
-					processed_data = cell2mat(nn.get('VOI_INTERGRATION'));
-					
 					if isempty(inputs) || isempty(targets)
 					    value = network();
 					else
 					    number_features = size(inputs, 2);
-					    number_vois = size(processed_data, 2); % Number of additional VOIs
-					    number_classes = numel(categories(categorical(targets)));
+					    number_targets = size(targets, 2);
+					    targets = categorical(targets); 
+					    number_classes = numel(categories(targets));
 					    
-					    % Define the primary feature input
-					    feature_input = featureInputLayer(number_features, 'Name', 'Feature_Input');
-					    
-					    % Define VOI input
-					    voi_input = featureInputLayer(number_vois, 'Name', 'VOI_Input');
-					    
-					    % Retrieve user-defined layer settings
 					    layers = nn.get('LAYERS');
-					    nn_architecture = [feature_input];
-					    
-					    for i = 1:length(layers)
+					    nn_architecture = [featureInputLayer(number_features, 'Name', 'Input')];
+					    for i = 1:1:length(layers)
 					        nn_architecture = [nn_architecture
 					            fullyConnectedLayer(layers(i), 'Name', ['Dense_' num2str(i)])
 					            batchNormalizationLayer('Name', ['BatchNormalization_' num2str(i)])
-					            dropoutLayer(0.5, 'Name', ['Dropout_' num2str(i)])
-					            reluLayer('Name', ['ReLU_' num2str(i)])
-					        ];
+					            dropoutLayer('Name', ['Dropout_' num2str(i)])
+					            ];
 					    end
-					    
-					    % Concatenation layer
-					    concatenation_layer = concatenationLayer(1, 2, 'Name', 'Concat');
-					    
-					    % Final classification layers after concatenation
-					    classification_layers = [
+					    nn_architecture = [nn_architecture
+					        reluLayer('Name', 'Relu_output')
 					        fullyConnectedLayer(number_classes, 'Name', 'Dense_output')
-					        softmaxLayer('Name', 'Softmax')
+					        softmaxLayer
 					        classificationLayer('Name', 'Output')
-					    ];
-					    
-					    % Convert to layerGraph for proper connections
-					    nn_architecture = layerGraph(nn_architecture);
-					    nn_architecture = addLayers(nn_architecture, voi_input);
-					    nn_architecture = addLayers(nn_architecture, concatenation_layer);
-					    nn_architecture = addLayers(nn_architecture, classification_layers);
-					    
-					    % Connect layers properly
-					    nn_architecture = connectLayers(nn_architecture, ['ReLU_' num2str(length(layers))], 'Concat/in1'); % Features -> Concat
-					    nn_architecture = connectLayers(nn_architecture, 'VOI_Input', 'Concat/in2'); % VOI Input -> Concat
-					    nn_architecture = connectLayers(nn_architecture, 'Concat', 'Dense_output'); % Concat -> Final classification
-					    
-					    % Specify training options
+					        ];
+					
+					    % specify trianing options
 					    options = trainingOptions(nn.get('SOLVER'), ...
 					        'MiniBatchSize', nn.get('BATCH'), ...
 					        'MaxEpochs', nn.get('EPOCHS'), ...
 					        'Shuffle', nn.get('SHUFFLE'), ...
 					        'Plots', nn.get('PLOT_TRAINING'), ...
 					        'Verbose', nn.get('VERBOSE'));
-					    
-					    % Train the neural network
-					    value = trainNetwork({inputs, processed_data}, targets, nn_architecture, options);
+					
+					    % train the neural network
+					    value = trainNetwork(inputs, targets, nn_architecture, options);
 					end
 					
 					rng(rng_settings_)
@@ -1015,8 +935,8 @@ classdef NNClassifierMLP < NNBase
 			%  PanelPropString, PanelPropStringList.
 			
 			switch prop
-				case 25 % NNClassifierMLP.LAYERS
-					pr = PanelPropRVectorSmart('EL', nn, 'PROP', 25, ...
+				case 23 % NNClassifierMLP.LAYERS
+					pr = PanelPropRVectorSmart('EL', nn, 'PROP', 23, ...
 					    'MIN', 0, 'MAX', 2000, ...
 					    'UNIQUE_VALUE', false, ...
 					    'DEFAULT', NNClassifierMLP.getPropDefault('LAYERS'), ...

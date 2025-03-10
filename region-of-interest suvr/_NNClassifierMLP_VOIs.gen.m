@@ -143,7 +143,7 @@ NNDataset('DP_CLASS', 'NNDataPoint_CON_CLA')
 %%% ¡prop!
 DP_CLASSES (parameter, classlist) is the list of compatible data points.
 %%%% ¡default!
-{'NNDataPoint_CON_CLA' 'NNDataPoint_CON_FUN_MP_CLA' 'NNDataPoint_FUN_CLA' 'NNDataPoint_ST_CLA' 'NNDataPoint_ST_MM_CLA' 'NNDataPoint_Graph_CLA' 'NNDataPoint_Measure_CLA'}
+{'NNDataPoint_CON_CLA' 'NNDataPoint_CON_FUN_MP_CLA' 'NNDataPoint_FUN_CLA' 'NNDataPoint_ST_CLA' 'NNDataPoint_ST_MM_CLA' 'NNDataPoint_Graph_CLA' 'NNDataPoint_Measure_CLA' 'NNDataPoint_VOIs'}
 
 %%% ¡prop!
 MODEL (result, net) is a trained neural network model.
@@ -293,8 +293,11 @@ value = {voi_data};
 
 
 %% ¡tests!
-% Script to train and evaluate NNClassifierMLP_VOIs with VOI data from groups
 
+%%% ¡test!
+%%%% ¡name!
+train the MLPClassifier VOI with example data
+%%%% ¡code!
 % Step 1: Ensure example data exists
 data_dir = [fileparts(which('NNDataPoint_VOIs')) filesep 'Example data NN CLA CON XLS VOIs'];
 if ~isfile([data_dir filesep 'atlas.xlsx'])

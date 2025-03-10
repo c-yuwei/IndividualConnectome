@@ -40,6 +40,8 @@ ExporterGroupSubjectCON_XLS,1
 ImporterGroupSubjectCON_TXT,1
 ImporterGroupSubjectCON_XLS,1
 SubjectCON,1
+NNDataPoint_CON_CLA,1
+NNDataPoint_CON_REG,1
 IndividualDeviationConConstructor,1
 IndividualConConstructorBase,1
 IndividualDistanceConConstructor,1
@@ -51,8 +53,15 @@ ExporterGroupSubjectFUN_XLS,1
 ImporterGroupSubjectFUN_TXT,1
 ImporterGroupSubjectFUN_XLS,1
 SubjectFUN,1
+NNDataPoint_FUN_CLA,1
+NNDataPoint_FUN_REG,1
 FILE_PATH,1
 ImporterGroupSubjNIfTI,1
+NNClassifierMLP_CrossValidation_VOIs,1
+NNClassifierMLP_EvaluatorPF_ROC_VOIs,1
+NNClassifierMLP_Evaluator_VOIs,1
+NNClassifierMLP_VOIs,1
+NNDataPoint_VOIs,1
 SUVRConstructor,1
 SubjectNIfTI,1
 AnalyzeGroup_ST_WU,1
@@ -61,6 +70,8 @@ ExporterGroupSubjectST_XLS,1
 ImporterGroupSubjectST_TXT,1
 ImporterGroupSubjectST_XLS,1
 SubjectST,1
+NNDataPoint_ST_CLA,1
+NNDataPoint_ST_REG,1
 AnalyzeEnsemble,1
 AnalyzeEnsemblePP_GDict,1
 AnalyzeEnsemblePP_MeDict,1

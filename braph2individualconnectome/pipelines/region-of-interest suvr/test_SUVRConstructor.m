@@ -1457,7 +1457,7 @@ if rand() >= (1 - 1) * BRAPH2TEST.RANDOM
 	% Generate example data
 	example_data_dir = fullfile(fileparts(which('SUVRConstructor')), 'Example data Nifti');
 	% Run the example data creation script
-	if ~exist(example_data_dir)
+	if ~exist(example_data_dir, 'dir')
 	    create_example_NIfTI([], example_data_dir);
 	end
 	
@@ -1468,12 +1468,9 @@ if rand() >= (1 - 1) * BRAPH2TEST.RANDOM
 	
 	ba = im_ba.get('BA');
 	
-	% Path to generated VOIs file
-	vois_file = fullfile(example_data_dir, 'Group1.vois.xlsx');
-
+	vois_file = [example_data_dir filesep 'Group1.vois.xlsx'];
 	% Read the VOIs file while preserving original column headers
-    vois_table = readtable(vois_file, 'VariableNamingRule', 'preserve');
-
+	vois_table = readtable(vois_file, 'VariableNamingRule', 'preserve');
 	
 	im_gr1_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY',[example_data_dir filesep 'Group1'], ...
 	    'NIFTI_TYPE', {'T1'},...

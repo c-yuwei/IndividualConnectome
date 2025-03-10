@@ -178,6 +178,9 @@ end
 
 %% ¡tests!
 
+%%% ¡excluded_props!
+[NNClassifierMLP_CrossValidation_VOIs.PFROC]
+
 %%% ¡test!
 %%%% ¡name!
 Evaluate a classifier cross-validation with VOIs using example data
