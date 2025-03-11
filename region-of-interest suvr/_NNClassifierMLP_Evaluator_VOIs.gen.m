@@ -164,6 +164,10 @@ D_VOIS (data, item) is the voi dataset to train the neural network model, and it
 %%% ¡excluded_props!
 [NNClassifierMLP_Evaluator_VOIs.PFROC]
 
+%%% ¡test!
+%%%% ¡name!
+Evaluate a classifier with the example data and variable of interest
+%%%% ¡code!
 % Step 1: Ensure example data exists
 data_dir = [fileparts(which('NNDataPoint_VOIs')) filesep 'Example data NN CLA CON XLS VOIs'];
 if ~isfile([data_dir filesep 'atlas.xlsx'])

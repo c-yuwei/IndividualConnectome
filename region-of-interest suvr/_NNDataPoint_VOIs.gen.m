@@ -79,7 +79,7 @@ TARGET_CLASS (parameter, stringlist) is a list of variable-of-interest IDs to be
 %% ¡tests!
 
 %%% ¡excluded_props!
-[NNDataPoint_VOIs.G]
+[NNDataPoint_VOIs.VOI_DICT]
 
 %%% ¡test!
 %%%% ¡name!

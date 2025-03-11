@@ -185,7 +185,6 @@ end
 %%%% ¡name!
 Evaluate a classifier cross-validation with VOIs using example data
 %%%% ¡code!
-
 % Step 1: Ensure example data exists
 data_dir = [fileparts(which('NNDataPoint_VOIs')) filesep 'Example data NN CLA CON XLS VOIs'];
 if ~isfile([data_dir filesep 'atlas.xlsx'])

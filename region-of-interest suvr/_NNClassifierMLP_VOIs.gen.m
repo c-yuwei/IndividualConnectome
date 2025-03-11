@@ -301,7 +301,7 @@ train the MLPClassifier VOI with example data
 % Step 1: Ensure example data exists
 data_dir = [fileparts(which('NNDataPoint_VOIs')) filesep 'Example data NN CLA CON XLS VOIs'];
 if ~isfile([data_dir filesep 'atlas.xlsx'])
-    create_data_NN_CLA_CON_XLS(data_dir); % Generate example files with VOIs
+    create_data_NN_CLA_CON_XLS_VOIs(data_dir); % Generate example files with VOIs
 end
 
 % Step 2: Load Brain Atlas
