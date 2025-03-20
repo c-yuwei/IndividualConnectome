@@ -1,0 +1,35 @@
+%% Pipeline Individual Correlation Connectome Comparison WU
+
+% This is the pipeline script to compare two groups of subjects using individual Correlation connectivity built on probability density function.
+% The structural data can be derived from imaging modalities like T1 weighted MRI (T1-W), static positron emission tomography (PET), or arterial spin labeling (ASL).
+% 1. It loads a brain atlas from an XLS file (e.g., desikan_atlas.xlsx).
+% 2. It loads the data of a group of subjects from an XLS file (e.g., ST_group1.xlsx).
+% 3. It analyzes these data using a connectivity analysis (CON) based on a weighted undirected (WU).
+
+% PDF: /tutorials/pipelines/tut_a_st_wu/tut_a_st_wu.pdf
+% README: /tutorials/pipelines/tut_a_st_wu/readme.md
+
+%% Import Brain Atlas
+ba = ImporterBrainAtlasXLS('WAITBAR', true).get('GET_FILE').get('BA'); % Load Brain Atlas from XLS % Brain Atlas
+
+%% Group 1 NIfTI
+gr_t1_1 = ImporterGroupSubjNIfTI('NIFTI_TYPE', {'T1'}, 'WAITBAR', true); % Load Group 1 T1 from NIfTI % Group 1 T1
+gr_pet_1 = ImporterGroupSubjNIfTI('NIFTI_TYPE', {'PET'}, 'WAITBAR', true); % Load Group 1 PET from NIfTI % Group 1 PET
+
+%% Group 2 NIfTI
+gr_t1_2 = ImporterGroupSubjNIfTI('NIFTI_TYPE', {'T1'}, 'WAITBAR', true); % Load Group 2 T1 from NIfTI % Group 2 T1
+gr_pet_2 = ImporterGroupSubjNIfTI('NIFTI_TYPE', {'PET'}, 'WAITBAR', true); % Load Group 2 PET from NIfTI % Group 2 PET
+
+%% Group PDF
+pdf_con_1 = PDFConstructor('GR_PET',gr_pet_1.get('GR'),'GR_T1',gr_t1_1.get('GR'),'BA', ba,'ATLAS_PATH_DICT' ,IndexedDictionary('IT_CLASS', 'FILE_PATH','IT_LIST', {FILE_PATH('PATH', '/home/hang/GitHub/IndividualConnectome-WithYuwei/Individualconnectome/group_data/test/atlas/upsampled_AAL2.nii'),FILE_PATH('PATH', '/home/hang/GitHub/IndividualConnectome-WithYuwei/Individualconnectome/group_data/test/atlas/upsampled_TD.nii')}), 'REF_REGION_LIST',{[9100,9110,9120,9130,9140,9150,9160,9170], 7},'ATLAS_KIND', {'AAL2','TD'}); % Construct Group 1 Probability Density Function % Group 1 PDF
+pdf_con_2 = PDFConstructor('GR_PET',gr_pet_2.get('GR'),'GR_T1',gr_t1_2.get('GR'),'BA', ba,'ATLAS_PATH_DICT' ,IndexedDictionary('IT_CLASS', 'FILE_PATH','IT_LIST', {FILE_PATH('PATH', '/home/hang/GitHub/IndividualConnectome-WithYuwei/Individualconnectome/group_data/test/atlas/upsampled_AAL2.nii'),FILE_PATH('PATH', '/home/hang/GitHub/IndividualConnectome-WithYuwei/Individualconnectome/group_data/test/atlas/upsampled_TD.nii')}), 'REF_REGION_LIST',{[9100,9110,9120,9130,9140,9150,9160,9170], 7},'ATLAS_KIND', {'AAL2','TD'}); % Construct Group 2 Probability Density Function % Group 2 PDF
+
+%% Construction and Analysis on individual correlation connectivity group 1
+a_WU1 = AnalyzeEnsemble_FUN_WU('GR', pdf_con_1.get('GR'),'REPETITION', 0,'GRAPH_TEMPLATE',GraphWU('STANDARDIZE_RULE', 'range')); % Construct and Analyze correlation individual connectivity Group 1 % Group 1 Analysis
+
+%% Construction and Analysis on individual correlation connectivity group 2
+a_WU2 = AnalyzeEnsemble_FUN_WU('GR', pdf_con_2.get('GR'),'REPETITION', 0,'GRAPH_TEMPLATE',GraphWU('STANDARDIZE_RULE', 'range')); % Construct and Analyze correlation individual connectivity Group 2 % Group 2 Analysis
+
+%% Comparison
+c_WU = CompareEnsemble('P', 1000, 'A1', a_WU1, 'A2', a_WU2, 'MEMORIZE', true); % Compare Groups % Group Comparison
+
