@@ -1,0 +1,40 @@
+ELCLASS
+NaN
+NAME
+NaN
+DESCRIPTION
+NaN
+TEMPLATE
+NaN
+SUVR Constructuor ID
+1
+SUVR Constructuor LABEL
+2
+SUVR Constructuor NOTES
+13
+TOSTRING
+NaN
+REF_REGION_LIST
+NaN
+Referece Regions
+4
+Included Atlases
+5
+Brain Atlas
+7
+Based Atlas
+6
+Brain Atlas File Locations
+8
+Group PET
+9
+Group T1
+10
+Select Regions for Calculating SUVE
+11
+CALC_SUBJ_SUVR
+NaN
+Group SUVR
+12
+WAITBAR ON/OFF
+3
