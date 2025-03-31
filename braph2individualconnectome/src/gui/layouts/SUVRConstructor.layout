@@ -1,0 +1,58 @@
+ELCLASS
+NaN
+NAME
+NaN
+DESCRIPTION
+NaN
+TEMPLATE
+NaN
+SUVR Constructuor ID
+1
+SUVR Constructuor LABEL
+2
+SUVR Constructuor NOTES
+11
+TOSTRING
+NaN
+Brain Atlas
+5
+ATLAS_REGION_IDS
+NaN
+ATLAS_LABELS
+NaN
+MAPPING_PATH_DICT
+NaN
+REF_REGION_LIST
+NaN
+"Referece Regions
+
+% %% ¡prop!
+% %% ¡id!
+% SUVRConstructor.ATLAS_KIND
+% %% ¡title!
+% Included Atlases
+% 
+% %% ¡prop!
+% %% ¡id!
+% SUVRConstructor.ATLAS_INDEX
+% %% ¡title!
+% Based Atlas"
+4
+ATLAS_KIND
+NaN
+ATLAS_INDEX
+NaN
+Brain Atlas File Locations
+6
+Group PET
+7
+Group T1
+8
+Select Regions for Calculating SUVR
+9
+CALC_SUBJ_SUVR
+NaN
+Group SUVR
+10
+WAITBAR ON/OFF
+3

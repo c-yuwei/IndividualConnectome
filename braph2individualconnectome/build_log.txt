@@ -63,6 +63,7 @@ NNClassifierMLP_Evaluator_VOIs,1
 NNClassifierMLP_VOIs,1
 NNDataPoint_VOIs,1
 SUVRConstructor,1
+SUVRConstructorPP_BR_DICT,1
 SubjectNIfTI,1
 AnalyzeGroup_ST_WU,1
 ExporterGroupSubjectST_TXT,1

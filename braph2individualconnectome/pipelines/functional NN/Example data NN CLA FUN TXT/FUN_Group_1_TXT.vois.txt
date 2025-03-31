@@ -1,0 +1,12 @@
+Subject ID	Age	Sex
+		{ 'Female'  'Male' }
+SubjectFUN_1	23	Female
+SubjectFUN_2	46	Female
+SubjectFUN_3	62	Male
+SubjectFUN_4	48	Female
+SubjectFUN_5	60	Male
+SubjectFUN_6	37	Female
+SubjectFUN_7	79	Male
+SubjectFUN_8	12	Male
+SubjectFUN_9	17	Female
+SubjectFUN_10	50	Male
