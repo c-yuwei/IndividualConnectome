@@ -2,11 +2,10 @@
 SUVRConstructor < ConcreteElement (roic, SUVR analysis constructor) calculates mean SUVR value of brain ROIs per subject.
 
 %%% ¡description!
-SUVRConstructor calculates mean value of brain ROIs. It loads the brain atlas for ROI identification,
- and ROI wisely calculate mean value.
+SUVRConstructor calculates mean value of brain ROIs. It loads brain atlases for ROI identification and calculates mean SUVR values per subject, supporting multiple atlases with region-index mappings loaded from CSV files.
 
 %%% ¡seealso!
-Group, SubjectNIfTI, ExporterGroupSubjectCON_XLS, SubjectST
+Group, SubjectNIfTI, ExporterGroupSubjectCON_XLS, SubjectST, NNDatasetSplit
 
 %%% ¡build!
 1
@@ -37,17 +36,17 @@ SUVRConstructor.REF_BR_DICT
 %%%% ¡title!
 Referece Regions
 
-%%% ¡prop!
-%%%% ¡id!
-SUVRConstructor.ATLAS_KIND
-%%%% ¡title!
-Included Atlases
-
-%%% ¡prop!
-%%%% ¡id!
-SUVRConstructor.ATLAS_INDEX
-%%%% ¡title!
-Based Atlas
+% %%% ¡prop!
+% %%%% ¡id!
+% SUVRConstructor.ATLAS_KIND
+% %%%% ¡title!
+% Included Atlases
+% 
+% %%% ¡prop!
+% %%%% ¡id!
+% SUVRConstructor.ATLAS_INDEX
+% %%%% ¡title!
+% Based Atlas
 
 %%% ¡prop!
 %%%% ¡id!
@@ -77,7 +76,7 @@ Group T1
 %%%% ¡id!
 SUVRConstructor.SUVR_REGION_SELECTION
 %%%% ¡title!
-Select Regions for Calculating SUVE
+Select Regions for Calculating SUVR
 
 %%% ¡prop!
 %%%% ¡id!
@@ -94,99 +93,201 @@ SUVR Constructuor NOTES
 %% ¡props_update!
 
 %%% ¡prop!
-ELCLASS (constant, string) is the class of the subject ROI constructor for Nifti.
+ELCLASS (constant, string) is the class of the subject ROI constructor for NIfTI.
 %%%% ¡default!
 'SUVRConstructor'
 
 %%% ¡prop!
-NAME (constant, string) is the name of the subject ROI constructor for Nifti.
+NAME (constant, string) is the name of the subject ROI constructor for NIfTI.
 %%%% ¡default!
 'SUVR Constructor'
 
 %%% ¡prop!
-DESCRIPTION (constant, string) is the description of the subject ROI constructor for Nifti.
+DESCRIPTION (constant, string) is the description of the subject ROI constructor for NIfTI.
 %%%% ¡default!
-'SUVRConstructor calculates a group of subjects mean value of ROI from imaging data from a series of Nifti file.'
+'SUVRConstructor calculates a group of subjects mean value of ROI from imaging data from a series of NIfTI files.'
 
 %%% ¡prop!
-TEMPLATE (parameter, item) is the template of the subject ROI constructor for Nifti.
+TEMPLATE (parameter, item) is the template of the subject ROI constructor for NIfTI.
 %%%% ¡settings!
 'SUVRConstructor'
 
 %%% ¡prop!
-ID (data, string) is a few-letter code for the subject ROI constructor for Nifti.
+ID (data, string) is a few-letter code for the subject ROI constructor for NIfTI.
 %%%% ¡default!
 'SUVRConstructor ID'
 
 %%% ¡prop!
-LABEL (metadata, string) is an extended label of subject ROI constructor for Nifti.
+LABEL (metadata, string) is an extended label of subject ROI constructor for NIfTI.
 %%%% ¡default!
 'SUVRConstructor label'
 
 %%% ¡prop!
-NOTES (metadata, string) are some specific notes about subject ROI constructor for Nifti.
+NOTES (metadata, string) are some specific notes about subject ROI constructor for NIfTI.
 %%%% ¡default!
 'SUVRConstructor notes'
 
 %% ¡props!
 
 %%% ¡prop!
-REF_REGION_LIST (data, cell) is the list containing the label list of reference region of brain Atlas for ROI constructor.
-%%%% ¡postset!
-% Hang map the list (e.g.[9001]) to a brain region and then set
-% REF_BR_DICT. The condition is when REF_REGION_LIST isn't empty while
-% REF_BR_DICT is empty.
-% if(!isempty(roic.get('REF_REGION_LIST')) && isempty(REF_BR_DICT)) 
-%   mapped_selected_br_id = roic.get('MAPPED_BR_ID', REF_REGION_LIST{[9001]})
-%   roic.set('REF_BR_DICT', mapped_selected_br_id);
-% end
+BA (data, itemlist) is a list of brain atlases.
+%%%% ¡settings!
+'BrainAtlas'
 
 %%% ¡prop!
-REF_BR_DICT (data, idict) contains the effective brain regions of the simulated netwrok.
+ATLAS_REGION_IDS (data, stringlist) is the list of region IDs for multiple atlases.
+%%%% ¡default!
+{} % Default to an empty cell array
+
+
+%%% ¡prop!
+ATLAS_LABELS (data, cell) is the list of string labels for multiple atlases.
+%%%% ¡default!
+{} % Default to an empty cell array
+
+
+%%% ¡prop!
+MAPPING_PATH_DICT (data, idict) is the dictionary of paths to CSV files for region-index mappings.
+%%%% ¡settings!
+'FILE_PATH'
+%%%% ¡default!
+IndexedDictionary('IT_CLASS', 'FILE_PATH')
+%%%% ¡postset!
+if roic.get('MAPPING_PATH_DICT').get('LENGTH') > 0
+    mapping_files = roic.get('MAPPING_PATH_DICT').get('IT_LIST');
+    atlas_region_ids = cell(1, length(mapping_files));
+    atlas_labels = cell(1, length(mapping_files));
+    for atlas_idx = 1:length(mapping_files)
+        file_path = mapping_files{atlas_idx}.get('PATH');
+        if ~isfile(file_path)
+            warning('File not found: %s. Skipping atlas %d.', file_path, atlas_idx);
+            atlas_region_ids{atlas_idx} = {};
+            atlas_labels{atlas_idx} = {};
+            continue;
+        end
+        atlas_data = readtable(file_path, 'FileType', 'text');
+        if size(atlas_data, 2) < 2
+            warning('CSV file %s lacks 2 columns. Skipping atlas %d.', file_path, atlas_idx);
+            atlas_region_ids{atlas_idx} = {};
+            atlas_labels{atlas_idx} = {};
+            continue;
+        end
+        % Split data into numeric IDs and string labels
+        region_ids = atlas_data{:, 2}; % Numeric indices
+        labels = atlas_data{:, 1};          % String labels
+        atlas_region_ids{atlas_idx} = region_ids; % Cell array of numeric IDs
+        atlas_labels{atlas_idx} = labels;                    % String array of labels
+    end
+    % Assuming atlas_region_ids is a cell array of column vectors
+    atlas_region_ids_list = cell(1, length(atlas_region_ids)); % Preallocate a cell array
+    for i = 1:length(atlas_region_ids)
+        atlas_region_ids_list{i} = atlas_region_ids{i}'; % Transpose each column vector to a row vector
+    end
+    all_region_ids = [atlas_region_ids_list{:}]; % Concatenate all row vectors horizontally
+
+    all_atlas_labels_list = cell(1, length(atlas_labels)); % Preallocate a cell array
+    for i = 1:length(atlas_labels)
+        all_atlas_labels_list{i} = atlas_labels{i}'; % Transpose each column vector to a row vector
+    end
+    all_atlas_labels = [all_atlas_labels_list{:}];
+    all_atlas_labels = num2cell(all_atlas_labels);
+    roic.set('ATLAS_REGION_IDS', all_region_ids);
+    roic.set('ATLAS_LABELS', all_atlas_labels);
+end
+
+%%% ¡prop!
+REF_REGION_LIST (data, cell) is the list containing the indices of reference regions for each atlas.
+%%%% ¡default!
+{}
+%%%% ¡postset!
+if ~isempty(roic.get('REF_REGION_LIST'))
+    ba_list = roic.get('BA');
+    ref_region_list = roic.get('REF_REGION_LIST');
+    region_ids = roic.get('ATLAS_REGION_IDS');
+    labels = roic.get('ATLAS_LABELS');
+    ref_br_list = cell(0); % Initialize an empty cell array for reference brain regions
+    % Iterate over each atlas in ref_region_list
+    for atlas_idx = 1:length(ref_region_list)
+        ba = ba_list{atlas_idx}; % Get the BrainAtlas for this atlas index
+        br_dict = ba.get('BR_DICT');       % Get the brain region dictionary for this atlas
+        indices = ref_region_list{atlas_idx}; % Numeric indices for this atlas
+        % Iterate over each index in the current atlas's reference list
+        for idx = 1:length(indices)
+            % Find the position of the numeric index in region_ids
+            pos = find(cellfun(@(x) x == indices(idx), labels));
+            if ~isempty(pos)
+                % Get the corresponding label using the position
+                label = labels{pos}; % Access as cell element since labels is a cell array
+                region_id = region_ids{pos};
+                if ~isempty(region_id)
+                    br = br_dict.get('IT', region_id); % Retrieve the brain region
+                    ref_br_list{end+1} = br; % Add to the list
+                end
+            end
+        end
+    end
+    if isempty(roic.get('REF_BR_DICT').get('IT_LIST'))
+        % Set the REF_BR_DICT with the list of reference brain regions
+        roic.set('REF_BR_DICT', IndexedDictionary('IT_CLASS', 'BrainRegion', 'IT_LIST', ref_br_list));
+    end
+end
+
+%%% ¡prop!
+REF_BR_DICT (data, idict) contains the effective brain regions of the simulated network.
 %%%% ¡settings!
 'BrainRegion'
 %%%% ¡postset!
-% Hang how to map the list (e.g. [9001]) to a brain region in the atlas?
-% Here we have the selected reference regions and we need to map them back
-% to numbers (e.g. 9001) and then set REF_REGION_LIST
-% 1. get the selected BR
-% 2. get the mapping code of the selected BR
-% 3. set the code to REF_REGION_LIST
-% Thinkn it as a function:
-%  selected_br_id = cellfun(@(br) br.get('ID'),
-%  roic.get('REF_BR_DICT').get('IT_LIST'))
-%  mapped_br_code = roic.get('MAPPED_CODE', selected_br_id)
-%  roic.set('REF_REGION_LIST, mapped_br_code);
+Ref_region_list = roic.get('REF_REGION_LIST');
+selected_br = roic.get('REF_BR_DICT').get('IT_LIST'); % List of selected BrainRegion objects
+ba_list = roic.get('BA');
+region_ids = roic.get('ATLAS_REGION_IDS');
+labels = roic.get('ATLAS_LABELS');
+ref_region_list = cell(length(ba_list), 1); % One cell per atlas
+for atlas_idx = 1:length(ba_list)
+    ba = ba_list{atlas_idx};
+    br_dict = ba.get('BR_DICT');
+    atlas_br_ids = cellfun(@(br) br.get('ID'), br_dict.get('IT_LIST'), 'UniformOutput', false);
+    selected_br_ids = cellfun(@(br) br.get('ID'), selected_br, 'UniformOutput', false);
+    [~, loc] = ismember(selected_br_ids, atlas_br_ids); % Find matches
+    idx = find(loc > 0); % Indices of matches
+    selected_br_ids = selected_br_ids(idx);
+    if ~isempty(idx)
+        [~, loc] = ismember(selected_br_ids, region_ids);
+        ref_region = labels(loc);
+        ref_region_list{atlas_idx} =  [ref_region{:}];
+    end
+end
+if isempty(Ref_region_list)
+    roic.set('REF_REGION_LIST', ref_region_list);
+end
 %%%% ¡gui!
 pr = SUVRConstructorPP_BR_DICT('EL', roic, 'PROP', SUVRConstructor.REF_BR_DICT, ...
     'WAITBAR', roic.getCallback('WAITBAR'), ...
     varargin{:});
 
 %%% ¡prop!
-ATLAS_KIND (parameter, stringlist) is the directory containing the Atlas needed for ROI analysis.
-%%% ¡default!
+ATLAS_KIND (parameter, stringlist) is the list of atlas types needed for ROI analysis.
+%%%% ¡default!
 {"aal90", "TD"}
-
-%%% ¡prop!
-BA_DICT (data, idict) is a brain atlas.
-%%%% ¡settings!
-'BrainAtlas'
-%%%% Hang, create a dictionary containing two BA items
 
 %%% ¡prop!
 ATLAS_INDEX (parameter, scalar) is the index of the atlas defined by the user for SUVR ROI list.
 %%%% ¡default!
-1;
-
-% %%% ¡prop! % yuwei check this
-% ATLAS_SUVR_LABEL (parameter, option) is the atlas defined by the user for SUVR ROI list, selected from ATLAS_KIND.
-% %%%% ¡settings!
-% roic.get('ATLAS_KIND')
-% %%%% ¡default!
-% roic.get('ATLAS_KIND'){1} % Default to the first atlas in ATLAS_KIND
+1
+%%%% ¡postset!
+ba_list = roic.get('BA'); % Ensure brain atlas is obtained correctly
+atlas_index = roic.get('ATLAS_INDEX');
+ba = ba_list{atlas_index};
+if isempty(roic.get('SUVR_REGION_SELECTION').get('IT_LIST')) && ~isempty(ba.get('BR_DICT').get('IT_LIST'))
+    roic.set('SUVR_REGION_SELECTION', ba.get('BR_DICT'));
+end
 
 %%% ¡prop!
-ATLAS_PATH_DICT (parameter, idict) is the directory containing the Atlas needed for ROI analysis.
+ATLAS_PATH_DICT (parameter, idict) is the dictionary containing the paths to atlas NIfTI files.
+%%%% ¡settings!
+'FILE_PATH'
+%%%% ¡default!
+IndexedDictionary('IT_CLASS', 'FILE_PATH')
 
 %%% ¡prop!
 GR_PET (data, item) is the subject group, which also defines the subject class SubjectNIfTI.
@@ -202,18 +303,13 @@ Group('SUB_CLASS', 'SubjectNIfTI')
 SUVR_REGION_SELECTION (parameter, idict) is the list of selected brain regions.
 %%%% ¡settings!
 'BrainRegion'
-%%%% ¡postprocessing!
-ba = roic.get('BA'); % Ensure brain atlas is obtained correctly
-if isempty(roic.get('SUVR_REGION_SELECTION')) && ~isempty(ba.get('BR_DICT').get('IT_LIST'))
-    roic.set('SUVR_REGION_SELECTION', ba.get('BR_DICT'));
-end
 %%%% ¡gui!
 pr = SUVRConstructorPP_BR_DICT('EL', roic, 'PROP', SUVRConstructor.SUVR_REGION_SELECTION, ...
     'WAITBAR', roic.getCallback('WAITBAR'), ...
     varargin{:});
 
 %%% ¡prop!
-CALC_SUBJ_SUVR (query, cell) generates suvr vectors per subject using subject PET and T1 data.
+CALC_SUBJ_SUVR (query, cell) generates SUVR vectors per subject using subject PET and T1 data.
 %%%% ¡calculate!
 if isempty(varargin)
     value = {};
@@ -226,20 +322,19 @@ for i = 2:length(t1_data)
     t1_data_union_mask = t1_data_union_mask | (t1_data{i}>0);
 end
 
-% contrain my pet data within the T1 data
-masked_pet_data = pet_data{1}.* int16(t1_data_union_mask);
+% Constrain PET data within the T1 data
+masked_pet_data = pet_data{1} .* int16(t1_data_union_mask);
 
-% calculate suvr for ref region
-
+% Calculate SUVR for reference regions
 atlas_directories = roic.get('ATLAS_PATH_DICT').get('IT_LIST');
 atlas_kind = roic.get('ATLAS_KIND');
-Ref_list = roic.get('REF_REGION_LIST');
+ref_list = roic.get('REF_REGION_LIST');
 atlas_suvr_index = roic.get('ATLAS_INDEX');
-for directory_index = 1: length(atlas_directories)
+for directory_index = 1:length(atlas_directories)
     directory_dict = atlas_directories{directory_index};
     directory_path = directory_dict.get('PATH');
     atlas{directory_index} = niftiread(directory_path);
-    ref_region_masks{directory_index} = ismember(atlas{directory_index} ,Ref_list{directory_index});
+    ref_region_masks{directory_index} = ismember(atlas{directory_index}, ref_list{directory_index});
 end
 ref_region_union_mask = ref_region_masks{1};
 for i = 2:length(ref_region_masks)
@@ -247,17 +342,15 @@ for i = 2:length(ref_region_masks)
 end
 ref_region_meanvalue = mean(masked_pet_data(ref_region_union_mask));
 
-% atlas_index = find(contains(atlas_kind{atlas_suvr{1}}));% here user can define refine the atlas_suvr option
-% atlas_roi = atlas{atlas_index};
+% Calculate normalized SUVR for all unique regions
 atlas_roi = atlas{atlas_suvr_index};
-% calculate normalized suvr for all unique regions
 ROI_list = unique(atlas_roi);
-ROI_list = ROI_list(ROI_list>0);% remove background which is represented by label "0"
+ROI_list = ROI_list(ROI_list>0); % Remove background (label "0")
 for roi_list_index = 1:length(ROI_list)
     roi_index = ROI_list(roi_list_index);
-    roi_mask = atlas_roi==roi_index;
-    roi_data = masked_pet_data.*int16(roi_mask);
-    roi(roi_list_index) = mean(roi_data(roi_data>0))/ref_region_meanvalue;
+    roi_mask = atlas_roi == roi_index;
+    roi_data = masked_pet_data .* int16(roi_mask);
+    roi(roi_list_index) = mean(roi_data(roi_data>0)) / ref_region_meanvalue;
 end
 
 value = roi';
@@ -267,29 +360,27 @@ GR (result, item) is a group of subjects with SUVR analysis data.
 %%%% ¡default!
 Group('SUB_CLASS', 'SubjectST', 'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectST'))
 %%%% ¡calculate!
-% creates empty Group
+% Create empty Group
 gr_suvr = Group( ...
     'SUB_CLASS', 'SubjectST', ...
     'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectST') ...
-    );
+);
 
 gr_suvr.lock('SUB_CLASS');
 
-gr_T1 = roic.get('GR_T1');% subject from Nifti
-gr_PET = roic.get('GR_PET');% subject from Nifti
-
+gr_T1 = roic.get('GR_T1'); % Subject from NIfTI
+gr_PET = roic.get('GR_PET'); % Subject from NIfTI
 
 wb = braph2waitbar(roic.get('WAITBAR'), 0, ['Calculating SUVR for subjects ...']);
-% adds subjects
+% Add subjects
 sub_dict = gr_suvr.memorize('SUB_DICT');
 for i = 1:1:gr_PET.get('SUB_DICT').get('LENGTH')
-    % braph2waitbar(wb, .15 + .85 * i / gr_sub.get('SUB_DICT').get('LENGTH'), ['Loading subject directory' num2str(i) ' of ' num2str(length(files)) ' ...'])
-    sub_id_t1 = gr_T1.get('SUB_DICT').get('IT', i).get('ID');% subject ID
-    sub_id_pet = gr_PET.get('SUB_DICT').get('IT', i).get('ID');% subject ID
+    sub_id_t1 = gr_T1.get('SUB_DICT').get('IT', i).get('ID'); % Subject ID
+    sub_id_pet = gr_PET.get('SUB_DICT').get('IT', i).get('ID'); % Subject ID
 
     if isequal(sub_id_t1, sub_id_pet)
-        t1_path = gr_T1.get('SUB_DICT').get('IT', i).get('NIFTI_PATH_DICT').get('IT_LIST');% subject T1 data path
-        pet_path = gr_PET.get('SUB_DICT').get('IT', i).get('NIFTI_PATH_DICT').get('IT_LIST');% subject PET data path
+        t1_path = gr_T1.get('SUB_DICT').get('IT', i).get('NIFTI_PATH_DICT').get('IT_LIST'); % Subject T1 data path
+        pet_path = gr_PET.get('SUB_DICT').get('IT', i).get('NIFTI_PATH_DICT').get('IT_LIST'); % Subject PET data path
         for j = 1:length(pet_path)
             pet_data{j} = niftiread(pet_path{j}.get('PATH'));
         end
@@ -299,25 +390,19 @@ for i = 1:1:gr_PET.get('SUB_DICT').get('LENGTH')
         end
         SUVR = roic.get('CALC_SUBJ_SUVR', pet_data, t1_data);
 
-        % use aal2 with 90 regions, update a list with brain regions of aal120 (stringlist)
-        ba = roic.get('BA');
-
-        % Get the number of brain regions in the atlas
+        % Use atlas with regions, update a list with brain regions
+        ba_list = roic.get('BA');
+        atlas_suvr_index = roic.get('ATLAS_INDEX');
+        ba = ba_list{atlas_suvr_index};
+        
         num_regions = ba.get('BR_DICT').get('LENGTH');
-
-        % Initialize a cell array to store the names of the brain regions
         region_names = cell(num_regions, 1);
-
-        % Iterate through each region and get its name
         for j = 1:ba.get('BR_DICT').get('LENGTH')
-            % Get the brain region element from the BrainAtlas
             brain_region = ba.get('BR_DICT').get('IT', j);
-
-            % Get the name of the brain region
             region_names{j} = brain_region.get('ID');
         end
 
-        selected_suvr_region = roic.get('SUVR_REGION_SELECTION'); % Hang modify this
+        selected_suvr_region = cellfun(@(x) x.get('ID'), roic.get('SUVR_REGION_SELECTION').get('IT_LIST'),'UniformOutput',false);
         matched_indices = [];
         for j = 1:length(region_names)
             match_idx = find(strcmp(selected_suvr_region, region_names{j}));
@@ -328,9 +413,9 @@ for i = 1:1:gr_PET.get('SUB_DICT').get('LENGTH')
         SUVR = SUVR(matched_indices);
         sub = SubjectST( ...
             'ID', sub_id_t1, ...
-            'LABEL', ['Subejct ST ' int2str(i)], ...
+            'LABEL', ['Subject ST ' int2str(i)], ...
             'NOTES', ['Notes on subject ST ' int2str(i)], ...
-            'BA', roic.get('BA'),...
+            'BA', ba, ...
             'ST', SUVR);
         sub_dict.get('ADD', sub);
         braph2waitbar(wb, .15 + .85 * i / gr_PET.get('SUB_DICT').get('LENGTH'), ['Calculating SUVRs for subject ' num2str(i) ' of ' num2str(gr_PET.get('SUB_DICT').get('LENGTH')) ' ...'])
@@ -344,7 +429,6 @@ value = gr_suvr;
 WAITBAR (gui, logical) determines whether to show the waitbar.
 %%%% ¡default!
 true
-
 %% ¡tests!
 
 %%% ¡excluded_props!
@@ -362,7 +446,7 @@ create_example_NIfTI();
 im_ba = ImporterBrainAtlasXLS( ...
     'FILE', [which('aal94_atlas.xlsx')], ...
     'WAITBAR', true ...
-    );
+);
 
 ba = im_ba.get('BA');
 
@@ -372,39 +456,42 @@ vois_file = fullfile(example_data_dir, 'Group1.vois.xlsx');
 % Read the VOIs file
 vois_table = readtable(vois_file);
 
-im_gr1_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY',[example_data_dir filesep 'Group1'], ...
-    'NIFTI_TYPE', {'T1'},...
+im_gr1_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY', [example_data_dir filesep 'Group1'], ...
+    'NIFTI_TYPE', {'T1'}, ...
     'WAITBAR', true);
 gr1_WM_GM = im_gr1_WM_GM.get('GR');
 
 im_gr1_PET = ImporterGroupSubjNIfTI('DIRECTORY', [example_data_dir filesep 'Group1'], ...
-    'NIFTI_TYPE', {'PET'},...
+    'NIFTI_TYPE', {'PET'}, ...
     'WAITBAR', true);
 gr1_PET = im_gr1_PET.get('GR');
 
-path_dict = IndexedDictionary(...
+path_dict = IndexedDictionary( ...
     'IT_CLASS', 'FILE_PATH', ...
     'IT_LIST', {FILE_PATH('PATH', which('upsampled_AAL2.nii'))} ...
-    );
+);
 
-% suvr_brain_label = readtable('group_data/test/atlas/AAL2_Atlas_Labels.csv');
-% suvr_brain_label = suvr_brain_label.Var4;
-ref_region_list = [2001];% reference region label
-gr = SUVRConstructor('GR_PET',gr1_PET, ...
-    'GR_T1',gr1_WM_GM, ...
-    'BA', ba,...
-    'ATLAS_PATH_DICT' ,path_dict, ...
-    'REF_REGION_LIST',{ref_region_list}, ...
+mapping_path_dict = IndexedDictionary( ...
+    'IT_CLASS', 'FILE_PATH', ...
+    'IT_LIST', {FILE_PATH('PATH', which('AAL2_Atlas_Labels.csv'))} ...
+);
+
+ref_region_list = {[2001]}; % Reference region label
+gr = SUVRConstructor('GR_PET', gr1_PET, ...
+    'GR_T1', gr1_WM_GM, ...
+    'BA', ba, ...
+    'ATLAS_PATH_DICT', path_dict, ...
+    'MAPPING_PATH_DICT', mapping_path_dict, ...
+    'REF_REGION_LIST', ref_region_list, ...
     'ATLAS_KIND', {'AAL2'});
 Con_gr = gr.get('GR');
 
 for i = 1:Con_gr.get('SUB_DICT').get('LENGTH')
     subj = Con_gr.get('SUB_DICT').get('IT', i); % Get the subject
     suvr_data = subj.get('ST'); % Get the SUVR data for brain regions
-    calculated_means(i, :) = suvr_data; 
+    calculated_means(i, :) = suvr_data;
     calculated_subject_ids{i} = subj.get('ID'); % Store the subject ID
 end
-
 
 % Extract expected means from VOIs table
 expected_means = table2array(vois_table(2:end, 5:(4 + length(subj.get('ST')))));
@@ -413,8 +500,7 @@ expected_means = table2array(vois_table(2:end, 5:(4 + length(subj.get('ST')))));
 headers = vois_table.Properties.VariableNames;
 
 % Find the column index corresponding to Region
-region_col_idx = find(contains(headers, strcat(string(ref_region_list),'_Mean')));
-
+region_col_idx = find(contains(headers, strcat(string(ref_region_list{1}), '_Mean')));
 
 % Extract Region means for all subjects
 region_means = table2array(vois_table(2:end, region_col_idx));

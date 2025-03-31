@@ -586,15 +586,15 @@ classdef SUVRConstructorPP_BR_DICT < PanelProp
 			prop = SUVRConstructorPP_BR_DICT.getPropProp(pointer);
 			
 			switch prop %CET: Computational Efficiency Trick
-				case SUVRConstructorPP_BR_DICT.TABLE_HEIGHT % __SUVRConstructorPP_BR_DICT.TABLE_HEIGHT__
+				case 36 % SUVRConstructorPP_BR_DICT.TABLE_HEIGHT
 					prop_settings = Format.getFormatSettings(22);
-				case SUVRConstructorPP_BR_DICT.SELECTED % __SUVRConstructorPP_BR_DICT.SELECTED__
+				case 37 % SUVRConstructorPP_BR_DICT.SELECTED
 					prop_settings = Format.getFormatSettings(13);
-				case SUVRConstructorPP_BR_DICT.TABLE % __SUVRConstructorPP_BR_DICT.TABLE__
+				case 38 % SUVRConstructorPP_BR_DICT.TABLE
 					prop_settings = Format.getFormatSettings(18);
-				case SUVRConstructorPP_BR_DICT.CONTEXTMENU % __SUVRConstructorPP_BR_DICT.CONTEXTMENU__
+				case 39 % SUVRConstructorPP_BR_DICT.CONTEXTMENU
 					prop_settings = Format.getFormatSettings(18);
-				case SUVRConstructorPP_BR_DICT.TEMPLATE % __SUVRConstructorPP_BR_DICT.TEMPLATE__
+				case 4 % SUVRConstructorPP_BR_DICT.TEMPLATE
 					prop_settings = 'SUVRConstructorPP_BR_DICT';
 				otherwise
 					prop_settings = getPropSettings@PanelProp(prop);
@@ -623,32 +623,32 @@ classdef SUVRConstructorPP_BR_DICT < PanelProp
 			prop = SUVRConstructorPP_BR_DICT.getPropProp(pointer);
 			
 			switch prop %CET: Computational Efficiency Trick
-				case SUVRConstructorPP_BR_DICT.TABLE_HEIGHT % __SUVRConstructorPP_BR_DICT.TABLE_HEIGHT__
+				case 36 % SUVRConstructorPP_BR_DICT.TABLE_HEIGHT
 					prop_default = 360;
-				case SUVRConstructorPP_BR_DICT.SELECTED % __SUVRConstructorPP_BR_DICT.SELECTED__
+				case 37 % SUVRConstructorPP_BR_DICT.SELECTED
 					prop_default = Format.getFormatDefault(13, SUVRConstructorPP_BR_DICT.getPropSettings(prop));
-				case SUVRConstructorPP_BR_DICT.TABLE % __SUVRConstructorPP_BR_DICT.TABLE__
+				case 38 % SUVRConstructorPP_BR_DICT.TABLE
 					prop_default = Format.getFormatDefault(18, SUVRConstructorPP_BR_DICT.getPropSettings(prop));
-				case SUVRConstructorPP_BR_DICT.CONTEXTMENU % __SUVRConstructorPP_BR_DICT.CONTEXTMENU__
+				case 39 % SUVRConstructorPP_BR_DICT.CONTEXTMENU
 					prop_default = Format.getFormatDefault(18, SUVRConstructorPP_BR_DICT.getPropSettings(prop));
-				case SUVRConstructorPP_BR_DICT.ELCLASS % __SUVRConstructorPP_BR_DICT.ELCLASS__
+				case 1 % SUVRConstructorPP_BR_DICT.ELCLASS
 					prop_default = 'SUVRConstructorPP_BR_DICT';
-				case SUVRConstructorPP_BR_DICT.NAME % __SUVRConstructorPP_BR_DICT.NAME__
+				case 2 % SUVRConstructorPP_BR_DICT.NAME
 					prop_default = 'SUVRConstructorPP_BR_DICT';
-				case SUVRConstructorPP_BR_DICT.DESCRIPTION % __SUVRConstructorPP_BR_DICT.DESCRIPTION__
+				case 3 % SUVRConstructorPP_BR_DICT.DESCRIPTION
 					prop_default = 'SUVRConstructorPP_BR_DICT plots the panel to manage the graph and measures of an ensemble analysis.';
-				case SUVRConstructorPP_BR_DICT.TEMPLATE % __SUVRConstructorPP_BR_DICT.TEMPLATE__
+				case 4 % SUVRConstructorPP_BR_DICT.TEMPLATE
 					prop_default = Format.getFormatDefault(8, SUVRConstructorPP_BR_DICT.getPropSettings(prop));
-				case SUVRConstructorPP_BR_DICT.ID % __SUVRConstructorPP_BR_DICT.ID__
+				case 5 % SUVRConstructorPP_BR_DICT.ID
 					prop_default = 'SUVRConstructorPP_BR_DICT';
-				case SUVRConstructorPP_BR_DICT.LABEL % __SUVRConstructorPP_BR_DICT.LABEL__
+				case 6 % SUVRConstructorPP_BR_DICT.LABEL
 					prop_default = 'SUVRConstructorPP_BR_DICT label';
-				case SUVRConstructorPP_BR_DICT.NOTES % __SUVRConstructorPP_BR_DICT.NOTES__
+				case 7 % SUVRConstructorPP_BR_DICT.NOTES
 					prop_default = 'SUVRConstructorPP_BR_DICT';
-				case SUVRConstructorPP_BR_DICT.EL % __SUVRConstructorPP_BR_DICT.EL__
+				case 23 % SUVRConstructorPP_BR_DICT.EL
 					prop_default = SUVRConstructor();
-				case SUVRConstructorPP_BR_DICT.PROP % __SUVRConstructorPP_BR_DICT.PROP__
-					prop_default = 10;
+				case 24 % SUVRConstructorPP_BR_DICT.PROP
+					prop_default = 14;
 				otherwise
 					prop_default = getPropDefault@PanelProp(prop);
 			end
@@ -697,7 +697,7 @@ classdef SUVRConstructorPP_BR_DICT < PanelProp
 			prop = SUVRConstructorPP_BR_DICT.getPropProp(pointer);
 			
 			switch prop
-				case SUVRConstructorPP_BR_DICT.SELECTED % __SUVRConstructorPP_BR_DICT.SELECTED__
+				case 37 % SUVRConstructorPP_BR_DICT.SELECTED
 					if isrow(value)
 					    value = value';
 					end
@@ -743,15 +743,15 @@ classdef SUVRConstructorPP_BR_DICT < PanelProp
 			prop = SUVRConstructorPP_BR_DICT.getPropProp(pointer);
 			
 			switch prop
-				case SUVRConstructorPP_BR_DICT.TABLE_HEIGHT % __SUVRConstructorPP_BR_DICT.TABLE_HEIGHT__
+				case 36 % SUVRConstructorPP_BR_DICT.TABLE_HEIGHT
 					check = Format.checkFormat(22, value, SUVRConstructorPP_BR_DICT.getPropSettings(prop));
-				case SUVRConstructorPP_BR_DICT.SELECTED % __SUVRConstructorPP_BR_DICT.SELECTED__
+				case 37 % SUVRConstructorPP_BR_DICT.SELECTED
 					check = Format.checkFormat(13, value, SUVRConstructorPP_BR_DICT.getPropSettings(prop));
-				case SUVRConstructorPP_BR_DICT.TABLE % __SUVRConstructorPP_BR_DICT.TABLE__
+				case 38 % SUVRConstructorPP_BR_DICT.TABLE
 					check = Format.checkFormat(18, value, SUVRConstructorPP_BR_DICT.getPropSettings(prop));
-				case SUVRConstructorPP_BR_DICT.CONTEXTMENU % __SUVRConstructorPP_BR_DICT.CONTEXTMENU__
+				case 39 % SUVRConstructorPP_BR_DICT.CONTEXTMENU
 					check = Format.checkFormat(18, value, SUVRConstructorPP_BR_DICT.getPropSettings(prop));
-				case SUVRConstructorPP_BR_DICT.TEMPLATE % __SUVRConstructorPP_BR_DICT.TEMPLATE__
+				case 4 % SUVRConstructorPP_BR_DICT.TEMPLATE
 					check = Format.checkFormat(8, value, SUVRConstructorPP_BR_DICT.getPropSettings(prop));
 				otherwise
 					if prop <= 35
@@ -787,7 +787,7 @@ classdef SUVRConstructorPP_BR_DICT < PanelProp
 			%  postset, postprocessing, checkValue.
 			
 			switch prop
-				case SUVRConstructorPP_BR_DICT.TABLE % __SUVRConstructorPP_BR_DICT.TABLE__
+				case 38 % SUVRConstructorPP_BR_DICT.TABLE
 					table = uitable( ...
 					    'Parent', pr.memorize('H'), ... % H = p for Panel
 					    'Tag', 'table', ...
@@ -801,7 +801,7 @@ classdef SUVRConstructorPP_BR_DICT < PanelProp
 					    );
 					value = table;
 					
-				case SUVRConstructorPP_BR_DICT.CONTEXTMENU % __SUVRConstructorPP_BR_DICT.CONTEXTMENU__
+				case 39 % SUVRConstructorPP_BR_DICT.CONTEXTMENU
 					contextmenu = uicontextmenu( ...
 					    'Parent', ancestor(pr.get('H'), 'figure'), ...
 					    'Tag', 'CONTEXTMENU' ...
@@ -837,14 +837,35 @@ classdef SUVRConstructorPP_BR_DICT < PanelProp
 					
 					value = contextmenu;
 					
-				case SUVRConstructorPP_BR_DICT.X_DRAW % __SUVRConstructorPP_BR_DICT.X_DRAW__
+				case 20 % SUVRConstructorPP_BR_DICT.X_DRAW
 					value = calculateValue@PanelProp(pr, 20, varargin{:}); % also warning
 					if value
 					    pr.memorize('TABLE')
 					    pr.memorize('CONTEXTMENU')
+					    
+					    % % Create the button
+					    % uicontrol('Parent', pr.get('H'), ...
+					    %     'Style', 'pushbutton', ...
+					    %     'String', 'Load Region-Index Files', ...
+					    %     'Position', [10, 10, 120, 30], ...
+					    %     'Callback', @cb_load_mapping_files);
 					end
+					% %% ¡calculate_callbacks!
+					% function cb_load_mapping_files(~, ~)
+					%     roic = pr.get('EL');
+					%     [files, path] = uigetfile('*.csv', 'Select Region-Index CSV Files', 'MultiSelect', 'on');
+					%     if ~isequal(files, 0)
+					%         if ~iscell(files)
+					%             files = {files};
+					%         end
+					%         % Construct IndexedDictionary for MAPPING_PATH_DICT
+					%         mapping_paths = cellfun(@(f) FILE_PATH('PATH', fullfile(path, f)), files, 'UniformOutput', false);
+					%         mapping_dict = IndexedDictionary('IT_CLASS', 'FILE_PATH', 'IT_LIST', mapping_paths);
+					%         roic.set('MAPPING_PATH_DICT', mapping_dict);
+					%     end
+					% end
 					
-				case SUVRConstructorPP_BR_DICT.UPDATE % __SUVRConstructorPP_BR_DICT.UPDATE__
+				case 21 % SUVRConstructorPP_BR_DICT.UPDATE
 					value = calculateValue@PanelProp(pr, 21, varargin{:}); % also warning
 					if value
 						el = pr.get('EL');
@@ -854,7 +875,7 @@ classdef SUVRConstructorPP_BR_DICT < PanelProp
 					    set(pr.get('TABLE'), 'Visible', 'on')
 					end
 					
-				case SUVRConstructorPP_BR_DICT.REDRAW % __SUVRConstructorPP_BR_DICT.REDRAW__
+				case 22 % SUVRConstructorPP_BR_DICT.REDRAW
 					value = calculateValue@PanelProp(pr, 22, varargin{:}); % also warning
 					if value
 					    w_p = get_from_varargin(w(pr.get('H'), 'pixels'), 'Width', varargin);
@@ -862,20 +883,20 @@ classdef SUVRConstructorPP_BR_DICT < PanelProp
 					    set(pr.get('TABLE'), 'Position', [4 4 w_p-8 max(1, pr.get('HEIGHT')-27)])
 					end
 					
-				case SUVRConstructorPP_BR_DICT.SHOW % __SUVRConstructorPP_BR_DICT.SHOW__
+				case 16 % SUVRConstructorPP_BR_DICT.SHOW
 					value = calculateValue@PanelProp(pr, 16, varargin{:}); % also warning
 					
-				case SUVRConstructorPP_BR_DICT.HIDE % __SUVRConstructorPP_BR_DICT.HIDE__
+				case 17 % SUVRConstructorPP_BR_DICT.HIDE
 					value = calculateValue@PanelProp(pr, 17, varargin{:}); % also warning
 					
-				case SUVRConstructorPP_BR_DICT.DELETE % __SUVRConstructorPP_BR_DICT.DELETE__
+				case 18 % SUVRConstructorPP_BR_DICT.DELETE
 					value = calculateValue@PanelProp(pr, 18, varargin{:}); % also warning
 					if value
 					    pr.set('TABLE', Element.getNoValue())
 					    pr.set('CONTEXTMENU', Element.getNoValue())
 					end
 					
-				case SUVRConstructorPP_BR_DICT.CLOSE % __SUVRConstructorPP_BR_DICT.CLOSE__
+				case 19 % SUVRConstructorPP_BR_DICT.CLOSE
 					value = calculateValue@PanelProp(pr, 19, varargin{:}); % also warning
 					
 				otherwise
@@ -902,11 +923,22 @@ classdef SUVRConstructorPP_BR_DICT < PanelProp
 			end
 			function cb_select_all(~, ~)
 			    roic = pr.get('EL');
-			    br_list = cellfun(@(x) x.get('ID'), roic.get('BA').get('BR_DICT').get('IT_LIST'), 'UniformOutput', false);
 			    
-			    pr.set('SELECTED', [1:1:length(m_list)])
+			    % Get the list of brain atlases
+			    ba_list = roic.get('BA');
+			    br_it_list = {};
+			    for i = 1:length(ba_list)
+			        ba = ba_list{i};
+			        br_dict = ba.get('BR_DICT');
+			        br_it = br_dict.get('IT_LIST');
+			        br_it_list{i} = br_it;
+			    end
+			    br_it_list = [br_it_list{:}];
+			    % Select all brain regions
+			    pr.set('SELECTED', [1:1:length(br_it_list)]);
 			    
-			    pr.get('UPDATE')
+			    % Update the panel
+			    pr.get('UPDATE');
 			end
 			function cb_clear_selection(~, ~)
 			    pr.set('SELECTED', [])
@@ -915,81 +947,135 @@ classdef SUVRConstructorPP_BR_DICT < PanelProp
 			end
 			function cb_invert_selection(~, ~)
 			    roic = pr.get('EL');
-			    br_list = cellfun(@(x) x.get('ID'), roic.get('BA').get('BR_DICT').get('IT_LIST'), 'UniformOutput', false);
 			    
-			    selected_tmp = [1:1:length(m_list)];
-			    selected_tmp(pr.get('SELECTED')) = [];
+			    % Get the list of brain atlases
+			    ba_list = roic.get('BA');
+			    br_it_list = {};
+			    for i = 1:length(ba_list)
+			        ba = ba_list{i};
+			        br_dict = ba.get('BR_DICT');
+			        br_it = br_dict.get('IT_LIST');
+			        br_it_list{i} = br_it;
+			    end
+			    br_it_list = [br_it_list{:}];
+			    % Invert the current selection
+			    selected = pr.get('SELECTED');
+			    all_indices = [1:1:length(br_it_list)];
+			    selected_tmp = setdiff(all_indices, selected);
 			    pr.set('SELECTED', selected_tmp);
 			    
-			    pr.get('UPDATE')
+			    % Update the panel
+			    pr.get('UPDATE');
 			end
 			function cb_set(~, ~)
 			    roic = pr.get('EL');
 			    prop = pr.get('PROP');
 			    eff_br_dict = roic.get(prop);
 			    
-			    br_it_list = roic.get('BA').get('BR_DICT').get('IT_LIST');
-			    br_list = cellfun(@(x) x.get('ID'), br_it_list, 'UniformOutput', false);
-			    selected = pr.get('SELECTED');
-			
-			    roic.set('EFF_NODES', selected);
-			    
-			    added_keys_length = eff_br_dict.get('LENGTH');
-			    eff_br_dict.get('REMOVE_ALL', 1:1:added_keys_length);
-			    
-			    for s = 1:1:length(selected)
-			        br = br_list{selected(s)};
-			        eff_br_dict.get('ADD', br_it_list{selected(s)});
+			    % Get the list of brain atlases and aggregate brain regions
+			    ba_list = roic.get('BA');
+			    br_it_list = {};
+			    for i = 1:length(ba_list)
+			        ba = ba_list{i};
+			        br_dict = ba.get('BR_DICT');
+			        br_it = br_dict.get('IT_LIST');
+			        br_it_list{i} = br_it;
 			    end
+			    br_it_list = [br_it_list{:}];
+			    % Get selected indices
+			    selected = pr.get('SELECTED');
+			    
+			    % Clear existing REF_BR_DICT
+			    eff_br_dict.get('REMOVE_ALL', 1:eff_br_dict.get('LENGTH'));
+			    
+			    % Add selected brain regions
+			    for s = 1:length(selected)
+			        br = br_it_list{selected(s)};
+			        eff_br_dict.get('ADD', br);
+			    end
+			    
+			    % Update the element and refresh the panel
 			    roic.set(prop, eff_br_dict);
 			    pr.get('UPDATE');
 			end
 			function set_table()
+			    % Retrieve core objects and properties
 			    roic = pr.get('EL');
 			    prop = pr.get('PROP');
+			    ba_list = roic.get('BA');
 			    
-			    br_it_list = roic.get('BA').get('BR_DICT').get('IT_LIST');
+			    % Determine which atlases to use based on prop
+			    if prop == 14  % REF_BR_DICT: Use all atlases
+			        selected_atlases = ba_list;
+			    elseif prop == 20  % SUVR_REGION_SELECTION: Use one atlas
+			        atlas_index = roic.get('ATLAS_INDEX');
+			        if atlas_index < 1 || atlas_index > length(ba_list)
+			            warning('Invalid ATLAS_INDEX. No atlas selected.');
+			            return;
+			        end
+			        selected_atlases = {ba_list{atlas_index}};
+			    else
+			        warning('Invalid property number.');
+			        return;
+			    end
+			    
+			    % Aggregate brain regions and atlas IDs
+			    br_it_list = {};
+			    atlas_ids = {};
+			    for i = 1:length(selected_atlases)
+			        ba = selected_atlases{i};
+			        atlas_id = ba.get('ID');
+			        br_dict = ba.get('BR_DICT');
+			        br_it = br_dict.get('IT_LIST');
+			        br_it_list{i} =  br_it;
+			        atlas_ids = [atlas_ids; repmat({atlas_id}, length(br_it), 1)];
+			    end
+			    br_it_list = [br_it_list{:}];
+			    % Extract brain region IDs
 			    br_list = cellfun(@(x) x.get('ID'), br_it_list, 'UniformOutput', false);
-			    
+			    % Get the effective (selected) brain regions
 			    if isa(roic.getr(prop), 'NoValue')
 			        eff_br_list = {};
 			    else
 			        eff_br_list = cellfun(@(x) x.get('ID'), roic.get(prop).get('IT_LIST'), 'UniformOutput', false);
 			    end
+			    % Prepare table data with 6 columns (same for both properties)
+			    data = cell(length(br_list), 6);
+			    for bri = 1:length(br_list)
+			        data{bri, 1} = any(pr.get('SELECTED') == bri);         % Checkbox
+			        data{bri, 2} = atlas_ids{bri};                         % Atlas
+			        data{bri, 3} = br_it_list{bri}.get('ID');              % ID
+			        data{bri, 4} = br_it_list{bri}.get('LABEL');           % Label
+			        data{bri, 5} = br_it_list{bri}.get('NOTES');           % Notes
+			        data{bri, 6} = br_it_list{bri}.get('DESCRIPTION');     % Description
+			    end
 			    
+			    % Configure the table with the same columns and format
+			    set(pr.get('TABLE'), ...
+			        'Data', data, ...
+			        'ColumnName', {'', 'Atlas', 'ID', 'Label', 'Notes', 'Description'}, ...
+			        'ColumnFormat', {'logical', 'char', 'char', 'char', 'char', 'char'}, ...
+			        'ColumnWidth', {30, 'auto', 'auto', 'auto', 'auto', 'auto'} ...
+			        )
+			    
+			    % Set row names to indicate selected regions
 			    rowname = cell(length(br_list), 1);
-			    data = cell(length(br_list), 5);
-			    for bri = 1:1:length(br_list)
+			    for bri = 1:length(br_list)
 			        if any(ismember(eff_br_list, br_list{bri})) && ~isa(roic.get(prop).get('IT', br_list{bri}).getr('X'), 'NoValue')
-			            rowname{bri} = 'S';
+			            rowname{bri} = 'S';  % Selected
 			        else
-			            rowname{bri} = '';
+			            rowname{bri} = '';   % Unselected
 			        end
+			    end
+			    set(pr.get('TABLE'), 'RowName', rowname);
 			    
-			        if any(pr.get('SELECTED') == bri)
-			            data{bri, 1} = true;
-			        else
-			            data{bri, 1} = false;
-			        end
-			    
-			        data{bri, 2} = br_it_list{bri}.get('ID');
-			        data{bri, 3} = br_it_list{bri}.get('LABEL');
-			        data{bri, 4} = br_it_list{bri}.get('NOTES');
-			        data{bri, 5} = br_it_list{bri}.get('DESCRIPTION');
-			    
-			        set(pr.get('TABLE'), ...
-			            'RowName', rowname, ...
-			            'Data', data ...
-			            )
-			    
-			        % style SELECTED
-			        styles_row = find(pr.get('TABLE').StyleConfigurations.Target == 'row');
-			        if ~isempty(styles_row)
-			            removeStyle(pr.get('TABLE'), styles_row)
-			        end
-			        if ~isempty(pr.get('SELECTED'))
-			            addStyle(pr.get('TABLE'), uistyle('FontWeight', 'bold'), 'row', pr.get('SELECTED'))
-			        end
+			    % Style selected rows
+			    styles_row = find(pr.get('TABLE').StyleConfigurations.Target == 'row');
+			    if ~isempty(styles_row)
+			        removeStyle(pr.get('TABLE'), styles_row)
+			    end
+			    if ~isempty(pr.get('SELECTED'))
+			        addStyle(pr.get('TABLE'), uistyle('FontWeight', 'bold'), 'row', pr.get('SELECTED'))
 			    end
 			end
 		end
