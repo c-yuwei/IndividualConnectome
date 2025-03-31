@@ -65,7 +65,28 @@ value = calculateValue@PanelProp(pr, PanelProp.X_DRAW, varargin{:}); % also warn
 if value
     pr.memorize('TABLE')
     pr.memorize('CONTEXTMENU')
+    
+    % % Create the button
+    % uicontrol('Parent', pr.get('H'), ...
+    %     'Style', 'pushbutton', ...
+    %     'String', 'Load Region-Index Files', ...
+    %     'Position', [10, 10, 120, 30], ...
+    %     'Callback', @cb_load_mapping_files);
 end
+% %%%% ¡calculate_callbacks!
+% function cb_load_mapping_files(~, ~)
+%     roic = pr.get('EL');
+%     [files, path] = uigetfile('*.csv', 'Select Region-Index CSV Files', 'MultiSelect', 'on');
+%     if ~isequal(files, 0)
+%         if ~iscell(files)
+%             files = {files};
+%         end
+%         % Construct IndexedDictionary for MAPPING_PATH_DICT
+%         mapping_paths = cellfun(@(f) FILE_PATH('PATH', fullfile(path, f)), files, 'UniformOutput', false);
+%         mapping_dict = IndexedDictionary('IT_CLASS', 'FILE_PATH', 'IT_LIST', mapping_paths);
+%         roic.set('MAPPING_PATH_DICT', mapping_dict);
+%     end
+% end
 
 %%% ¡prop!
 UPDATE (query, logical) updates the content and permissions of the table.
@@ -80,51 +101,83 @@ if value
 end
 %%%% ¡calculate_callbacks!
 function set_table()
+    % Retrieve core objects and properties
     roic = pr.get('EL');
     prop = pr.get('PROP');
+    ba_list = roic.get('BA');
     
-    br_it_list = roic.get('BA').get('BR_DICT').get('IT_LIST');
+    % Determine which atlases to use based on prop
+    if prop == 14  % REF_BR_DICT: Use all atlases
+        selected_atlases = ba_list;
+    elseif prop == 20  % SUVR_REGION_SELECTION: Use one atlas
+        atlas_index = roic.get('ATLAS_INDEX');
+        if atlas_index < 1 || atlas_index > length(ba_list)
+            warning('Invalid ATLAS_INDEX. No atlas selected.');
+            return;
+        end
+        selected_atlases = {ba_list{atlas_index}};
+    else
+        warning('Invalid property number.');
+        return;
+    end
+    
+    % Aggregate brain regions and atlas IDs
+    br_it_list = {};
+    atlas_ids = {};
+    for i = 1:length(selected_atlases)
+        ba = selected_atlases{i};
+        atlas_id = ba.get('ID');
+        br_dict = ba.get('BR_DICT');
+        br_it = br_dict.get('IT_LIST');
+        br_it_list{i} =  br_it;
+        atlas_ids = [atlas_ids; repmat({atlas_id}, length(br_it), 1)];
+    end
+    br_it_list = [br_it_list{:}];
+    % Extract brain region IDs
     br_list = cellfun(@(x) x.get('ID'), br_it_list, 'UniformOutput', false);
-    
+    % Get the effective (selected) brain regions
     if isa(roic.getr(prop), 'NoValue')
         eff_br_list = {};
     else
         eff_br_list = cellfun(@(x) x.get('ID'), roic.get(prop).get('IT_LIST'), 'UniformOutput', false);
     end
+    % Prepare table data with 6 columns (same for both properties)
+    data = cell(length(br_list), 6);
+    for bri = 1:length(br_list)
+        data{bri, 1} = any(pr.get('SELECTED') == bri);         % Checkbox
+        data{bri, 2} = atlas_ids{bri};                         % Atlas
+        data{bri, 3} = br_it_list{bri}.get('ID');              % ID
+        data{bri, 4} = br_it_list{bri}.get('LABEL');           % Label
+        data{bri, 5} = br_it_list{bri}.get('NOTES');           % Notes
+        data{bri, 6} = br_it_list{bri}.get('DESCRIPTION');     % Description
+    end
     
+    % Configure the table with the same columns and format
+    set(pr.get('TABLE'), ...
+        'Data', data, ...
+        'ColumnName', {'', 'Atlas', 'ID', 'Label', 'Notes', 'Description'}, ...
+        'ColumnFormat', {'logical', 'char', 'char', 'char', 'char', 'char'}, ...
+        'ColumnWidth', {30, 'auto', 'auto', 'auto', 'auto', 'auto'} ...
+        )
+    
+    % Set row names to indicate selected regions
     rowname = cell(length(br_list), 1);
-    data = cell(length(br_list), 5);
-    for bri = 1:1:length(br_list)
+    for bri = 1:length(br_list)
         if any(ismember(eff_br_list, br_list{bri})) && ~isa(roic.get(prop).get('IT', br_list{bri}).getr('X'), 'NoValue')
-            rowname{bri} = 'S';
+            rowname{bri} = 'S';  % Selected
         else
-            rowname{bri} = '';
+            rowname{bri} = '';   % Unselected
         end
+    end
+    set(pr.get('TABLE'), 'RowName', rowname);
     
-        if any(pr.get('SELECTED') == bri)
-            data{bri, 1} = true;
-        else
-            data{bri, 1} = false;
-        end
-    
-        data{bri, 2} = br_it_list{bri}.get('ID');
-        data{bri, 3} = br_it_list{bri}.get('LABEL');
-        data{bri, 4} = br_it_list{bri}.get('NOTES');
-        data{bri, 5} = br_it_list{bri}.get('DESCRIPTION');
-    
-        set(pr.get('TABLE'), ...
-            'RowName', rowname, ...
-            'Data', data ...
-            )
-    
-        % style SELECTED
-        styles_row = find(pr.get('TABLE').StyleConfigurations.Target == 'row');
-        if ~isempty(styles_row)
-            removeStyle(pr.get('TABLE'), styles_row)
-        end
-        if ~isempty(pr.get('SELECTED'))
-            addStyle(pr.get('TABLE'), uistyle('FontWeight', 'bold'), 'row', pr.get('SELECTED'))
-        end
+    % Style selected rows
+    styles_row = find(pr.get('TABLE').StyleConfigurations.Target == 'row');
+    if ~isempty(styles_row)
+        removeStyle(pr.get('TABLE'), styles_row)
+    end
+    if ~isempty(pr.get('SELECTED'))
+        addStyle(pr.get('TABLE'), uistyle('FontWeight', 'bold'), 'row', pr.get('SELECTED'))
     end
 end
 
@@ -247,11 +300,22 @@ value = contextmenu;
 %%%% ¡calculate_callbacks!
 function cb_select_all(~, ~)
     roic = pr.get('EL');
-    br_list = cellfun(@(x) x.get('ID'), roic.get('BA').get('BR_DICT').get('IT_LIST'), 'UniformOutput', false);
     
-    pr.set('SELECTED', [1:1:length(m_list)])
+    % Get the list of brain atlases
+    ba_list = roic.get('BA');
+    br_it_list = {};
+    for i = 1:length(ba_list)
+        ba = ba_list{i};
+        br_dict = ba.get('BR_DICT');
+        br_it = br_dict.get('IT_LIST');
+        br_it_list{i} = br_it;
+    end
+    br_it_list = [br_it_list{:}];
+    % Select all brain regions
+    pr.set('SELECTED', [1:1:length(br_it_list)]);
     
-    pr.get('UPDATE')
+    % Update the panel
+    pr.get('UPDATE');
 end
 function cb_clear_selection(~, ~)
     pr.set('SELECTED', [])
@@ -260,36 +324,57 @@ function cb_clear_selection(~, ~)
 end
 function cb_invert_selection(~, ~)
     roic = pr.get('EL');
-    br_list = cellfun(@(x) x.get('ID'), roic.get('BA').get('BR_DICT').get('IT_LIST'), 'UniformOutput', false);
     
-    selected_tmp = [1:1:length(m_list)];
-    selected_tmp(pr.get('SELECTED')) = [];
+    % Get the list of brain atlases
+    ba_list = roic.get('BA');
+    br_it_list = {};
+    for i = 1:length(ba_list)
+        ba = ba_list{i};
+        br_dict = ba.get('BR_DICT');
+        br_it = br_dict.get('IT_LIST');
+        br_it_list{i} = br_it;
+    end
+    br_it_list = [br_it_list{:}];
+    % Invert the current selection
+    selected = pr.get('SELECTED');
+    all_indices = [1:1:length(br_it_list)];
+    selected_tmp = setdiff(all_indices, selected);
     pr.set('SELECTED', selected_tmp);
     
-    pr.get('UPDATE')
+    % Update the panel
+    pr.get('UPDATE');
 end
 function cb_set(~, ~)
     roic = pr.get('EL');
     prop = pr.get('PROP');
     eff_br_dict = roic.get(prop);
     
-    br_it_list = roic.get('BA').get('BR_DICT').get('IT_LIST');
-    br_list = cellfun(@(x) x.get('ID'), br_it_list, 'UniformOutput', false);
-    selected = pr.get('SELECTED');
-
-    roic.set('EFF_NODES', selected);
-    
-    added_keys_length = eff_br_dict.get('LENGTH');
-    eff_br_dict.get('REMOVE_ALL', 1:1:added_keys_length);
-    
-    for s = 1:1:length(selected)
-        br = br_list{selected(s)};
-        eff_br_dict.get('ADD', br_it_list{selected(s)});
+    % Get the list of brain atlases and aggregate brain regions
+    ba_list = roic.get('BA');
+    br_it_list = {};
+    for i = 1:length(ba_list)
+        ba = ba_list{i};
+        br_dict = ba.get('BR_DICT');
+        br_it = br_dict.get('IT_LIST');
+        br_it_list{i} = br_it;
     end
+    br_it_list = [br_it_list{:}];
+    % Get selected indices
+    selected = pr.get('SELECTED');
+    
+    % Clear existing REF_BR_DICT
+    eff_br_dict.get('REMOVE_ALL', 1:eff_br_dict.get('LENGTH'));
+    
+    % Add selected brain regions
+    for s = 1:length(selected)
+        br = br_it_list{selected(s)};
+        eff_br_dict.get('ADD', br);
+    end
+    
+    % Update the element and refresh the panel
     roic.set(prop, eff_br_dict);
     pr.get('UPDATE');
 end
- 
 %% ¡tests!
 
 %%% ¡excluded_props!

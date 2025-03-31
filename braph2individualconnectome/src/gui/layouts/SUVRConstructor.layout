@@ -11,30 +11,48 @@ SUVR Constructuor ID
 SUVR Constructuor LABEL
 2
 SUVR Constructuor NOTES
-13
+11
 TOSTRING
+NaN
+Brain Atlas
+5
+ATLAS_REGION_IDS
+NaN
+ATLAS_LABELS
+NaN
+MAPPING_PATH_DICT
 NaN
 REF_REGION_LIST
 NaN
-Referece Regions
+"Referece Regions
+
+% %% ¡prop!
+% %% ¡id!
+% SUVRConstructor.ATLAS_KIND
+% %% ¡title!
+% Included Atlases
+% 
+% %% ¡prop!
+% %% ¡id!
+% SUVRConstructor.ATLAS_INDEX
+% %% ¡title!
+% Based Atlas"
 4
-Included Atlases
-5
-Brain Atlas
-7
-Based Atlas
-6
+ATLAS_KIND
+NaN
+ATLAS_INDEX
+NaN
 Brain Atlas File Locations
-8
+6
 Group PET
-9
+7
 Group T1
-10
-Select Regions for Calculating SUVE
-11
+8
+Select Regions for Calculating SUVR
+9
 CALC_SUBJ_SUVR
 NaN
 Group SUVR
-12
+10
 WAITBAR ON/OFF
 3
