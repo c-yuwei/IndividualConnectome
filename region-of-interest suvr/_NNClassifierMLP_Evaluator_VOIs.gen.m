@@ -88,19 +88,17 @@ NOTES (metadata, string) are some specific notes about the neural network evalua
 %%% ¡prop!
 NN (data, item) contains a trained neural network multi-layer perceptron classifier with VOIs.
 %%%% ¡settings!
-'NNClassifierMLP_VOIs';;
+'NNClassifierMLP_VOIs'
 
 %%% ¡prop!
 C_MATRIX (result, matrix) provides the confusion matrix for dual-input predictions from D and D_VOIs.
 %%%% ¡calculate!
 d = nne.get('D');
 d_vois = nne.get('D_VOIS');
-nn = nne.get('NN');
-if isempty(d) || isempty(d_vois)
+predictions = cell2mat(nn.get('PREDICT', d, d_vois));
+if isempty(predictions)
     value = [];
 else
-    % Predictions using both D and D_VOIs
-    predictions = cell2mat(nn.get('PREDICT', d, d_vois));
     [~, maxIndices] = max(predictions, [], 2);
     predictions = logical(full(sparse(1:numel(maxIndices), maxIndices, 1, size(predictions, 1), size(predictions, 2))));
 
@@ -118,10 +116,10 @@ AUC (result, rvector) provides the AUC for dual-input predictions from D and D_V
 d = nne.get('D');
 d_vois = nne.get('D_VOIS');
 nn = nne.get('NN');
-if isempty(d) || isempty(d_vois)
+predictions = cell2mat(nne.get('NN').get('PREDICT', d, d_vois));
+if isempty(predictions)
     value = [];
 else
-    predictions = cell2mat(nne.get('NN').get('PREDICT', d, d_vois));
     class_names = nn.get('MODEL').Layers(end).Classes;
     ground_truth = categorical(nne.get('GROUND_TRUTH'));
     rocNet = rocmetrics(ground_truth, predictions, class_names);

@@ -876,7 +876,7 @@ classdef PDFConstructor < ConcreteElement
 					% calculate normalized suvr for all unique regions
 					ROI_list = unique(atlas_roi);
 					ROI_list = ROI_list(ROI_list>0);% remove background which is represented by label "0"
-					parfor roi_list_index = 1:length(ROI_list)
+					for roi_list_index = 1:length(ROI_list)
 					    roi_index = ROI_list(roi_list_index);
 					    roi_mask = atlas_roi==roi_index;
 					    roi_data = masked_pet_data.*int16(roi_mask);

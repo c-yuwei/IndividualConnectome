@@ -293,7 +293,7 @@ classdef NNxMLP_FeatureImportance_CV < ConcreteElement
 			%
 			% See also subclasses.
 			
-			subclass_list = { 'NNxMLP_FeatureImportance_CV'  'NNxMLP_FeatureImportanceAcrossMeasures_CV'  'NNxMLP_FeatureImportanceBrainSurface_CV' }; %CET: Computational Efficiency Trick
+			subclass_list = { 'NNxMLP_FeatureImportance_CV'  'NNxMLP_FeatureImportanceAcrossMeasures_CV'  'NNxMLP_FeatureImportanceBrainSurface_CV'  'NNxMLP_FeatureImportance_VOIs_CV' }; %CET: Computational Efficiency Trick
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of neural network feature importace for multi-layer perceptron.

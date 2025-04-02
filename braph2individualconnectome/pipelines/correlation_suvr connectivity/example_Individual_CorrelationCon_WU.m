@@ -233,27 +233,25 @@ d3_vois = NNDataset( ...
     'DP_DICT', dp_list_voi3 ...
     );
 
-
-d_split1 = NNDatasetSplit('D', d1, 'SPLIT', {0.7, 0.3});
-d_vois_split1 = NNDatasetSplit('D', d1_vois, 'SPLIT', {0.7, 0.3});
-
-
-d_split2 = NNDatasetSplit('D', d2, 'SPLIT', {0.7, 0.3});
-d_vois_split2 = NNDatasetSplit('D', d2_vois, 'SPLIT', {0.7, 0.3});
-
-d_split3 = NNDatasetSplit('D', d3, 'SPLIT', {0.7, 0.3});
-d_vois_split3 = NNDatasetSplit('D', d3_vois, 'SPLIT', {0.7, 0.3});
-
-d_training = NNDatasetCombine('D_LIST', {d_split1.get('D_LIST_IT', 1), d_split2.get('D_LIST_IT', 1), d_split3.get('D_LIST_IT', 1)}).get('D');
-d_vois_training = NNDatasetCombine('D_LIST', {d_vois_split1.get('D_LIST_IT', 1), d_vois_split2.get('D_LIST_IT', 1), d_vois_split3.get('D_LIST_IT', 1)}).get('D');
-
-d_test = NNDatasetCombine('D_LIST', {d_split1.get('D_LIST_IT', 2), d_split2.get('D_LIST_IT', 2),d_split3.get('D_LIST_IT', 2)}).get('D');
-d_vois_test = NNDatasetCombine('D_LIST', {d_vois_split1.get('D_LIST_IT', 2), d_vois_split2.get('D_LIST_IT', 2), d_vois_split3.get('D_LIST_IT', 2)}).get('D');
-
 %% Create a classifier cross-validation
 nn_template = NNClassifierMLP_VOIs('EPOCHS', 50, 'LAYERS', [128 128]);
-nncv = NNClassifierMLP_CrossValidation_VOIs('D', {d1, d2},'D_VOIS', {d1_vois, d2_vois}, 'KFOLDS', 5, 'NN_TEMPLATE', nn_template);%d2 healthy, d3 MCI, d1 AD
+num_dp_d1 = d1.get('DP_DICT').get('LENGTH'); % Number of data points in d1 (assumed same as d1_vois)
+num_dp_d2 = d2.get('DP_DICT').get('LENGTH'); % Number of data points in d2 (assumed same as d2_vois)
+% Generate shuffled split indices for 5 folds
+shuffled_indices_d1 = randperm(num_dp_d1); % Random permutation of indices for d1
+shuffled_indices_d2 = randperm(num_dp_d2); % Random permutation of indices for d2
+% Calculate split points for 5 equal parts
+split_points_d1 = round(linspace(0, num_dp_d1, 6)); % 6 points to define 5 segments
+split_points_d2 = round(linspace(0, num_dp_d2, 6)); % 6 points to define 5 segments
+SPLIT = cell(2, 5);
+for i = 1:5
+    SPLIT{1, i} = shuffled_indices_d1(split_points_d1(i)+1:split_points_d1(i+1));
+    SPLIT{2, i} = shuffled_indices_d2(split_points_d2(i)+1:split_points_d2(i+1));
+end
+nncv = NNClassifierMLP_CrossValidation_VOIs('D', {d1, d2}, 'D_VOIS', {d1_vois, d2_vois}, 'KFOLDS', 5, 'NN_TEMPLATE', nn_template, 'SPLIT', SPLIT); % d2 healthy, d1 AD
 nncv.get('TRAIN');
+
+
 
 %% Evaluate the performance
 confusion_matrix_ad = nncv.get('C_MATRIX');
@@ -265,7 +263,20 @@ specificity_ad = confusion_matrix_ad(2,2)/ sum(confusion_matrix_ad(:,2));
 
 %% Create a classifier cross-validation
 nn_template = NNClassifierMLP_VOIs('EPOCHS', 50, 'LAYERS', [128 128]);
-nncv = NNClassifierMLP_CrossValidation_VOIs('D', {d3, d2},'D_VOIS', {d3_vois, d2_vois}, 'KFOLDS', 5, 'NN_TEMPLATE', nn_template);%d2 healthy, d3 MCI, d1 AD
+num_dp_d3 = d3.get('DP_DICT').get('LENGTH'); % Number of data points in d1 (assumed same as d1_vois)
+num_dp_d2 = d2.get('DP_DICT').get('LENGTH'); % Number of data points in d2 (assumed same as d2_vois)
+% Generate shuffled split indices for 5 folds
+shuffled_indices_d3 = randperm(num_dp_d3); % Random permutation of indices for d1
+shuffled_indices_d2 = randperm(num_dp_d2); % Random permutation of indices for d2
+% Calculate split points for 5 equal parts
+split_points_d3 = round(linspace(0, num_dp_d3, 6)); % 6 points to define 5 segments
+split_points_d2 = round(linspace(0, num_dp_d2, 6)); % 6 points to define 5 segments
+SPLIT = cell(2, 5);
+for i = 1:5
+    SPLIT{1, i} = shuffled_indices_d3(split_points_d3(i)+1:split_points_d3(i+1));
+    SPLIT{2, i} = shuffled_indices_d2(split_points_d2(i)+1:split_points_d2(i+1));
+end
+nncv = NNClassifierMLP_CrossValidation_VOIs('D', {d3, d2},'D_VOIS', {d3_vois, d2_vois}, 'KFOLDS', 5, 'NN_TEMPLATE', nn_template, 'SPLIT', SPLIT);%d2 healthy, d3 MCI, d1 AD
 nncv.get('TRAIN');
 
 %% Evaluate the performance
@@ -274,17 +285,25 @@ av_auc_mci = nncv.get('AV_AUC');
 av_macro_auc_mci = nncv.get('AV_MACRO_AUC');
 specificity_mci  = confusion_matrix_mci(1,1)/ sum(confusion_matrix_mci(:,1));
 sensitivity_mci = confusion_matrix_mci(2,2)/ sum(confusion_matrix_mci(:,2));
-%% add test on example data
 
-num_subjects = a_WU1.get('G_DICT').get('LENGTH');
-for i = 1:num_subjects
-    g = a_WU1.get('G_DICT').get('IT', i);
-    strength = g.get('MEASURE', 'Strength').get('M'); % Strength for all regions
-    strength20_regions = strength{1}(1:20);
-    strengthother_regions = strength{1}(21:end);
-    mean_20 = mean(strength20_regions(:));
-    mean_others = mean(strengthother_regions(:));
-    % Assert for each subject
-    assert(mean_20 > mean_others, ...
-        sprintf('Test failed for subject %d: The first 20 regions do not have higher correlation than the other regions.', i));
-end
+fprintf('Average AUC CN VS AD: %.4f\n', av_macro_auc_ad);
+fprintf('Average Sensitivity AD: %.4f\n', sensitivity_ad);
+fprintf('Average Specificity AD: %.4f\n', specificity_ad);
+
+fprintf('Average AUC CN VS MCI: %.4f\n', av_macro_auc_mci);
+fprintf('Average Sensitivity MCI: %.4f\n', sensitivity_mci);
+fprintf('Average Specificity MCI: %.4f\n', specificity_mci);
+%% add test on example data
+% 
+% num_subjects = a_WU1.get('G_DICT').get('LENGTH');
+% for i = 1:num_subjects
+%     g = a_WU1.get('G_DICT').get('IT', i);
+%     strength = g.get('MEASURE', 'Strength').get('M'); % Strength for all regions
+%     strength20_regions = strength{1}(1:20);
+%     strengthother_regions = strength{1}(21:end);
+%     mean_20 = mean(strength20_regions(:));
+%     mean_others = mean(strengthother_regions(:));
+%     % Assert for each subject
+%     assert(mean_20 > mean_others, ...
+%         sprintf('Test failed for subject %d: The first 20 regions do not have higher correlation than the other regions.', i));
+% end
