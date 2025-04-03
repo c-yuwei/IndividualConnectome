@@ -91,7 +91,6 @@ im_gr3 = IndividualDistanceConConstructor( ...
 Con_gr3 = im_gr3.get('GR');
 
 %% Threshold and Analyze with AnalyzeEnsemble_CON_BUT
-%%
 
 densities = 20;
 graph_temp = MultigraphBUD('DENSITIES', densities);
