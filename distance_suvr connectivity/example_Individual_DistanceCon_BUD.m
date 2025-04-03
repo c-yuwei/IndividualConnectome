@@ -90,26 +90,54 @@ im_gr3 = IndividualDistanceConConstructor( ...
 
 Con_gr3 = im_gr3.get('GR');
 
-%% Analysis CON WU
-a_WU1 = AnalyzeEnsemble_CON_WU( ...
+%% Threshold and Analyze with AnalyzeEnsemble_CON_BUT
+%%
+
+densities = 20;
+graph_temp = MultigraphBUD('DENSITIES', densities);
+a_BUD1 = AnalyzeEnsemble_CON_BUD( ...
+    'GRAPH_TEMPLATE', graph_temp, ...
     'GR', Con_gr1 ...
     );
 
-a_WU2 = AnalyzeEnsemble_CON_WU( ...
-    'TEMPLATE', a_WU1, ...
+a_BUD2 = AnalyzeEnsemble_CON_BUD( ...
+    'TEMPLATE', a_BUD1, ...
     'GR', Con_gr2 ...
     );
 
-a_WU1.memorize('G_DICT');
-a_WU2.memorize('G_DICT');
+a_BUD3 = AnalyzeEnsemble_CON_BUD( ...
+    'TEMPLATE', a_BUD1, ...
+    'GR', Con_gr3 ...
+    );
 
-c_WU = CompareEnsemble('P', 1000, 'A1', a_WU1, 'A2', a_WU2, 'MEMORIZE', true); % Compare Groups % Group Comparison
+a_BUD1.get('MEASUREENSEMBLE', 'Degree').get('M');
+a_BUD1.get('MEASUREENSEMBLE', 'DegreeAv').get('M');
+a_BUD1.get('MEASUREENSEMBLE', 'Distance').get('M');
 
-degree_WU_diff = c_WU.get('COMPARISON', 'Degree').get('DIFF');
-degree_WU_p1 = c_WU.get('COMPARISON', 'Degree').get('P1');
-degree_WU_p2 = c_WU.get('COMPARISON', 'Degree').get('P2');
-degree_WU_cil = c_WU.get('COMPARISON', 'Degree').get('CIL');
-degree_WU_ciu = c_WU.get('COMPARISON', 'Degree').get('CIU');
+a_BUD2.get('MEASUREENSEMBLE', 'Degree').get('M');
+a_BUD2.get('MEASUREENSEMBLE', 'DegreeAv').get('M');
+a_BUD2.get('MEASUREENSEMBLE', 'Distance').get('M');
+
+a_BUD3.get('MEASUREENSEMBLE', 'Degree').get('M');
+a_BUD3.get('MEASUREENSEMBLE', 'DegreeAv').get('M');
+a_BUD3.get('MEASUREENSEMBLE', 'Distance').get('M');
+
+
+%% Create NNDataPoints
+it_list1 = cellfun(@(x) NNDataPoint_Measure_CLA( ...
+    'ID', x.get('ID'), 'G', x, 'M_LIST', a_BUT1.get('ME_DICT').get('KEYS'), 'TARGET_CLASS', {'Group1'}), ...
+    a_BUT1.get('G_DICT').get('IT_LIST'), 'UniformOutput', false);
+it_list2 = cellfun(@(x) NNDataPoint_Measure_CLA( ...
+    'ID', x.get('ID'), 'G', x, 'M_LIST', a_BUT2.get('ME_DICT').get('KEYS'), 'TARGET_CLASS', {'Group2'}), ...
+    a_BUT2.get('G_DICT').get('IT_LIST'), 'UniformOutput', false);
+it_list3 = cellfun(@(x) NNDataPoint_Measure_CLA( ...
+    'ID', x.get('ID'), 'G', x, 'M_LIST', a_BUT3.get('ME_DICT').get('KEYS'), 'TARGET_CLASS', {'Group3'}), ...
+    a_BUT3.get('G_DICT').get('IT_LIST'), 'UniformOutput', false);
+
+%% Create NNDatasets
+d1 = NNDataset('DP_CLASS', 'NNDataPoint_Measure_CLA', 'DP_DICT', IndexedDictionary('IT_CLASS', 'NNDataPoint_Measure_CLA', 'IT_LIST', it_list1));
+d2 = NNDataset('DP_CLASS', 'NNDataPoint_Measure_CLA', 'DP_DICT', IndexedDictionary('IT_CLASS', 'NNDataPoint_Measure_CLA', 'IT_LIST', it_list2));
+d3 = NNDataset('DP_CLASS', 'NNDataPoint_Measure_CLA', 'DP_DICT', IndexedDictionary('IT_CLASS', 'NNDataPoint_Measure_CLA', 'IT_LIST', it_list3));
 %% NN DATASET
 
 it_list1 = cellfun(@(x) NNDataPoint_CON_CLA( ...

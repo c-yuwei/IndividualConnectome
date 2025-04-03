@@ -110,6 +110,9 @@ degree_WU_p1 = c_WU.get('COMPARISON', 'Degree').get('P1');
 degree_WU_p2 = c_WU.get('COMPARISON', 'Degree').get('P2');
 degree_WU_cil = c_WU.get('COMPARISON', 'Degree').get('CIL');
 degree_WU_ciu = c_WU.get('COMPARISON', 'Degree').get('CIU');
+
+
+
 %% NN DATASET
 
 it_list1 = cellfun(@(x) NNDataPoint_CON_CLA( ...

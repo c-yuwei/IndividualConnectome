@@ -220,7 +220,7 @@ classdef AnalyzeEnsemble < ConcreteElement
 			%
 			% See also subclasses.
 			
-			subclass_list = { 'AnalyzeEnsemble'  'AnalyzeEnsemble_CON_WU'  'AnalyzeEnsembleDivergence_FUN_WU'  'AnalyzeEnsemble_FUN_WU' }; %CET: Computational Efficiency Trick
+			subclass_list = { 'AnalyzeEnsemble'  'AnalyzeEnsemble_CON_BUT'  'AnalyzeEnsemble_CON_WU'  'AnalyzeEnsembleDivergence_FUN_WU'  'AnalyzeEnsemble_FUN_BUT'  'AnalyzeEnsemble_FUN_WU' }; %CET: Computational Efficiency Trick
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of ensemble-based graph analysis.

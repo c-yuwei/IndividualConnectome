@@ -1,8 +1,20 @@
 BRAPH2,7
 Element,7
+GraphBD,1
+GraphBU,1
+GraphWD,1
 GraphWU,1
+MultigraphBUD,1
+MultigraphBUT,1
+Clustering,1
+CorePeriphery,1
 Degree,1
+Distance,1
+GlobalEfficiency,1
+LocalEfficiency,1
+Richness,1
 Strength,1
+Triangles,1
 NNClassifierMLP,1
 NNClassifierMLP_CrossValidation,1
 NNClassifierMLP_CrossValidationPF_ROC,1
@@ -34,6 +46,7 @@ NNxMLP_FeatureImportanceBrainSurfacePP_Graph,1
 NNxMLP_FeatureImportanceBrainSurfacePP_Measure,1
 NNxMLP_FeatureImportanceBrainSurface_CV,1
 NNxMLP_FeatureImportance_CV,1
+AnalyzeEnsemble_CON_BUT,1
 AnalyzeEnsemble_CON_WU,1
 ExporterGroupSubjectCON_TXT,1
 ExporterGroupSubjectCON_XLS,1
@@ -47,6 +60,7 @@ IndividualConConstructorBase,1
 IndividualDistanceConConstructor,1
 AnalyzeEnsembleDivergence_FUN_WU,1
 PDFConstructor,1
+AnalyzeEnsemble_FUN_BUT,1
 AnalyzeEnsemble_FUN_WU,1
 ExporterGroupSubjectFUN_TXT,1
 ExporterGroupSubjectFUN_XLS,1
@@ -57,6 +71,7 @@ NNDataPoint_FUN_CLA,1
 NNDataPoint_FUN_REG,1
 FILE_PATH,1
 ImporterGroupSubjNIfTI,1
+MultiGraphWUD,1
 NNClassifierMLP_CrossValidation_VOIs,1
 NNClassifierMLP_EvaluatorPF_ROC_VOIs,1
 NNClassifierMLP_Evaluator_VOIs,1
@@ -66,6 +81,7 @@ NNxMLP_FeatureImportance_VOIs,1
 NNxMLP_FeatureImportance_VOIs_CV,1
 SUVRConstructor,1
 SubjectNIfTI,1
+AnalyzeGroup_ST_BUT,1
 AnalyzeGroup_ST_WU,1
 ExporterGroupSubjectST_TXT,1
 ExporterGroupSubjectST_XLS,1

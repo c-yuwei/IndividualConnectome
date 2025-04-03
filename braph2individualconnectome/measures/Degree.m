@@ -187,7 +187,7 @@ classdef Degree < Measure
 			%
 			% See also subclasses.
 			
-			subclass_list = { 'Degree' }; %CET: Computational Efficiency Trick
+			subclass_list = { 'Degree'  'CorePeriphery'  'Richness' }; %CET: Computational Efficiency Trick
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of degree.
