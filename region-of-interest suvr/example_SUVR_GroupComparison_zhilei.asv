@@ -1,0 +1,348 @@
+% Load the Tau data
+Tau = load(which('Tau.mat'));
+
+% Load the brain atlas
+im_ba1 = ImporterBrainAtlasXLS('FILE', which('desikan_atlas34_left_only.xlsx'), 'WAITBAR', true);
+ba1 = im_ba1.get('BA');
+
+% Step 1: Filter subjects with non-NaN values
+IncludedScan = find(~isnan(Tau.Tau.AmyloidGroup) & ...
+                    ~isnan(Tau.Tau.Group) & ...
+                    ~isnan(Tau.Tau.Age) & ...
+                    ~isnan(Tau.Tau.Education) & ...
+                    ~isnan(Tau.Tau.Sex));
+
+
+% Step 2: Categorize into groups (excluding NC_AP)
+IncludedScan_NC_AN  = IncludedScan(Tau.Tau.AmyloidGroup(IncludedScan) == 0 & Tau.Tau.Group(IncludedScan) == 0);
+IncludedScan_MCI_AP = IncludedScan(Tau.Tau.AmyloidGroup(IncludedScan) == 1 & Tau.Tau.Group(IncludedScan) == 1);
+IncludedScan_AD_AP  = IncludedScan(Tau.Tau.AmyloidGroup(IncludedScan) == 1 & Tau.Tau.Group(IncludedScan) == 2);
+
+% Step 3: Select earliest scan per RID for each group using GetScanOrder
+[ScanOrder_NC_AN, ~, ~] = GetScanOrder(Tau.Tau.RID(IncludedScan_NC_AN), ...
+                                       Tau.Tau.ScanDate(IncludedScan_NC_AN), ...
+                                       Tau.Tau.Age(IncludedScan_NC_AN));
+[ScanOrder_MCI_AP, ~, ~] = GetScanOrder(Tau.Tau.RID(IncludedScan_MCI_AP), ...
+                                        Tau.Tau.ScanDate(IncludedScan_MCI_AP), ...
+                                        Tau.Tau.Age(IncludedScan_MCI_AP));
+[ScanOrder_AD_AP, ~, ~] = GetScanOrder(Tau.Tau.RID(IncludedScan_AD_AP), ...
+                                       Tau.Tau.ScanDate(IncludedScan_AD_AP), ...
+                                       Tau.Tau.Age(IncludedScan_AD_AP));
+
+% Select earliest scans (ScanOrder == 1)
+Earliest_NC_AN  = IncludedScan_NC_AN(ScanOrder_NC_AN == 1);
+Earliest_MCI_AP = IncludedScan_MCI_AP(ScanOrder_MCI_AP == 1);
+Earliest_AD_AP  = IncludedScan_AD_AP(ScanOrder_AD_AP == 1);
+
+% Combine earliest scans for remaining groups
+Earliest_All = [Earliest_NC_AN; Earliest_MCI_AP; Earliest_AD_AP];
+
+% Step 4: Create filtered Tau struct
+Tau_filtered = struct();
+Tau_filtered.SUVR = Tau.Tau.SUVR(Earliest_All, :);
+Tau_filtered.Age = Tau.Tau.Age(Earliest_All);
+Tau_filtered.Sex = Tau.Tau.Sex(Earliest_All);
+Tau_filtered.Education = Tau.Tau.Education(Earliest_All);
+Tau_filtered.Group = Tau.Tau.Group(Earliest_All);
+Tau_filtered.AmyloidGroup = Tau.Tau.AmyloidGroup(Earliest_All);
+Tau_filtered.RID = Tau.Tau.RID(Earliest_All);
+Tau_filtered.ScanDate = Tau.Tau.ScanDate(Earliest_All);
+
+% Update Tau.Tau
+Tau.Tau = Tau_filtered;
+
+% Verify filtering
+fprintf('Number of unique RIDs after filtering: %d\n', length(unique(Tau.Tau.RID)));
+fprintf('NC_AN: %d, MCI_AP: %d, AD_AP: %d\n', ...
+        length(Earliest_NC_AN), length(Earliest_MCI_AP), length(Earliest_AD_AP));
+
+% Step 5: Create BRAPH 2 groups using your loop structure
+% Group 1: NC_AN (CN)
+sub_list1 = cell(length(Earliest_NC_AN), 1);
+for i = 1:length(Earliest_NC_AN)
+    idx = Earliest_NC_AN(i);
+    
+    % Define subject ID
+    if isfield(Tau.Tau, 'RID')  % Adjusted to check Tau.Tau.RID
+        sub_id = Tau.RID{idx};
+    else
+        sub_id = sprintf('Subj%d', idx);
+    end
+    
+    % Create subject with structural data
+    sub = SubjectST('ID', sub_id, 'BA', ba1, 'ST', Tau.Tau.SUVR(idx, :)');
+    
+    % Add demographic VOIs using 'V' as the data property
+    voi_age = VOI('ID', 'Age', 'V', Tau.Tau.Age(idx));
+    voi_sex = VOI('ID', 'Sex', 'V', strcmp(Tau.Tau.Sex{idx}, 'F')); % Numeric: 0 for 'M', 1 for 'F'
+    voi_education = VOI('ID', 'Education', 'V', Tau.Tau.Education(idx));
+    
+    % Add VOIs to the subject's VOI_DICT
+    sub.memorize('VOI_DICT').get('ADD', voi_age);
+    sub.memorize('VOI_DICT').get('ADD', voi_sex);
+    sub.memorize('VOI_DICT').get('ADD', voi_education);
+    
+    % Store the subject in the list
+    sub_list1{i} = sub;
+end
+gr1 = Group('SUB_CLASS', 'SubjectST', 'ID', 'CN', ...
+            'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectST', 'IT_LIST', sub_list1));
+
+% Group 2: MCI_AP
+sub_list2 = cell(length(Earliest_MCI_AP), 1);
+for i = 1:length(Earliest_MCI_AP)
+    idx = Earliest_MCI_AP(i);
+    
+    % Define subject ID
+    if isfield(Tau.Tau, 'RID')
+        sub_id = Tau.Tau.RID(idx);
+    else
+        sub_id = sprintf('Subj%d', idx);
+    end
+    
+    % Create subject with structural data
+    sub = SubjectST('ID', sub_id, 'BA', ba1, 'ST', Tau.Tau.SUVR(idx, :)');
+    
+    % Add demographic VOIs using 'V' as the data property
+    voi_age = VOI('ID', 'Age', 'V', Tau.Tau.Age(idx));
+    voi_sex = VOI('ID', 'Sex', 'V', strcmp(Tau.Tau.Sex{idx}, 'F')); % Numeric: 0 for 'M', 1 for 'F'
+    voi_education = VOI('ID', 'Education', 'V', Tau.Tau.Education(idx));
+    
+    % Add VOIs to the subject's VOI_DICT
+    sub.memorize('VOI_DICT').get('ADD', voi_age);
+    sub.memorize('VOI_DICT').get('ADD', voi_sex);
+    sub.memorize('VOI_DICT').get('ADD', voi_education);
+    
+    % Store the subject in the list
+    sub_list2{i} = sub;
+end
+gr2 = Group('SUB_CLASS', 'SubjectST', 'ID', 'MCI_AP', ...
+            'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectST', 'IT_LIST', sub_list2));
+
+% Group 3: AD_AP
+sub_list3 = cell(length(Earliest_AD_AP), 1);
+for i = 1:length(Earliest_AD_AP)
+    idx = Earliest_AD_AP(i);
+    
+    % Define subject ID
+    if isfield(Tau.Tau, 'RID')
+        sub_id = Tau.Tau.RID(idx);
+    else
+        sub_id = sprintf('Subj%d', idx);
+    end
+    
+    % Create subject with structural data
+    sub = SubjectST('ID', sub_id, 'BA', ba1, 'ST', Tau.Tau.SUVR(idx, :)');
+    
+    % Add demographic VOIs using 'V' as the data property
+    voi_age = VOI('ID', 'Age', 'V', Tau.Tau.Age(idx));
+    voi_sex = VOI('ID', 'Sex', 'V', strcmp(Tau.Tau.Sex{idx}, 'F')); % Numeric: 0 for 'M', 1 for 'F'
+    voi_education = VOI('ID', 'Education', 'V', Tau.Tau.Education(idx));
+    
+    % Add VOIs to the subject's VOI_DICT
+    sub.memorize('VOI_DICT').get('ADD', voi_age);
+    sub.memorize('VOI_DICT').get('ADD', voi_sex);
+    sub.memorize('VOI_DICT').get('ADD', voi_education);
+    
+    % Store the subject in the list
+    sub_list3{i} = sub;
+end
+gr3 = Group('SUB_CLASS', 'SubjectST', 'ID', 'AD_AP', ...
+            'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectST', 'IT_LIST', sub_list3));
+
+%% NN CV classification on 2 classes
+
+it_list1 = cellfun(@(x) NNDataPoint_ST_CLA( ...
+    'ID', x.get('ID'), ...
+    'SUB', x, ...
+    'TARGET_CLASS', {gr1.get('ID')}), ...
+    gr1.get('SUB_DICT').get('IT_LIST'), ...
+    'UniformOutput', false);
+
+% Get the subject dictionary and extract the list of subjects
+sub_dict1 = gr1.get('SUB_DICT');
+sub_list1 = sub_dict1.get('IT_LIST'); % Get all subjects as a cell array
+% Use cellfun to create NNDataPoint_VOIs for each subject
+it_list_voi1 = cellfun(@(sub) NNDataPoint_VOIs( ...
+    'ID', sub.get('ID'), ...
+    'VOI_DICT', IndexedDictionary( ...
+        'ID', 'subject_idict', ...
+        'IT_CLASS', 'SubjectNIfTI', ...
+        'IT_KEY', IndexedDictionary.getPropDefault(IndexedDictionary.IT_KEY), ...
+        'IT_LIST', sub.get('VOI_DICT').get('IT_LIST') ...
+        ), ...
+    'TARGET_CLASS', {'CN'} ...
+    ), sub_list1, 'UniformOutput', false);
+
+
+it_list2 = cellfun(@(x) NNDataPoint_ST_CLA( ...
+    'ID', x.get('ID'), ...
+    'SUB', x, ...
+    'TARGET_CLASS', {gr2.get('ID')}), ...
+    gr2.get('SUB_DICT').get('IT_LIST'), ...
+    'UniformOutput', false);
+% Get the subject dictionary and extract the list of subjects
+sub_dict2 = gr2.get('SUB_DICT');
+sub_list2 = sub_dict2.get('IT_LIST'); % Get all subjects as a cell array
+% Use cellfun to create NNDataPoint_VOIs for each subject
+it_list_voi2 = cellfun(@(sub) NNDataPoint_VOIs( ...
+    'ID', sub.get('ID'), ...
+    'VOI_DICT', IndexedDictionary( ...
+        'ID', 'subject_idict', ...
+        'IT_CLASS', 'SubjectNIfTI', ...
+        'IT_KEY', IndexedDictionary.getPropDefault(IndexedDictionary.IT_KEY), ...
+        'IT_LIST', sub.get('VOI_DICT').get('IT_LIST') ...
+        ), ...
+    'TARGET_CLASS', {'MCI'} ...
+    ), sub_list2, 'UniformOutput', false);
+
+it_list3 = cellfun(@(x) NNDataPoint_ST_CLA( ...
+    'ID', x.get('ID'), ...
+    'SUB', x, ...
+    'TARGET_CLASS', {gr3.get('ID')}), ...
+    gr3.get('SUB_DICT').get('IT_LIST'), ...
+    'UniformOutput', false);
+% Get the subject dictionary and extract the list of subjects
+sub_dict3 = gr3.get('SUB_DICT');
+sub_list3 = sub_dict3.get('IT_LIST'); % Get all subjects as a cell array
+% Use cellfun to create NNDataPoint_VOIs for each subject
+it_list_voi3 = cellfun(@(sub) NNDataPoint_VOIs( ...
+    'ID', sub.get('ID'), ...
+    'VOI_DICT', IndexedDictionary( ...
+        'ID', 'subject_idict', ...
+        'IT_CLASS', 'SubjectNIfTI', ...
+        'IT_KEY', IndexedDictionary.getPropDefault(IndexedDictionary.IT_KEY), ...
+        'IT_LIST', sub.get('VOI_DICT').get('IT_LIST') ...
+        ), ...
+    'TARGET_CLASS', {'AD'} ...
+    ), sub_list3, 'UniformOutput', false);
+
+
+% create NNDataPoint_ST_CLA DICT items
+dp_list1 = IndexedDictionary(...
+        'IT_CLASS', 'NNDataPoint_ST_CLA', ...
+        'IT_LIST', it_list1 ...
+        );
+
+dp_list2 = IndexedDictionary(...
+        'IT_CLASS', 'NNDataPoint_ST_CLA', ...
+        'IT_LIST', it_list2' ...
+        );
+
+dp_list3 = IndexedDictionary(...
+        'IT_CLASS', 'NNDataPoint_ST_CLA', ...
+        'IT_LIST', it_list3' ...
+        );
+
+dp_list_voi1 = IndexedDictionary(...
+        'IT_CLASS', 'NNDataPoint_VOIs', ...
+        'IT_LIST', it_list_voi1 ...
+        );
+
+dp_list_voi2 = IndexedDictionary(...
+        'IT_CLASS', 'NNDataPoint_VOIs', ...
+        'IT_LIST', it_list_voi2' ...
+        );
+
+dp_list_voi3 = IndexedDictionary(...
+        'IT_CLASS', 'NNDataPoint_VOIs', ...
+        'IT_LIST', it_list_voi3' ...
+        );
+
+
+d1 = NNDataset( ...
+    'DP_CLASS', 'NNDataPoint_ST_CLA', ...
+    'DP_DICT', dp_list1 ...
+    );
+d1_vois = NNDataset( ...
+    'DP_CLASS', 'NNDataPoint_VOIs', ...
+    'DP_DICT', dp_list_voi1 ...
+    );
+
+d2 = NNDataset( ...
+    'DP_CLASS', 'NNDataPoint_ST_CLA', ...
+    'DP_DICT', dp_list2 ...
+    );
+d2_vois = NNDataset( ...
+    'DP_CLASS', 'NNDataPoint_VOIs', ...
+    'DP_DICT', dp_list_voi2 ...
+    );
+
+d3 = NNDataset( ...
+    'DP_CLASS', 'NNDataPoint_ST_CLA', ...
+    'DP_DICT', dp_list3 ...
+    );
+d3_vois = NNDataset( ...
+    'DP_CLASS', 'NNDataPoint_VOIs', ...
+    'DP_DICT', dp_list_voi3 ...
+    );
+
+
+
+%% Create a classifier cross-validation
+nn_template = NNClassifierMLP_VOIs('EPOCHS', 50, 'LAYERS', [128 128]);
+num_dp_d1 = d1.get('DP_DICT').get('LENGTH'); % Number of data points in d1 (assumed same as d1_vois)
+num_dp_d2 = d2.get('DP_DICT').get('LENGTH'); % Number of data points in d2 (assumed same as d2_vois)
+% Generate shuffled split indices for 5 folds
+shuffled_indices_d1 = randperm(num_dp_d1); % Random permutation of indices for d1
+shuffled_indices_d2 = randperm(num_dp_d2); % Random permutation of indices for d2
+% Calculate split points for 5 equal parts
+split_points_d1 = round(linspace(0, num_dp_d1, 6)); % 6 points to define 5 segments
+split_points_d2 = round(linspace(0, num_dp_d2, 6)); % 6 points to define 5 segments
+SPLIT = cell(2, 5);
+for i = 1:5
+    SPLIT{1, i} = shuffled_indices_d1(split_points_d1(i)+1:split_points_d1(i+1));
+    SPLIT{2, i} = shuffled_indices_d2(split_points_d2(i)+1:split_points_d2(i+1));
+end
+nncv = NNClassifierMLP_CrossValidation_VOIs('D', {d1, d2}, 'D_VOIS', {d1_vois, d2_vois}, 'KFOLDS', 5, 'NN_TEMPLATE', nn_template, 'SPLIT', SPLIT); % d2 healthy, d1 AD
+nncv.get('TRAIN');
+
+% Evaluate the feature importance
+% fi_template = NNxMLP_FeatureImportance_VOIs('P', 1000, 'APPLY_BONFERRONI', true, 'APPLY_CONFIDENCE_INTERVALS', true);
+% fi_cv = NNxMLP_FeatureImportance_VOIs_CV('NNCV', nncv, 'FI_TEMPLATE', fi_template);
+% fi_cv_score = fi_cv.get('RESHAPED_AV_FEATURE_IMPORTANCE');
+%% Evaluate the performance
+confusion_matrix_mci = nncv.get('C_MATRIX');
+av_auc_mci = nncv.get('AV_AUC');
+av_macro_auc_mci = nncv.get('AV_MACRO_AUC');
+specificity_mci  = confusion_matrix_mci(1,1)/ sum(confusion_matrix_mci(:,1));
+sensitivity_mci = confusion_matrix_mci(2,2)/ sum(confusion_matrix_mci(:,2));
+
+
+
+%% Create a classifier cross-validation
+nn_template = NNClassifierMLP_VOIs('EPOCHS', 50, 'LAYERS', [128 128]);
+num_dp_d3 = d3.get('DP_DICT').get('LENGTH'); % Number of data points in d1 (assumed same as d1_vois)
+% Generate shuffled split indices for 5 folds
+shuffled_indices_d3 = randperm(num_dp_d3); % Random permutation of indices for d1
+% Calculate split points for 5 equal parts
+split_points_d3 = round(linspace(0, num_dp_d3, 6)); % 6 points to define 5 segments
+SPLIT = cell(2, 5);
+for i = 1:5 
+    SPLIT{1, i} = shuffled_indices_d1(split_points_d1(i)+1:split_points_d1(i+1));
+    SPLIT{2, i} = shuffled_indices_d3(split_points_d3(i)+1:split_points_d3(i+1));
+end
+nncv = NNClassifierMLP_CrossValidation_VOIs('D', {d1, d3},'D_VOIS', {d1_vois, d3_vois}, 'KFOLDS', 5, 'NN_TEMPLATE', nn_template, 'SPLIT', SPLIT);%d2 healthy, d3 MCI, d1 AD
+nncv.get('TRAIN');
+% fi_template = NNxMLP_FeatureImportance_VOIs('P', 1000, 'APPLY_BONFERRONI', true, 'APPLY_CONFIDENCE_INTERVALS', true);
+% fi_cv = NNxMLP_FeatureImportance_VOIs_CV('NNCV', nncv, 'FI_TEMPLATE', fi_template);
+% fi_cv_score = fi_cv.get('RESHAPED_AV_FEATURE_IMPORT
+
+
+
+%% Evaluate the performance
+confusion_matrix_ad = nncv.get('C_MATRIX');
+av_auc_ad = nncv.get('AV_AUC');
+av_macro_auc_ad = nncv.get('AV_MACRO_AUC');
+sensitivity_ad = confusion_matrix_ad(1,1)/ sum(confusion_matrix_ad(:,1));
+specificity_ad = confusion_matrix_ad(2,2)/ sum(confusion_matrix_ad(:,2));
+
+
+
+fprintf('Average AUC CN VS AD: %.4f\n', av_macro_auc_ad);
+fprintf('Average Sensitivity AD: %.4f\n', sensitivity_ad);
+fprintf('Average Specificity AD: %.4f\n', specificity_ad);
+
+fprintf('Average AUC CN VS MCI: %.4f\n', av_macro_auc_mci);
+fprintf('Average Sensitivity MCI: %.4f\n', sensitivity_mci);
+fprintf('Average Specificity MCI: %.4f\n', specificity_mci);

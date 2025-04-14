@@ -3,12 +3,12 @@
 
 clear variables %#ok<*NASGU>
 %% Load BrainAtlas
-im_ba = ImporterBrainAtlasXLS( ...
-    'FILE', [which('aal120_atlas.xlsx')], ...
-    'WAITBAR', true ...
-    );
-
-ba = im_ba.get('BA');
+% im_ba = ImporterBrainAtlasXLS( ...
+%     'FILE', [which('aal120_atlas.xlsx')], ...
+%     'WAITBAR', true ...
+%     );
+% 
+% ba = im_ba.get('BA');
 
 %% load group data
 %%group1
@@ -65,7 +65,7 @@ ba2 = im_ba2.get('BA');
 ba_list = {ba1, ba2}; 
 atlas = ba_list{1};
 br_dict = atlas.get('BR_DICT');
-selected_ids = {1, 2, 3};
+selected_ids = num2cell(1:94);
 selected_br = cellfun(@(id) br_dict.get('IT', id), selected_ids, 'UniformOutput', false);
 selected_br_dict = IndexedDictionary('IT_CLASS', 'BrainRegion', 'IT_LIST', selected_br);
 gr1 = SUVRConstructor('GR_PET',gr1_PET, ...
@@ -86,7 +86,8 @@ gr2 = SUVRConstructor('GR_PET',gr2_PET, ...
     'MAPPING_PATH_DICT', mapping_path_dict, ...
     'REF_REGION_LIST',{[9100,9110,9120,9130,9140,9150,9160,9170], 7}, ...
     'ATLAS_INDEX', 1, ...
-    'ATLAS_KIND', {'AAL2','TD'});
+    'ATLAS_KIND', {'AAL2','TD'}, ...
+    'SUVR_REGION_SELECTION', selected_br_dict);
 SUVR_gr2 = gr2.get('GR');
 
 gr3 = SUVRConstructor('GR_PET',gr3_PET, ...
@@ -96,7 +97,8 @@ gr3 = SUVRConstructor('GR_PET',gr3_PET, ...
     'MAPPING_PATH_DICT', mapping_path_dict, ...
     'REF_REGION_LIST',{[9100,9110,9120,9130,9140,9150,9160,9170], 7}, ...
     'ATLAS_INDEX', 1, ...
-    'ATLAS_KIND', {'AAL2','TD'});
+    'ATLAS_KIND', {'AAL2','TD'}, ...
+    'SUVR_REGION_SELECTION', selected_br_dict);
 SUVR_gr3 = gr3.get('GR');
 %% NN CV classification on 2 classes
 % create item lists of NNDataPoint_ST_CLA
@@ -228,57 +230,14 @@ d3_vois = NNDataset( ...
     );
 
 
-%% a classifier 
-
-nn_template = NNClassifierMLP_VOIs('EPOCHS', 50, 'LAYERS', [128 128]);
-num_dp_d1 = d1.get('DP_DICT').get('LENGTH'); % Number of data points in d1 (assumed same as d1_vois)
-num_dp_d2 = d2.get('DP_DICT').get('LENGTH'); % Number of data points in d2 (assumed same as d2_vois)
-% Generate shuffled split indices for 5 folds
-shuffled_indices_d1 = randperm(num_dp_d1); % Random permutation of indices for d1
-shuffled_indices_d2 = randperm(num_dp_d2); % Random permutation of indices for d2
-% Calculate split points for 5 equal parts
-split_points_d1 = round(linspace(0, num_dp_d1, 6)); % 6 points to define 5 segments
-split_points_d2 = round(linspace(0, num_dp_d2, 6)); % 6 points to define 5 segments
-SPLIT = cell(2, 5);
-for i = 1:5
-    SPLIT_1{1, i} = shuffled_indices_d1(split_points_d1(i)+1:split_points_d1(i+1));
-end
-for i = 1:5
-    SPLIT_2{1, i} = shuffled_indices_d2(split_points_d2(i)+1:split_points_d2(i+1));
-end
-d_split1 = NNDatasetSplit('D', d1, 'SPLIT', SPLIT_1);
-d_split2 = NNDatasetSplit('D', d2, 'SPLIT', SPLIT_2);
-
-d_vois_split1 = NNDatasetSplit('D', d1_vois, 'SPLIT', SPLIT_1);
-d_vois_split2 = NNDatasetSplit('D', d2_vois, 'SPLIT', SPLIT_2);
-
-% Combine training and test sets for VOI data
-d_vois_training = NNDatasetCombine('D_LIST', {d_vois_split1.get('D_LIST_IT', 1), d_vois_split2.get('D_LIST_IT', 1)}).get('D');
-d_vois_test = NNDatasetCombine('D_LIST', {d_vois_split1.get('D_LIST_IT', 2), d_vois_split2.get('D_LIST_IT', 2)}).get('D');
-
-% Combine training and test sets for VOI data
-d_training = NNDatasetCombine('D_LIST', {d_split1.get('D_LIST_IT', 1), d_split2.get('D_LIST_IT', 1)}).get('D');
-d_test = NNDatasetCombine('D_LIST', {d_split1.get('D_LIST_IT', 2), d_split2.get('D_LIST_IT', 2)}).get('D');
-
-% Step 6: Define and train the neural network with VOIs
-nn = NNClassifierMLP_VOIs( ...
-    'D', d_training, ...
-    'D_VOIS', d_vois_training, ...
-    'LAYERS', [128 128], ...
-    'VOI_SELECTION', {'Age', 'Sex', 'Education'} ...
-);
-nn.get('TRAIN');
-% Evaluate the feature importance
-fi = NNxMLP_FeatureImportance_VOIs('D', d_test,'D_VOIS',d_vois_test ,'NN', nn, 'P', 1000, 'APPLY_BONFERRONI', true, 'APPLY_CONFIDENCE_INTERVALS', true);
-fi_score = fi.get('RESHAPED_FEATURE_IMPORTANCE');
 
 %% Create a classifier cross-validation
 nn_template = NNClassifierMLP_VOIs('EPOCHS', 50, 'LAYERS', [128 128]);
 num_dp_d1 = d1.get('DP_DICT').get('LENGTH'); % Number of data points in d1 (assumed same as d1_vois)
 num_dp_d2 = d2.get('DP_DICT').get('LENGTH'); % Number of data points in d2 (assumed same as d2_vois)
 % Generate shuffled split indices for 5 folds
-shuffled_indices_d1 = randperm(num_dp_d1); % Random permutation of indices for d1
-shuffled_indices_d2 = randperm(num_dp_d2); % Random permutation of indices for d2
+% shuffled_indices_d1 = randperm(num_dp_d1); % Random permutation of indices for d1
+% shuffled_indices_d2 = randperm(num_dp_d2); % Random permutation of indices for d2
 % Calculate split points for 5 equal parts
 split_points_d1 = round(linspace(0, num_dp_d1, 6)); % 6 points to define 5 segments
 split_points_d2 = round(linspace(0, num_dp_d2, 6)); % 6 points to define 5 segments
@@ -291,9 +250,9 @@ nncv = NNClassifierMLP_CrossValidation_VOIs('D', {d1, d2}, 'D_VOIS', {d1_vois, d
 nncv.get('TRAIN');
 
 % Evaluate the feature importance
-fi_template = NNxMLP_FeatureImportance_VOIs('P', 1000, 'APPLY_BONFERRONI', true, 'APPLY_CONFIDENCE_INTERVALS', true);
-fi_cv = NNxMLP_FeatureImportance_VOIs_CV('NNCV', nncv, 'FI_TEMPLATE', fi_template);
-fi_cv_score = fi_cv.get('RESHAPED_AV_FEATURE_IMPORTANCE');
+% fi_template = NNxMLP_FeatureImportance_VOIs('P', 1000, 'APPLY_BONFERRONI', true, 'APPLY_CONFIDENCE_INTERVALS', true);
+% fi_cv = NNxMLP_FeatureImportance_VOIs_CV('NNCV', nncv, 'FI_TEMPLATE', fi_template);
+% fi_cv_score = fi_cv.get('RESHAPED_AV_FEATURE_IMPORTANCE');
 %% Evaluate the performance
 confusion_matrix_ad = nncv.get('C_MATRIX');
 av_auc_ad = nncv.get('AV_AUC');
@@ -307,8 +266,8 @@ nn_template = NNClassifierMLP_VOIs('EPOCHS', 50, 'LAYERS', [128 128]);
 num_dp_d3 = d3.get('DP_DICT').get('LENGTH'); % Number of data points in d1 (assumed same as d1_vois)
 num_dp_d2 = d2.get('DP_DICT').get('LENGTH'); % Number of data points in d2 (assumed same as d2_vois)
 % Generate shuffled split indices for 5 folds
-shuffled_indices_d3 = randperm(num_dp_d3); % Random permutation of indices for d1
-shuffled_indices_d2 = randperm(num_dp_d2); % Random permutation of indices for d2
+% shuffled_indices_d3 = randperm(num_dp_d3); % Random permutation of indices for d1
+% shuffled_indices_d2 = randperm(num_dp_d2); % Random permutation of indices for d2
 % Calculate split points for 5 equal parts
 split_points_d3 = round(linspace(0, num_dp_d3, 6)); % 6 points to define 5 segments
 split_points_d2 = round(linspace(0, num_dp_d2, 6)); % 6 points to define 5 segments
@@ -319,18 +278,11 @@ for i = 1:5
 end
 nncv = NNClassifierMLP_CrossValidation_VOIs('D', {d3, d2},'D_VOIS', {d3_vois, d2_vois}, 'KFOLDS', 5, 'NN_TEMPLATE', nn_template, 'SPLIT', SPLIT);%d2 healthy, d3 MCI, d1 AD
 nncv.get('TRAIN');
+% fi_template = NNxMLP_FeatureImportance_VOIs('P', 1000, 'APPLY_BONFERRONI', true, 'APPLY_CONFIDENCE_INTERVALS', true);
+% fi_cv = NNxMLP_FeatureImportance_VOIs_CV('NNCV', nncv, 'FI_TEMPLATE', fi_template);
+% fi_cv_score = fi_cv.get('RESHAPED_AV_FEATURE_IMPORT
 
-%% Evaluate the performance
-confusion_matrix_mci = nncv.get('C_MATRIX');
-av_auc_mci = nncv.get('AV_AUC');
-av_macro_auc_mci = nncv.get('AV_MACRO_AUC');
-specificity_mci  = confusion_matrix_mci(1,1)/ sum(confusion_matrix_mci(:,1));
-sensitivity_mci = confusion_matrix_mci(2,2)/ sum(confusion_matrix_mci(:,2));
 
-%% Create a classifier cross-validation
-nn_template = NNClassifierMLP_VOIs('EPOCHS', 50, 'LAYERS', [128 128]);
-nncv = NNClassifierMLP_CrossValidation_VOIs('D', {d3, d2},'D_VOIS', {d3_vois, d2_vois}, 'KFOLDS', 5, 'NN_TEMPLATE', nn_template);%d2 healthy, d3 MCI, d1 AD
-nncv.get('TRAIN');
 
 %% Evaluate the performance
 confusion_matrix_mci = nncv.get('C_MATRIX');

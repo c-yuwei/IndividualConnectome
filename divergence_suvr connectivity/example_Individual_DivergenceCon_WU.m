@@ -235,8 +235,8 @@ nn_template = NNClassifierMLP_VOIs('EPOCHS', 50, 'LAYERS', [128 128]);
 num_dp_d1 = d1.get('DP_DICT').get('LENGTH'); % Number of data points in d1 (assumed same as d1_vois)
 num_dp_d2 = d2.get('DP_DICT').get('LENGTH'); % Number of data points in d2 (assumed same as d2_vois)
 % Generate shuffled split indices for 5 folds
-shuffled_indices_d1 = randperm(num_dp_d1); % Random permutation of indices for d1
-shuffled_indices_d2 = randperm(num_dp_d2); % Random permutation of indices for d2
+% shuffled_indices_d1 = randperm(num_dp_d1); % Random permutation of indices for d1
+% shuffled_indices_d2 = randperm(num_dp_d2); % Random permutation of indices for d2
 % Calculate split points for 5 equal parts
 split_points_d1 = round(linspace(0, num_dp_d1, 6)); % 6 points to define 5 segments
 split_points_d2 = round(linspace(0, num_dp_d2, 6)); % 6 points to define 5 segments
@@ -263,8 +263,8 @@ nn_template = NNClassifierMLP_VOIs('EPOCHS', 50, 'LAYERS', [128 128]);
 num_dp_d3 = d3.get('DP_DICT').get('LENGTH'); % Number of data points in d1 (assumed same as d1_vois)
 num_dp_d2 = d2.get('DP_DICT').get('LENGTH'); % Number of data points in d2 (assumed same as d2_vois)
 % Generate shuffled split indices for 5 folds
-shuffled_indices_d3 = randperm(num_dp_d3); % Random permutation of indices for d1
-shuffled_indices_d2 = randperm(num_dp_d2); % Random permutation of indices for d2
+% shuffled_indices_d3 = randperm(num_dp_d3); % Random permutation of indices for d1
+% shuffled_indices_d2 = randperm(num_dp_d2); % Random permutation of indices for d2
 % Calculate split points for 5 equal parts
 split_points_d3 = round(linspace(0, num_dp_d3, 6)); % 6 points to define 5 segments
 split_points_d2 = round(linspace(0, num_dp_d2, 6)); % 6 points to define 5 segments

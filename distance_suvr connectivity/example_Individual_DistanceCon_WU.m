@@ -3,17 +3,17 @@
 
 clear variables %#ok<*NASGU>
 %% Load BrainAtlas
-im_ba = ImporterBrainAtlasXLS( ...
-    'FILE', [which('aal94_atlas.xlsx')], ...
-    'WAITBAR', true ...
-    );
-
-ba = im_ba.get('BA');
+% im_ba = ImporterBrainAtlasXLS( ...
+%     'FILE', [which('aal94_atlas.xlsx')], ...
+%     'WAITBAR', true ...
+%     );
+% 
+% ba = im_ba.get('BA');
 
 %% load Nifty images
 %%group1
 im_gr1_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('AD_PositiveAmyloid.vois.xlsx')) filesep 'AD_PositiveAmyloid'], ...
-    'NIFTI_TYPE', {'WM','GM'},...
+    'NIFTI_TYPE', {'wc1','wc2'},...
     'WAITBAR', true);
 gr1_WM_GM = im_gr1_WM_GM.get('GR');
 
@@ -24,7 +24,7 @@ gr1_PET = im_gr1_PET.get('GR');
 
 %%group2
 im_gr2_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY',[fileparts(which('Healthy_NegativeAmyloid.vois.xlsx')) filesep 'Healthy_NegativeAmyloid'], ...
-    'NIFTI_TYPE', {'WM','GM'},...
+    'NIFTI_TYPE', {'wc1','wc2'},...
     'WAITBAR', true);
 gr2_WM_GM = im_gr2_WM_GM.get('GR');
 
@@ -35,7 +35,7 @@ gr2_PET = im_gr2_PET.get('GR');
 
 %%group3
 im_gr3_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('MCI_PositiveAmyloid.vois.xlsx')) filesep 'MCI_PositiveAmyloid'], ...
-    'NIFTI_TYPE', {'WM','GM'},...
+    'NIFTI_TYPE', {'wc1','wc2'},...
     'WAITBAR', true);
 gr3_WM_GM = im_gr3_WM_GM.get('GR');
 
@@ -45,33 +45,60 @@ im_gr3_PET = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('MCI_PositiveA
 gr3_PET = im_gr3_PET.get('GR');
 %% ROI constructor
 
+
 path_dict = IndexedDictionary(...
     'IT_CLASS', 'FILE_PATH', ...
-    'IT_LIST', {FILE_PATH('PATH',which('upsampled_AAL2.nii')),FILE_PATH('PATH', which('upsampled_TD.nii'))} ...
+    'IT_LIST', {FILE_PATH('PATH', which('upsampled_AAL2.nii')),FILE_PATH('PATH', which('upsampled_TD.nii'))} ...
     );
 
+mapping_path_dict = IndexedDictionary(...
+    'IT_CLASS', 'FILE_PATH', ...
+    'IT_LIST', {FILE_PATH('PATH', which('AAL2_Atlas_Labels_Abbre.csv')),FILE_PATH('PATH', which('TD_Atlas_Labels.csv'))} ...
+    );
+% Import two brain atlases
+im_ba1 = ImporterBrainAtlasXLS('FILE', which('aal120_atlas.xlsx'),  'WAITBAR', true);
+ba1 = im_ba1.get('BA');
+im_ba2 = ImporterBrainAtlasXLS('FILE', which('TD_atlas.xlsx'), 'WAITBAR', true);
+ba2 = im_ba2.get('BA');
+
+% Create ItemList for BA
+ba_list = {ba1, ba2}; 
+atlas = ba_list{1};
+br_dict = atlas.get('BR_DICT');
+selected_ids = num2cell(1:120);
+selected_br = cellfun(@(id) br_dict.get('IT', id), selected_ids, 'UniformOutput', false);
+selected_br_dict = IndexedDictionary('IT_CLASS', 'BrainRegion', 'IT_LIST', selected_br);
 gr1 = SUVRConstructor('GR_PET',gr1_PET, ...
     'GR_T1',gr1_WM_GM, ...
-    'BA', ba,...
+    'BA', ba_list,...
     'ATLAS_PATH_DICT' ,path_dict, ...
+    'MAPPING_PATH_DICT', mapping_path_dict, ...
     'REF_REGION_LIST',{[9100,9110,9120,9130,9140,9150,9160,9170], 7}, ...
-    'ATLAS_KIND', {'AAL2','TD'});
+    'ATLAS_INDEX', 1, ...
+    'ATLAS_KIND', {'AAL2','TD'}, ...
+    'SUVR_REGION_SELECTION', selected_br_dict);
 SUVR_gr1 = gr1.get('GR');
 
 gr2 = SUVRConstructor('GR_PET',gr2_PET, ...
     'GR_T1',gr2_WM_GM, ...
-    'BA', ba,...
+    'BA', ba_list,...
     'ATLAS_PATH_DICT' ,path_dict, ...
+    'MAPPING_PATH_DICT', mapping_path_dict, ...
     'REF_REGION_LIST',{[9100,9110,9120,9130,9140,9150,9160,9170], 7}, ...
-    'ATLAS_KIND', {'AAL2','TD'});
+    'ATLAS_INDEX', 1, ...
+    'ATLAS_KIND', {'AAL2','TD'}, ...
+    'SUVR_REGION_SELECTION', selected_br_dict);
 SUVR_gr2 = gr2.get('GR');
 
 gr3 = SUVRConstructor('GR_PET',gr3_PET, ...
     'GR_T1',gr3_WM_GM, ...
-    'BA', ba,...
+    'BA', ba_list,...
     'ATLAS_PATH_DICT' ,path_dict, ...
+    'MAPPING_PATH_DICT', mapping_path_dict, ...
     'REF_REGION_LIST',{[9100,9110,9120,9130,9140,9150,9160,9170], 7}, ...
-    'ATLAS_KIND', {'AAL2','TD'});
+    'ATLAS_INDEX', 1, ...
+    'ATLAS_KIND', {'AAL2','TD'}, ...
+    'SUVR_REGION_SELECTION', selected_br_dict);
 SUVR_gr3 = gr3.get('GR');
 
 %% Load Groups of SubjectCON Distance based
@@ -100,16 +127,33 @@ a_WU2 = AnalyzeEnsemble_CON_WU( ...
     'GR', Con_gr2 ...
     );
 
+a_WU3 = AnalyzeEnsemble_CON_WU( ...
+    'TEMPLATE', a_WU1, ...
+    'GR', Con_gr3 ...
+    );
+
 a_WU1.memorize('G_DICT');
 a_WU2.memorize('G_DICT');
+a_WU3.memorize('G_DICT');
 
-c_WU = CompareEnsemble('P', 1000, 'A1', a_WU1, 'A2', a_WU2, 'MEMORIZE', true); % Compare Groups % Group Comparison
+% a_WU1.get('MEASUREENSEMBLE', 'Degree').get('M');
+% a_BUD1.get('MEASUREENSEMBLE', 'DegreeAv').get('M');
+% a_BUD1.get('MEASUREENSEMBLE', 'Distance').get('M');
 
-degree_WU_diff = c_WU.get('COMPARISON', 'Degree').get('DIFF');
-degree_WU_p1 = c_WU.get('COMPARISON', 'Degree').get('P1');
-degree_WU_p2 = c_WU.get('COMPARISON', 'Degree').get('P2');
-degree_WU_cil = c_WU.get('COMPARISON', 'Degree').get('CIL');
-degree_WU_ciu = c_WU.get('COMPARISON', 'Degree').get('CIU');
+% a_WU2.get('MEASUREENSEMBLE', 'Degree').get('M');
+% a_BUD2.get('MEASUREENSEMBLE', 'DegreeAv').get('M');
+% a_BUD2.get('MEASUREENSEMBLE', 'Distance').get('M');
+
+% a_WU3.get('MEASUREENSEMBLE', 'Degree').get('M');
+% a_BUD3.get('MEASUREENSEMBLE', 'DegreeAv').get('M');
+% a_BUD3.get('MEASUREENSEMBLE', 'Distance').get('M');
+% c_WU = CompareEnsemble('P', 1000, 'A1', a_WU1, 'A2', a_WU2, 'MEMORIZE', true); % Compare Groups % Group Comparison
+% 
+% degree_WU_diff = c_WU.get('COMPARISON', 'Degree').get('DIFF');
+% degree_WU_p1 = c_WU.get('COMPARISON', 'Degree').get('P1');
+% degree_WU_p2 = c_WU.get('COMPARISON', 'Degree').get('P2');
+% degree_WU_cil = c_WU.get('COMPARISON', 'Degree').get('CIL');
+% degree_WU_ciu = c_WU.get('COMPARISON', 'Degree').get('CIU');
 
 
 
@@ -248,8 +292,8 @@ nn_template = NNClassifierMLP_VOIs('EPOCHS', 50, 'LAYERS', [128 128]);
 num_dp_d1 = d1.get('DP_DICT').get('LENGTH'); % Number of data points in d1 (assumed same as d1_vois)
 num_dp_d2 = d2.get('DP_DICT').get('LENGTH'); % Number of data points in d2 (assumed same as d2_vois)
 % Generate shuffled split indices for 5 folds
-shuffled_indices_d1 = randperm(num_dp_d1); % Random permutation of indices for d1
-shuffled_indices_d2 = randperm(num_dp_d2); % Random permutation of indices for d2
+% shuffled_indices_d1 = randperm(num_dp_d1); % Random permutation of indices for d1
+% shuffled_indices_d2 = randperm(num_dp_d2); % Random permutation of indices for d2
 % Calculate split points for 5 equal parts
 split_points_d1 = round(linspace(0, num_dp_d1, 6)); % 6 points to define 5 segments
 split_points_d2 = round(linspace(0, num_dp_d2, 6)); % 6 points to define 5 segments
@@ -261,10 +305,10 @@ end
 nncv_ad = NNClassifierMLP_CrossValidation_VOIs('D', {d1, d2}, 'D_VOIS', {d1_vois, d2_vois}, 'KFOLDS', 5, 'NN_TEMPLATE', nn_template, 'SPLIT', SPLIT); % d2 healthy, d1 AD
 nncv_ad.get('TRAIN');
 
-% Evaluate the feature importance
-fi_template = NNxMLP_FeatureImportance_VOIs('P', 1000, 'APPLY_BONFERRONI', true, 'APPLY_CONFIDENCE_INTERVALS', true);
-fi_cv = NNxMLP_FeatureImportance_CV('NNCV', nncv_ad, 'FI_TEMPLATE', fi_template);
-fi_cv_score = fi_cv.get('RESHAPED_AV_FEATURE_IMPORTANCE');
+% % Evaluate the feature importance
+% fi_template = NNxMLP_FeatureImportance_VOIs('P', 1000, 'APPLY_BONFERRONI', true, 'APPLY_CONFIDENCE_INTERVALS', true);
+% fi_cv = NNxMLP_FeatureImportance_VOIs_CV('NNCV', nncv_ad, 'FI_TEMPLATE', fi_template);
+% fi_cv_score = fi_cv.get('RESHAPED_AV_FEATURE_IMPORTANCE');
 
 
 %% Evaluate the performance
@@ -280,8 +324,8 @@ nn_template = NNClassifierMLP_VOIs('EPOCHS', 50, 'LAYERS', [128 128]);
 num_dp_d3 = d3.get('DP_DICT').get('LENGTH'); % Number of data points in d1 (assumed same as d1_vois)
 num_dp_d2 = d2.get('DP_DICT').get('LENGTH'); % Number of data points in d2 (assumed same as d2_vois)
 % Generate shuffled split indices for 5 folds
-shuffled_indices_d3 = randperm(num_dp_d3); % Random permutation of indices for d1
-shuffled_indices_d2 = randperm(num_dp_d2); % Random permutation of indices for d2
+% shuffled_indices_d3 = randperm(num_dp_d3); % Random permutation of indices for d1
+% shuffled_indices_d2 = randperm(num_dp_d2); % Random permutation of indices for d2
 % Calculate split points for 5 equal parts
 split_points_d3 = round(linspace(0, num_dp_d3, 6)); % 6 points to define 5 segments
 split_points_d2 = round(linspace(0, num_dp_d2, 6)); % 6 points to define 5 segments

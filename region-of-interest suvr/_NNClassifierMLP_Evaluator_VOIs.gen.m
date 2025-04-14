@@ -95,6 +95,7 @@ C_MATRIX (result, matrix) provides the confusion matrix for dual-input predictio
 %%%% ¡calculate!
 d = nne.get('D');
 d_vois = nne.get('D_VOIS');
+nn = nne.get('NN');
 predictions = cell2mat(nn.get('PREDICT', d, d_vois));
 if isempty(predictions)
     value = [];
