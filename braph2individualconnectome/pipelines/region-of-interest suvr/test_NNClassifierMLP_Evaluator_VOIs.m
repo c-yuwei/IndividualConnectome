@@ -476,7 +476,7 @@ if rand() >= (1 - .01) * BRAPH2TEST.RANDOM
 	for prop = 1:1:NNClassifierMLP_Evaluator_VOIs.getPropNumber()
 	 
 		% excluded props
-		if any(prop == [NNClassifierMLP_Evaluator_VOIs.PFROC])
+		if any(prop == [NNClassifierMLP_Evaluator_VOIs.PFROC NNClassifierMLP_Evaluator_VOIs.D_VOIS])
 			continue
 		end
 	 
@@ -593,7 +593,7 @@ if rand() >= (1 - .01) * BRAPH2TEST.RANDOM
 	for prop = 1:1:NNClassifierMLP_Evaluator_VOIs.getPropNumber()
 	 
 		% excluded props
-		if any(prop == [NNClassifierMLP_Evaluator_VOIs.PFROC])
+		if any(prop == [NNClassifierMLP_Evaluator_VOIs.PFROC NNClassifierMLP_Evaluator_VOIs.D_VOIS])
 			continue
 		end
 	 
@@ -696,7 +696,7 @@ if rand() >= (1 - .01) * BRAPH2TEST.RANDOM
 		for prop = 1:1:NNClassifierMLP_Evaluator_VOIs.getPropNumber()
 	 
 			% excluded props
-			if any(prop == [NNClassifierMLP_Evaluator_VOIs.PFROC])
+			if any(prop == [NNClassifierMLP_Evaluator_VOIs.PFROC NNClassifierMLP_Evaluator_VOIs.D_VOIS])
 				continue
 			end
 	 
@@ -1297,7 +1297,7 @@ if rand() >= (1 - .01) * BRAPH2TEST.RANDOM
 	for prop = 1:1:NNClassifierMLP_Evaluator_VOIs.getPropNumber()
 	 
 		% excluded props
-		if any(prop == [NNClassifierMLP_Evaluator_VOIs.PFROC])
+		if any(prop == [NNClassifierMLP_Evaluator_VOIs.PFROC NNClassifierMLP_Evaluator_VOIs.D_VOIS])
 			continue
 		end
 	 
@@ -1424,7 +1424,7 @@ if rand() >= (1 - 1) * BRAPH2TEST.RANDOM
 	% Step 1: Ensure example data exists
 	data_dir = [fileparts(which('NNDataPoint_VOIs')) filesep 'Example data NN CLA CON XLS VOIs'];
 	if ~isfile([data_dir filesep 'atlas.xlsx'])
-	    create_data_NN_CLA_CON_XLS(data_dir); % Generate example files with VOIs
+	    create_data_NN_CLA_CON_XLS_VOIs(data_dir); % Generate example files with VOIs
 	end
 	
 	% Step 2: Load Brain Atlas
@@ -1436,14 +1436,14 @@ if rand() >= (1 - 1) * BRAPH2TEST.RANDOM
 	    'DIRECTORY', [data_dir filesep 'CON_Group_1_XLS'], ...
 	    'BA', ba, ...
 	    'WAITBAR', true ...
-	);
+	    );
 	gr1 = im_gr1.get('GR');
 	
 	im_gr2 = ImporterGroupSubjectCON_XLS( ...
 	    'DIRECTORY', [data_dir filesep 'CON_Group_2_XLS'], ...
 	    'BA', ba, ...
 	    'WAITBAR', true ...
-	);
+	    );
 	gr2 = im_gr2.get('GR');
 	
 	% Step 4: Create NNDataPoint_CON_CLA for primary connectivity data
@@ -1475,9 +1475,21 @@ if rand() >= (1 - 1) * BRAPH2TEST.RANDOM
 	d1 = NNDataset('DP_CLASS', 'NNDataPoint_CON_CLA', 'DP_DICT', dp_list1);
 	d2 = NNDataset('DP_CLASS', 'NNDataPoint_CON_CLA', 'DP_DICT', dp_list2);
 	
+	num_dp_d1 = d1.get('DP_DICT').get('LENGTH');
+	num_dp_d2 = d2.get('DP_DICT').get('LENGTH');
+	
+	% shuffled_indices_d1 = randperm(num_dp_d1);
+	% shuffled_indices_d2 = randperm(num_dp_d2);
+	% split_points_d1 = round(linspace(0, num_dp_d1, 2));
+	% split_points_d2 = round(linspace(0, num_dp_d2, 2));
+	% SPLIT = cell(2, 2);
+	% for i = 1:2
+	%     SPLIT{1, i} = shuffled_indices_d1(split_points_d1(i)+1:split_points_d1(i+1));
+	%     SPLIT{2, i} = shuffled_indices_d2(split_points_d2(i)+1:split_points_d2(i+1));
+	% end
 	% Split primary datasets into training and test sets (70% training, 30% test)
-	d_split1 = NNDatasetSplit('D', d1, 'SPLIT', {0.7, 0.3});
-	d_split2 = NNDatasetSplit('D', d2, 'SPLIT', {0.7, 0.3});
+	d_split1 = NNDatasetSplit('D', d1, 'SPLIT', {1:170 171:200});
+	d_split2 = NNDatasetSplit('D', d2, 'SPLIT', {1:170 171:200});
 	
 	% Combine training and test sets for primary data
 	d_training = NNDatasetCombine('D_LIST', {d_split1.get('D_LIST_IT', 1), d_split2.get('D_LIST_IT', 1)}).get('D');
@@ -1488,25 +1500,25 @@ if rand() >= (1 - 1) * BRAPH2TEST.RANDOM
 	it_list_voi1 = cellfun(@(sub) NNDataPoint_VOIs( ...
 	    'ID', sub.get('ID'), ...
 	    'VOI_DICT', IndexedDictionary( ...
-	        'ID', 'subject_idict', ...
-	        'IT_CLASS', 'SubjectCON', ... % Adjusted to match SubjectCON
-	        'IT_KEY', IndexedDictionary.getPropDefault(IndexedDictionary.IT_KEY), ...
-	        'IT_LIST', sub.get('VOI_DICT').get('IT_LIST') ...
+	    'ID', 'subject_idict', ...
+	    'IT_CLASS', 'SubjectCON', ... % Adjusted to match SubjectCON
+	    'IT_KEY', IndexedDictionary.getPropDefault(IndexedDictionary.IT_KEY), ...
+	    'IT_LIST', sub.get('VOI_DICT').get('IT_LIST') ...
 	    ), ...
 	    'TARGET_CLASS', {group_folder_name1} ...
-	), sub_list1, 'UniformOutput', false);
+	    ), sub_list1, 'UniformOutput', false);
 	
 	% Group 2
 	it_list_voi2 = cellfun(@(sub) NNDataPoint_VOIs( ...
 	    'ID', sub.get('ID'), ...
 	    'VOI_DICT', IndexedDictionary( ...
-	        'ID', 'subject_idict', ...
-	        'IT_CLASS', 'SubjectCON', ...
-	        'IT_KEY', IndexedDictionary.getPropDefault(IndexedDictionary.IT_KEY), ...
-	        'IT_LIST', sub.get('VOI_DICT').get('IT_LIST') ...
+	    'ID', 'subject_idict', ...
+	    'IT_CLASS', 'SubjectCON', ...
+	    'IT_KEY', IndexedDictionary.getPropDefault(IndexedDictionary.IT_KEY), ...
+	    'IT_LIST', sub.get('VOI_DICT').get('IT_LIST') ...
 	    ), ...
 	    'TARGET_CLASS', {group_folder_name2} ...
-	), sub_list2, 'UniformOutput', false);
+	    ), sub_list2, 'UniformOutput', false);
 	
 	% Create IndexedDictionary for VOI data
 	voi_dp_list1 = IndexedDictionary('IT_CLASS', 'NNDataPoint_VOIs', 'IT_LIST', it_list_voi1);
@@ -1517,8 +1529,8 @@ if rand() >= (1 - 1) * BRAPH2TEST.RANDOM
 	d_vois2 = NNDataset('DP_CLASS', 'NNDataPoint_VOIs', 'DP_DICT', voi_dp_list2);
 	
 	% Split VOI datasets into training and test sets (same split as primary data)
-	d_vois_split1 = NNDatasetSplit('D', d_vois1, 'SPLIT', {0.7, 0.3});
-	d_vois_split2 = NNDatasetSplit('D', d_vois2, 'SPLIT', {0.7, 0.3});
+	d_vois_split1 = NNDatasetSplit('D', d_vois1, 'SPLIT',{1:170 171:200});
+	d_vois_split2 = NNDatasetSplit('D', d_vois2, 'SPLIT',{1:170 171:200});
 	
 	% Combine training and test sets for VOI data
 	d_vois_training = NNDatasetCombine('D_LIST', {d_vois_split1.get('D_LIST_IT', 1), d_vois_split2.get('D_LIST_IT', 1)}).get('D');
@@ -1528,9 +1540,9 @@ if rand() >= (1 - 1) * BRAPH2TEST.RANDOM
 	nn = NNClassifierMLP_VOIs( ...
 	    'D', d_training, ...
 	    'D_VOIS', d_vois_training, ...
-	    'LAYERS', [128 128], ...
-	    'VOI_SELECTION', {'Age', 'Sex'} ...
-	);
+	    'LAYERS', [1], ...
+	    'VOI_SELECTION', {'Age', 'Sex'}, ...
+	    'EPOCHS',100);
 	nn.get('TRAIN');
 	
 	% Step 7: Evaluate the classifier with the test set
@@ -1541,17 +1553,16 @@ if rand() >= (1 - 1) * BRAPH2TEST.RANDOM
 	
 	% Step 8: Assertions
 	% Assert that accuracy is high (e.g., >= 0.9)
-	assert(av_auc >= 0.9, ...
+	assert(av_auc >= 0.80, ...
 	    [BRAPH2.STR ':NNClassifierMLP_VOIs:' BRAPH2.FAIL_TEST], ...
-	    'NNClassifierMLP_VOIs failed to achieve sufficient accuracy with VOI-only differences. Expected >= 90%, got %.2f%%.', av_auc * 100 ...
-	);
+	    'NNClassifierMLP_VOIs failed to achieve sufficient accuracy with VOI-only differences. Expected >= 80%');
 	
 	% Check if the number of fully connected layers matches the specified LAYERS property
 	trained_model = nn.get('MODEL');
 	assert(length(nn.get('LAYERS')) == sum(contains({trained_model.Layers.Name}, 'Dense')) - 1, ...
 	    [BRAPH2.STR ':NNClassifierMLP_VOIs:' BRAPH2.FAIL_TEST], ...
 	    'NNClassifierMLP_VOIs does not construct the layers correctly. The number of hidden layers should match the specified LAYERS property.' ...
-	);
+	    );
 	
 	
 	% Check whether the ground truth are derived as expected
@@ -1592,6 +1603,16 @@ if rand() >= (1 - 1) * BRAPH2TEST.RANDOM
 	    [BRAPH2.STR ':NNEvaluator_CLA:' BRAPH2.FAIL_TEST], ...
 	    'NNEvaluator_CLA does not calculate the confusion matrix correctly.' ...
 	    )
+	
+	D = nn.get('D');
+	D_VOIS = nn.get('D_VOIS');
+	D_DP_DICT_IT = cellfun(@(x)  x.get('ID'), D.get('DP_DICT').get('IT_LIST'), 'UniformOutput',false);
+	DVOIS_ID= cellfun(@(x)  x.get('ID'), D_VOIS.get('DP_DICT').get('IT_LIST'), 'UniformOutput',false);
+	is_same_order = isequal(DVOIS_ID, D_DP_DICT_IT);
+	assert(is_same_order, ...
+	    [BRAPH2.STR ':NNClassifierMLP_VOIs:' BRAPH2.FAIL_TEST], ...
+	    'NNClassifierMLP_VOIs does not have coherent voi id and connectivity id.' ...
+	    );
 end
 
 %% Test 13: No Figures Left

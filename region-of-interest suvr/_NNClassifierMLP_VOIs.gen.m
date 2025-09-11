@@ -114,7 +114,7 @@ DESCRIPTION (constant, string) is the description of the neural network multi-la
 'A neural network multi-layer perceptron classifier (NNClassifierMLP) comprises a multi-layer perceptron classifier model and a given dataset. NNClassifierMLP trains the multi-layer perceptron classifier with a formatted inputs ("CB", channel and batch) derived from the given dataset.'
 
 %%% ¡prop!
-TEMPLATE (parameter, item) is the template of the neural network multi-layer perceptron classifier.
+TEMPLATE (parameter, item) is the template of the neural network multi-layer perceptron classifier with VOI.
 %%%% ¡settings!
 'NNClassifierMLP_VOIs'
 
@@ -134,16 +134,9 @@ NOTES (metadata, string) are some specific notes about the neural network multi-
 'NNClassifierMLP_VOIs notes'
 
 %%% ¡prop!
-D (data, item) is the dataset to train the neural network model, and its data point class DP_CLASS defaults to one of the compatible classes within the set of DP_CLASSES.
-%%%% ¡settings!
-'NNDataset'
-%%%% ¡default!
-NNDataset('DP_CLASS', 'NNDataPoint_CON_CLA')
-
-%%% ¡prop!
 DP_CLASSES (parameter, classlist) is the list of compatible data points.
 %%%% ¡default!
-{'NNDataPoint_CON_CLA' 'NNDataPoint_CON_FUN_MP_CLA' 'NNDataPoint_FUN_CLA' 'NNDataPoint_ST_CLA' 'NNDataPoint_ST_MM_CLA' 'NNDataPoint_Graph_CLA' 'NNDataPoint_Measure_CLA' 'NNDataPoint_VOIs'}
+{'NNDataPoint_CON_CLA' 'NNDataPoint_FUN_CLA' 'NNDataPoint_ST_CLA' 'NNDataPoint_Graph_CLA' 'NNDataPoint_Measure_CLA' 'NNDataPoint_VOIs'}
 
 %%% ¡prop!
 MODEL (result, net) is a trained neural network model.
@@ -248,12 +241,14 @@ end
 %%% ¡prop!
 VOI_SELECTION (parameter, stringlist) defines which VOIs should be included in the analysis.
 %%%% ¡default!
-{'Age', 'Sex','Education'}; % Example: Default selected VOIs
+{'Age', 'Sex','Education'}
 
 %%% ¡prop!
-D_VOIs (data, item) is the voi dataset to train the neural network model, and its data point class DP_CLASS defaults to one of the compatible classes within the set of DP_CLASSES.
+D_VOIS (data, item) is the voi dataset to train the neural network model, and its data point class DP_CLASS defaults to one of the compatible classes within the set of DP_CLASSES.
 %%%% ¡settings!
 'NNDataset'
+%%%% ¡default!
+NNDataset('DP_CLASS', 'NNDataPoint_VOIs')
 
 %%% ¡prop!
 VOI_INPUT (query, cell) extracts VOI values based on the selection list.
@@ -293,6 +288,9 @@ value = {voi_data};
 
 
 %% ¡tests!
+
+%%% ¡excluded_props!
+[NNClassifierMLP_VOIs.D_VOIS]
 
 %%% ¡test!
 %%%% ¡name!
@@ -353,8 +351,8 @@ d1 = NNDataset('DP_CLASS', 'NNDataPoint_CON_CLA', 'DP_DICT', dp_list1);
 d2 = NNDataset('DP_CLASS', 'NNDataPoint_CON_CLA', 'DP_DICT', dp_list2);
 
 % Split primary datasets into training and test sets (70% training, 30% test)
-d_split1 = NNDatasetSplit('D', d1, 'SPLIT', {0.7, 0.3});
-d_split2 = NNDatasetSplit('D', d2, 'SPLIT', {0.7, 0.3});
+d_split1 = NNDatasetSplit('D', d1, 'SPLIT', {1:1:5 6:1:10});
+d_split2 = NNDatasetSplit('D', d2, 'SPLIT', {1:1:5 6:1:10});
 
 % Combine training and test sets for primary data
 d_training = NNDatasetCombine('D_LIST', {d_split1.get('D_LIST_IT', 1), d_split2.get('D_LIST_IT', 1)}).get('D');
@@ -394,8 +392,8 @@ d_vois1 = NNDataset('DP_CLASS', 'NNDataPoint_VOIs', 'DP_DICT', voi_dp_list1);
 d_vois2 = NNDataset('DP_CLASS', 'NNDataPoint_VOIs', 'DP_DICT', voi_dp_list2);
 
 % Split VOI datasets into training and test sets (same split as primary data)
-d_vois_split1 = NNDatasetSplit('D', d_vois1, 'SPLIT', {0.7, 0.3});
-d_vois_split2 = NNDatasetSplit('D', d_vois2, 'SPLIT', {0.7, 0.3});
+d_vois_split1 = NNDatasetSplit('D', d_vois1, 'SPLIT', {1:1:5 6:1:10});
+d_vois_split2 = NNDatasetSplit('D', d_vois2, 'SPLIT', {1:1:5 6:1:10});
 
 % Combine training and test sets for VOI data
 d_vois_training = NNDatasetCombine('D_LIST', {d_vois_split1.get('D_LIST_IT', 1), d_vois_split2.get('D_LIST_IT', 1)}).get('D');
@@ -415,4 +413,21 @@ trained_model = nn.get('MODEL');
 assert(length(nn.get('LAYERS')) == sum(contains({trained_model.Layers.Name}, 'Dense')) - 1, ...
     [BRAPH2.STR ':NNClassifierMLP_VOIs:' BRAPH2.FAIL_TEST], ...
     'NNClassifierMLP_VOIs does not construct the layers correctly. The number of hidden layers should match the specified LAYERS property.' ...
+);
+
+% Check if the number of fully connected layers matches the specified LAYERS property
+trained_model = nn.get('MODEL');
+assert(length(nn.get('LAYERS')) == sum(contains({trained_model.Layers.Name}, 'Dense')) - 1, ...
+    [BRAPH2.STR ':NNClassifierMLP_VOIs:' BRAPH2.FAIL_TEST], ...
+    'NNClassifierMLP_VOIs does not construct the layers correctly. The number of hidden layers should match the specified LAYERS property.' ...
+);
+D = nn.get('D');
+D_VOIS = nn.get('D_VOIS');
+D_DP_DICT_IT = cellfun(@(x)  x.get('ID'), D.get('DP_DICT').get('IT_LIST'), 'UniformOutput',false);
+DVOIS_VOI= cellfun(@(x)  x.get('VOI_DICT'), D_VOIS.get('DP_DICT').get('IT_LIST'), 'UniformOutput',false);
+DVOIS_ID= cellfun(@(x)  x.get('ID'), D_VOIS.get('DP_DICT').get('IT_LIST'), 'UniformOutput',false);
+is_same_order = isequal(DVOIS_ID, D_DP_DICT_IT);
+assert(is_same_order, ...
+    [BRAPH2.STR ':NNClassifierMLP_VOIs:' BRAPH2.FAIL_TEST], ...
+    'NNClassifierMLP_VOIs does not have coherent voi id and connectivity id.' ...
 );

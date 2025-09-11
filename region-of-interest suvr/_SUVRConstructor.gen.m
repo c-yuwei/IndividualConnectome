@@ -230,6 +230,9 @@ if ~isempty(roic.get('REF_REGION_LIST'))
         % Set the REF_BR_DICT with the list of reference brain regions
         roic.set('REF_BR_DICT', IndexedDictionary('IT_CLASS', 'BrainRegion', 'IT_LIST', ref_br_list));
     end
+% else
+%     % If REF_REGION_LIST is empty, ensure it’s a 0×0 empty cell array
+%     roic.set('REF_REGION_LIST', {});
 end
 
 %%% ¡prop!
@@ -242,7 +245,7 @@ selected_br = roic.get('REF_BR_DICT').get('IT_LIST'); % List of selected BrainRe
 ba_list = roic.get('BA');
 region_ids = roic.get('ATLAS_REGION_IDS');
 labels = roic.get('ATLAS_LABELS');
-ref_region_list = cell(length(ba_list), 1); % One cell per atlas
+ref_region_list = cell(length(ba_list)); % One cell per atlas
 for atlas_idx = 1:length(ba_list)
     ba = ba_list{atlas_idx};
     br_dict = ba.get('BR_DICT');
@@ -257,7 +260,7 @@ for atlas_idx = 1:length(ba_list)
         ref_region_list{atlas_idx} =  [ref_region{:}];
     end
 end
-if isempty(Ref_region_list)
+if isempty(Ref_region_list) && ~isempty(ref_region_list)
     roic.set('REF_REGION_LIST', ref_region_list);
 end
 %%%% ¡gui!
@@ -268,14 +271,19 @@ pr = SUVRConstructorPP_BR_DICT('EL', roic, 'PROP', SUVRConstructor.REF_BR_DICT, 
 %%% ¡prop!
 ATLAS_KIND (parameter, stringlist) is the list of atlas types needed for ROI analysis.
 %%%% ¡default!
-{"aal90", "TD"}
+{'aal90', 'TD'}
 
 %%% ¡prop!
 ATLAS_INDEX (parameter, scalar) is the index of the atlas defined by the user for SUVR ROI list.
 %%%% ¡default!
-1
+1;
 %%%% ¡postset!
 ba_list = roic.get('BA'); % Ensure brain atlas is obtained correctly
+if isempty(ba_list)
+    br = BrainRegion('ID', 'SingleRegion');
+    ba = BrainAtlas('ID', 'Atlas', 'BR_DICT', IndexedDictionary('IT_CLASS', 'BrainRegion', 'IT_LIST', {br}));
+    ba_list = {ba};
+end
 atlas_index = roic.get('ATLAS_INDEX');
 ba = ba_list{atlas_index};
 if isempty(roic.get('SUVR_REGION_SELECTION').get('IT_LIST')) && ~isempty(ba.get('BR_DICT').get('IT_LIST'))
@@ -442,8 +450,8 @@ for i = 1:1:gr_PET.get('SUB_DICT').get('LENGTH')
             'LABEL', ['Subject ST ' int2str(i)], ...
             'NOTES', ['Notes on subject ST ' int2str(i)], ...
             'BA', ba_filtered, ... % Use filtered atlas
-            'ST', SUVR ...
-            );
+            'ST', SUVR, ...
+            'VOI_DICT', gr_PET.get('SUB_DICT').get('IT', i).get('VOI_DICT'));
         % sub = SubjectST( ...
         %     'ID', sub_id_t1, ...
         %     'LABEL', ['Subject ST ' int2str(i)], ...
@@ -474,8 +482,9 @@ Verify SUVR Calculation from Example Data
 % Generate example data
 example_data_dir = fullfile(fileparts(which('SUVRConstructor')), 'Example data Nifti');
 % Run the example data creation script
-create_example_NIfTI();
-
+if ~exist(example_data_dir)
+    create_example_NIfTI();
+end
 im_ba = ImporterBrainAtlasXLS( ...
     'FILE', [which('aal94_atlas.xlsx')], ...
     'WAITBAR', true ...
@@ -487,7 +496,7 @@ ba = im_ba.get('BA');
 vois_file = fullfile(example_data_dir, 'Group1.vois.xlsx');
 
 % Read the VOIs file
-vois_table = readtable(vois_file);
+vois_table = readtable(vois_file,'VariableNamingRule','preserve');
 
 im_gr1_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY', [example_data_dir filesep 'Group1'], ...
     'NIFTI_TYPE', {'T1'}, ...
@@ -545,7 +554,7 @@ region_col_idx = find(contains(headers, strcat(string(ref_region_list{1}), '_Mea
 % Extract Region means for all subjects
 region_means = table2array(vois_table(2:end, region_col_idx));
 
-expected_subject_ids = vois_table.SubjectID(2:end); % Assuming 'SubjectID' column exists
+expected_subject_ids = vois_table.("Subject ID")(2:end); % Assuming 'SubjectID' column exists
 % Initialize a matrix for reordered means
 reordered_calculated_means = zeros(size(expected_means));
 
@@ -575,3 +584,26 @@ assert(percentage_within_threshold >= 80, ...
 % Compare calculated and expected values
 assert(isequal(size(calculated_means), size(normalized_means)), ...
     'Size mismatch between calculated and expected mean values.');
+% varify if regions have been selected correctly
+selected_br_dict = IndexedDictionary('IT_CLASS', 'BrainRegion', 'IT_LIST', {selected_br{1:5}});
+gr = SUVRConstructor('GR_PET', gr1_PET, ...
+    'GR_T1', gr1_WM_GM, ...
+    'BA', {ba}, ...
+    'ATLAS_PATH_DICT', path_dict, ...
+    'MAPPING_PATH_DICT', mapping_path_dict, ...
+    'REF_REGION_LIST', ref_region_list, ...
+    'ATLAS_KIND', {'AAL2'}, ...
+    'SUVR_REGION_SELECTION', selected_br_dict);
+suvr_gr = gr.get('GR');
+% varify if regions have been selected correctly
+subj_list_length = cellfun(@(x) length(x.get('ST')), suvr_gr.get('SUB_DICT').get('IT_LIST'), 'UniformOutput',false);
+subj_list_lengths = cell2mat(subj_list_length);
+selected_region_num = length({selected_br{1:5}});
+
+% Check if each element in subj_list_lengths equals selected_region_num
+all_match = all(subj_list_lengths == selected_region_num);
+
+% Assert the comparison
+assert(all_match, ...
+    'Mismatch: Not all subject list lengths (%s) equal selected_region_num (%d).', ...
+    num2str(subj_list_lengths), selected_region_num);

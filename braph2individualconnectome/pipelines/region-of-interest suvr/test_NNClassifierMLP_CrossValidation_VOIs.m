@@ -1749,13 +1749,26 @@ if rand() >= (1 - 1) * BRAPH2TEST.RANDOM
 	
 	% Set up cross-validation with VOIs
 	kfolds = 3; % Small number of folds for efficient testing
-	nncv = NNClassifierMLP_CrossValidation_VOIs('KFOLDS', kfolds, 'D', {d1, d2}, 'D_VOIS', {d_vois1, d_vois2});
+	
+	num_dp_d1 = d1.get('DP_DICT').get('LENGTH');
+	num_dp_d2 = d2.get('DP_DICT').get('LENGTH');
+	shuffled_indices_d1 = randperm(num_dp_d1);
+	shuffled_indices_d2 = randperm(num_dp_d2);
+	split_points_d1 = round(linspace(0, num_dp_d1, 6));
+	split_points_d2 = round(linspace(0, num_dp_d2, 6));
+	SPLIT = cell(2, kfolds);
+	for i = 1:kfolds
+	    SPLIT{1, i} = shuffled_indices_d1(split_points_d1(i)+1:split_points_d1(i+1));
+	    SPLIT{2, i} = shuffled_indices_d2(split_points_d2(i)+1:split_points_d2(i+1));
+	end
+	nncv = NNClassifierMLP_CrossValidation_VOIs('KFOLDS', kfolds, 'D', {d1, d2}, 'D_VOIS', {d_vois1, d_vois2}, 'SPLIT', SPLIT);
 	
 	% Retrieve lists for verification
 	d_list = nncv.get('D_LIST');
 	d_vois_list = nncv.get('D_VOIS_LIST');
 	nn_list = nncv.get('NN_LIST');
 	e_list = nncv.get('EVALUATOR_LIST');
+	
 	
 	% Assertions to verify correct functionality
 	% Check that the number of split primary datasets matches kfolds
@@ -1781,6 +1794,38 @@ if rand() >= (1 - 1) * BRAPH2TEST.RANDOM
 	    [BRAPH2.STR ':NNClassifierMLP_CrossValidation_VOIs:' BRAPH2.FAIL_TEST], ...
 	    'NNClassifierMLP_CrossValidation_VOIs does not calculate the evaluator list correctly.' ...
 	);
+	
+	%% check if voi id match con. data subject id
+	
+	D = nncv.get('D_LIST');
+	D_VOIS = nncv.get('D_VOIS_LIST');
+	D_DP_DICT_IT = cellfun(@(x)  x.get('ID'), D{3}.get('DP_DICT').get('IT_LIST'), 'UniformOutput',false);
+	DVOIS_ID= cellfun(@(x)  x.get('ID'), D_VOIS{3}.get('DP_DICT').get('IT_LIST'), 'UniformOutput',false);
+	is_same_order = isequal(DVOIS_ID, D_DP_DICT_IT);
+	assert(is_same_order, ...
+	    [BRAPH2.STR ':NNClassifierMLP_VOIs:' BRAPH2.FAIL_TEST], ...
+	    'NNClassifierMLP_VOIs does not have coherent voi id and connectivity id.' ...
+	    );
+	
+	D = nncv.get('D_LIST');
+	D_VOIS = nncv.get('D_VOIS_LIST');
+	D_DP_DICT_IT = cellfun(@(x)  x.get('ID'), D{2}.get('DP_DICT').get('IT_LIST'), 'UniformOutput',false);
+	DVOIS_ID= cellfun(@(x)  x.get('ID'), D_VOIS{2}.get('DP_DICT').get('IT_LIST'), 'UniformOutput',false);
+	is_same_order = isequal(DVOIS_ID, D_DP_DICT_IT);
+	assert(is_same_order, ...
+	    [BRAPH2.STR ':NNClassifierMLP_VOIs:' BRAPH2.FAIL_TEST], ...
+	    'NNClassifierMLP_VOIs does not have coherent voi id and connectivity id.' ...
+	    );
+	
+	D = nncv.get('D_LIST');
+	D_VOIS = nncv.get('D_VOIS_LIST');
+	D_DP_DICT_IT = cellfun(@(x)  x.get('ID'), D{1}.get('DP_DICT').get('IT_LIST'), 'UniformOutput',false);
+	DVOIS_ID= cellfun(@(x)  x.get('ID'), D_VOIS{1}.get('DP_DICT').get('IT_LIST'), 'UniformOutput',false);
+	is_same_order = isequal(DVOIS_ID, D_DP_DICT_IT);
+	assert(is_same_order, ...
+	    [BRAPH2.STR ':NNClassifierMLP_VOIs:' BRAPH2.FAIL_TEST], ...
+	    'NNClassifierMLP_VOIs does not have coherent voi id and connectivity id.' ...
+	    );
 end
 
 %% Test 13: No Figures Left

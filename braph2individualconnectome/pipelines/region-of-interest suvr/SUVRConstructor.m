@@ -676,9 +676,9 @@ classdef SUVRConstructor < ConcreteElement
 				case 14 % SUVRConstructor.REF_BR_DICT
 					prop_default = Format.getFormatDefault(10, SUVRConstructor.getPropSettings(prop));
 				case 15 % SUVRConstructor.ATLAS_KIND
-					prop_default = {"aal90", "TD"};
+					prop_default = {'aal90', 'TD'};
 				case 16 % SUVRConstructor.ATLAS_INDEX
-					prop_default = 1;
+					prop_default = 1;;
 				case 17 % SUVRConstructor.ATLAS_PATH_DICT
 					prop_default = IndexedDictionary('IT_CLASS', 'FILE_PATH');
 				case 18 % SUVRConstructor.GR_PET
@@ -908,6 +908,9 @@ classdef SUVRConstructor < ConcreteElement
 					        % Set the REF_BR_DICT with the list of reference brain regions
 					        roic.set('REF_BR_DICT', IndexedDictionary('IT_CLASS', 'BrainRegion', 'IT_LIST', ref_br_list));
 					    end
+					% else
+					%     % If REF_REGION_LIST is empty, ensure it’s a 0×0 empty cell array
+					%     roic.set('REF_REGION_LIST', {});
 					end
 					
 				case 14 % SUVRConstructor.REF_BR_DICT
@@ -916,7 +919,7 @@ classdef SUVRConstructor < ConcreteElement
 					ba_list = roic.get('BA');
 					region_ids = roic.get('ATLAS_REGION_IDS');
 					labels = roic.get('ATLAS_LABELS');
-					ref_region_list = cell(length(ba_list), 1); % One cell per atlas
+					ref_region_list = cell(length(ba_list)); % One cell per atlas
 					for atlas_idx = 1:length(ba_list)
 					    ba = ba_list{atlas_idx};
 					    br_dict = ba.get('BR_DICT');
@@ -931,12 +934,17 @@ classdef SUVRConstructor < ConcreteElement
 					        ref_region_list{atlas_idx} =  [ref_region{:}];
 					    end
 					end
-					if isempty(Ref_region_list)
+					if isempty(Ref_region_list) && ~isempty(ref_region_list)
 					    roic.set('REF_REGION_LIST', ref_region_list);
 					end
 					
 				case 16 % SUVRConstructor.ATLAS_INDEX
 					ba_list = roic.get('BA'); % Ensure brain atlas is obtained correctly
+					if isempty(ba_list)
+					    br = BrainRegion('ID', 'SingleRegion');
+					    ba = BrainAtlas('ID', 'Atlas', 'BR_DICT', IndexedDictionary('IT_CLASS', 'BrainRegion', 'IT_LIST', {br}));
+					    ba_list = {ba};
+					end
 					atlas_index = roic.get('ATLAS_INDEX');
 					ba = ba_list{atlas_index};
 					if isempty(roic.get('SUVR_REGION_SELECTION').get('IT_LIST')) && ~isempty(ba.get('BR_DICT').get('IT_LIST'))
@@ -997,8 +1005,19 @@ classdef SUVRConstructor < ConcreteElement
 					for i = 2:length(ref_region_masks)
 					    ref_region_union_mask = ref_region_union_mask | ref_region_masks{i};
 					end
-					ref_region_meanvalue = mean(masked_pet_data(ref_region_union_mask));
+					% ref_region_meanvalue = mean(masked_pet_data(ref_region_union_mask));
+					% % Sort the values in descending order
+					sorted_values = sort(masked_pet_data(ref_region_union_mask), 'descend');
 					
+					% Calculate the number of values that constitute the top 50%
+					num_values = length(sorted_values);
+					top_50_percent_count = ceil(num_values / 2);
+					
+					% Select the top 50% of the values
+					top_50_percent_values = sorted_values(1:top_50_percent_count);
+					
+					% Calculate the mean of the top 50% values
+					ref_region_meanvalue = mean(top_50_percent_values);
 					% Calculate normalized SUVR for all unique regions
 					atlas_roi = atlas{atlas_suvr_index};
 					ROI_list = unique(atlas_roi);
@@ -1065,13 +1084,35 @@ classdef SUVRConstructor < ConcreteElement
 					                matched_indices = [matched_indices, match_idx];
 					            end
 					        end
+					        
 					        SUVR = SUVR(matched_indices);
+					        % Create a new BrainAtlas with only selected regions
+					        selected_br_list = cellfun(@(idx) ba.get('BR_DICT').get('IT', idx), num2cell(matched_indices), 'UniformOutput', false);
+					        br_dict_filtered = IndexedDictionary( ...
+					            'IT_CLASS', 'BrainRegion', ...
+					            'IT_LIST', selected_br_list ...
+					            );
+					        ba_filtered = BrainAtlas( ...
+					            'ID', [ba.get('ID') '_filtered'], ...
+					            'LABEL', ba.get('LABEL'), ...
+					            'NOTES', [ba.get('NOTES') ' - Filtered to selected regions'], ...
+					            'BR_DICT', br_dict_filtered ...
+					            );
+					
+					        % Create subject with filtered atlas
 					        sub = SubjectST( ...
 					            'ID', sub_id_t1, ...
 					            'LABEL', ['Subject ST ' int2str(i)], ...
 					            'NOTES', ['Notes on subject ST ' int2str(i)], ...
-					            'BA', ba, ...
-					            'ST', SUVR);
+					            'BA', ba_filtered, ... % Use filtered atlas
+					            'ST', SUVR, ...
+					            'VOI_DICT', gr_PET.get('SUB_DICT').get('IT', i).get('VOI_DICT'));
+					        % sub = SubjectST( ...
+					        %     'ID', sub_id_t1, ...
+					        %     'LABEL', ['Subject ST ' int2str(i)], ...
+					        %     'NOTES', ['Notes on subject ST ' int2str(i)], ...
+					        %     'BA', ba, ...
+					        %     'ST', SUVR);
 					        sub_dict.get('ADD', sub);
 					        braph2waitbar(wb, .15 + .85 * i / gr_PET.get('SUB_DICT').get('LENGTH'), ['Calculating SUVRs for subject ' num2str(i) ' of ' num2str(gr_PET.get('SUB_DICT').get('LENGTH')) ' ...'])
 					    end

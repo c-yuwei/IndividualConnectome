@@ -525,7 +525,7 @@ classdef NNClassifierMLP_Evaluator_VOIs < NNClassifierMLP_Evaluator
 				case 4 % NNClassifierMLP_Evaluator_VOIs.TEMPLATE
 					prop_settings = 'NNClassifierMLP_Evaluator_VOIs';
 				case 9 % NNClassifierMLP_Evaluator_VOIs.NN
-					prop_settings = 'NNClassifierMLP_VOIs';;;
+					prop_settings = 'NNClassifierMLP_VOIs';
 				case 13 % NNClassifierMLP_Evaluator_VOIs.PFROC
 					prop_settings = 'NNClassifierMLP_EvaluatorPF_ROC_VOIs';
 				otherwise
@@ -556,7 +556,7 @@ classdef NNClassifierMLP_Evaluator_VOIs < NNClassifierMLP_Evaluator
 			
 			switch prop %CET: Computational Efficiency Trick
 				case 16 % NNClassifierMLP_Evaluator_VOIs.D_VOIS
-					prop_default = Format.getFormatDefault(8, NNClassifierMLP_Evaluator_VOIs.getPropSettings(prop));
+					prop_default = NNDataset('DP_CLASS', 'NNDataPoint_CON_CLA');
 				case 1 % NNClassifierMLP_Evaluator_VOIs.ELCLASS
 					prop_default = 'NNClassifierMLP_Evaluator_VOIs';
 				case 2 % NNClassifierMLP_Evaluator_VOIs.NAME
@@ -713,11 +713,10 @@ classdef NNClassifierMLP_Evaluator_VOIs < NNClassifierMLP_Evaluator
 					d = nne.get('D');
 					d_vois = nne.get('D_VOIS');
 					nn = nne.get('NN');
-					if isempty(d) || isempty(d_vois)
+					predictions = cell2mat(nn.get('PREDICT', d, d_vois));
+					if isempty(predictions)
 					    value = [];
 					else
-					    % Predictions using both D and D_VOIs
-					    predictions = cell2mat(nn.get('PREDICT', d, d_vois));
 					    [~, maxIndices] = max(predictions, [], 2);
 					    predictions = logical(full(sparse(1:numel(maxIndices), maxIndices, 1, size(predictions, 1), size(predictions, 2))));
 					
@@ -737,10 +736,10 @@ classdef NNClassifierMLP_Evaluator_VOIs < NNClassifierMLP_Evaluator
 					d = nne.get('D');
 					d_vois = nne.get('D_VOIS');
 					nn = nne.get('NN');
-					if isempty(d) || isempty(d_vois)
+					predictions = cell2mat(nne.get('NN').get('PREDICT', d, d_vois));
+					if isempty(predictions)
 					    value = [];
 					else
-					    predictions = cell2mat(nne.get('NN').get('PREDICT', d, d_vois));
 					    class_names = nn.get('MODEL').Layers(end).Classes;
 					    ground_truth = categorical(nne.get('GROUND_TRUTH'));
 					    rocNet = rocmetrics(ground_truth, predictions, class_names);

@@ -489,7 +489,7 @@ if rand() >= (1 - .01) * BRAPH2TEST.RANDOM
 	for prop = 1:1:NNClassifierMLP_VOIs.getPropNumber()
 	 
 		% excluded props
-		if any(prop == [])
+		if any(prop == [NNClassifierMLP_VOIs.D_VOIS])
 			continue
 		end
 	 
@@ -619,7 +619,7 @@ if rand() >= (1 - .01) * BRAPH2TEST.RANDOM
 	for prop = 1:1:NNClassifierMLP_VOIs.getPropNumber()
 	 
 		% excluded props
-		if any(prop == [])
+		if any(prop == [NNClassifierMLP_VOIs.D_VOIS])
 			continue
 		end
 	 
@@ -722,7 +722,7 @@ if rand() >= (1 - .01) * BRAPH2TEST.RANDOM
 		for prop = 1:1:NNClassifierMLP_VOIs.getPropNumber()
 	 
 			% excluded props
-			if any(prop == [])
+			if any(prop == [NNClassifierMLP_VOIs.D_VOIS])
 				continue
 			end
 	 
@@ -1414,7 +1414,7 @@ if rand() >= (1 - .01) * BRAPH2TEST.RANDOM
 	for prop = 1:1:NNClassifierMLP_VOIs.getPropNumber()
 	 
 		% excluded props
-		if any(prop == [])
+		if any(prop == [NNClassifierMLP_VOIs.D_VOIS])
 			continue
 		end
 	 
@@ -1619,8 +1619,8 @@ if rand() >= (1 - 1) * BRAPH2TEST.RANDOM
 	d2 = NNDataset('DP_CLASS', 'NNDataPoint_CON_CLA', 'DP_DICT', dp_list2);
 	
 	% Split primary datasets into training and test sets (70% training, 30% test)
-	d_split1 = NNDatasetSplit('D', d1, 'SPLIT', {0.7, 0.3});
-	d_split2 = NNDatasetSplit('D', d2, 'SPLIT', {0.7, 0.3});
+	d_split1 = NNDatasetSplit('D', d1, 'SPLIT', {1:1:5 6:1:10});
+	d_split2 = NNDatasetSplit('D', d2, 'SPLIT', {1:1:5 6:1:10});
 	
 	% Combine training and test sets for primary data
 	d_training = NNDatasetCombine('D_LIST', {d_split1.get('D_LIST_IT', 1), d_split2.get('D_LIST_IT', 1)}).get('D');
@@ -1660,8 +1660,8 @@ if rand() >= (1 - 1) * BRAPH2TEST.RANDOM
 	d_vois2 = NNDataset('DP_CLASS', 'NNDataPoint_VOIs', 'DP_DICT', voi_dp_list2);
 	
 	% Split VOI datasets into training and test sets (same split as primary data)
-	d_vois_split1 = NNDatasetSplit('D', d_vois1, 'SPLIT', {0.7, 0.3});
-	d_vois_split2 = NNDatasetSplit('D', d_vois2, 'SPLIT', {0.7, 0.3});
+	d_vois_split1 = NNDatasetSplit('D', d_vois1, 'SPLIT', {1:1:5 6:1:10});
+	d_vois_split2 = NNDatasetSplit('D', d_vois2, 'SPLIT', {1:1:5 6:1:10});
 	
 	% Combine training and test sets for VOI data
 	d_vois_training = NNDatasetCombine('D_LIST', {d_vois_split1.get('D_LIST_IT', 1), d_vois_split2.get('D_LIST_IT', 1)}).get('D');
@@ -1681,6 +1681,23 @@ if rand() >= (1 - 1) * BRAPH2TEST.RANDOM
 	assert(length(nn.get('LAYERS')) == sum(contains({trained_model.Layers.Name}, 'Dense')) - 1, ...
 	    [BRAPH2.STR ':NNClassifierMLP_VOIs:' BRAPH2.FAIL_TEST], ...
 	    'NNClassifierMLP_VOIs does not construct the layers correctly. The number of hidden layers should match the specified LAYERS property.' ...
+	);
+	
+	% Check if the number of fully connected layers matches the specified LAYERS property
+	trained_model = nn.get('MODEL');
+	assert(length(nn.get('LAYERS')) == sum(contains({trained_model.Layers.Name}, 'Dense')) - 1, ...
+	    [BRAPH2.STR ':NNClassifierMLP_VOIs:' BRAPH2.FAIL_TEST], ...
+	    'NNClassifierMLP_VOIs does not construct the layers correctly. The number of hidden layers should match the specified LAYERS property.' ...
+	);
+	D = nn.get('D');
+	D_VOIS = nn.get('D_VOIS');
+	D_DP_DICT_IT = cellfun(@(x)  x.get('ID'), D.get('DP_DICT').get('IT_LIST'), 'UniformOutput',false);
+	DVOIS_VOI= cellfun(@(x)  x.get('VOI_DICT'), D_VOIS.get('DP_DICT').get('IT_LIST'), 'UniformOutput',false);
+	DVOIS_ID= cellfun(@(x)  x.get('ID'), D_VOIS.get('DP_DICT').get('IT_LIST'), 'UniformOutput',false);
+	is_same_order = isequal(DVOIS_ID, D_DP_DICT_IT);
+	assert(is_same_order, ...
+	    [BRAPH2.STR ':NNClassifierMLP_VOIs:' BRAPH2.FAIL_TEST], ...
+	    'NNClassifierMLP_VOIs does not have coherent voi id and connectivity id.' ...
 	);
 end
 

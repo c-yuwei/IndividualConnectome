@@ -1514,7 +1514,7 @@ if rand() >= (1 - 1) * BRAPH2TEST.RANDOM
 	vois_file = fullfile(example_data_dir, 'Group1.vois.xlsx');
 	
 	% Read the VOIs file
-	vois_table = readtable(vois_file);
+	vois_table = readtable(vois_file,'VariableNamingRule','preserve');
 	
 	im_gr1_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY', [example_data_dir filesep 'Group1'], ...
 	    'NIFTI_TYPE', {'T1'}, ...
@@ -1537,13 +1537,20 @@ if rand() >= (1 - 1) * BRAPH2TEST.RANDOM
 	);
 	
 	ref_region_list = {[2001]}; % Reference region label
+	
+	atlas = ba;
+	br_dict = atlas.get('BR_DICT');
+	selected_ids = num2cell(1:94);
+	selected_br = cellfun(@(id) br_dict.get('IT', id), selected_ids, 'UniformOutput', false);
+	selected_br_dict = IndexedDictionary('IT_CLASS', 'BrainRegion', 'IT_LIST', selected_br);
 	gr = SUVRConstructor('GR_PET', gr1_PET, ...
 	    'GR_T1', gr1_WM_GM, ...
-	    'BA', ba, ...
+	    'BA', {ba}, ...
 	    'ATLAS_PATH_DICT', path_dict, ...
 	    'MAPPING_PATH_DICT', mapping_path_dict, ...
 	    'REF_REGION_LIST', ref_region_list, ...
-	    'ATLAS_KIND', {'AAL2'});
+	    'ATLAS_KIND', {'AAL2'}, ...
+	    'SUVR_REGION_SELECTION', selected_br_dict);
 	Con_gr = gr.get('GR');
 	
 	for i = 1:Con_gr.get('SUB_DICT').get('LENGTH')
@@ -1565,7 +1572,7 @@ if rand() >= (1 - 1) * BRAPH2TEST.RANDOM
 	% Extract Region means for all subjects
 	region_means = table2array(vois_table(2:end, region_col_idx));
 	
-	expected_subject_ids = vois_table.SubjectID(2:end); % Assuming 'SubjectID' column exists
+	expected_subject_ids = vois_table.("Subject ID")(2:end); % Assuming 'SubjectID' column exists
 	% Initialize a matrix for reordered means
 	reordered_calculated_means = zeros(size(expected_means));
 	
@@ -1595,6 +1602,29 @@ if rand() >= (1 - 1) * BRAPH2TEST.RANDOM
 	% Compare calculated and expected values
 	assert(isequal(size(calculated_means), size(normalized_means)), ...
 	    'Size mismatch between calculated and expected mean values.');
+	% varify if regions have been selected correctly
+	selected_br_dict = IndexedDictionary('IT_CLASS', 'BrainRegion', 'IT_LIST', {selected_br{1:5}});
+	gr = SUVRConstructor('GR_PET', gr1_PET, ...
+	    'GR_T1', gr1_WM_GM, ...
+	    'BA', {ba}, ...
+	    'ATLAS_PATH_DICT', path_dict, ...
+	    'MAPPING_PATH_DICT', mapping_path_dict, ...
+	    'REF_REGION_LIST', ref_region_list, ...
+	    'ATLAS_KIND', {'AAL2'}, ...
+	    'SUVR_REGION_SELECTION', selected_br_dict);
+	suvr_gr = gr.get('GR');
+	% varify if regions have been selected correctly
+	subj_list_length = cellfun(@(x) length(x.get('ST')), suvr_gr.get('SUB_DICT').get('IT_LIST'), 'UniformOutput',false);
+	subj_list_lengths = cell2mat(subj_list_length);
+	selected_region_num = length({selected_br{1:5}});
+	
+	% Check if each element in subj_list_lengths equals selected_region_num
+	all_match = all(subj_list_lengths == selected_region_num);
+	
+	% Assert the comparison
+	assert(all_match, ...
+	    'Mismatch: Not all subject list lengths (%s) equal selected_region_num (%d).', ...
+	    num2str(subj_list_lengths), selected_region_num);
 end
 
 %% Test 13: No Figures Left

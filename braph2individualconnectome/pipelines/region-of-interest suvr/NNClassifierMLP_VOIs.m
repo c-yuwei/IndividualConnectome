@@ -8,7 +8,7 @@ classdef NNClassifierMLP_VOIs < NNClassifierMLP
 	%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the neural network multi-layer perceptron classifier.
 	%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the neural network multi-layer perceptron classifier.
 	%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the neural network multi-layer perceptron classifier.
-	%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the neural network multi-layer perceptron classifier.
+	%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the neural network multi-layer perceptron classifier with VOI.
 	%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the neural network multi-layer perceptron classifier.
 	%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the neural network multi-layer perceptron classifier.
 	%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the neural network multi-layer perceptron classifier.
@@ -32,7 +32,7 @@ classdef NNClassifierMLP_VOIs < NNClassifierMLP
 	%  <strong>25</strong> <strong>INTERRUPTIBLE</strong> 	INTERRUPTIBLE (gui, scalar) sets whether the comparison computation is interruptible for multitasking.
 	%  <strong>26</strong> <strong>FEATURE_IMPORTANCE</strong> 	FEATURE_IMPORTANCE (query, cell) evaluates the average significance of each feature by iteratively shuffling its values P times and measuring the resulting average decrease in model performance.
 	%  <strong>27</strong> <strong>VOI_SELECTION</strong> 	VOI_SELECTION (parameter, stringlist) defines which VOIs should be included in the analysis.
-	%  <strong>28</strong> <strong>D_VOIS</strong> 	D_VOIs (data, item) is the voi dataset to train the neural network model, and its data point class DP_CLASS defaults to one of the compatible classes within the set of DP_CLASSES.
+	%  <strong>28</strong> <strong>D_VOIS</strong> 	D_VOIS (data, item) is the voi dataset to train the neural network model, and its data point class DP_CLASS defaults to one of the compatible classes within the set of DP_CLASSES.
 	%  <strong>29</strong> <strong>VOI_INPUT</strong> 	VOI_INPUT (query, cell) extracts VOI values based on the selection list.
 	%
 	% NNClassifierMLP_VOIs methods (constructor):
@@ -156,7 +156,7 @@ classdef NNClassifierMLP_VOIs < NNClassifierMLP
 			%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the neural network multi-layer perceptron classifier.
 			%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the neural network multi-layer perceptron classifier.
 			%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the neural network multi-layer perceptron classifier.
-			%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the neural network multi-layer perceptron classifier.
+			%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the neural network multi-layer perceptron classifier with VOI.
 			%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the neural network multi-layer perceptron classifier.
 			%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the neural network multi-layer perceptron classifier.
 			%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the neural network multi-layer perceptron classifier.
@@ -180,7 +180,7 @@ classdef NNClassifierMLP_VOIs < NNClassifierMLP
 			%  <strong>25</strong> <strong>INTERRUPTIBLE</strong> 	INTERRUPTIBLE (gui, scalar) sets whether the comparison computation is interruptible for multitasking.
 			%  <strong>26</strong> <strong>FEATURE_IMPORTANCE</strong> 	FEATURE_IMPORTANCE (query, cell) evaluates the average significance of each feature by iteratively shuffling its values P times and measuring the resulting average decrease in model performance.
 			%  <strong>27</strong> <strong>VOI_SELECTION</strong> 	VOI_SELECTION (parameter, stringlist) defines which VOIs should be included in the analysis.
-			%  <strong>28</strong> <strong>D_VOIS</strong> 	D_VOIs (data, item) is the voi dataset to train the neural network model, and its data point class DP_CLASS defaults to one of the compatible classes within the set of DP_CLASSES.
+			%  <strong>28</strong> <strong>D_VOIS</strong> 	D_VOIS (data, item) is the voi dataset to train the neural network model, and its data point class DP_CLASS defaults to one of the compatible classes within the set of DP_CLASSES.
 			%  <strong>29</strong> <strong>VOI_INPUT</strong> 	VOI_INPUT (query, cell) extracts VOI values based on the selection list.
 			%
 			% See also Category, Format.
@@ -530,7 +530,7 @@ classdef NNClassifierMLP_VOIs < NNClassifierMLP
 			prop = NNClassifierMLP_VOIs.getPropProp(pointer);
 			
 			%CET: Computational Efficiency Trick
-			nnclassifiermlp_vois_description_list = { 'ELCLASS (constant, string) is the class of the neural network multi-layer perceptron classifier.'  'NAME (constant, string) is the name of the neural network multi-layer perceptron classifier.'  'DESCRIPTION (constant, string) is the description of the neural network multi-layer perceptron classifier.'  'TEMPLATE (parameter, item) is the template of the neural network multi-layer perceptron classifier.'  'ID (data, string) is a few-letter code for the neural network multi-layer perceptron classifier.'  'LABEL (metadata, string) is an extended label of the neural network multi-layer perceptron classifier.'  'NOTES (metadata, string) are some specific notes about the neural network multi-layer perceptron classifier.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'D (data, item) is the dataset to train the neural network model, and its data point class DP_CLASS defaults to one of the compatible classes within the set of DP_CLASSES.'  'DP_CLASSES (parameter, classlist) is the list of compatible data points.'  'EPOCHS (parameter, scalar) is the maximum number of epochs.'  'BATCH (parameter, scalar) is the size of the mini-batch used for each training iteration.'  'SHUFFLE (parameter, option) is an option for data shuffling.'  'SOLVER (parameter, option) is an option for the solver.'  'MODEL (result, net) is a trained neural network model.'  'INPUTS (query, cell) constructs the data in the CB (channel-batch) format.'  'TARGETS (query, cell) constructs the targets in the CB (channel-batch) format with one-hot vectors.'  'TRAIN (query, empty) trains the neural network model with the given dataset.'  'VERBOSE (gui, logical) is an indicator to display training progress information.'  'PLOT_TRAINING (metadata, option) determines whether to plot the training progress.'  'PREDICT (query, cell) returns the predictions of the trained neural network for a dataset pair (D and D_VOIs).'  'TARGET_CLASSES (query, stringlist) constructs the target classes which represent the class of each data point.'  'LAYERS (data, rvector) defines the number of layers and their neurons.'  'WAITBAR (gui, logical) detemines whether to show the waitbar.'  'INTERRUPTIBLE (gui, scalar) sets whether the comparison computation is interruptible for multitasking.'  'FEATURE_IMPORTANCE (query, cell) evaluates the average significance of each feature by iteratively shuffling its values P times and measuring the resulting average decrease in model performance.'  'VOI_SELECTION (parameter, stringlist) defines which VOIs should be included in the analysis.'  'D_VOIs (data, item) is the voi dataset to train the neural network model, and its data point class DP_CLASS defaults to one of the compatible classes within the set of DP_CLASSES.'  'VOI_INPUT (query, cell) extracts VOI values based on the selection list.' };
+			nnclassifiermlp_vois_description_list = { 'ELCLASS (constant, string) is the class of the neural network multi-layer perceptron classifier.'  'NAME (constant, string) is the name of the neural network multi-layer perceptron classifier.'  'DESCRIPTION (constant, string) is the description of the neural network multi-layer perceptron classifier.'  'TEMPLATE (parameter, item) is the template of the neural network multi-layer perceptron classifier with VOI.'  'ID (data, string) is a few-letter code for the neural network multi-layer perceptron classifier.'  'LABEL (metadata, string) is an extended label of the neural network multi-layer perceptron classifier.'  'NOTES (metadata, string) are some specific notes about the neural network multi-layer perceptron classifier.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'D (data, item) is the dataset to train the neural network model, and its data point class DP_CLASS defaults to one of the compatible classes within the set of DP_CLASSES.'  'DP_CLASSES (parameter, classlist) is the list of compatible data points.'  'EPOCHS (parameter, scalar) is the maximum number of epochs.'  'BATCH (parameter, scalar) is the size of the mini-batch used for each training iteration.'  'SHUFFLE (parameter, option) is an option for data shuffling.'  'SOLVER (parameter, option) is an option for the solver.'  'MODEL (result, net) is a trained neural network model.'  'INPUTS (query, cell) constructs the data in the CB (channel-batch) format.'  'TARGETS (query, cell) constructs the targets in the CB (channel-batch) format with one-hot vectors.'  'TRAIN (query, empty) trains the neural network model with the given dataset.'  'VERBOSE (gui, logical) is an indicator to display training progress information.'  'PLOT_TRAINING (metadata, option) determines whether to plot the training progress.'  'PREDICT (query, cell) returns the predictions of the trained neural network for a dataset pair (D and D_VOIs).'  'TARGET_CLASSES (query, stringlist) constructs the target classes which represent the class of each data point.'  'LAYERS (data, rvector) defines the number of layers and their neurons.'  'WAITBAR (gui, logical) detemines whether to show the waitbar.'  'INTERRUPTIBLE (gui, scalar) sets whether the comparison computation is interruptible for multitasking.'  'FEATURE_IMPORTANCE (query, cell) evaluates the average significance of each feature by iteratively shuffling its values P times and measuring the resulting average decrease in model performance.'  'VOI_SELECTION (parameter, stringlist) defines which VOIs should be included in the analysis.'  'D_VOIS (data, item) is the voi dataset to train the neural network model, and its data point class DP_CLASS defaults to one of the compatible classes within the set of DP_CLASSES.'  'VOI_INPUT (query, cell) extracts VOI values based on the selection list.' };
 			prop_description = nnclassifiermlp_vois_description_list{prop};
 		end
 		function prop_settings = getPropSettings(pointer)
@@ -564,8 +564,6 @@ classdef NNClassifierMLP_VOIs < NNClassifierMLP
 					prop_settings = Format.getFormatSettings(16);
 				case 4 % NNClassifierMLP_VOIs.TEMPLATE
 					prop_settings = 'NNClassifierMLP_VOIs';
-				case 9 % NNClassifierMLP_VOIs.D
-					prop_settings = 'NNDataset';
 				otherwise
 					prop_settings = getPropSettings@NNClassifierMLP(prop);
 			end
@@ -594,9 +592,9 @@ classdef NNClassifierMLP_VOIs < NNClassifierMLP
 			
 			switch prop %CET: Computational Efficiency Trick
 				case 27 % NNClassifierMLP_VOIs.VOI_SELECTION
-					prop_default = {'Age', 'Sex','Education'}; % Example: Default selected VOIs;
+					prop_default = {'Age', 'Sex','Education'};
 				case 28 % NNClassifierMLP_VOIs.D_VOIS
-					prop_default = Format.getFormatDefault(8, NNClassifierMLP_VOIs.getPropSettings(prop));
+					prop_default = NNDataset('DP_CLASS', 'NNDataPoint_VOIs');
 				case 29 % NNClassifierMLP_VOIs.VOI_INPUT
 					prop_default = Format.getFormatDefault(16, NNClassifierMLP_VOIs.getPropSettings(prop));
 				case 1 % NNClassifierMLP_VOIs.ELCLASS
@@ -613,10 +611,8 @@ classdef NNClassifierMLP_VOIs < NNClassifierMLP
 					prop_default = 'NNClassifierMLP_VOIs label';
 				case 7 % NNClassifierMLP_VOIs.NOTES
 					prop_default = 'NNClassifierMLP_VOIs notes';
-				case 9 % NNClassifierMLP_VOIs.D
-					prop_default = NNDataset('DP_CLASS', 'NNDataPoint_CON_CLA');
 				case 10 % NNClassifierMLP_VOIs.DP_CLASSES
-					prop_default = {'NNDataPoint_CON_CLA' 'NNDataPoint_CON_FUN_MP_CLA' 'NNDataPoint_FUN_CLA' 'NNDataPoint_ST_CLA' 'NNDataPoint_ST_MM_CLA' 'NNDataPoint_Graph_CLA' 'NNDataPoint_Measure_CLA' 'NNDataPoint_VOIs'};
+					prop_default = {'NNDataPoint_CON_CLA' 'NNDataPoint_FUN_CLA' 'NNDataPoint_ST_CLA' 'NNDataPoint_Graph_CLA' 'NNDataPoint_Measure_CLA' 'NNDataPoint_VOIs'};
 				otherwise
 					prop_default = getPropDefault@NNClassifierMLP(prop);
 			end
@@ -688,8 +684,6 @@ classdef NNClassifierMLP_VOIs < NNClassifierMLP
 				case 29 % NNClassifierMLP_VOIs.VOI_INPUT
 					check = Format.checkFormat(16, value, NNClassifierMLP_VOIs.getPropSettings(prop));
 				case 4 % NNClassifierMLP_VOIs.TEMPLATE
-					check = Format.checkFormat(8, value, NNClassifierMLP_VOIs.getPropSettings(prop));
-				case 9 % NNClassifierMLP_VOIs.D
 					check = Format.checkFormat(8, value, NNClassifierMLP_VOIs.getPropSettings(prop));
 				otherwise
 					if prop <= 26

@@ -1032,7 +1032,13 @@ classdef SUVRConstructorPP_BR_DICT < PanelProp
 			    end
 			    br_it_list = [br_it_list{:}];
 			    % Extract brain region IDs
-			    br_list = cellfun(@(x) x.get('ID'), br_it_list, 'UniformOutput', false);
+			
+			    if ~isempty(br_it_list)
+			        br_list = cellfun(@(x) x.get('ID'), br_it_list, 'UniformOutput', false);
+			    else
+			        br_list = {};
+			    end
+			    % br_list = cellfun(@(x) x.get('ID'), br_it_list, 'UniformOutput', false);
 			    % Get the effective (selected) brain regions
 			    if isa(roic.getr(prop), 'NoValue')
 			        eff_br_list = {};
