@@ -1,0 +1,3 @@
+filename*2.mat, 2 means I control the random seed by setting rng(run) in the script, other than that, script analysis are the same.
+
+Balanced means the classification is done on balanced group pairs.
