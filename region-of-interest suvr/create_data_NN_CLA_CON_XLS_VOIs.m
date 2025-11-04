@@ -1,4 +1,4 @@
-function create_data_NN_CLA_CON_XLS(data_dir, random_seed)
+function create_data_NN_CLA_CON_XLS_VOIs(data_dir, random_seed)
 %CREATE_DATA_NN_CLA_CON_XLS creates connectivity data with VOIs for neural network classification analysis
 %
 % CREATE_DATA_NN_CLA_CON_XLS() creates data in the default folder 'Example data NN CLA CON XLS'.
@@ -42,7 +42,7 @@ if ~isdir(data_dir)
         {{'Subject ID'} {'Age'} {'Sex'}}
         {{} {} cell2str(sex_options)}
     ];
-    for i = 1:100 % 10 subjects in Group 1
+    for i = 1:200 % 200 subjects in Group 1
         sub_id = ['SubjectCON_' num2str(i)];
         h = WattsStrogatz(N, K, beta);
         A = full(adjacency(h)); A(1:N+1:end) = 0; % Remove self-loops
@@ -63,7 +63,7 @@ if ~isdir(data_dir)
         {{'Subject ID'} {'Age'} {'Sex'}}
         {{} {} cell2str(sex_options)}
     ];
-    for i = 101:200 % 10 subjects in Group 2
+    for i = 201:400 % 200 subjects in Group 2
         sub_id = ['SubjectCON_' num2str(i)];
         h = WattsStrogatz(N, K, beta); % Same connectivity parameters
         A = full(adjacency(h)); A(1:N+1:end) = 0;

@@ -268,10 +268,10 @@ pr = SUVRConstructorPP_BR_DICT('EL', roic, 'PROP', SUVRConstructor.REF_BR_DICT, 
     'WAITBAR', roic.getCallback('WAITBAR'), ...
     varargin{:});
 
-%%% ¡prop!
-ATLAS_KIND (parameter, stringlist) is the list of atlas types needed for ROI analysis.
-%%%% ¡default!
-{'aal90', 'TD'}
+% %%% ¡prop!
+% ATLAS_KIND (parameter, stringlist) is the list of atlas types needed for ROI analysis.
+% %%%% ¡default!
+% {'aal90', 'TD'}
 
 %%% ¡prop!
 ATLAS_INDEX (parameter, scalar) is the index of the atlas defined by the user for SUVR ROI list.
@@ -335,7 +335,7 @@ masked_pet_data = pet_data{1} .* int16(t1_data_union_mask);
 
 % Calculate SUVR for reference regions
 atlas_directories = roic.get('ATLAS_PATH_DICT').get('IT_LIST');
-atlas_kind = roic.get('ATLAS_KIND');
+% atlas_kind = roic.get('ATLAS_KIND');
 ref_list = roic.get('REF_REGION_LIST');
 atlas_suvr_index = roic.get('ATLAS_INDEX');
 for directory_index = 1:length(atlas_directories)
@@ -470,6 +470,7 @@ value = gr_suvr;
 WAITBAR (gui, logical) determines whether to show the waitbar.
 %%%% ¡default!
 true
+
 %% ¡tests!
 
 %%% ¡excluded_props!
@@ -531,7 +532,6 @@ gr = SUVRConstructor('GR_PET', gr1_PET, ...
     'ATLAS_PATH_DICT', path_dict, ...
     'MAPPING_PATH_DICT', mapping_path_dict, ...
     'REF_REGION_LIST', ref_region_list, ...
-    'ATLAS_KIND', {'AAL2'}, ...
     'SUVR_REGION_SELECTION', selected_br_dict);
 Con_gr = gr.get('GR');
 
@@ -592,7 +592,6 @@ gr = SUVRConstructor('GR_PET', gr1_PET, ...
     'ATLAS_PATH_DICT', path_dict, ...
     'MAPPING_PATH_DICT', mapping_path_dict, ...
     'REF_REGION_LIST', ref_region_list, ...
-    'ATLAS_KIND', {'AAL2'}, ...
     'SUVR_REGION_SELECTION', selected_br_dict);
 suvr_gr = gr.get('GR');
 % varify if regions have been selected correctly

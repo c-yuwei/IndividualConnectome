@@ -59,7 +59,7 @@ NOTES (metadata, string) are some specific notes about the subject individual di
 'IndividualDistanceConConstructor notes'
 
 %%% ¡prop!
-CONNECTOME_CONSTUCT_METHOD (query, cell) defines the method for Mahalanobis distance individual connectome construction.
+CONNECTOME_CONSTRUCT_METHOD (query, cell) defines the method for Mahalanobis distance individual connectome construction.
 %%%% ¡calculate!
 if isempty(varargin) && isempty(icd.get('GR_SUVR').get('SUB_DICT').get('IT_LIST'))
     value = {};
@@ -126,8 +126,17 @@ end
 
 %%% ¡test!
 %%%% ¡name!
-Verify the Distance-based individual connectome pipeline 
+Verify the Distance-based individual connectome pipeline
 %%%% ¡code!
+im_ba = ImporterBrainAtlasXLS('FILE', which('aal94_atlas.xlsx'));
+ba = im_ba.get('BA');
+atlas = ba;
+br_dict = atlas.get('BR_DICT');
+selected_ids = num2cell(1:94);
+selected_br = cellfun(@(id) br_dict.get('IT', id), selected_ids, 'UniformOutput', false);
+selected_br_dict = IndexedDictionary('IT_CLASS', 'BrainRegion', 'IT_LIST',  selected_br);
+group_dir = fullfile(fileparts(which('IndividualDeviationConConstructor')),'Example data Nifti', 'Group1');
+
 im_ba = ImporterBrainAtlasXLS('FILE', which('aal94_atlas.xlsx'));
 ba = im_ba.get('BA');
 
@@ -151,20 +160,17 @@ path_dict = IndexedDictionary(...
     'IT_LIST', {FILE_PATH('PATH', which('upsampled_AAL2.nii'))} ...
     );
 
-% suvr_brain_label = readtable(which('AAL2_Atlas_Labels.csv'));
-% suvr_brain_label = suvr_brain_label.Var4;
 ref_region_list = [2001];% reference region label
 
-gr1 = SUVRConstructor('GR_PET',gr1_PET, ...
+gr = SUVRConstructor('GR_PET',gr1_PET, ...
     'GR_T1',gr1_WM_GM, ...
-    'BA', ba,...
+    'BA', {ba},...
     'ATLAS_PATH_DICT' ,path_dict, ...
     'REF_REGION_LIST',{ref_region_list}, ...
-    'ATLAS_KIND', {'AAL2'});
+    'ATLAS_KIND', {'AAL2'}, ...
+    'SUVR_REGION_SELECTION', selected_br_dict);
 
-
-SUVR_gr1 = gr1.get('GR');
-
+SUVR_gr1 = gr.get('GR');
 
 constructor1 = IndividualDistanceConConstructor( ...
     'GR_SUVR', SUVR_gr1);

@@ -64,7 +64,7 @@ GR_SUVR_REF (data, item) is a group of subjects with mean SUVR data for deviatio
 Group('SUB_CLASS', 'SubjectST')
 
 %%% ¡prop!
-CONNECTOME_CONSTUCT_METHOD (query, cell) defines the method for individual connectome construction.
+CONNECTOME_CONSTRUCT_METHOD (query, cell) defines the method for individual connectome construction.
 %%%% ¡default!
 {}
 
@@ -87,7 +87,7 @@ gr.lock('SUB_CLASS');
 
 gr_suvr = base.get('GR_SUVR');
 sub_dict = gr.memorize('SUB_DICT');
-connectivityMatrix = base.get('CONNECTOME_CONSTUCT_METHOD');
+connectivityMatrix = base.get('CONNECTOME_CONSTRUCT_METHOD');
 wb = braph2waitbar(base.get('WAITBAR'), 0, ['Build up individual connectivity matrix for subjects ...']);
 for i = 1:1:gr_suvr.get('SUB_DICT').get('LENGTH')
     ba = gr_suvr.get('SUB_DICT').get('IT',i).get('BA');

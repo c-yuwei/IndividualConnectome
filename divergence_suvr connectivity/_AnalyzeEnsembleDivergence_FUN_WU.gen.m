@@ -114,7 +114,7 @@ G_DICT (result, idict) is the graph (GraphWU) ensemble of Jensen–Shannon diver
 'GraphWU'
 %%%% ¡calculate!
 g_dict = IndexedDictionary('IT_CLASS', 'GraphWU');
-connectivityMatrix = a.get('CONNECTOME_CONSTUCT_METHOD');
+connectivityMatrix = a.get('CONNECTOME_CONSTRUCT_METHOD');
 gr_pdf = a.get('GR');
 wb = braph2waitbar(a.get('WAITBAR'), 0, ['Build up individual connectivity matrix for subjects ...']);
 for i = 1:1:gr_pdf.get('SUB_DICT').get('LENGTH')
@@ -148,7 +148,7 @@ true
 %% ¡props!
 
 %%% ¡prop!
-CONNECTOME_CONSTUCT_METHOD (query, cell) defines the method for individual connectome construction.
+CONNECTOME_CONSTRUCT_METHOD (query, cell) defines the method for individual connectome construction.
 %%%% ¡calculate!
 gr_pdf = a.get('GR');
 JSdivMatrix_cross_subjects = {};
@@ -187,51 +187,66 @@ value = JSdivMatrix_cross_subjects;
 %%%% ¡name!
 Example
 %%%% ¡code!
-group_dir = fullfile(fileparts(which('AnalyzeEnsembleDivergence_FUN_WU')),'Example data Nifti');
+group_dir = fullfile(fileparts(which('SUVRConstructor')),'Example data Nifti');
 if ~exist(group_dir)
     create_example_NIfTI([],group_dir) % only creates files if the example folder doesn't already exist
 end
 
 %%% ¡test!
 %%%% ¡name!
-Verify the divergence-based individual connectome pipeline 
+Verify the divergence-based individual connectome pipeline
 %%%% ¡code!
-im_ba = ImporterBrainAtlasXLS('FILE', which('aal94_atlas.xlsx'));
+example_data_dir = fullfile(fileparts(which('SUVRConstructor')), 'Example data Nifti');
+im_ba = ImporterBrainAtlasXLS( ...
+    'FILE', [which('aal94_atlas.xlsx')], ...
+    'WAITBAR', true ...
+    );
+
 ba = im_ba.get('BA');
 
-group_dir = fullfile(fileparts(which('AnalyzeEnsembleDivergence_FUN_WU')),'Example data Nifti', 'Group1');
-im_gr1_WM_GM = ImporterGroupSubjNIfTI( ...
-    'DIRECTORY', group_dir, ...
+% Path to generated VOIs file
+vois_file = fullfile(example_data_dir, 'Group1.vois.xlsx');
+
+% Read the VOIs file
+vois_table = readtable(vois_file,'ReadVariableNames',false);
+
+im_gr1_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY', [example_data_dir filesep 'Group1'], ...
     'NIFTI_TYPE', {'T1'}, ...
-    'WAITBAR', true ...
-    );
+    'WAITBAR', true);
 gr1_WM_GM = im_gr1_WM_GM.get('GR');
 
-im_gr1_PET = ImporterGroupSubjNIfTI( ...
-    'DIRECTORY', group_dir, ...
+im_gr1_PET = ImporterGroupSubjNIfTI('DIRECTORY', [example_data_dir filesep 'Group1'], ...
     'NIFTI_TYPE', {'PET'}, ...
-    'WAITBAR', true ...
-    );
+    'WAITBAR', true);
 gr1_PET = im_gr1_PET.get('GR');
 
-path_dict = IndexedDictionary(...
+path_dict = IndexedDictionary( ...
     'IT_CLASS', 'FILE_PATH', ...
     'IT_LIST', {FILE_PATH('PATH', which('upsampled_AAL2.nii'))} ...
     );
 
-% suvr_brain_label = readtable(which('AAL2_Atlas_Labels.csv'));
-% suvr_brain_label = suvr_brain_label.Var4;
-ref_region_list = [2001];% reference region label
+mapping_path_dict = IndexedDictionary( ...
+    'IT_CLASS', 'FILE_PATH', ...
+    'IT_LIST', {FILE_PATH('PATH', which('AAL2_Atlas_Labels.csv'))} ...
+    );
 
-gr1 = PDFConstructor('GR_PET',gr1_PET, ...
-    'GR_T1',gr1_WM_GM, ...
-    'BA', ba,...
-    'ATLAS_PATH_DICT' ,path_dict, ...
-    'REF_REGION_LIST',{ref_region_list}, ...
-    'ATLAS_KIND', {'AAL2'});
+ref_region_list = {[2001]}; % Reference region label
 
+atlas = ba;
+br_dict = atlas.get('BR_DICT');
+selected_ids = num2cell(1:94);
+selected_br = cellfun(@(id) br_dict.get('IT', id), selected_ids, 'UniformOutput', false);
+selected_br_dict = IndexedDictionary('IT_CLASS', 'BrainRegion', 'IT_LIST', selected_br);
+gr = PDFConstructor('GR_PET', gr1_PET, ...
+    'GR_T1', gr1_WM_GM, ...
+    'BA', {ba}, ...
+    'ATLAS_PATH_DICT', path_dict, ...
+    'MAPPING_PATH_DICT', mapping_path_dict, ...
+    'REF_REGION_LIST', ref_region_list, ...
+    'ATLAS_KIND', {'AAL2'}, ...
+    'PDF_REGION_SELECTION', selected_br_dict);
+PDF_gr1 = gr.get('GR');
 
-PDF_gr1 = gr1.get('GR');
 g_temp  = GraphWU('STANDARDIZE_RULE', 'range');
 a_WU1 = AnalyzeEnsembleDivergence_FUN_WU( ...
     'GR', PDF_gr1, ...
@@ -245,7 +260,7 @@ strength_others = zeros(num_subjects,size(a_WU1.get('G_DICT').get('IT', 1).get('
 
 % Loop through subjects to calculate strength
 
-for i = 1:num_subjects
+parfor i = 1:num_subjects
     g = a_WU1.get('G_DICT').get('IT', i);
     strength = g.get('MEASURE', 'Strength').get('M'); % Strength for all regions
     A = g.get('A');

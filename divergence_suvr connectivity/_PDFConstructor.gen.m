@@ -17,13 +17,13 @@ Group, SubjectNIfTI, ExporterGroupSubjectCON_XLS, SubjectST
 %%%% ¡id!
 PDFConstructor.ID
 %%%% ¡title!
-SUVR Constructuor ID
+PDF Constructuor ID
 
 %%% ¡prop!
 %%%% ¡id!
 PDFConstructor.LABEL
 %%%% ¡title!
-SUVR Constructuor LABEL
+PDF Constructuor LABEL
 
 %%% ¡prop!
 %%%% ¡id!
@@ -63,15 +63,15 @@ Group T1
 
 %%% ¡prop!
 %%%% ¡id!
-PDFConstructor.SUVR_REGION_SELECTION
+PDFConstructor.PDF_REGION_SELECTION
 %%%% ¡title!
-Select Regions for Calculating SUVR
+Select Regions for Calculating PDF
 
 %%% ¡prop!
 %%%% ¡id!
 PDFConstructor.GR
 %%%% ¡title!
-Group SUVR
+Group PDF
 
 %%% ¡prop!
 %%%% ¡id!
@@ -141,8 +141,8 @@ MAPPING_PATH_DICT (data, idict) is the dictionary of paths to CSV files for regi
 %%%% ¡default!
 IndexedDictionary('IT_CLASS', 'FILE_PATH')
 %%%% ¡postset!
-if roic.get('MAPPING_PATH_DICT').get('LENGTH') > 0
-    mapping_files = roic.get('MAPPING_PATH_DICT').get('IT_LIST');
+if pdfc.get('MAPPING_PATH_DICT').get('LENGTH') > 0
+    mapping_files = pdfc.get('MAPPING_PATH_DICT').get('IT_LIST');
     atlas_region_ids = cell(1, length(mapping_files));
     atlas_labels = cell(1, length(mapping_files));
     for atlas_idx = 1:length(mapping_files)
@@ -179,8 +179,8 @@ if roic.get('MAPPING_PATH_DICT').get('LENGTH') > 0
     end
     all_atlas_labels = [all_atlas_labels_list{:}];
     all_atlas_labels = num2cell(all_atlas_labels);
-    roic.set('ATLAS_REGION_IDS', all_region_ids);
-    roic.set('ATLAS_LABELS', all_atlas_labels);
+    pdfc.set('ATLAS_REGION_IDS', all_region_ids);
+    pdfc.set('ATLAS_LABELS', all_atlas_labels);
 end
 
 %%% ¡prop!
@@ -188,11 +188,11 @@ REF_REGION_LIST (data, cell) is the list containing the indices of reference reg
 %%%% ¡default!
 {}
 %%%% ¡postset!
-if ~isempty(roic.get('REF_REGION_LIST'))
-    ba_list = roic.get('BA');
-    ref_region_list = roic.get('REF_REGION_LIST');
-    region_ids = roic.get('ATLAS_REGION_IDS');
-    labels = roic.get('ATLAS_LABELS');
+if ~isempty(pdfc.get('REF_REGION_LIST'))
+    ba_list = pdfc.get('BA');
+    ref_region_list = pdfc.get('REF_REGION_LIST');
+    region_ids = pdfc.get('ATLAS_REGION_IDS');
+    labels = pdfc.get('ATLAS_LABELS');
     ref_br_list = cell(0); % Initialize an empty cell array for reference brain regions
     % Iterate over each atlas in ref_region_list
     for atlas_idx = 1:length(ref_region_list)
@@ -214,9 +214,9 @@ if ~isempty(roic.get('REF_REGION_LIST'))
             end
         end
     end
-    if isempty(roic.get('REF_BR_DICT').get('IT_LIST'))
+    if isempty(pdfc.get('REF_BR_DICT').get('IT_LIST'))
         % Set the REF_BR_DICT with the list of reference brain regions
-        roic.set('REF_BR_DICT', IndexedDictionary('IT_CLASS', 'BrainRegion', 'IT_LIST', ref_br_list));
+        pdfc.set('REF_BR_DICT', IndexedDictionary('IT_CLASS', 'BrainRegion', 'IT_LIST', ref_br_list));
     end
 end
 
@@ -225,12 +225,12 @@ REF_BR_DICT (data, idict) contains the effective brain regions of the simulated 
 %%%% ¡settings!
 'BrainRegion'
 %%%% ¡postset!
-Ref_region_list = roic.get('REF_REGION_LIST');
-selected_br = roic.get('REF_BR_DICT').get('IT_LIST'); % List of selected BrainRegion objects
-ba_list = roic.get('BA');
-region_ids = roic.get('ATLAS_REGION_IDS');
-labels = roic.get('ATLAS_LABELS');
-ref_region_list = cell(length(ba_list), 1); % One cell per atlas
+Ref_region_list = pdfc.get('REF_REGION_LIST');
+selected_br = pdfc.get('REF_BR_DICT').get('IT_LIST'); % List of selected BrainRegion objects
+ba_list = pdfc.get('BA');
+region_ids = pdfc.get('ATLAS_REGION_IDS');
+labels = pdfc.get('ATLAS_LABELS');
+ref_region_list = cell(length(ba_list)); % One cell per atlas
 for atlas_idx = 1:length(ba_list)
     ba = ba_list{atlas_idx};
     br_dict = ba.get('BR_DICT');
@@ -245,18 +245,18 @@ for atlas_idx = 1:length(ba_list)
         ref_region_list{atlas_idx} =  [ref_region{:}];
     end
 end
-if isempty(Ref_region_list)
-    roic.set('REF_REGION_LIST', ref_region_list);
+if isempty(Ref_region_list) && ~isempty(ref_region_list)
+    pdfc.set('REF_REGION_LIST', ref_region_list);
 end
 %%%% ¡gui!
-pr = SUVRConstructorPP_BR_DICT('EL', roic, 'PROP', SUVRConstructor.REF_BR_DICT, ...
-    'WAITBAR', roic.getCallback('WAITBAR'), ...
+pr = SUVRConstructorPP_BR_DICT('EL', pdfc, 'PROP', PDFConstructor.REF_BR_DICT, ...
+    'WAITBAR', pdfc.getCallback('WAITBAR'), ...
     varargin{:});
 
-%%% ¡prop!
-ATLAS_KIND (parameter, stringlist) is the directory containing the Atlas needed for ROI analysis.
-%%% ¡default!
-{"aal90","TD"}
+% %%% ¡prop!
+% ATLAS_KIND (parameter, stringlist) is the directory containing the Atlas needed for ROI analysis.
+% %%% ¡default!
+% {'aal90','TD'}
 
 
 %%% ¡prop!
@@ -264,11 +264,16 @@ ATLAS_INDEX (parameter, scalar) is the index of the atlas defined by the user fo
 %%%% ¡default!
 1;
 %%%% ¡postset!
-ba_list = roic.get('BA'); % Ensure brain atlas is obtained correctly
-atlas_index = roic.get('ATLAS_INDEX');
+ba_list = pdfc.get('BA'); % Ensure brain atlas is obtained correctly
+if isempty(ba_list)
+    br = BrainRegion('ID', 'SingleRegion');
+    ba = BrainAtlas('ID', 'Atlas', 'BR_DICT', IndexedDictionary('IT_CLASS', 'BrainRegion', 'IT_LIST', {br}));
+    ba_list = {ba};
+end
+atlas_index = pdfc.get('ATLAS_INDEX');
 ba = ba_list{atlas_index};
-if isempty(roic.get('SUVR_REGION_SELECTION').get('IT_LIST')) && ~isempty(ba.get('BR_DICT').get('IT_LIST'))
-    roic.set('SUVR_REGION_SELECTION', ba.get('BR_DICT'));
+if isempty(pdfc.get('PDF_REGION_SELECTION').get('IT_LIST')) && ~isempty(ba.get('BR_DICT').get('IT_LIST'))
+    pdfc.set('PDF_REGION_SELECTION', ba.get('BR_DICT'));
 end
 
 %%% ¡prop!
@@ -289,16 +294,16 @@ GR_T1 (data, item) is the subject group, which also defines the subject class Su
 Group('SUB_CLASS', 'SubjectNIfTI')
 
 %%% ¡prop!
-SUVR_REGION_SELECTION (parameter, stringlist) is the list of selected brain regions.
-%%%% ¡default!
-{}
+PDF_REGION_SELECTION (parameter, idict) is the list of selected brain regions.
+%%%% ¡settings!
+'BrainRegion'
 %%%% ¡gui!
-pr = SUVRConstructorPP_BR_DICT('EL', roic, 'PROP', SUVRConstructor.SUVR_REGION_SELECTION, ...
-    'WAITBAR', roic.getCallback('WAITBAR'), ...
+pr = SUVRConstructorPP_BR_DICT('EL', pdfc, 'PROP', PDFConstructor.PDF_REGION_SELECTION, ...
+    'WAITBAR', pdfc.getCallback('WAITBAR'), ...
     varargin{:});
 
 %%% ¡prop!
-CALC_SUBJ_PDF (query, cell) generates suvr vectors per subject using subject PET and T1 data.
+CALC_SUBJ_PDF (query, cell) generates pdf vectors per subject using subject PET and T1 data.
 %%%% ¡calculate!
 if isempty(varargin)
     value = {};
@@ -313,12 +318,12 @@ end
 % contrain my pet data within the T1 data
 masked_pet_data = pet_data{1}.* int16(t1_data_union_mask);
 
-% calculate suvr for ref region
+% calculate pdf for ref region
 
 atlas_directories = pdfc.get('ATLAS_PATH_DICT').get('IT_LIST');
-atlas_kind = pdfc.get('ATLAS_KIND');
+% atlas_kind = pdfc.get('ATLAS_KIND');
 Ref_list = pdfc.get('REF_REGION_LIST');
-atlas_suvr_index = pdfc.get('ATLAS_INDEX');
+atlas_pdf_index = pdfc.get('ATLAS_INDEX');
 for directory_index = 1: length(atlas_directories)
     directory_dict = atlas_directories{directory_index};
     directory_path = directory_dict.get('PATH');
@@ -330,10 +335,10 @@ for i = 2:length(ref_region_masks)
     ref_region_union_mask = ref_region_union_mask | ref_region_masks{i};
 end
 
-SUVR_values_ref = masked_pet_data(ref_region_union_mask);
+pdf_values_ref = masked_pet_data(ref_region_union_mask);
 
 % % Sort the values in descending order
-sorted_values = sort(SUVR_values_ref, 'descend');
+sorted_values = sort(pdf_values_ref, 'descend');
 
 % Calculate the number of values that constitute the top 50%
 num_values = length(sorted_values);
@@ -344,13 +349,13 @@ top_50_percent_values = sorted_values(1:top_50_percent_count);
 
 ref_region_meanvalue = mean(top_50_percent_values);
 
-% atlas_index = find(contains(atlas_kind{atlas_suvr{1}}));% here user can define refine the atlas_suvr option
+% atlas_index = find(contains(atlas_kind{atlas_pdf{1}}));% here user can define refine the atlas_pdf option
 % atlas_roi = atlas{atlas_index};
-atlas_roi = atlas{atlas_suvr_index};
-% calculate normalized suvr for all unique regions
+atlas_roi = atlas{atlas_pdf_index};
+% calculate normalized pdf for all unique regions
 ROI_list = unique(atlas_roi);
 ROI_list = ROI_list(ROI_list>0);% remove background which is represented by label "0"
-for roi_list_index = 1:length(ROI_list)
+parfor roi_list_index = 1:length(ROI_list)
     roi_index = ROI_list(roi_list_index);
     roi_mask = atlas_roi==roi_index;
     roi_data = masked_pet_data.*int16(roi_mask);
@@ -358,31 +363,31 @@ for roi_list_index = 1:length(ROI_list)
 
     [f, xf] = kde(roi, 'Bandwidth', 'plug-in', 'NumPoints', 500);
     kde_results(:,roi_list_index) = f;  % Store both the density estimate and evaluation points
- end
+end
 
 value = kde_results;
 
 %%% ¡prop!
-GR (result, item) is a group of subjects with SUVR analysis data.
+GR (result, item) is a group of subjects with PDF analysis data.
 %%%% ¡default!
 Group('SUB_CLASS', 'SubjectFUN', 'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectFUN'))
 %%%% ¡calculate!
 % creates empty Group
-gr_suvr = Group( ...
+gr_pdf = Group( ...
     'SUB_CLASS', 'SubjectFUN', ...
     'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectFUN') ...
     );
 
-gr_suvr.lock('SUB_CLASS');
+gr_pdf.lock('SUB_CLASS');
 
 gr_T1 = pdfc.get('GR_T1');% subject from Nifti
 gr_PET = pdfc.get('GR_PET');% subject from Nifti
 
 wb = braph2waitbar(pdfc.get('WAITBAR'), 0, ['Calculating PDF for subjects ...']);
 % adds subjects
-sub_dict = gr_suvr.memorize('SUB_DICT');
+sub_dict = gr_pdf.memorize('SUB_DICT');
 for i = 1:1:gr_PET.get('SUB_DICT').get('LENGTH')
-    sub_id_t1 = gr_T1.get('SUB_DICT').get('IT', i).get('ID');% subject ID
+    sub_id_t1 = gr_T1.get('SUB_DICT').get('IT', i).get('ID');% subject ID atlas_pdf_index
     sub_id_pet = gr_PET.get('SUB_DICT').get('IT', i).get('ID');% subject ID
 
     if isequal(sub_id_t1, sub_id_pet)
@@ -399,9 +404,9 @@ for i = 1:1:gr_PET.get('SUB_DICT').get('LENGTH')
         PDF = pdfc.get('CALC_SUBJ_PDF', pet_data, t1_data);
 
         % Use atlas with regions, update a list with brain regions
-        ba_list = roic.get('BA');
-        atlas_suvr_index = roic.get('ATLAS_INDEX');
-        ba = ba_list{atlas_suvr_index};
+        ba_list = pdfc.get('BA');
+        atlas_pdf_index = pdfc.get('ATLAS_INDEX');
+        ba = ba_list{atlas_pdf_index};
 
         % Get the number of brain regions in the atlas
         num_regions = ba.get('BR_DICT').get('LENGTH');
@@ -418,10 +423,10 @@ for i = 1:1:gr_PET.get('SUB_DICT').get('LENGTH')
             region_names{j} = brain_region.get('ID');
         end
 
-        selected_suvr_region = pdfc.get('SUVR_REGION_SELECTION');
+        selected_pdf_region = cellfun(@(x) x.get('ID'), pdfc.get('PDF_REGION_SELECTION').get('IT_LIST'),'UniformOutput',false);
         matched_indices = [];
         for j = 1:length(region_names)
-            match_idx = find(strcmp(selected_suvr_region, region_names{j}));
+            match_idx = find(strcmp(selected_pdf_region, region_names{j}));
             if ~isempty(match_idx)
                 matched_indices = [matched_indices, match_idx];
             end
@@ -444,7 +449,8 @@ for i = 1:1:gr_PET.get('SUB_DICT').get('LENGTH')
             'LABEL', ['Subejct FUN ' int2str(i)], ...
             'NOTES', ['Notes on subject FUN ' int2str(i)], ...
             'BA', ba_filtered,...
-            'FUN', PDF ...
+            'FUN', PDF, ...
+            'VOI_DICT', gr_PET.get('SUB_DICT').get('IT', i).get('VOI_DICT')...
             );
         sub_dict.get('ADD', sub);
         braph2waitbar(wb, .15 + .85 * i / gr_PET.get('SUB_DICT').get('LENGTH'), ['Calculating PDFs for subject ' num2str(i) ' of ' num2str(gr_PET.get('SUB_DICT').get('LENGTH')) ' ...'])
@@ -452,7 +458,7 @@ for i = 1:1:gr_PET.get('SUB_DICT').get('LENGTH')
 end
 
 braph2waitbar(wb, 'close')
-value = gr_suvr;
+value = gr_pdf;
 
 %%% ¡prop!
 WAITBAR (gui, logical) detemines whether to show the waitbar.
@@ -474,33 +480,57 @@ end
 %%%% ¡name!
 Compare Mathematical Expectation with VOIs Table (Using PDFConstructor)
 %%%% ¡code!
-% Step 1: Generate Simulated Data
-output_dir = fullfile(fileparts(which('PDFConstructor')), 'Example data Nifti');
+example_data_dir = fullfile(fileparts(which('PDFConstructor')), 'Example data Nifti');
+im_ba = ImporterBrainAtlasXLS( ...
+    'FILE', [which('aal94_atlas.xlsx')], ...
+    'WAITBAR', true ...
+);
 
-% Step 2: Load Brain Atlas
-im_ba = ImporterBrainAtlasXLS('FILE', which('aal94_atlas.xlsx'));
 ba = im_ba.get('BA');
 
-% Step 3: Load PET and T1 Data
-group_dir = fullfile(output_dir, 'Group1');
-im_gr1_PET = ImporterGroupSubjNIfTI('DIRECTORY', group_dir, 'NIFTI_TYPE', {'PET'}, 'WAITBAR', true);
-gr1_PET = im_gr1_PET.get('GR');
+% Path to generated VOIs file
+vois_file = fullfile(example_data_dir, 'Group1.vois.xlsx');
 
-im_gr1_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY', group_dir, 'NIFTI_TYPE', {'T1'}, 'WAITBAR', true);
+% Read the VOIs file
+vois_table = readtable(vois_file,'ReadVariableNames',false);
+
+im_gr1_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY', [example_data_dir filesep 'Group1'], ...
+    'NIFTI_TYPE', {'T1'}, ...
+    'WAITBAR', true);
 gr1_WM_GM = im_gr1_WM_GM.get('GR');
 
-% Step 4: Create PDFConstructor
-path_dict = IndexedDictionary('IT_CLASS', 'FILE_PATH', 'IT_LIST', {FILE_PATH('PATH', which('upsampled_AAL2.nii'))});
-% suvr_brain_label = readtable(which('AAL2_Atlas_Labels.csv')).Var4;
-ref_region_list = [2001]; % Reference region label
+im_gr1_PET = ImporterGroupSubjNIfTI('DIRECTORY', [example_data_dir filesep 'Group1'], ...
+    'NIFTI_TYPE', {'PET'}, ...
+    'WAITBAR', true);
+gr1_PET = im_gr1_PET.get('GR');
 
-im_gr_pdf = PDFConstructor('GR_PET', gr1_PET, 'GR_T1', gr1_WM_GM, 'BA', ba, ...
-    'ATLAS_PATH_DICT', path_dict, 'REF_REGION_LIST', {ref_region_list}, ...
-    'ATLAS_KIND', {'AAL2'});
-gr1 = im_gr_pdf.get('GR');
+path_dict = IndexedDictionary( ...
+    'IT_CLASS', 'FILE_PATH', ...
+    'IT_LIST', {FILE_PATH('PATH', which('upsampled_AAL2.nii'))} ...
+);
+
+mapping_path_dict = IndexedDictionary( ...
+    'IT_CLASS', 'FILE_PATH', ...
+    'IT_LIST', {FILE_PATH('PATH', which('AAL2_Atlas_Labels.csv'))} ...
+);
+
+ref_region_list = {[2001]}; % Reference region label
+
+atlas = ba;
+br_dict = atlas.get('BR_DICT');
+selected_ids = num2cell(1:94);
+selected_br = cellfun(@(id) br_dict.get('IT', id), selected_ids, 'UniformOutput', false);
+selected_br_dict = IndexedDictionary('IT_CLASS', 'BrainRegion', 'IT_LIST', selected_br);
+gr = PDFConstructor('GR_PET', gr1_PET, ...
+    'GR_T1', gr1_WM_GM, ...
+    'BA', {ba}, ...
+    'ATLAS_PATH_DICT', path_dict, ...
+    'MAPPING_PATH_DICT', mapping_path_dict, ...
+    'REF_REGION_LIST', ref_region_list, ...
+    'PDF_REGION_SELECTION', selected_br_dict);
+gr1 = gr.get('GR');
 
 
-% Step 6: Calculate Means by Subject and Region
 num_subjects = gr1.get('SUB_DICT').get('LENGTH');
 num_regions = size(gr1.get('SUB_DICT').get('IT', 1).get('FUN'), 2);
 calculated_subject_ids = cell(num_subjects, 1);
@@ -518,3 +548,26 @@ for subj_idx = 1:num_subjects
     assert(mean_first20 > mean_others, ...
         sprintf('Subject %s: Mean of first 20 regions is not larger than other regions.', calculated_subject_ids{subj_idx}));
 end
+
+% varify if regions have been selected correctly
+selected_br_dict = IndexedDictionary('IT_CLASS', 'BrainRegion', 'IT_LIST', {selected_br{1:5}});
+gr = PDFConstructor('GR_PET', gr1_PET, ...
+    'GR_T1', gr1_WM_GM, ...
+    'BA', {ba}, ...
+    'ATLAS_PATH_DICT', path_dict, ...
+    'MAPPING_PATH_DICT', mapping_path_dict, ...
+    'REF_REGION_LIST', ref_region_list, ...
+    'PDF_REGION_SELECTION', selected_br_dict);
+gr1 = gr.get('GR');
+
+subj_list_length = cellfun(@(x) size(x.get('FUN'),2), gr1.get('SUB_DICT').get('IT_LIST'), 'UniformOutput',false);
+subj_list_lengths = cell2mat(subj_list_length);
+selected_region_num = length({selected_br{1:5}});
+
+% Check if each element in subj_list_lengths equals selected_region_num
+all_match = all(subj_list_lengths == selected_region_num);
+
+% Assert the comparison
+assert(all_match, ...
+    'Mismatch: Not all subject list lengths (%s) equal selected_region_num (%d).', ...
+    num2str(subj_list_lengths), selected_region_num);
