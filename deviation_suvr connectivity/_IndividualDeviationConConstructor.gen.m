@@ -3,17 +3,8 @@ IndividualDeviationConConstructor < IndividualConConstructorBase (icdd, deviatio
 
 %%% ¡description!
 IndividualDeviationConConstructor imports a group of subjects with regional SUVR  
- (standarize uptake value ratio) data from a series of Nifti files 
- contained in a folder named "group_data". All these files must be in the same 
- folder; also, no other files should be in the folder. Each file contains a 
- matrix of values corresponding to the intensity distribution of brain regions.
- The connectivity matrix constructed based on Mahanlanobis Distance is returned
- from ImporterIndividual_Distance_XLS.
-The variables of interest are from another XLS/XLSX file named "SUVR_GROUP_MAT.vois.xlsx" 
- (if exisitng) consisting of the following columns: 
- Subject ID (column 1), covariates (subsequent columns). 
- The 1st row contains the headers, the 2nd row a string with the categorical
- variables of interest, and each subsequent row the values for each subject.
+ (standarize uptake value ratio) data from SUVRConsturctor.
+ The connectivity matrix constructed based on Mahanlanobis Distance 
 
 %%% ¡seealso!
 Group, SubjectCON, ExporterGroupSubjectCON_XLS
@@ -59,7 +50,7 @@ NOTES (metadata, string) are some specific notes about the CON subject individua
 'IndividualDeviationConstructor notes'
 
 %%% ¡prop!
-CONNECTOME_CONSTUCT_METHOD (query, cell) defines the method for z-scoring individual connectome construction.
+CONNECTOME_CONSTRUCT_METHOD (query, cell) defines the method for z-scoring individual connectome construction.
 %%%% ¡calculate!
 if isempty(varargin) && isempty(icdd.get('GR_SUVR').get('SUB_DICT').get('IT_LIST'))
     value = {};
@@ -120,8 +111,13 @@ Verify Deviation-Based Connectome Constructor
 %%%% ¡code!
 im_ba = ImporterBrainAtlasXLS('FILE', which('aal94_atlas.xlsx'));
 ba = im_ba.get('BA');
-
+atlas = ba;
+br_dict = atlas.get('BR_DICT');
+selected_ids = num2cell(1:94);
+selected_br = cellfun(@(id) br_dict.get('IT', id), selected_ids, 'UniformOutput', false);
+selected_br_dict = IndexedDictionary('IT_CLASS', 'BrainRegion', 'IT_LIST',  selected_br);
 group_dir = fullfile(fileparts(which('IndividualDeviationConConstructor')),'Example data Nifti', 'Group1');
+
 im_gr1_WM_GM = ImporterGroupSubjNIfTI( ...
     'DIRECTORY', group_dir, ...
     'NIFTI_TYPE', {'T1'}, ...
@@ -156,23 +152,23 @@ path_dict = IndexedDictionary(...
     'IT_LIST', {FILE_PATH('PATH', which('upsampled_AAL2.nii'))} ...
     );
 
-% suvr_brain_label = readtable(which('AAL2_Atlas_Labels.csv'));
-% suvr_brain_label = suvr_brain_label.Var4;
 ref_region_list = [2001];% reference region label
 
 gr = SUVRConstructor('GR_PET',gr1_PET, ...
     'GR_T1',gr1_WM_GM, ...
-    'BA', ba,...
+    'BA', {ba},...
     'ATLAS_PATH_DICT' ,path_dict, ...
     'REF_REGION_LIST',{ref_region_list}, ...
-    'ATLAS_KIND', {'AAL2'});
+    'ATLAS_KIND', {'AAL2'}, ...
+    'SUVR_REGION_SELECTION', selected_br_dict);
 
 gr_ref = SUVRConstructor('GR_PET',gr_ref_PET, ...
     'GR_T1',gr_ref_WM_GM, ...
-    'BA', ba,...
+    'BA', {ba},...
     'ATLAS_PATH_DICT' ,path_dict, ...
     'REF_REGION_LIST',{ref_region_list}, ...
-    'ATLAS_KIND', {'AAL2'});
+    'ATLAS_KIND', {'AAL2'}, ...
+    'SUVR_REGION_SELECTION', selected_br_dict);
 
 Con_gr = gr.get('GR');
 Con_gr_ref = gr_ref.get('GR');
@@ -191,7 +187,7 @@ num_subjects = a_WU1.get('G_DICT').get('LENGTH');
 for i = 1:num_subjects
     g = a_WU1.get('G_DICT').get('IT', i);
     strength = g.get('MEASURE', 'Strength').get('M'); % Strength for all regions
-    
+
     % Separate the first 20 regions and others
     strength_first20(i, :) = strength{1}(1:20);
     strength_others(i, :) = strength{1}(21:end);

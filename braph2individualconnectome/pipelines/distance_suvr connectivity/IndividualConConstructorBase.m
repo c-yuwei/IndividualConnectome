@@ -18,7 +18,7 @@ classdef IndividualConConstructorBase < ConcreteElement
 	%  <strong>9</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) detemines whether to show the waitbar.
 	%  <strong>10</strong> <strong>GR_SUVR</strong> 	GR_SUVR (data, item) is a group of subjects with mean SUVR data.
 	%  <strong>11</strong> <strong>GR_SUVR_REF</strong> 	GR_SUVR_REF (data, item) is a group of subjects with mean SUVR data for deviation reference.
-	%  <strong>12</strong> <strong>CONNECTOME_CONSTUCT_METHOD</strong> 	CONNECTOME_CONSTUCT_METHOD (query, cell) defines the method for individual connectome construction.
+	%  <strong>12</strong> <strong>CONNECTOME_CONSTRUCT_METHOD</strong> 	CONNECTOME_CONSTRUCT_METHOD (query, cell) defines the method for individual connectome construction.
 	%  <strong>13</strong> <strong>GR</strong> 	GR (result, item) is a group of subjects with connectivity data.
 	%
 	% IndividualConConstructorBase methods (constructor):
@@ -123,10 +123,10 @@ classdef IndividualConConstructorBase < ConcreteElement
 		GR_SUVR_REF_CATEGORY = 4;
 		GR_SUVR_REF_FORMAT = 8;
 		
-		CONNECTOME_CONSTUCT_METHOD = 12; %CET: Computational Efficiency Trick
-		CONNECTOME_CONSTUCT_METHOD_TAG = 'CONNECTOME_CONSTUCT_METHOD';
-		CONNECTOME_CONSTUCT_METHOD_CATEGORY = 6;
-		CONNECTOME_CONSTUCT_METHOD_FORMAT = 16;
+		CONNECTOME_CONSTRUCT_METHOD = 12; %CET: Computational Efficiency Trick
+		CONNECTOME_CONSTRUCT_METHOD_TAG = 'CONNECTOME_CONSTRUCT_METHOD';
+		CONNECTOME_CONSTRUCT_METHOD_CATEGORY = 6;
+		CONNECTOME_CONSTRUCT_METHOD_FORMAT = 16;
 		
 		GR = 13; %CET: Computational Efficiency Trick
 		GR_TAG = 'GR';
@@ -156,7 +156,7 @@ classdef IndividualConConstructorBase < ConcreteElement
 			%  <strong>9</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) detemines whether to show the waitbar.
 			%  <strong>10</strong> <strong>GR_SUVR</strong> 	GR_SUVR (data, item) is a group of subjects with mean SUVR data.
 			%  <strong>11</strong> <strong>GR_SUVR_REF</strong> 	GR_SUVR_REF (data, item) is a group of subjects with mean SUVR data for deviation reference.
-			%  <strong>12</strong> <strong>CONNECTOME_CONSTUCT_METHOD</strong> 	CONNECTOME_CONSTUCT_METHOD (query, cell) defines the method for individual connectome construction.
+			%  <strong>12</strong> <strong>CONNECTOME_CONSTRUCT_METHOD</strong> 	CONNECTOME_CONSTRUCT_METHOD (query, cell) defines the method for individual connectome construction.
 			%  <strong>13</strong> <strong>GR</strong> 	GR (result, item) is a group of subjects with connectivity data.
 			%
 			% See also Category, Format.
@@ -210,7 +210,7 @@ classdef IndividualConConstructorBase < ConcreteElement
 			%
 			% See also subclasses.
 			
-			subclass_list = { 'IndividualConConstructorBase'  'IndividualDeviationConConstructor'  'IndividualDistanceConConstructor' }; %CET: Computational Efficiency Trick
+			subclass_list = { 'IndividualConConstructorBase'  'IndividualDeviationConConstructor'  'IndividualDistanceConConstructor'  'IndividualPerturbationConConstructor' }; %CET: Computational Efficiency Trick
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of Individual Base Constructor.
@@ -365,7 +365,7 @@ classdef IndividualConConstructorBase < ConcreteElement
 			%
 			% See also getProps, existsTag.
 			
-			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'GR_SUVR'  'GR_SUVR_REF'  'CONNECTOME_CONSTUCT_METHOD'  'GR' })); %CET: Computational Efficiency Trick
+			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'GR_SUVR'  'GR_SUVR_REF'  'CONNECTOME_CONSTRUCT_METHOD'  'GR' })); %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
@@ -398,7 +398,7 @@ classdef IndividualConConstructorBase < ConcreteElement
 			%  getPropSettings, getPropDefault, checkProp.
 			
 			if ischar(pointer)
-				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'GR_SUVR'  'GR_SUVR_REF'  'CONNECTOME_CONSTUCT_METHOD'  'GR' })); % tag = pointer %CET: Computational Efficiency Trick
+				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'GR_SUVR'  'GR_SUVR_REF'  'CONNECTOME_CONSTRUCT_METHOD'  'GR' })); % tag = pointer %CET: Computational Efficiency Trick
 			else % numeric
 				prop = pointer;
 			end
@@ -427,7 +427,7 @@ classdef IndividualConConstructorBase < ConcreteElement
 				tag = pointer;
 			else % numeric
 				%CET: Computational Efficiency Trick
-				individualconconstructorbase_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'GR_SUVR'  'GR_SUVR_REF'  'CONNECTOME_CONSTUCT_METHOD'  'GR' };
+				individualconconstructorbase_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'GR_SUVR'  'GR_SUVR_REF'  'CONNECTOME_CONSTRUCT_METHOD'  'GR' };
 				tag = individualconconstructorbase_tag_list{pointer}; % prop = pointer
 			end
 		end
@@ -506,7 +506,7 @@ classdef IndividualConConstructorBase < ConcreteElement
 			prop = IndividualConConstructorBase.getPropProp(pointer);
 			
 			%CET: Computational Efficiency Trick
-			individualconconstructorbase_description_list = { 'ELCLASS (constant, string) is the class of Individual Connectome Constructor Base.'  'NAME (constant, string) is the name of the Individual Connectome Constructor Base.'  'DESCRIPTION (constant, string) is the description of the Individual Connectome Constructor Base.'  'TEMPLATE (parameter, item) is the template of the Individual Connectome Constructor Base.'  'ID (data, string) is a few-letter code for the Individual Connectome Constructor Base.'  'LABEL (metadata, string) is an extended label of the Individual Connectome Constructor Base.'  'NOTES (metadata, string) are some specific notes about the Individual Connectome Constructor Base.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'WAITBAR (gui, logical) detemines whether to show the waitbar.'  'GR_SUVR (data, item) is a group of subjects with mean SUVR data.'  'GR_SUVR_REF (data, item) is a group of subjects with mean SUVR data for deviation reference.'  'CONNECTOME_CONSTUCT_METHOD (query, cell) defines the method for individual connectome construction.'  'GR (result, item) is a group of subjects with connectivity data.' };
+			individualconconstructorbase_description_list = { 'ELCLASS (constant, string) is the class of Individual Connectome Constructor Base.'  'NAME (constant, string) is the name of the Individual Connectome Constructor Base.'  'DESCRIPTION (constant, string) is the description of the Individual Connectome Constructor Base.'  'TEMPLATE (parameter, item) is the template of the Individual Connectome Constructor Base.'  'ID (data, string) is a few-letter code for the Individual Connectome Constructor Base.'  'LABEL (metadata, string) is an extended label of the Individual Connectome Constructor Base.'  'NOTES (metadata, string) are some specific notes about the Individual Connectome Constructor Base.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'WAITBAR (gui, logical) detemines whether to show the waitbar.'  'GR_SUVR (data, item) is a group of subjects with mean SUVR data.'  'GR_SUVR_REF (data, item) is a group of subjects with mean SUVR data for deviation reference.'  'CONNECTOME_CONSTRUCT_METHOD (query, cell) defines the method for individual connectome construction.'  'GR (result, item) is a group of subjects with connectivity data.' };
 			prop_description = individualconconstructorbase_description_list{prop};
 		end
 		function prop_settings = getPropSettings(pointer)
@@ -538,7 +538,7 @@ classdef IndividualConConstructorBase < ConcreteElement
 					prop_settings = Format.getFormatSettings(8);
 				case 11 % IndividualConConstructorBase.GR_SUVR_REF
 					prop_settings = Format.getFormatSettings(8);
-				case 12 % IndividualConConstructorBase.CONNECTOME_CONSTUCT_METHOD
+				case 12 % IndividualConConstructorBase.CONNECTOME_CONSTRUCT_METHOD
 					prop_settings = Format.getFormatSettings(16);
 				case 13 % IndividualConConstructorBase.GR
 					prop_settings = 'Group';
@@ -577,7 +577,7 @@ classdef IndividualConConstructorBase < ConcreteElement
 					prop_default = Group('SUB_CLASS', 'SubjectST');
 				case 11 % IndividualConConstructorBase.GR_SUVR_REF
 					prop_default = Group('SUB_CLASS', 'SubjectST');
-				case 12 % IndividualConConstructorBase.CONNECTOME_CONSTUCT_METHOD
+				case 12 % IndividualConConstructorBase.CONNECTOME_CONSTRUCT_METHOD
 					prop_default = {};
 				case 13 % IndividualConConstructorBase.GR
 					prop_default = Group('SUB_CLASS', 'SubjectCON', 'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectCON'));
@@ -665,7 +665,7 @@ classdef IndividualConConstructorBase < ConcreteElement
 					check = Format.checkFormat(8, value, IndividualConConstructorBase.getPropSettings(prop));
 				case 11 % IndividualConConstructorBase.GR_SUVR_REF
 					check = Format.checkFormat(8, value, IndividualConConstructorBase.getPropSettings(prop));
-				case 12 % IndividualConConstructorBase.CONNECTOME_CONSTUCT_METHOD
+				case 12 % IndividualConConstructorBase.CONNECTOME_CONSTRUCT_METHOD
 					check = Format.checkFormat(16, value, IndividualConConstructorBase.getPropSettings(prop));
 				case 13 % IndividualConConstructorBase.GR
 					check = Format.checkFormat(8, value, IndividualConConstructorBase.getPropSettings(prop));
@@ -718,7 +718,7 @@ classdef IndividualConConstructorBase < ConcreteElement
 					
 					gr_suvr = base.get('GR_SUVR');
 					sub_dict = gr.memorize('SUB_DICT');
-					connectivityMatrix = base.get('CONNECTOME_CONSTUCT_METHOD');
+					connectivityMatrix = base.get('CONNECTOME_CONSTRUCT_METHOD');
 					wb = braph2waitbar(base.get('WAITBAR'), 0, ['Build up individual connectivity matrix for subjects ...']);
 					for i = 1:1:gr_suvr.get('SUB_DICT').get('LENGTH')
 					    ba = gr_suvr.get('SUB_DICT').get('IT',i).get('BA');

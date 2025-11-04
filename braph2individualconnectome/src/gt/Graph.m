@@ -518,7 +518,7 @@ classdef Graph < ConcreteElement
 			%
 			% See also subclasses.
 			
-			subclass_list = { 'Graph'  'GraphBD'  'GraphBU'  'GraphWD'  'GraphWU'  'MultigraphBUD'  'MultigraphBUT'  'MultiGraphWUD' }; %CET: Computational Efficiency Trick
+			subclass_list = { 'Graph'  'GraphBD'  'GraphBU'  'GraphWD'  'GraphWU'  'MultigraphBUD'  'MultigraphBUT'  'MultiplexWU'  'MultiGraphWUD' }; %CET: Computational Efficiency Trick
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of graph.

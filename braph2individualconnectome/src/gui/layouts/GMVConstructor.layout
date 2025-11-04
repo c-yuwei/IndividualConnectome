@@ -1,0 +1,38 @@
+ELCLASS
+NaN
+NAME
+NaN
+DESCRIPTION
+NaN
+TEMPLATE
+NaN
+GMV Constructor ID
+1
+GMV Constructor LABEL
+2
+GMV Constructor NOTES
+9
+TOSTRING
+NaN
+Brain Atlas
+4
+ATLAS_REGION_IDS
+NaN
+ATLAS_LABELS
+NaN
+MAPPING_PATH_DICT
+NaN
+ATLAS_INDEX
+NaN
+Brain Atlas File Locations
+5
+Group T1
+6
+Select Regions for Calculating GMV
+7
+CALC_SUBJ_GMV
+NaN
+Group GMV
+8
+WAITBAR ON/OFF
+3

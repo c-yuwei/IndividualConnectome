@@ -14,17 +14,20 @@ classdef PDFConstructor < ConcreteElement
 	%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of subject ROI constructor for Nifti.
 	%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about subject ROI constructor for Nifti.
 	%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
-	%  <strong>9</strong> <strong>REF_REGION_LIST</strong> 	REF_REGION_LIST (data, cell) is the list containing the label list of reference region of brain Atlas for ROI constructor.
-	%  <strong>10</strong> <strong>ATLAS_KIND</strong> 	ATLAS_KIND (parameter, stringlist) is the directory containing the Atlas needed for ROI analysis.
-	%  <strong>11</strong> <strong>BA</strong> 	BA (data, item) is a brain atlas.
-	%  <strong>12</strong> <strong>ATLAS_INDEX</strong> 	ATLAS_INDEX (parameter, scalar) is the index of the atlas defined by the user for SUVR ROI list.
-	%  <strong>13</strong> <strong>ATLAS_PATH_DICT</strong> 	ATLAS_PATH_DICT (parameter, idict) is the directory containing the Atlas needed for ROI analysis.
-	%  <strong>14</strong> <strong>GR_PET</strong> 	GR_PET (data, item) is the subject group, which also defines the subject class SubjectNIfTI.
-	%  <strong>15</strong> <strong>GR_T1</strong> 	GR_T1 (data, item) is the subject group, which also defines the subject class SubjectNIfTI.
-	%  <strong>16</strong> <strong>SUVR_REGION_SELECTION</strong> 	SUVR_REGION_SELECTION (parameter, stringlist) is the list of selected brain regions.
-	%  <strong>17</strong> <strong>CALC_SUBJ_PDF</strong> 	CALC_SUBJ_PDF (query, cell) generates suvr vectors per subject using subject PET and T1 data.
-	%  <strong>18</strong> <strong>GR</strong> 	GR (result, item) is a group of subjects with SUVR analysis data.
-	%  <strong>19</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) detemines whether to show the waitbar.
+	%  <strong>9</strong> <strong>BA</strong> 	BA (data, itemlist) is a list of brain atlases.
+	%  <strong>10</strong> <strong>ATLAS_REGION_IDS</strong> 	ATLAS_REGION_IDS (data, stringlist) is the list of region IDs for multiple atlases.
+	%  <strong>11</strong> <strong>ATLAS_LABELS</strong> 	ATLAS_LABELS (data, cell) is the list of string labels for multiple atlases.
+	%  <strong>12</strong> <strong>MAPPING_PATH_DICT</strong> 	MAPPING_PATH_DICT (data, idict) is the dictionary of paths to CSV files for region-index mappings.
+	%  <strong>13</strong> <strong>REF_REGION_LIST</strong> 	REF_REGION_LIST (data, cell) is the list containing the indices of reference regions for each atlas.
+	%  <strong>14</strong> <strong>REF_BR_DICT</strong> 	REF_BR_DICT (data, idict) contains the effective brain regions of the simulated network.
+	%  <strong>15</strong> <strong>ATLAS_INDEX</strong> 	ATLAS_INDEX (parameter, scalar) is the index of the atlas defined by the user for PDF ROI list.
+	%  <strong>16</strong> <strong>ATLAS_PATH_DICT</strong> 	ATLAS_PATH_DICT (parameter, idict) is the directory containing the Atlas needed for ROI analysis.
+	%  <strong>17</strong> <strong>GR_PET</strong> 	GR_PET (data, item) is the subject group, which also defines the subject class SubjectNIfTI.
+	%  <strong>18</strong> <strong>GR_T1</strong> 	GR_T1 (data, item) is the subject group, which also defines the subject class SubjectNIfTI.
+	%  <strong>19</strong> <strong>PDF_REGION_SELECTION</strong> 	PDF_REGION_SELECTION (parameter, idict) is the list of selected brain regions.
+	%  <strong>20</strong> <strong>CALC_SUBJ_PDF</strong> 	CALC_SUBJ_PDF (query, cell) generates pdf vectors per subject using subject PET and T1 data.
+	%  <strong>21</strong> <strong>GR</strong> 	GR (result, item) is a group of subjects with PDF analysis data.
+	%  <strong>22</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) detemines whether to show the waitbar.
 	%
 	% PDFConstructor methods (constructor):
 	%  PDFConstructor - constructor
@@ -117,57 +120,72 @@ classdef PDFConstructor < ConcreteElement
 	% BUILD BRAPH2 7 class_name 1
 	
 	properties (Constant) % properties
-		REF_REGION_LIST = 9; %CET: Computational Efficiency Trick
+		BA = 9; %CET: Computational Efficiency Trick
+		BA_TAG = 'BA';
+		BA_CATEGORY = 4;
+		BA_FORMAT = 9;
+		
+		ATLAS_REGION_IDS = 10; %CET: Computational Efficiency Trick
+		ATLAS_REGION_IDS_TAG = 'ATLAS_REGION_IDS';
+		ATLAS_REGION_IDS_CATEGORY = 4;
+		ATLAS_REGION_IDS_FORMAT = 3;
+		
+		ATLAS_LABELS = 11; %CET: Computational Efficiency Trick
+		ATLAS_LABELS_TAG = 'ATLAS_LABELS';
+		ATLAS_LABELS_CATEGORY = 4;
+		ATLAS_LABELS_FORMAT = 16;
+		
+		MAPPING_PATH_DICT = 12; %CET: Computational Efficiency Trick
+		MAPPING_PATH_DICT_TAG = 'MAPPING_PATH_DICT';
+		MAPPING_PATH_DICT_CATEGORY = 4;
+		MAPPING_PATH_DICT_FORMAT = 10;
+		
+		REF_REGION_LIST = 13; %CET: Computational Efficiency Trick
 		REF_REGION_LIST_TAG = 'REF_REGION_LIST';
 		REF_REGION_LIST_CATEGORY = 4;
 		REF_REGION_LIST_FORMAT = 16;
 		
-		ATLAS_KIND = 10; %CET: Computational Efficiency Trick
-		ATLAS_KIND_TAG = 'ATLAS_KIND';
-		ATLAS_KIND_CATEGORY = 3;
-		ATLAS_KIND_FORMAT = 3;
+		REF_BR_DICT = 14; %CET: Computational Efficiency Trick
+		REF_BR_DICT_TAG = 'REF_BR_DICT';
+		REF_BR_DICT_CATEGORY = 4;
+		REF_BR_DICT_FORMAT = 10;
 		
-		BA = 11; %CET: Computational Efficiency Trick
-		BA_TAG = 'BA';
-		BA_CATEGORY = 4;
-		BA_FORMAT = 8;
-		
-		ATLAS_INDEX = 12; %CET: Computational Efficiency Trick
+		ATLAS_INDEX = 15; %CET: Computational Efficiency Trick
 		ATLAS_INDEX_TAG = 'ATLAS_INDEX';
 		ATLAS_INDEX_CATEGORY = 3;
 		ATLAS_INDEX_FORMAT = 11;
 		
-		ATLAS_PATH_DICT = 13; %CET: Computational Efficiency Trick
+		ATLAS_PATH_DICT = 16; %CET: Computational Efficiency Trick
 		ATLAS_PATH_DICT_TAG = 'ATLAS_PATH_DICT';
 		ATLAS_PATH_DICT_CATEGORY = 3;
 		ATLAS_PATH_DICT_FORMAT = 10;
 		
-		GR_PET = 14; %CET: Computational Efficiency Trick
+		GR_PET = 17; %CET: Computational Efficiency Trick
 		GR_PET_TAG = 'GR_PET';
 		GR_PET_CATEGORY = 4;
 		GR_PET_FORMAT = 8;
 		
-		GR_T1 = 15; %CET: Computational Efficiency Trick
+		GR_T1 = 18; %CET: Computational Efficiency Trick
 		GR_T1_TAG = 'GR_T1';
 		GR_T1_CATEGORY = 4;
 		GR_T1_FORMAT = 8;
 		
-		SUVR_REGION_SELECTION = 16; %CET: Computational Efficiency Trick
-		SUVR_REGION_SELECTION_TAG = 'SUVR_REGION_SELECTION';
-		SUVR_REGION_SELECTION_CATEGORY = 3;
-		SUVR_REGION_SELECTION_FORMAT = 3;
+		PDF_REGION_SELECTION = 19; %CET: Computational Efficiency Trick
+		PDF_REGION_SELECTION_TAG = 'PDF_REGION_SELECTION';
+		PDF_REGION_SELECTION_CATEGORY = 3;
+		PDF_REGION_SELECTION_FORMAT = 10;
 		
-		CALC_SUBJ_PDF = 17; %CET: Computational Efficiency Trick
+		CALC_SUBJ_PDF = 20; %CET: Computational Efficiency Trick
 		CALC_SUBJ_PDF_TAG = 'CALC_SUBJ_PDF';
 		CALC_SUBJ_PDF_CATEGORY = 6;
 		CALC_SUBJ_PDF_FORMAT = 16;
 		
-		GR = 18; %CET: Computational Efficiency Trick
+		GR = 21; %CET: Computational Efficiency Trick
 		GR_TAG = 'GR';
 		GR_CATEGORY = 5;
 		GR_FORMAT = 8;
 		
-		WAITBAR = 19; %CET: Computational Efficiency Trick
+		WAITBAR = 22; %CET: Computational Efficiency Trick
 		WAITBAR_TAG = 'WAITBAR';
 		WAITBAR_CATEGORY = 9;
 		WAITBAR_FORMAT = 4;
@@ -192,17 +210,20 @@ classdef PDFConstructor < ConcreteElement
 			%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of subject ROI constructor for Nifti.
 			%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about subject ROI constructor for Nifti.
 			%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
-			%  <strong>9</strong> <strong>REF_REGION_LIST</strong> 	REF_REGION_LIST (data, cell) is the list containing the label list of reference region of brain Atlas for ROI constructor.
-			%  <strong>10</strong> <strong>ATLAS_KIND</strong> 	ATLAS_KIND (parameter, stringlist) is the directory containing the Atlas needed for ROI analysis.
-			%  <strong>11</strong> <strong>BA</strong> 	BA (data, item) is a brain atlas.
-			%  <strong>12</strong> <strong>ATLAS_INDEX</strong> 	ATLAS_INDEX (parameter, scalar) is the index of the atlas defined by the user for SUVR ROI list.
-			%  <strong>13</strong> <strong>ATLAS_PATH_DICT</strong> 	ATLAS_PATH_DICT (parameter, idict) is the directory containing the Atlas needed for ROI analysis.
-			%  <strong>14</strong> <strong>GR_PET</strong> 	GR_PET (data, item) is the subject group, which also defines the subject class SubjectNIfTI.
-			%  <strong>15</strong> <strong>GR_T1</strong> 	GR_T1 (data, item) is the subject group, which also defines the subject class SubjectNIfTI.
-			%  <strong>16</strong> <strong>SUVR_REGION_SELECTION</strong> 	SUVR_REGION_SELECTION (parameter, stringlist) is the list of selected brain regions.
-			%  <strong>17</strong> <strong>CALC_SUBJ_PDF</strong> 	CALC_SUBJ_PDF (query, cell) generates suvr vectors per subject using subject PET and T1 data.
-			%  <strong>18</strong> <strong>GR</strong> 	GR (result, item) is a group of subjects with SUVR analysis data.
-			%  <strong>19</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) detemines whether to show the waitbar.
+			%  <strong>9</strong> <strong>BA</strong> 	BA (data, itemlist) is a list of brain atlases.
+			%  <strong>10</strong> <strong>ATLAS_REGION_IDS</strong> 	ATLAS_REGION_IDS (data, stringlist) is the list of region IDs for multiple atlases.
+			%  <strong>11</strong> <strong>ATLAS_LABELS</strong> 	ATLAS_LABELS (data, cell) is the list of string labels for multiple atlases.
+			%  <strong>12</strong> <strong>MAPPING_PATH_DICT</strong> 	MAPPING_PATH_DICT (data, idict) is the dictionary of paths to CSV files for region-index mappings.
+			%  <strong>13</strong> <strong>REF_REGION_LIST</strong> 	REF_REGION_LIST (data, cell) is the list containing the indices of reference regions for each atlas.
+			%  <strong>14</strong> <strong>REF_BR_DICT</strong> 	REF_BR_DICT (data, idict) contains the effective brain regions of the simulated network.
+			%  <strong>15</strong> <strong>ATLAS_INDEX</strong> 	ATLAS_INDEX (parameter, scalar) is the index of the atlas defined by the user for PDF ROI list.
+			%  <strong>16</strong> <strong>ATLAS_PATH_DICT</strong> 	ATLAS_PATH_DICT (parameter, idict) is the directory containing the Atlas needed for ROI analysis.
+			%  <strong>17</strong> <strong>GR_PET</strong> 	GR_PET (data, item) is the subject group, which also defines the subject class SubjectNIfTI.
+			%  <strong>18</strong> <strong>GR_T1</strong> 	GR_T1 (data, item) is the subject group, which also defines the subject class SubjectNIfTI.
+			%  <strong>19</strong> <strong>PDF_REGION_SELECTION</strong> 	PDF_REGION_SELECTION (parameter, idict) is the list of selected brain regions.
+			%  <strong>20</strong> <strong>CALC_SUBJ_PDF</strong> 	CALC_SUBJ_PDF (query, cell) generates pdf vectors per subject using subject PET and T1 data.
+			%  <strong>21</strong> <strong>GR</strong> 	GR (result, item) is a group of subjects with PDF analysis data.
+			%  <strong>22</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) detemines whether to show the waitbar.
 			%
 			% See also Category, Format.
 			
@@ -279,7 +300,7 @@ classdef PDFConstructor < ConcreteElement
 			%CET: Computational Efficiency Trick
 			
 			if nargin == 0
-				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19];
+				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22];
 				return
 			end
 			
@@ -289,15 +310,15 @@ classdef PDFConstructor < ConcreteElement
 				case 2 % Category.METADATA
 					prop_list = [6 7];
 				case 3 % Category.PARAMETER
-					prop_list = [4 10 12 13 16];
+					prop_list = [4 15 16 19];
 				case 4 % Category.DATA
-					prop_list = [5 9 11 14 15];
+					prop_list = [5 9 10 11 12 13 14 17 18];
 				case 5 % Category.RESULT
-					prop_list = 18;
+					prop_list = 21;
 				case 6 % Category.QUERY
-					prop_list = [8 17];
+					prop_list = [8 20];
 				case 9 % Category.GUI
-					prop_list = 19;
+					prop_list = 22;
 				otherwise
 					prop_list = [];
 			end
@@ -323,7 +344,7 @@ classdef PDFConstructor < ConcreteElement
 			%CET: Computational Efficiency Trick
 			
 			if nargin == 0
-				prop_number = 19;
+				prop_number = 22;
 				return
 			end
 			
@@ -333,9 +354,9 @@ classdef PDFConstructor < ConcreteElement
 				case 2 % Category.METADATA
 					prop_number = 2;
 				case 3 % Category.PARAMETER
-					prop_number = 5;
+					prop_number = 4;
 				case 4 % Category.DATA
-					prop_number = 5;
+					prop_number = 9;
 				case 5 % Category.RESULT
 					prop_number = 1;
 				case 6 % Category.QUERY
@@ -372,7 +393,7 @@ classdef PDFConstructor < ConcreteElement
 			%
 			% See also getProps, existsTag.
 			
-			check = prop >= 1 && prop <= 19 && round(prop) == prop; %CET: Computational Efficiency Trick
+			check = prop >= 1 && prop <= 22 && round(prop) == prop; %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
@@ -410,7 +431,7 @@ classdef PDFConstructor < ConcreteElement
 			%
 			% See also getProps, existsTag.
 			
-			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'REF_REGION_LIST'  'ATLAS_KIND'  'BA'  'ATLAS_INDEX'  'ATLAS_PATH_DICT'  'GR_PET'  'GR_T1'  'SUVR_REGION_SELECTION'  'CALC_SUBJ_PDF'  'GR'  'WAITBAR' })); %CET: Computational Efficiency Trick
+			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'BA'  'ATLAS_REGION_IDS'  'ATLAS_LABELS'  'MAPPING_PATH_DICT'  'REF_REGION_LIST'  'REF_BR_DICT'  'ATLAS_INDEX'  'ATLAS_PATH_DICT'  'GR_PET'  'GR_T1'  'PDF_REGION_SELECTION'  'CALC_SUBJ_PDF'  'GR'  'WAITBAR' })); %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
@@ -443,7 +464,7 @@ classdef PDFConstructor < ConcreteElement
 			%  getPropSettings, getPropDefault, checkProp.
 			
 			if ischar(pointer)
-				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'REF_REGION_LIST'  'ATLAS_KIND'  'BA'  'ATLAS_INDEX'  'ATLAS_PATH_DICT'  'GR_PET'  'GR_T1'  'SUVR_REGION_SELECTION'  'CALC_SUBJ_PDF'  'GR'  'WAITBAR' })); % tag = pointer %CET: Computational Efficiency Trick
+				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'BA'  'ATLAS_REGION_IDS'  'ATLAS_LABELS'  'MAPPING_PATH_DICT'  'REF_REGION_LIST'  'REF_BR_DICT'  'ATLAS_INDEX'  'ATLAS_PATH_DICT'  'GR_PET'  'GR_T1'  'PDF_REGION_SELECTION'  'CALC_SUBJ_PDF'  'GR'  'WAITBAR' })); % tag = pointer %CET: Computational Efficiency Trick
 			else % numeric
 				prop = pointer;
 			end
@@ -472,7 +493,7 @@ classdef PDFConstructor < ConcreteElement
 				tag = pointer;
 			else % numeric
 				%CET: Computational Efficiency Trick
-				pdfconstructor_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'REF_REGION_LIST'  'ATLAS_KIND'  'BA'  'ATLAS_INDEX'  'ATLAS_PATH_DICT'  'GR_PET'  'GR_T1'  'SUVR_REGION_SELECTION'  'CALC_SUBJ_PDF'  'GR'  'WAITBAR' };
+				pdfconstructor_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'BA'  'ATLAS_REGION_IDS'  'ATLAS_LABELS'  'MAPPING_PATH_DICT'  'REF_REGION_LIST'  'REF_BR_DICT'  'ATLAS_INDEX'  'ATLAS_PATH_DICT'  'GR_PET'  'GR_T1'  'PDF_REGION_SELECTION'  'CALC_SUBJ_PDF'  'GR'  'WAITBAR' };
 				tag = pdfconstructor_tag_list{pointer}; % prop = pointer
 			end
 		end
@@ -499,7 +520,7 @@ classdef PDFConstructor < ConcreteElement
 			prop = PDFConstructor.getPropProp(pointer);
 			
 			%CET: Computational Efficiency Trick
-			pdfconstructor_category_list = { 1  1  1  3  4  2  2  6  4  3  4  3  3  4  4  3  6  5  9 };
+			pdfconstructor_category_list = { 1  1  1  3  4  2  2  6  4  4  4  4  4  4  3  3  4  4  3  6  5  9 };
 			prop_category = pdfconstructor_category_list{prop};
 		end
 		function prop_format = getPropFormat(pointer)
@@ -525,7 +546,7 @@ classdef PDFConstructor < ConcreteElement
 			prop = PDFConstructor.getPropProp(pointer);
 			
 			%CET: Computational Efficiency Trick
-			pdfconstructor_format_list = { 2  2  2  8  2  2  2  2  16  3  8  11  10  8  8  3  16  8  4 };
+			pdfconstructor_format_list = { 2  2  2  8  2  2  2  2  9  3  16  10  16  10  11  10  8  8  10  16  8  4 };
 			prop_format = pdfconstructor_format_list{prop};
 		end
 		function prop_description = getPropDescription(pointer)
@@ -551,7 +572,7 @@ classdef PDFConstructor < ConcreteElement
 			prop = PDFConstructor.getPropProp(pointer);
 			
 			%CET: Computational Efficiency Trick
-			pdfconstructor_description_list = { 'ELCLASS (constant, string) is the class of the subject ROI constructor for Nifti.'  'NAME (constant, string) is the name of the subject ROI constructor for Nifti.'  'DESCRIPTION (constant, string) is the description of the subject ROI constructor for Nifti.'  'TEMPLATE (parameter, item) is the template of the subject ROI constructor for Nifti.'  'ID (data, string) is a few-letter code for the subject ROI constructor for Nifti.'  'LABEL (metadata, string) is an extended label of subject ROI constructor for Nifti.'  'NOTES (metadata, string) are some specific notes about subject ROI constructor for Nifti.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'REF_REGION_LIST (data, cell) is the list containing the label list of reference region of brain Atlas for ROI constructor.'  'ATLAS_KIND (parameter, stringlist) is the directory containing the Atlas needed for ROI analysis.'  'BA (data, item) is a brain atlas.'  'ATLAS_INDEX (parameter, scalar) is the index of the atlas defined by the user for SUVR ROI list.'  'ATLAS_PATH_DICT (parameter, idict) is the directory containing the Atlas needed for ROI analysis.'  'GR_PET (data, item) is the subject group, which also defines the subject class SubjectNIfTI.'  'GR_T1 (data, item) is the subject group, which also defines the subject class SubjectNIfTI.'  'SUVR_REGION_SELECTION (parameter, stringlist) is the list of selected brain regions.'  'CALC_SUBJ_PDF (query, cell) generates suvr vectors per subject using subject PET and T1 data.'  'GR (result, item) is a group of subjects with SUVR analysis data.'  'WAITBAR (gui, logical) detemines whether to show the waitbar.' };
+			pdfconstructor_description_list = { 'ELCLASS (constant, string) is the class of the subject ROI constructor for Nifti.'  'NAME (constant, string) is the name of the subject ROI constructor for Nifti.'  'DESCRIPTION (constant, string) is the description of the subject ROI constructor for Nifti.'  'TEMPLATE (parameter, item) is the template of the subject ROI constructor for Nifti.'  'ID (data, string) is a few-letter code for the subject ROI constructor for Nifti.'  'LABEL (metadata, string) is an extended label of subject ROI constructor for Nifti.'  'NOTES (metadata, string) are some specific notes about subject ROI constructor for Nifti.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'BA (data, itemlist) is a list of brain atlases.'  'ATLAS_REGION_IDS (data, stringlist) is the list of region IDs for multiple atlases.'  'ATLAS_LABELS (data, cell) is the list of string labels for multiple atlases.'  'MAPPING_PATH_DICT (data, idict) is the dictionary of paths to CSV files for region-index mappings.'  'REF_REGION_LIST (data, cell) is the list containing the indices of reference regions for each atlas.'  'REF_BR_DICT (data, idict) contains the effective brain regions of the simulated network.'  'ATLAS_INDEX (parameter, scalar) is the index of the atlas defined by the user for PDF ROI list.'  'ATLAS_PATH_DICT (parameter, idict) is the directory containing the Atlas needed for ROI analysis.'  'GR_PET (data, item) is the subject group, which also defines the subject class SubjectNIfTI.'  'GR_T1 (data, item) is the subject group, which also defines the subject class SubjectNIfTI.'  'PDF_REGION_SELECTION (parameter, idict) is the list of selected brain regions.'  'CALC_SUBJ_PDF (query, cell) generates pdf vectors per subject using subject PET and T1 data.'  'GR (result, item) is a group of subjects with PDF analysis data.'  'WAITBAR (gui, logical) detemines whether to show the waitbar.' };
 			prop_description = pdfconstructor_description_list{prop};
 		end
 		function prop_settings = getPropSettings(pointer)
@@ -577,27 +598,33 @@ classdef PDFConstructor < ConcreteElement
 			prop = PDFConstructor.getPropProp(pointer);
 			
 			switch prop %CET: Computational Efficiency Trick
-				case 9 % PDFConstructor.REF_REGION_LIST
-					prop_settings = Format.getFormatSettings(16);
-				case 10 % PDFConstructor.ATLAS_KIND
-					prop_settings = Format.getFormatSettings(3);
-				case 11 % PDFConstructor.BA
+				case 9 % PDFConstructor.BA
 					prop_settings = 'BrainAtlas';
-				case 12 % PDFConstructor.ATLAS_INDEX
-					prop_settings = Format.getFormatSettings(11);
-				case 13 % PDFConstructor.ATLAS_PATH_DICT
-					prop_settings = Format.getFormatSettings(10);
-				case 14 % PDFConstructor.GR_PET
-					prop_settings = Format.getFormatSettings(8);
-				case 15 % PDFConstructor.GR_T1
-					prop_settings = Format.getFormatSettings(8);
-				case 16 % PDFConstructor.SUVR_REGION_SELECTION
+				case 10 % PDFConstructor.ATLAS_REGION_IDS
 					prop_settings = Format.getFormatSettings(3);
-				case 17 % PDFConstructor.CALC_SUBJ_PDF
+				case 11 % PDFConstructor.ATLAS_LABELS
 					prop_settings = Format.getFormatSettings(16);
-				case 18 % PDFConstructor.GR
+				case 12 % PDFConstructor.MAPPING_PATH_DICT
+					prop_settings = 'FILE_PATH';
+				case 13 % PDFConstructor.REF_REGION_LIST
+					prop_settings = Format.getFormatSettings(16);
+				case 14 % PDFConstructor.REF_BR_DICT
+					prop_settings = 'BrainRegion';
+				case 15 % PDFConstructor.ATLAS_INDEX
+					prop_settings = Format.getFormatSettings(11);
+				case 16 % PDFConstructor.ATLAS_PATH_DICT
+					prop_settings = 'FILE_PATH';
+				case 17 % PDFConstructor.GR_PET
 					prop_settings = Format.getFormatSettings(8);
-				case 19 % PDFConstructor.WAITBAR
+				case 18 % PDFConstructor.GR_T1
+					prop_settings = Format.getFormatSettings(8);
+				case 19 % PDFConstructor.PDF_REGION_SELECTION
+					prop_settings = 'BrainRegion';
+				case 20 % PDFConstructor.CALC_SUBJ_PDF
+					prop_settings = Format.getFormatSettings(16);
+				case 21 % PDFConstructor.GR
+					prop_settings = Format.getFormatSettings(8);
+				case 22 % PDFConstructor.WAITBAR
 					prop_settings = Format.getFormatSettings(4);
 				case 4 % PDFConstructor.TEMPLATE
 					prop_settings = 'PDFConstructor';
@@ -628,34 +655,33 @@ classdef PDFConstructor < ConcreteElement
 			prop = PDFConstructor.getPropProp(pointer);
 			
 			switch prop %CET: Computational Efficiency Trick
-				case 9 % PDFConstructor.REF_REGION_LIST
-					prop_default = Format.getFormatDefault(16, PDFConstructor.getPropSettings(prop));
-				case 10 % PDFConstructor.ATLAS_KIND
-					prop_default = Format.getFormatDefault(3, PDFConstructor.getPropSettings(prop));
-				case 11 % PDFConstructor.BA
-					prop_default = Format.getFormatDefault(8, PDFConstructor.getPropSettings(prop));
-				case 12 % PDFConstructor.ATLAS_INDEX
-					prop_default = 1;
-
-% %% ¡prop! % yuwei check this
-% ATLAS_SUVR_LABEL (parameter, option) is the atlas defined by the user for SUVR ROI list, selected from ATLAS_KIND.
-% %% ¡settings!
-% pdfc.get('ATLAS_KIND')
-% %% ¡default!
-% pdfc.get('ATLAS_KIND'){1} % Default to the first atlas in ATLAS_KIND;
-				case 13 % PDFConstructor.ATLAS_PATH_DICT
-					prop_default = Format.getFormatDefault(10, PDFConstructor.getPropSettings(prop));
-				case 14 % PDFConstructor.GR_PET
-					prop_default = Group('SUB_CLASS', 'SubjectNIfTI');
-				case 15 % PDFConstructor.GR_T1
-					prop_default = Group('SUB_CLASS', 'SubjectNIfTI');
-				case 16 % PDFConstructor.SUVR_REGION_SELECTION
+				case 9 % PDFConstructor.BA
+					prop_default = Format.getFormatDefault(9, PDFConstructor.getPropSettings(prop));
+				case 10 % PDFConstructor.ATLAS_REGION_IDS
+					prop_default = {} % Default to an empty cell array;
+				case 11 % PDFConstructor.ATLAS_LABELS
+					prop_default = {} % Default to an empty cell array;
+				case 12 % PDFConstructor.MAPPING_PATH_DICT
+					prop_default = IndexedDictionary('IT_CLASS', 'FILE_PATH');
+				case 13 % PDFConstructor.REF_REGION_LIST
 					prop_default = {};
-				case 17 % PDFConstructor.CALC_SUBJ_PDF
+				case 14 % PDFConstructor.REF_BR_DICT
+					prop_default = Format.getFormatDefault(10, PDFConstructor.getPropSettings(prop));
+				case 15 % PDFConstructor.ATLAS_INDEX
+					prop_default = 1;;
+				case 16 % PDFConstructor.ATLAS_PATH_DICT
+					prop_default = IndexedDictionary('IT_CLASS', 'FILE_PATH');
+				case 17 % PDFConstructor.GR_PET
+					prop_default = Group('SUB_CLASS', 'SubjectNIfTI');
+				case 18 % PDFConstructor.GR_T1
+					prop_default = Group('SUB_CLASS', 'SubjectNIfTI');
+				case 19 % PDFConstructor.PDF_REGION_SELECTION
+					prop_default = Format.getFormatDefault(10, PDFConstructor.getPropSettings(prop));
+				case 20 % PDFConstructor.CALC_SUBJ_PDF
 					prop_default = Format.getFormatDefault(16, PDFConstructor.getPropSettings(prop));
-				case 18 % PDFConstructor.GR
+				case 21 % PDFConstructor.GR
 					prop_default = Group('SUB_CLASS', 'SubjectFUN', 'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectFUN'));
-				case 19 % PDFConstructor.WAITBAR
+				case 22 % PDFConstructor.WAITBAR
 					prop_default = true;
 				case 1 % PDFConstructor.ELCLASS
 					prop_default = 'PDFConstructor';
@@ -735,27 +761,33 @@ classdef PDFConstructor < ConcreteElement
 			prop = PDFConstructor.getPropProp(pointer);
 			
 			switch prop
-				case 9 % PDFConstructor.REF_REGION_LIST
-					check = Format.checkFormat(16, value, PDFConstructor.getPropSettings(prop));
-				case 10 % PDFConstructor.ATLAS_KIND
+				case 9 % PDFConstructor.BA
+					check = Format.checkFormat(9, value, PDFConstructor.getPropSettings(prop));
+				case 10 % PDFConstructor.ATLAS_REGION_IDS
 					check = Format.checkFormat(3, value, PDFConstructor.getPropSettings(prop));
-				case 11 % PDFConstructor.BA
-					check = Format.checkFormat(8, value, PDFConstructor.getPropSettings(prop));
-				case 12 % PDFConstructor.ATLAS_INDEX
-					check = Format.checkFormat(11, value, PDFConstructor.getPropSettings(prop));
-				case 13 % PDFConstructor.ATLAS_PATH_DICT
+				case 11 % PDFConstructor.ATLAS_LABELS
+					check = Format.checkFormat(16, value, PDFConstructor.getPropSettings(prop));
+				case 12 % PDFConstructor.MAPPING_PATH_DICT
 					check = Format.checkFormat(10, value, PDFConstructor.getPropSettings(prop));
-				case 14 % PDFConstructor.GR_PET
-					check = Format.checkFormat(8, value, PDFConstructor.getPropSettings(prop));
-				case 15 % PDFConstructor.GR_T1
-					check = Format.checkFormat(8, value, PDFConstructor.getPropSettings(prop));
-				case 16 % PDFConstructor.SUVR_REGION_SELECTION
-					check = Format.checkFormat(3, value, PDFConstructor.getPropSettings(prop));
-				case 17 % PDFConstructor.CALC_SUBJ_PDF
+				case 13 % PDFConstructor.REF_REGION_LIST
 					check = Format.checkFormat(16, value, PDFConstructor.getPropSettings(prop));
-				case 18 % PDFConstructor.GR
+				case 14 % PDFConstructor.REF_BR_DICT
+					check = Format.checkFormat(10, value, PDFConstructor.getPropSettings(prop));
+				case 15 % PDFConstructor.ATLAS_INDEX
+					check = Format.checkFormat(11, value, PDFConstructor.getPropSettings(prop));
+				case 16 % PDFConstructor.ATLAS_PATH_DICT
+					check = Format.checkFormat(10, value, PDFConstructor.getPropSettings(prop));
+				case 17 % PDFConstructor.GR_PET
 					check = Format.checkFormat(8, value, PDFConstructor.getPropSettings(prop));
-				case 19 % PDFConstructor.WAITBAR
+				case 18 % PDFConstructor.GR_T1
+					check = Format.checkFormat(8, value, PDFConstructor.getPropSettings(prop));
+				case 19 % PDFConstructor.PDF_REGION_SELECTION
+					check = Format.checkFormat(10, value, PDFConstructor.getPropSettings(prop));
+				case 20 % PDFConstructor.CALC_SUBJ_PDF
+					check = Format.checkFormat(16, value, PDFConstructor.getPropSettings(prop));
+				case 21 % PDFConstructor.GR
+					check = Format.checkFormat(8, value, PDFConstructor.getPropSettings(prop));
+				case 22 % PDFConstructor.WAITBAR
 					check = Format.checkFormat(4, value, PDFConstructor.getPropSettings(prop));
 				case 4 % PDFConstructor.TEMPLATE
 					check = Format.checkFormat(8, value, PDFConstructor.getPropSettings(prop));
@@ -776,34 +808,137 @@ classdef PDFConstructor < ConcreteElement
 			end
 		end
 	end
-	methods (Access=protected) % postprocessing
-		function postprocessing(pdfc, prop)
-			%POSTPROCESSING postprocessesing after setting.
+	methods (Access=protected) % postset
+		function postset(pdfc, prop)
+			%POSTSET postprocessing after a prop has been set.
 			%
-			% POSTPROCESSING(EL, PROP) postprocessesing of PROP after setting. By
+			% POSTPROCESSING(EL, PROP) postprocessesing after PROP has been set. By
 			%  default, this function does not do anything, so it should be implemented
 			%  in the subclasses of Element when needed.
 			%
-			% The postprocessing of all properties occurs each time set is called.
+			% This postprocessing occurs only when PROP is set.
 			%
-			% See also conditioning, preset, checkProp, postset, calculateValue,
+			% See also conditioning, preset, checkProp, postprocessing, calculateValue,
 			%  checkValue.
 			
 			switch prop
-				case 16 % PDFConstructor.SUVR_REGION_SELECTION
-					ba = pdfc.get('BA'); % Ensure brain atlas is obtained correctly
-					if isempty(pdfc.get('SUVR_REGION_SELECTION'))  && ~isempty(ba.get('BR_DICT').get('IT_LIST'))
-					    regions = ba.get('BR_DICT').get('LENGTH');
-					    IT_LIST = cell(regions, 1); % Preallocate cell array
-					    for i = 1:regions
-					        IT_LIST{i} = ba.get('BR_DICT').get('IT', i).get('ID'); % Correct appending
+				case 12 % PDFConstructor.MAPPING_PATH_DICT
+					if pdfc.get('MAPPING_PATH_DICT').get('LENGTH') > 0
+					    mapping_files = pdfc.get('MAPPING_PATH_DICT').get('IT_LIST');
+					    atlas_region_ids = cell(1, length(mapping_files));
+					    atlas_labels = cell(1, length(mapping_files));
+					    for atlas_idx = 1:length(mapping_files)
+					        file_path = mapping_files{atlas_idx}.get('PATH');
+					        if ~isfile(file_path)
+					            warning('File not found: %s. Skipping atlas %d.', file_path, atlas_idx);
+					            atlas_region_ids{atlas_idx} = {};
+					            atlas_labels{atlas_idx} = {};
+					            continue;
+					        end
+					        atlas_data = readtable(file_path, 'FileType', 'text');
+					        if size(atlas_data, 2) < 2
+					            warning('CSV file %s lacks 2 columns. Skipping atlas %d.', file_path, atlas_idx);
+					            atlas_region_ids{atlas_idx} = {};
+					            atlas_labels{atlas_idx} = {};
+					            continue;
+					        end
+					        % Split data into numeric IDs and string labels
+					        region_ids = atlas_data{:, 2}; % Numeric indices
+					        labels = atlas_data{:, 1};          % String labels
+					        atlas_region_ids{atlas_idx} = region_ids; % Cell array of numeric IDs
+					        atlas_labels{atlas_idx} = labels;                    % String array of labels
 					    end
-					    pdfc.set('SUVR_REGION_SELECTION', IT_LIST)
+					    % Assuming atlas_region_ids is a cell array of column vectors
+					    atlas_region_ids_list = cell(1, length(atlas_region_ids)); % Preallocate a cell array
+					    for i = 1:length(atlas_region_ids)
+					        atlas_region_ids_list{i} = atlas_region_ids{i}'; % Transpose each column vector to a row vector
+					    end
+					    all_region_ids = [atlas_region_ids_list{:}]; % Concatenate all row vectors horizontally
+					
+					    all_atlas_labels_list = cell(1, length(atlas_labels)); % Preallocate a cell array
+					    for i = 1:length(atlas_labels)
+					        all_atlas_labels_list{i} = atlas_labels{i}'; % Transpose each column vector to a row vector
+					    end
+					    all_atlas_labels = [all_atlas_labels_list{:}];
+					    all_atlas_labels = num2cell(all_atlas_labels);
+					    pdfc.set('ATLAS_REGION_IDS', all_region_ids);
+					    pdfc.set('ATLAS_LABELS', all_atlas_labels);
+					end
+					
+				case 13 % PDFConstructor.REF_REGION_LIST
+					if ~isempty(pdfc.get('REF_REGION_LIST'))
+					    ba_list = pdfc.get('BA');
+					    ref_region_list = pdfc.get('REF_REGION_LIST');
+					    region_ids = pdfc.get('ATLAS_REGION_IDS');
+					    labels = pdfc.get('ATLAS_LABELS');
+					    ref_br_list = cell(0); % Initialize an empty cell array for reference brain regions
+					    % Iterate over each atlas in ref_region_list
+					    for atlas_idx = 1:length(ref_region_list)
+					        ba = ba_list{atlas_idx}; % Get the BrainAtlas for this atlas index
+					        br_dict = ba.get('BR_DICT');       % Get the brain region dictionary for this atlas
+					        indices = ref_region_list{atlas_idx}; % Numeric indices for this atlas
+					        % Iterate over each index in the current atlas's reference list
+					        for idx = 1:length(indices)
+					            % Find the position of the numeric index in region_ids
+					            pos = find(cellfun(@(x) x == indices(idx), labels));
+					            if ~isempty(pos)
+					                % Get the corresponding label using the position
+					                label = labels{pos}; % Access as cell element since labels is a cell array
+					                region_id = region_ids{pos};
+					                if ~isempty(region_id)
+					                    br = br_dict.get('IT', region_id); % Retrieve the brain region
+					                    ref_br_list{end+1} = br; % Add to the list
+					                end
+					            end
+					        end
+					    end
+					    if isempty(pdfc.get('REF_BR_DICT').get('IT_LIST'))
+					        % Set the REF_BR_DICT with the list of reference brain regions
+					        pdfc.set('REF_BR_DICT', IndexedDictionary('IT_CLASS', 'BrainRegion', 'IT_LIST', ref_br_list));
+					    end
+					end
+					
+				case 14 % PDFConstructor.REF_BR_DICT
+					Ref_region_list = pdfc.get('REF_REGION_LIST');
+					selected_br = pdfc.get('REF_BR_DICT').get('IT_LIST'); % List of selected BrainRegion objects
+					ba_list = pdfc.get('BA');
+					region_ids = pdfc.get('ATLAS_REGION_IDS');
+					labels = pdfc.get('ATLAS_LABELS');
+					ref_region_list = cell(length(ba_list)); % One cell per atlas
+					for atlas_idx = 1:length(ba_list)
+					    ba = ba_list{atlas_idx};
+					    br_dict = ba.get('BR_DICT');
+					    atlas_br_ids = cellfun(@(br) br.get('ID'), br_dict.get('IT_LIST'), 'UniformOutput', false);
+					    selected_br_ids = cellfun(@(br) br.get('ID'), selected_br, 'UniformOutput', false);
+					    [~, loc] = ismember(selected_br_ids, atlas_br_ids); % Find matches
+					    idx = find(loc > 0); % Indices of matches
+					    selected_br_ids = selected_br_ids(idx);
+					    if ~isempty(idx)
+					        [~, loc] = ismember(selected_br_ids, region_ids);
+					        ref_region = labels(loc);
+					        ref_region_list{atlas_idx} =  [ref_region{:}];
+					    end
+					end
+					if isempty(Ref_region_list) && ~isempty(ref_region_list)
+					    pdfc.set('REF_REGION_LIST', ref_region_list);
+					end
+					
+				case 15 % PDFConstructor.ATLAS_INDEX
+					ba_list = pdfc.get('BA'); % Ensure brain atlas is obtained correctly
+					if isempty(ba_list)
+					    br = BrainRegion('ID', 'SingleRegion');
+					    ba = BrainAtlas('ID', 'Atlas', 'BR_DICT', IndexedDictionary('IT_CLASS', 'BrainRegion', 'IT_LIST', {br}));
+					    ba_list = {ba};
+					end
+					atlas_index = pdfc.get('ATLAS_INDEX');
+					ba = ba_list{atlas_index};
+					if isempty(pdfc.get('PDF_REGION_SELECTION').get('IT_LIST')) && ~isempty(ba.get('BR_DICT').get('IT_LIST'))
+					    pdfc.set('PDF_REGION_SELECTION', ba.get('BR_DICT'));
 					end
 					
 				otherwise
 					if prop <= 8
-						postprocessing@ConcreteElement(pdfc, prop);
+						postset@ConcreteElement(pdfc, prop);
 					end
 			end
 		end
@@ -825,7 +960,7 @@ classdef PDFConstructor < ConcreteElement
 			%  postset, postprocessing, checkValue.
 			
 			switch prop
-				case 17 % PDFConstructor.CALC_SUBJ_PDF
+				case 20 % PDFConstructor.CALC_SUBJ_PDF
 					if isempty(varargin)
 					    value = {};
 					    return
@@ -839,12 +974,12 @@ classdef PDFConstructor < ConcreteElement
 					% contrain my pet data within the T1 data
 					masked_pet_data = pet_data{1}.* int16(t1_data_union_mask);
 					
-					% calculate suvr for ref region
+					% calculate pdf for ref region
 					
 					atlas_directories = pdfc.get('ATLAS_PATH_DICT').get('IT_LIST');
-					atlas_kind = pdfc.get('ATLAS_KIND');
+					% atlas_kind = pdfc.get('ATLAS_KIND');
 					Ref_list = pdfc.get('REF_REGION_LIST');
-					atlas_suvr_index = pdfc.get('ATLAS_INDEX');
+					atlas_pdf_index = pdfc.get('ATLAS_INDEX');
 					for directory_index = 1: length(atlas_directories)
 					    directory_dict = atlas_directories{directory_index};
 					    directory_path = directory_dict.get('PATH');
@@ -856,10 +991,10 @@ classdef PDFConstructor < ConcreteElement
 					    ref_region_union_mask = ref_region_union_mask | ref_region_masks{i};
 					end
 					
-					SUVR_values_ref = masked_pet_data(ref_region_union_mask);
+					pdf_values_ref = masked_pet_data(ref_region_union_mask);
 					
 					% % Sort the values in descending order
-					sorted_values = sort(SUVR_values_ref, 'descend');
+					sorted_values = sort(pdf_values_ref, 'descend');
 					
 					% Calculate the number of values that constitute the top 50%
 					num_values = length(sorted_values);
@@ -870,13 +1005,13 @@ classdef PDFConstructor < ConcreteElement
 					
 					ref_region_meanvalue = mean(top_50_percent_values);
 					
-					% atlas_index = find(contains(atlas_kind{atlas_suvr{1}}));% here user can define refine the atlas_suvr option
+					% atlas_index = find(contains(atlas_kind{atlas_pdf{1}}));% here user can define refine the atlas_pdf option
 					% atlas_roi = atlas{atlas_index};
-					atlas_roi = atlas{atlas_suvr_index};
-					% calculate normalized suvr for all unique regions
+					atlas_roi = atlas{atlas_pdf_index};
+					% calculate normalized pdf for all unique regions
 					ROI_list = unique(atlas_roi);
 					ROI_list = ROI_list(ROI_list>0);% remove background which is represented by label "0"
-					for roi_list_index = 1:length(ROI_list)
+					parfor roi_list_index = 1:length(ROI_list)
 					    roi_index = ROI_list(roi_list_index);
 					    roi_mask = atlas_roi==roi_index;
 					    roi_data = masked_pet_data.*int16(roi_mask);
@@ -884,29 +1019,29 @@ classdef PDFConstructor < ConcreteElement
 					
 					    [f, xf] = kde(roi, 'Bandwidth', 'plug-in', 'NumPoints', 500);
 					    kde_results(:,roi_list_index) = f;  % Store both the density estimate and evaluation points
-					 end
+					end
 					
 					value = kde_results;
 					
-				case 18 % PDFConstructor.GR
-					rng_settings_ = rng(); rng(pdfc.getPropSeed(18), 'twister')
+				case 21 % PDFConstructor.GR
+					rng_settings_ = rng(); rng(pdfc.getPropSeed(21), 'twister')
 					
 					% creates empty Group
-					gr_suvr = Group( ...
+					gr_pdf = Group( ...
 					    'SUB_CLASS', 'SubjectFUN', ...
 					    'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectFUN') ...
 					    );
 					
-					gr_suvr.lock('SUB_CLASS');
+					gr_pdf.lock('SUB_CLASS');
 					
 					gr_T1 = pdfc.get('GR_T1');% subject from Nifti
 					gr_PET = pdfc.get('GR_PET');% subject from Nifti
 					
 					wb = braph2waitbar(pdfc.get('WAITBAR'), 0, ['Calculating PDF for subjects ...']);
 					% adds subjects
-					sub_dict = gr_suvr.memorize('SUB_DICT');
+					sub_dict = gr_pdf.memorize('SUB_DICT');
 					for i = 1:1:gr_PET.get('SUB_DICT').get('LENGTH')
-					    sub_id_t1 = gr_T1.get('SUB_DICT').get('IT', i).get('ID');% subject ID
+					    sub_id_t1 = gr_T1.get('SUB_DICT').get('IT', i).get('ID');% subject ID atlas_pdf_index
 					    sub_id_pet = gr_PET.get('SUB_DICT').get('IT', i).get('ID');% subject ID
 					
 					    if isequal(sub_id_t1, sub_id_pet)
@@ -922,8 +1057,10 @@ classdef PDFConstructor < ConcreteElement
 					        end
 					        PDF = pdfc.get('CALC_SUBJ_PDF', pet_data, t1_data);
 					
-					        % use aal2 with 90 regions, update a list with brain regions of aal120 (stringlist)
-					        ba = pdfc.get('BA');
+					        % Use atlas with regions, update a list with brain regions
+					        ba_list = pdfc.get('BA');
+					        atlas_pdf_index = pdfc.get('ATLAS_INDEX');
+					        ba = ba_list{atlas_pdf_index};
 					
 					        % Get the number of brain regions in the atlas
 					        num_regions = ba.get('BR_DICT').get('LENGTH');
@@ -940,29 +1077,42 @@ classdef PDFConstructor < ConcreteElement
 					            region_names{j} = brain_region.get('ID');
 					        end
 					
-					        selected_suvr_region = pdfc.get('SUVR_REGION_SELECTION');
+					        selected_pdf_region = cellfun(@(x) x.get('ID'), pdfc.get('PDF_REGION_SELECTION').get('IT_LIST'),'UniformOutput',false);
 					        matched_indices = [];
 					        for j = 1:length(region_names)
-					            match_idx = find(strcmp(selected_suvr_region, region_names{j}));
+					            match_idx = find(strcmp(selected_pdf_region, region_names{j}));
 					            if ~isempty(match_idx)
 					                matched_indices = [matched_indices, match_idx];
 					            end
 					        end
 					        PDF = PDF(:,matched_indices);
+					        % Create a new BrainAtlas with only selected regions
+					        selected_br_list = cellfun(@(idx) ba.get('BR_DICT').get('IT', idx), num2cell(matched_indices), 'UniformOutput', false);
+					        br_dict_filtered = IndexedDictionary( ...
+					            'IT_CLASS', 'BrainRegion', ...
+					            'IT_LIST', selected_br_list ...
+					            );
+					        ba_filtered = BrainAtlas( ...
+					            'ID', [ba.get('ID') '_filtered'], ...
+					            'LABEL', ba.get('LABEL'), ...
+					            'NOTES', [ba.get('NOTES') ' - Filtered to selected regions'], ...
+					            'BR_DICT', br_dict_filtered ...
+					            );        
 					        sub = SubjectFUN( ...
 					            'ID', sub_id_t1, ...
 					            'LABEL', ['Subejct FUN ' int2str(i)], ...
 					            'NOTES', ['Notes on subject FUN ' int2str(i)], ...
-					            'BA', ba,...
+					            'BA', ba_filtered,...
 					            'FUN', PDF, ...
-					            'VOI_DICT', gr_T1.get('SUB_DICT').get('IT', i).get('VOI_DICT'));
+					            'VOI_DICT', gr_PET.get('SUB_DICT').get('IT', i).get('VOI_DICT')...
+					            );
 					        sub_dict.get('ADD', sub);
 					        braph2waitbar(wb, .15 + .85 * i / gr_PET.get('SUB_DICT').get('LENGTH'), ['Calculating PDFs for subject ' num2str(i) ' of ' num2str(gr_PET.get('SUB_DICT').get('LENGTH')) ' ...'])
 					    end
 					end
 					
 					braph2waitbar(wb, 'close')
-					value = gr_suvr;
+					value = gr_pdf;
 					
 					rng(rng_settings_)
 					
@@ -974,6 +1124,44 @@ classdef PDFConstructor < ConcreteElement
 					end
 			end
 			
+		end
+	end
+	methods % GUI
+		function pr = getPanelProp(pdfc, prop, varargin)
+			%GETPANELPROP returns a prop panel.
+			%
+			% PR = GETPANELPROP(EL, PROP) returns the panel of prop PROP.
+			%
+			% PR = GETPANELPROP(EL, PROP, 'Name', Value, ...) sets the properties 
+			%  of the panel prop.
+			%
+			% See also PanelProp, PanelPropAlpha, PanelPropCell, PanelPropClass,
+			%  PanelPropClassList, PanelPropColor, PanelPropHandle,
+			%  PanelPropHandleList, PanelPropIDict, PanelPropItem, PanelPropLine,
+			%  PanelPropItemList, PanelPropLogical, PanelPropMarker, PanelPropMatrix,
+			%  PanelPropNet, PanelPropOption, PanelPropScalar, PanelPropSize,
+			%  PanelPropString, PanelPropStringList.
+			
+			switch prop
+				case 14 % PDFConstructor.REF_BR_DICT
+					pr = SUVRConstructorPP_BR_DICT('EL', pdfc, 'PROP', 14, ...
+					    'WAITBAR', pdfc.getCallback('WAITBAR'), ...
+					    varargin{:});
+					
+					% %% ¡prop!
+					% ATLAS_KIND (parameter, stringlist) is the directory containing the Atlas needed for ROI analysis.
+					% %% ¡default!
+					% {'aal90','TD'}
+					
+				case 19 % PDFConstructor.PDF_REGION_SELECTION
+					pr = SUVRConstructorPP_BR_DICT('EL', pdfc, 'PROP', 19, ...
+					    'WAITBAR', pdfc.getCallback('WAITBAR'), ...
+					    varargin{:});
+					
+				otherwise
+					pr = getPanelProp@ConcreteElement(pdfc, prop, varargin{:});
+					
+			end
 		end
 	end
 end

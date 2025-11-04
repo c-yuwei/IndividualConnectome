@@ -199,7 +199,7 @@ classdef AnalyzeGroup < ConcreteElement
 			%
 			% See also subclasses.
 			
-			subclass_list = { 'AnalyzeGroup'  'AnalyzeGroup_ST_BUT'  'AnalyzeGroup_ST_WU' }; %CET: Computational Efficiency Trick
+			subclass_list = { 'AnalyzeGroup'  'AnalyzeGroup_ST_BUD'  'AnalyzeGroup_ST_BUT'  'AnalyzeGroup_ST_WU' }; %CET: Computational Efficiency Trick
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of group-based graph analysis.

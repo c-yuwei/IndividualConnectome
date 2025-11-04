@@ -1,0 +1,58 @@
+ELCLASS
+NaN
+NAME
+NaN
+DESCRIPTION
+NaN
+TEMPLATE
+NaN
+SVM Classifier ID
+1
+SVM Classifier Label
+2
+SVM Classifier Notes
+3
+TOSTRING
+NaN
+Dataset for Training/Prediction
+4
+DP_CLASSES
+NaN
+EPOCHS
+NaN
+BATCH
+NaN
+SHUFFLE
+NaN
+SOLVER
+NaN
+Trained SVM Model
+8
+INPUTS
+NaN
+TARGETS
+NaN
+TRAIN
+NaN
+VERBOSE
+NaN
+PLOT_TRAINING
+NaN
+Predictions
+9
+TARGET_CLASSES
+NaN
+LAYERS
+NaN
+WAITBAR
+NaN
+INTERRUPTIBLE
+NaN
+FEATURE_IMPORTANCE
+NaN
+Kernel Function
+5
+Box Constraint (C)
+6
+Standardize Data
+7

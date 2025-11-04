@@ -19,15 +19,14 @@ classdef SUVRConstructor < ConcreteElement
 	%  <strong>12</strong> <strong>MAPPING_PATH_DICT</strong> 	MAPPING_PATH_DICT (data, idict) is the dictionary of paths to CSV files for region-index mappings.
 	%  <strong>13</strong> <strong>REF_REGION_LIST</strong> 	REF_REGION_LIST (data, cell) is the list containing the indices of reference regions for each atlas.
 	%  <strong>14</strong> <strong>REF_BR_DICT</strong> 	REF_BR_DICT (data, idict) contains the effective brain regions of the simulated network.
-	%  <strong>15</strong> <strong>ATLAS_KIND</strong> 	ATLAS_KIND (parameter, stringlist) is the list of atlas types needed for ROI analysis.
-	%  <strong>16</strong> <strong>ATLAS_INDEX</strong> 	ATLAS_INDEX (parameter, scalar) is the index of the atlas defined by the user for SUVR ROI list.
-	%  <strong>17</strong> <strong>ATLAS_PATH_DICT</strong> 	ATLAS_PATH_DICT (parameter, idict) is the dictionary containing the paths to atlas NIfTI files.
-	%  <strong>18</strong> <strong>GR_PET</strong> 	GR_PET (data, item) is the subject group, which also defines the subject class SubjectNIfTI.
-	%  <strong>19</strong> <strong>GR_T1</strong> 	GR_T1 (data, item) is the subject group, which also defines the subject class SubjectNIfTI.
-	%  <strong>20</strong> <strong>SUVR_REGION_SELECTION</strong> 	SUVR_REGION_SELECTION (parameter, idict) is the list of selected brain regions.
-	%  <strong>21</strong> <strong>CALC_SUBJ_SUVR</strong> 	CALC_SUBJ_SUVR (query, cell) generates SUVR vectors per subject using subject PET and T1 data.
-	%  <strong>22</strong> <strong>GR</strong> 	GR (result, item) is a group of subjects with SUVR analysis data.
-	%  <strong>23</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) determines whether to show the waitbar.
+	%  <strong>15</strong> <strong>ATLAS_INDEX</strong> 	ATLAS_INDEX (parameter, scalar) is the index of the atlas defined by the user for SUVR ROI list.
+	%  <strong>16</strong> <strong>ATLAS_PATH_DICT</strong> 	ATLAS_PATH_DICT (parameter, idict) is the dictionary containing the paths to atlas NIfTI files.
+	%  <strong>17</strong> <strong>GR_PET</strong> 	GR_PET (data, item) is the subject group, which also defines the subject class SubjectNIfTI.
+	%  <strong>18</strong> <strong>GR_T1</strong> 	GR_T1 (data, item) is the subject group, which also defines the subject class SubjectNIfTI.
+	%  <strong>19</strong> <strong>SUVR_REGION_SELECTION</strong> 	SUVR_REGION_SELECTION (parameter, idict) is the list of selected brain regions.
+	%  <strong>20</strong> <strong>CALC_SUBJ_SUVR</strong> 	CALC_SUBJ_SUVR (query, cell) generates SUVR vectors per subject using subject PET and T1 data.
+	%  <strong>21</strong> <strong>GR</strong> 	GR (result, item) is a group of subjects with SUVR analysis data.
+	%  <strong>22</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) determines whether to show the waitbar.
 	%
 	% SUVRConstructor methods (constructor):
 	%  SUVRConstructor - constructor
@@ -150,47 +149,42 @@ classdef SUVRConstructor < ConcreteElement
 		REF_BR_DICT_CATEGORY = 4;
 		REF_BR_DICT_FORMAT = 10;
 		
-		ATLAS_KIND = 15; %CET: Computational Efficiency Trick
-		ATLAS_KIND_TAG = 'ATLAS_KIND';
-		ATLAS_KIND_CATEGORY = 3;
-		ATLAS_KIND_FORMAT = 3;
-		
-		ATLAS_INDEX = 16; %CET: Computational Efficiency Trick
+		ATLAS_INDEX = 15; %CET: Computational Efficiency Trick
 		ATLAS_INDEX_TAG = 'ATLAS_INDEX';
 		ATLAS_INDEX_CATEGORY = 3;
 		ATLAS_INDEX_FORMAT = 11;
 		
-		ATLAS_PATH_DICT = 17; %CET: Computational Efficiency Trick
+		ATLAS_PATH_DICT = 16; %CET: Computational Efficiency Trick
 		ATLAS_PATH_DICT_TAG = 'ATLAS_PATH_DICT';
 		ATLAS_PATH_DICT_CATEGORY = 3;
 		ATLAS_PATH_DICT_FORMAT = 10;
 		
-		GR_PET = 18; %CET: Computational Efficiency Trick
+		GR_PET = 17; %CET: Computational Efficiency Trick
 		GR_PET_TAG = 'GR_PET';
 		GR_PET_CATEGORY = 4;
 		GR_PET_FORMAT = 8;
 		
-		GR_T1 = 19; %CET: Computational Efficiency Trick
+		GR_T1 = 18; %CET: Computational Efficiency Trick
 		GR_T1_TAG = 'GR_T1';
 		GR_T1_CATEGORY = 4;
 		GR_T1_FORMAT = 8;
 		
-		SUVR_REGION_SELECTION = 20; %CET: Computational Efficiency Trick
+		SUVR_REGION_SELECTION = 19; %CET: Computational Efficiency Trick
 		SUVR_REGION_SELECTION_TAG = 'SUVR_REGION_SELECTION';
 		SUVR_REGION_SELECTION_CATEGORY = 3;
 		SUVR_REGION_SELECTION_FORMAT = 10;
 		
-		CALC_SUBJ_SUVR = 21; %CET: Computational Efficiency Trick
+		CALC_SUBJ_SUVR = 20; %CET: Computational Efficiency Trick
 		CALC_SUBJ_SUVR_TAG = 'CALC_SUBJ_SUVR';
 		CALC_SUBJ_SUVR_CATEGORY = 6;
 		CALC_SUBJ_SUVR_FORMAT = 16;
 		
-		GR = 22; %CET: Computational Efficiency Trick
+		GR = 21; %CET: Computational Efficiency Trick
 		GR_TAG = 'GR';
 		GR_CATEGORY = 5;
 		GR_FORMAT = 8;
 		
-		WAITBAR = 23; %CET: Computational Efficiency Trick
+		WAITBAR = 22; %CET: Computational Efficiency Trick
 		WAITBAR_TAG = 'WAITBAR';
 		WAITBAR_CATEGORY = 9;
 		WAITBAR_FORMAT = 4;
@@ -221,15 +215,14 @@ classdef SUVRConstructor < ConcreteElement
 			%  <strong>12</strong> <strong>MAPPING_PATH_DICT</strong> 	MAPPING_PATH_DICT (data, idict) is the dictionary of paths to CSV files for region-index mappings.
 			%  <strong>13</strong> <strong>REF_REGION_LIST</strong> 	REF_REGION_LIST (data, cell) is the list containing the indices of reference regions for each atlas.
 			%  <strong>14</strong> <strong>REF_BR_DICT</strong> 	REF_BR_DICT (data, idict) contains the effective brain regions of the simulated network.
-			%  <strong>15</strong> <strong>ATLAS_KIND</strong> 	ATLAS_KIND (parameter, stringlist) is the list of atlas types needed for ROI analysis.
-			%  <strong>16</strong> <strong>ATLAS_INDEX</strong> 	ATLAS_INDEX (parameter, scalar) is the index of the atlas defined by the user for SUVR ROI list.
-			%  <strong>17</strong> <strong>ATLAS_PATH_DICT</strong> 	ATLAS_PATH_DICT (parameter, idict) is the dictionary containing the paths to atlas NIfTI files.
-			%  <strong>18</strong> <strong>GR_PET</strong> 	GR_PET (data, item) is the subject group, which also defines the subject class SubjectNIfTI.
-			%  <strong>19</strong> <strong>GR_T1</strong> 	GR_T1 (data, item) is the subject group, which also defines the subject class SubjectNIfTI.
-			%  <strong>20</strong> <strong>SUVR_REGION_SELECTION</strong> 	SUVR_REGION_SELECTION (parameter, idict) is the list of selected brain regions.
-			%  <strong>21</strong> <strong>CALC_SUBJ_SUVR</strong> 	CALC_SUBJ_SUVR (query, cell) generates SUVR vectors per subject using subject PET and T1 data.
-			%  <strong>22</strong> <strong>GR</strong> 	GR (result, item) is a group of subjects with SUVR analysis data.
-			%  <strong>23</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) determines whether to show the waitbar.
+			%  <strong>15</strong> <strong>ATLAS_INDEX</strong> 	ATLAS_INDEX (parameter, scalar) is the index of the atlas defined by the user for SUVR ROI list.
+			%  <strong>16</strong> <strong>ATLAS_PATH_DICT</strong> 	ATLAS_PATH_DICT (parameter, idict) is the dictionary containing the paths to atlas NIfTI files.
+			%  <strong>17</strong> <strong>GR_PET</strong> 	GR_PET (data, item) is the subject group, which also defines the subject class SubjectNIfTI.
+			%  <strong>18</strong> <strong>GR_T1</strong> 	GR_T1 (data, item) is the subject group, which also defines the subject class SubjectNIfTI.
+			%  <strong>19</strong> <strong>SUVR_REGION_SELECTION</strong> 	SUVR_REGION_SELECTION (parameter, idict) is the list of selected brain regions.
+			%  <strong>20</strong> <strong>CALC_SUBJ_SUVR</strong> 	CALC_SUBJ_SUVR (query, cell) generates SUVR vectors per subject using subject PET and T1 data.
+			%  <strong>21</strong> <strong>GR</strong> 	GR (result, item) is a group of subjects with SUVR analysis data.
+			%  <strong>22</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) determines whether to show the waitbar.
 			%
 			% See also Category, Format.
 			
@@ -306,7 +299,7 @@ classdef SUVRConstructor < ConcreteElement
 			%CET: Computational Efficiency Trick
 			
 			if nargin == 0
-				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23];
+				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22];
 				return
 			end
 			
@@ -316,15 +309,15 @@ classdef SUVRConstructor < ConcreteElement
 				case 2 % Category.METADATA
 					prop_list = [6 7];
 				case 3 % Category.PARAMETER
-					prop_list = [4 15 16 17 20];
+					prop_list = [4 15 16 19];
 				case 4 % Category.DATA
-					prop_list = [5 9 10 11 12 13 14 18 19];
+					prop_list = [5 9 10 11 12 13 14 17 18];
 				case 5 % Category.RESULT
-					prop_list = 22;
+					prop_list = 21;
 				case 6 % Category.QUERY
-					prop_list = [8 21];
+					prop_list = [8 20];
 				case 9 % Category.GUI
-					prop_list = 23;
+					prop_list = 22;
 				otherwise
 					prop_list = [];
 			end
@@ -350,7 +343,7 @@ classdef SUVRConstructor < ConcreteElement
 			%CET: Computational Efficiency Trick
 			
 			if nargin == 0
-				prop_number = 23;
+				prop_number = 22;
 				return
 			end
 			
@@ -360,7 +353,7 @@ classdef SUVRConstructor < ConcreteElement
 				case 2 % Category.METADATA
 					prop_number = 2;
 				case 3 % Category.PARAMETER
-					prop_number = 5;
+					prop_number = 4;
 				case 4 % Category.DATA
 					prop_number = 9;
 				case 5 % Category.RESULT
@@ -399,7 +392,7 @@ classdef SUVRConstructor < ConcreteElement
 			%
 			% See also getProps, existsTag.
 			
-			check = prop >= 1 && prop <= 23 && round(prop) == prop; %CET: Computational Efficiency Trick
+			check = prop >= 1 && prop <= 22 && round(prop) == prop; %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
@@ -437,7 +430,7 @@ classdef SUVRConstructor < ConcreteElement
 			%
 			% See also getProps, existsTag.
 			
-			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'BA'  'ATLAS_REGION_IDS'  'ATLAS_LABELS'  'MAPPING_PATH_DICT'  'REF_REGION_LIST'  'REF_BR_DICT'  'ATLAS_KIND'  'ATLAS_INDEX'  'ATLAS_PATH_DICT'  'GR_PET'  'GR_T1'  'SUVR_REGION_SELECTION'  'CALC_SUBJ_SUVR'  'GR'  'WAITBAR' })); %CET: Computational Efficiency Trick
+			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'BA'  'ATLAS_REGION_IDS'  'ATLAS_LABELS'  'MAPPING_PATH_DICT'  'REF_REGION_LIST'  'REF_BR_DICT'  'ATLAS_INDEX'  'ATLAS_PATH_DICT'  'GR_PET'  'GR_T1'  'SUVR_REGION_SELECTION'  'CALC_SUBJ_SUVR'  'GR'  'WAITBAR' })); %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
@@ -470,7 +463,7 @@ classdef SUVRConstructor < ConcreteElement
 			%  getPropSettings, getPropDefault, checkProp.
 			
 			if ischar(pointer)
-				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'BA'  'ATLAS_REGION_IDS'  'ATLAS_LABELS'  'MAPPING_PATH_DICT'  'REF_REGION_LIST'  'REF_BR_DICT'  'ATLAS_KIND'  'ATLAS_INDEX'  'ATLAS_PATH_DICT'  'GR_PET'  'GR_T1'  'SUVR_REGION_SELECTION'  'CALC_SUBJ_SUVR'  'GR'  'WAITBAR' })); % tag = pointer %CET: Computational Efficiency Trick
+				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'BA'  'ATLAS_REGION_IDS'  'ATLAS_LABELS'  'MAPPING_PATH_DICT'  'REF_REGION_LIST'  'REF_BR_DICT'  'ATLAS_INDEX'  'ATLAS_PATH_DICT'  'GR_PET'  'GR_T1'  'SUVR_REGION_SELECTION'  'CALC_SUBJ_SUVR'  'GR'  'WAITBAR' })); % tag = pointer %CET: Computational Efficiency Trick
 			else % numeric
 				prop = pointer;
 			end
@@ -499,7 +492,7 @@ classdef SUVRConstructor < ConcreteElement
 				tag = pointer;
 			else % numeric
 				%CET: Computational Efficiency Trick
-				suvrconstructor_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'BA'  'ATLAS_REGION_IDS'  'ATLAS_LABELS'  'MAPPING_PATH_DICT'  'REF_REGION_LIST'  'REF_BR_DICT'  'ATLAS_KIND'  'ATLAS_INDEX'  'ATLAS_PATH_DICT'  'GR_PET'  'GR_T1'  'SUVR_REGION_SELECTION'  'CALC_SUBJ_SUVR'  'GR'  'WAITBAR' };
+				suvrconstructor_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'BA'  'ATLAS_REGION_IDS'  'ATLAS_LABELS'  'MAPPING_PATH_DICT'  'REF_REGION_LIST'  'REF_BR_DICT'  'ATLAS_INDEX'  'ATLAS_PATH_DICT'  'GR_PET'  'GR_T1'  'SUVR_REGION_SELECTION'  'CALC_SUBJ_SUVR'  'GR'  'WAITBAR' };
 				tag = suvrconstructor_tag_list{pointer}; % prop = pointer
 			end
 		end
@@ -526,7 +519,7 @@ classdef SUVRConstructor < ConcreteElement
 			prop = SUVRConstructor.getPropProp(pointer);
 			
 			%CET: Computational Efficiency Trick
-			suvrconstructor_category_list = { 1  1  1  3  4  2  2  6  4  4  4  4  4  4  3  3  3  4  4  3  6  5  9 };
+			suvrconstructor_category_list = { 1  1  1  3  4  2  2  6  4  4  4  4  4  4  3  3  4  4  3  6  5  9 };
 			prop_category = suvrconstructor_category_list{prop};
 		end
 		function prop_format = getPropFormat(pointer)
@@ -552,7 +545,7 @@ classdef SUVRConstructor < ConcreteElement
 			prop = SUVRConstructor.getPropProp(pointer);
 			
 			%CET: Computational Efficiency Trick
-			suvrconstructor_format_list = { 2  2  2  8  2  2  2  2  9  3  16  10  16  10  3  11  10  8  8  10  16  8  4 };
+			suvrconstructor_format_list = { 2  2  2  8  2  2  2  2  9  3  16  10  16  10  11  10  8  8  10  16  8  4 };
 			prop_format = suvrconstructor_format_list{prop};
 		end
 		function prop_description = getPropDescription(pointer)
@@ -578,7 +571,7 @@ classdef SUVRConstructor < ConcreteElement
 			prop = SUVRConstructor.getPropProp(pointer);
 			
 			%CET: Computational Efficiency Trick
-			suvrconstructor_description_list = { 'ELCLASS (constant, string) is the class of the subject ROI constructor for NIfTI.'  'NAME (constant, string) is the name of the subject ROI constructor for NIfTI.'  'DESCRIPTION (constant, string) is the description of the subject ROI constructor for NIfTI.'  'TEMPLATE (parameter, item) is the template of the subject ROI constructor for NIfTI.'  'ID (data, string) is a few-letter code for the subject ROI constructor for NIfTI.'  'LABEL (metadata, string) is an extended label of subject ROI constructor for NIfTI.'  'NOTES (metadata, string) are some specific notes about subject ROI constructor for NIfTI.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'BA (data, itemlist) is a list of brain atlases.'  'ATLAS_REGION_IDS (data, stringlist) is the list of region IDs for multiple atlases.'  'ATLAS_LABELS (data, cell) is the list of string labels for multiple atlases.'  'MAPPING_PATH_DICT (data, idict) is the dictionary of paths to CSV files for region-index mappings.'  'REF_REGION_LIST (data, cell) is the list containing the indices of reference regions for each atlas.'  'REF_BR_DICT (data, idict) contains the effective brain regions of the simulated network.'  'ATLAS_KIND (parameter, stringlist) is the list of atlas types needed for ROI analysis.'  'ATLAS_INDEX (parameter, scalar) is the index of the atlas defined by the user for SUVR ROI list.'  'ATLAS_PATH_DICT (parameter, idict) is the dictionary containing the paths to atlas NIfTI files.'  'GR_PET (data, item) is the subject group, which also defines the subject class SubjectNIfTI.'  'GR_T1 (data, item) is the subject group, which also defines the subject class SubjectNIfTI.'  'SUVR_REGION_SELECTION (parameter, idict) is the list of selected brain regions.'  'CALC_SUBJ_SUVR (query, cell) generates SUVR vectors per subject using subject PET and T1 data.'  'GR (result, item) is a group of subjects with SUVR analysis data.'  'WAITBAR (gui, logical) determines whether to show the waitbar.' };
+			suvrconstructor_description_list = { 'ELCLASS (constant, string) is the class of the subject ROI constructor for NIfTI.'  'NAME (constant, string) is the name of the subject ROI constructor for NIfTI.'  'DESCRIPTION (constant, string) is the description of the subject ROI constructor for NIfTI.'  'TEMPLATE (parameter, item) is the template of the subject ROI constructor for NIfTI.'  'ID (data, string) is a few-letter code for the subject ROI constructor for NIfTI.'  'LABEL (metadata, string) is an extended label of subject ROI constructor for NIfTI.'  'NOTES (metadata, string) are some specific notes about subject ROI constructor for NIfTI.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'BA (data, itemlist) is a list of brain atlases.'  'ATLAS_REGION_IDS (data, stringlist) is the list of region IDs for multiple atlases.'  'ATLAS_LABELS (data, cell) is the list of string labels for multiple atlases.'  'MAPPING_PATH_DICT (data, idict) is the dictionary of paths to CSV files for region-index mappings.'  'REF_REGION_LIST (data, cell) is the list containing the indices of reference regions for each atlas.'  'REF_BR_DICT (data, idict) contains the effective brain regions of the simulated network.'  'ATLAS_INDEX (parameter, scalar) is the index of the atlas defined by the user for SUVR ROI list.'  'ATLAS_PATH_DICT (parameter, idict) is the dictionary containing the paths to atlas NIfTI files.'  'GR_PET (data, item) is the subject group, which also defines the subject class SubjectNIfTI.'  'GR_T1 (data, item) is the subject group, which also defines the subject class SubjectNIfTI.'  'SUVR_REGION_SELECTION (parameter, idict) is the list of selected brain regions.'  'CALC_SUBJ_SUVR (query, cell) generates SUVR vectors per subject using subject PET and T1 data.'  'GR (result, item) is a group of subjects with SUVR analysis data.'  'WAITBAR (gui, logical) determines whether to show the waitbar.' };
 			prop_description = suvrconstructor_description_list{prop};
 		end
 		function prop_settings = getPropSettings(pointer)
@@ -616,23 +609,21 @@ classdef SUVRConstructor < ConcreteElement
 					prop_settings = Format.getFormatSettings(16);
 				case 14 % SUVRConstructor.REF_BR_DICT
 					prop_settings = 'BrainRegion';
-				case 15 % SUVRConstructor.ATLAS_KIND
-					prop_settings = Format.getFormatSettings(3);
-				case 16 % SUVRConstructor.ATLAS_INDEX
+				case 15 % SUVRConstructor.ATLAS_INDEX
 					prop_settings = Format.getFormatSettings(11);
-				case 17 % SUVRConstructor.ATLAS_PATH_DICT
+				case 16 % SUVRConstructor.ATLAS_PATH_DICT
 					prop_settings = 'FILE_PATH';
-				case 18 % SUVRConstructor.GR_PET
+				case 17 % SUVRConstructor.GR_PET
 					prop_settings = Format.getFormatSettings(8);
-				case 19 % SUVRConstructor.GR_T1
+				case 18 % SUVRConstructor.GR_T1
 					prop_settings = Format.getFormatSettings(8);
-				case 20 % SUVRConstructor.SUVR_REGION_SELECTION
+				case 19 % SUVRConstructor.SUVR_REGION_SELECTION
 					prop_settings = 'BrainRegion';
-				case 21 % SUVRConstructor.CALC_SUBJ_SUVR
+				case 20 % SUVRConstructor.CALC_SUBJ_SUVR
 					prop_settings = Format.getFormatSettings(16);
-				case 22 % SUVRConstructor.GR
+				case 21 % SUVRConstructor.GR
 					prop_settings = Format.getFormatSettings(8);
-				case 23 % SUVRConstructor.WAITBAR
+				case 22 % SUVRConstructor.WAITBAR
 					prop_settings = Format.getFormatSettings(4);
 				case 4 % SUVRConstructor.TEMPLATE
 					prop_settings = 'SUVRConstructor';
@@ -675,23 +666,21 @@ classdef SUVRConstructor < ConcreteElement
 					prop_default = {};
 				case 14 % SUVRConstructor.REF_BR_DICT
 					prop_default = Format.getFormatDefault(10, SUVRConstructor.getPropSettings(prop));
-				case 15 % SUVRConstructor.ATLAS_KIND
-					prop_default = {'aal90', 'TD'};
-				case 16 % SUVRConstructor.ATLAS_INDEX
+				case 15 % SUVRConstructor.ATLAS_INDEX
 					prop_default = 1;;
-				case 17 % SUVRConstructor.ATLAS_PATH_DICT
+				case 16 % SUVRConstructor.ATLAS_PATH_DICT
 					prop_default = IndexedDictionary('IT_CLASS', 'FILE_PATH');
-				case 18 % SUVRConstructor.GR_PET
+				case 17 % SUVRConstructor.GR_PET
 					prop_default = Group('SUB_CLASS', 'SubjectNIfTI');
-				case 19 % SUVRConstructor.GR_T1
+				case 18 % SUVRConstructor.GR_T1
 					prop_default = Group('SUB_CLASS', 'SubjectNIfTI');
-				case 20 % SUVRConstructor.SUVR_REGION_SELECTION
+				case 19 % SUVRConstructor.SUVR_REGION_SELECTION
 					prop_default = Format.getFormatDefault(10, SUVRConstructor.getPropSettings(prop));
-				case 21 % SUVRConstructor.CALC_SUBJ_SUVR
+				case 20 % SUVRConstructor.CALC_SUBJ_SUVR
 					prop_default = Format.getFormatDefault(16, SUVRConstructor.getPropSettings(prop));
-				case 22 % SUVRConstructor.GR
+				case 21 % SUVRConstructor.GR
 					prop_default = Group('SUB_CLASS', 'SubjectST', 'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectST'));
-				case 23 % SUVRConstructor.WAITBAR
+				case 22 % SUVRConstructor.WAITBAR
 					prop_default = true;
 				case 1 % SUVRConstructor.ELCLASS
 					prop_default = 'SUVRConstructor';
@@ -783,23 +772,21 @@ classdef SUVRConstructor < ConcreteElement
 					check = Format.checkFormat(16, value, SUVRConstructor.getPropSettings(prop));
 				case 14 % SUVRConstructor.REF_BR_DICT
 					check = Format.checkFormat(10, value, SUVRConstructor.getPropSettings(prop));
-				case 15 % SUVRConstructor.ATLAS_KIND
-					check = Format.checkFormat(3, value, SUVRConstructor.getPropSettings(prop));
-				case 16 % SUVRConstructor.ATLAS_INDEX
+				case 15 % SUVRConstructor.ATLAS_INDEX
 					check = Format.checkFormat(11, value, SUVRConstructor.getPropSettings(prop));
-				case 17 % SUVRConstructor.ATLAS_PATH_DICT
+				case 16 % SUVRConstructor.ATLAS_PATH_DICT
 					check = Format.checkFormat(10, value, SUVRConstructor.getPropSettings(prop));
-				case 18 % SUVRConstructor.GR_PET
+				case 17 % SUVRConstructor.GR_PET
 					check = Format.checkFormat(8, value, SUVRConstructor.getPropSettings(prop));
-				case 19 % SUVRConstructor.GR_T1
+				case 18 % SUVRConstructor.GR_T1
 					check = Format.checkFormat(8, value, SUVRConstructor.getPropSettings(prop));
-				case 20 % SUVRConstructor.SUVR_REGION_SELECTION
+				case 19 % SUVRConstructor.SUVR_REGION_SELECTION
 					check = Format.checkFormat(10, value, SUVRConstructor.getPropSettings(prop));
-				case 21 % SUVRConstructor.CALC_SUBJ_SUVR
+				case 20 % SUVRConstructor.CALC_SUBJ_SUVR
 					check = Format.checkFormat(16, value, SUVRConstructor.getPropSettings(prop));
-				case 22 % SUVRConstructor.GR
+				case 21 % SUVRConstructor.GR
 					check = Format.checkFormat(8, value, SUVRConstructor.getPropSettings(prop));
-				case 23 % SUVRConstructor.WAITBAR
+				case 22 % SUVRConstructor.WAITBAR
 					check = Format.checkFormat(4, value, SUVRConstructor.getPropSettings(prop));
 				case 4 % SUVRConstructor.TEMPLATE
 					check = Format.checkFormat(8, value, SUVRConstructor.getPropSettings(prop));
@@ -938,7 +925,7 @@ classdef SUVRConstructor < ConcreteElement
 					    roic.set('REF_REGION_LIST', ref_region_list);
 					end
 					
-				case 16 % SUVRConstructor.ATLAS_INDEX
+				case 15 % SUVRConstructor.ATLAS_INDEX
 					ba_list = roic.get('BA'); % Ensure brain atlas is obtained correctly
 					if isempty(ba_list)
 					    br = BrainRegion('ID', 'SingleRegion');
@@ -975,7 +962,7 @@ classdef SUVRConstructor < ConcreteElement
 			%  postset, postprocessing, checkValue.
 			
 			switch prop
-				case 21 % SUVRConstructor.CALC_SUBJ_SUVR
+				case 20 % SUVRConstructor.CALC_SUBJ_SUVR
 					if isempty(varargin)
 					    value = {};
 					    return
@@ -992,7 +979,7 @@ classdef SUVRConstructor < ConcreteElement
 					
 					% Calculate SUVR for reference regions
 					atlas_directories = roic.get('ATLAS_PATH_DICT').get('IT_LIST');
-					atlas_kind = roic.get('ATLAS_KIND');
+					% atlas_kind = roic.get('ATLAS_KIND');
 					ref_list = roic.get('REF_REGION_LIST');
 					atlas_suvr_index = roic.get('ATLAS_INDEX');
 					for directory_index = 1:length(atlas_directories)
@@ -1031,8 +1018,8 @@ classdef SUVRConstructor < ConcreteElement
 					
 					value = roi';
 					
-				case 22 % SUVRConstructor.GR
-					rng_settings_ = rng(); rng(roic.getPropSeed(22), 'twister')
+				case 21 % SUVRConstructor.GR
+					rng_settings_ = rng(); rng(roic.getPropSeed(21), 'twister')
 					
 					% Create empty Group
 					gr_suvr = Group( ...
@@ -1155,8 +1142,13 @@ classdef SUVRConstructor < ConcreteElement
 					    'WAITBAR', roic.getCallback('WAITBAR'), ...
 					    varargin{:});
 					
-				case 20 % SUVRConstructor.SUVR_REGION_SELECTION
-					pr = SUVRConstructorPP_BR_DICT('EL', roic, 'PROP', 20, ...
+					% %% ¡prop!
+					% ATLAS_KIND (parameter, stringlist) is the list of atlas types needed for ROI analysis.
+					% %% ¡default!
+					% {'aal90', 'TD'}
+					
+				case 19 % SUVRConstructor.SUVR_REGION_SELECTION
+					pr = SUVRConstructorPP_BR_DICT('EL', roic, 'PROP', 19, ...
 					    'WAITBAR', roic.getCallback('WAITBAR'), ...
 					    varargin{:});
 					

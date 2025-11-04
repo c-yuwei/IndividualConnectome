@@ -27,7 +27,7 @@ classdef IndividualDistanceConConstructor < IndividualConConstructorBase
 	%  <strong>9</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) detemines whether to show the waitbar.
 	%  <strong>10</strong> <strong>GR_SUVR</strong> 	GR_SUVR (data, item) is a group of subjects with mean SUVR data.
 	%  <strong>11</strong> <strong>GR_SUVR_REF</strong> 	GR_SUVR_REF (data, item) is a group of subjects with mean SUVR data for deviation reference.
-	%  <strong>12</strong> <strong>CONNECTOME_CONSTUCT_METHOD</strong> 	CONNECTOME_CONSTUCT_METHOD (query, cell) defines the method for Mahalanobis distance individual connectome construction.
+	%  <strong>12</strong> <strong>CONNECTOME_CONSTRUCT_METHOD</strong> 	CONNECTOME_CONSTRUCT_METHOD (query, cell) defines the method for Mahalanobis distance individual connectome construction.
 	%  <strong>13</strong> <strong>GR</strong> 	GR (result, item) is a group of subjects with connectivity data.
 	%
 	% IndividualDistanceConConstructor methods (constructor):
@@ -143,7 +143,7 @@ classdef IndividualDistanceConConstructor < IndividualConConstructorBase
 			%  <strong>9</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) detemines whether to show the waitbar.
 			%  <strong>10</strong> <strong>GR_SUVR</strong> 	GR_SUVR (data, item) is a group of subjects with mean SUVR data.
 			%  <strong>11</strong> <strong>GR_SUVR_REF</strong> 	GR_SUVR_REF (data, item) is a group of subjects with mean SUVR data for deviation reference.
-			%  <strong>12</strong> <strong>CONNECTOME_CONSTUCT_METHOD</strong> 	CONNECTOME_CONSTUCT_METHOD (query, cell) defines the method for Mahalanobis distance individual connectome construction.
+			%  <strong>12</strong> <strong>CONNECTOME_CONSTRUCT_METHOD</strong> 	CONNECTOME_CONSTRUCT_METHOD (query, cell) defines the method for Mahalanobis distance individual connectome construction.
 			%  <strong>13</strong> <strong>GR</strong> 	GR (result, item) is a group of subjects with connectivity data.
 			%
 			% See also Category, Format.
@@ -352,7 +352,7 @@ classdef IndividualDistanceConConstructor < IndividualConConstructorBase
 			%
 			% See also getProps, existsTag.
 			
-			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'GR_SUVR'  'GR_SUVR_REF'  'CONNECTOME_CONSTUCT_METHOD'  'GR' })); %CET: Computational Efficiency Trick
+			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'GR_SUVR'  'GR_SUVR_REF'  'CONNECTOME_CONSTRUCT_METHOD'  'GR' })); %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
@@ -385,7 +385,7 @@ classdef IndividualDistanceConConstructor < IndividualConConstructorBase
 			%  getPropSettings, getPropDefault, checkProp.
 			
 			if ischar(pointer)
-				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'GR_SUVR'  'GR_SUVR_REF'  'CONNECTOME_CONSTUCT_METHOD'  'GR' })); % tag = pointer %CET: Computational Efficiency Trick
+				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'GR_SUVR'  'GR_SUVR_REF'  'CONNECTOME_CONSTRUCT_METHOD'  'GR' })); % tag = pointer %CET: Computational Efficiency Trick
 			else % numeric
 				prop = pointer;
 			end
@@ -414,7 +414,7 @@ classdef IndividualDistanceConConstructor < IndividualConConstructorBase
 				tag = pointer;
 			else % numeric
 				%CET: Computational Efficiency Trick
-				individualdistanceconconstructor_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'GR_SUVR'  'GR_SUVR_REF'  'CONNECTOME_CONSTUCT_METHOD'  'GR' };
+				individualdistanceconconstructor_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'GR_SUVR'  'GR_SUVR_REF'  'CONNECTOME_CONSTRUCT_METHOD'  'GR' };
 				tag = individualdistanceconconstructor_tag_list{pointer}; % prop = pointer
 			end
 		end
@@ -493,7 +493,7 @@ classdef IndividualDistanceConConstructor < IndividualConConstructorBase
 			prop = IndividualDistanceConConstructor.getPropProp(pointer);
 			
 			%CET: Computational Efficiency Trick
-			individualdistanceconconstructor_description_list = { 'ELCLASS (constant, string) is the class of the subject individual distance based connectivity constructor.'  'NAME (constant, string) is the name of the subject individual distance based connectivity constructor.'  'DESCRIPTION (constant, string) is the description of the subject individual distance based connectivity constructor.'  'TEMPLATE (parameter, item) is the template of the subject individual distance based connectivity constructor.'  'ID (data, string) is a few-letter code for the subject individual distance based connectivity constructor.'  'LABEL (metadata, string) is an extended label of the subject individual distance based connectivity constructor.'  'NOTES (metadata, string) are some specific notes about the subject individual distance based connectivity constructor.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'WAITBAR (gui, logical) detemines whether to show the waitbar.'  'GR_SUVR (data, item) is a group of subjects with mean SUVR data.'  'GR_SUVR_REF (data, item) is a group of subjects with mean SUVR data for deviation reference.'  'CONNECTOME_CONSTUCT_METHOD (query, cell) defines the method for Mahalanobis distance individual connectome construction.'  'GR (result, item) is a group of subjects with connectivity data.' };
+			individualdistanceconconstructor_description_list = { 'ELCLASS (constant, string) is the class of the subject individual distance based connectivity constructor.'  'NAME (constant, string) is the name of the subject individual distance based connectivity constructor.'  'DESCRIPTION (constant, string) is the description of the subject individual distance based connectivity constructor.'  'TEMPLATE (parameter, item) is the template of the subject individual distance based connectivity constructor.'  'ID (data, string) is a few-letter code for the subject individual distance based connectivity constructor.'  'LABEL (metadata, string) is an extended label of the subject individual distance based connectivity constructor.'  'NOTES (metadata, string) are some specific notes about the subject individual distance based connectivity constructor.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'WAITBAR (gui, logical) detemines whether to show the waitbar.'  'GR_SUVR (data, item) is a group of subjects with mean SUVR data.'  'GR_SUVR_REF (data, item) is a group of subjects with mean SUVR data for deviation reference.'  'CONNECTOME_CONSTRUCT_METHOD (query, cell) defines the method for Mahalanobis distance individual connectome construction.'  'GR (result, item) is a group of subjects with connectivity data.' };
 			prop_description = individualdistanceconconstructor_description_list{prop};
 		end
 		function prop_settings = getPropSettings(pointer)
@@ -662,7 +662,7 @@ classdef IndividualDistanceConConstructor < IndividualConConstructorBase
 			%  postset, postprocessing, checkValue.
 			
 			switch prop
-				case 12 % IndividualDistanceConConstructor.CONNECTOME_CONSTUCT_METHOD
+				case 12 % IndividualDistanceConConstructor.CONNECTOME_CONSTRUCT_METHOD
 					if isempty(varargin) && isempty(icd.get('GR_SUVR').get('SUB_DICT').get('IT_LIST'))
 					    value = {};
 					    return

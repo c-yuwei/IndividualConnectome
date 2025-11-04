@@ -1007,7 +1007,7 @@ classdef SUVRConstructorPP_BR_DICT < PanelProp
 			    % Determine which atlases to use based on prop
 			    if prop == 14  % REF_BR_DICT: Use all atlases
 			        selected_atlases = ba_list;
-			    elseif prop == 20  % SUVR_REGION_SELECTION: Use one atlas
+			    elseif prop == 19  % SUVR_REGION_SELECTION: Use one atlas
 			        atlas_index = roic.get('ATLAS_INDEX');
 			        if atlas_index < 1 || atlas_index > length(ba_list)
 			            warning('Invalid ATLAS_INDEX. No atlas selected.');
