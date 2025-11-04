@@ -210,7 +210,7 @@ classdef IndividualConConstructorBase < ConcreteElement
 			%
 			% See also subclasses.
 			
-			subclass_list = { 'IndividualConConstructorBase'  'IndividualDeviationConConstructor'  'IndividualDistanceConConstructor'  'IndividualPerturbationConConstructor' }; %CET: Computational Efficiency Trick
+			subclass_list = { 'IndividualConConstructorBase'  'IndividualDistanceConConstructor'  'IndividualPerturbationConConstructor' }; %CET: Computational Efficiency Trick
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of Individual Base Constructor.

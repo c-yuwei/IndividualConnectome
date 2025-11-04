@@ -2,77 +2,128 @@
 % Script example pipeline Divergence CON WU
 
 clear variables %#ok<*NASGU>
+addpath(genpath('/home/hang/GitHub/Individual-connectome/group_data/ADNI_DATA'));
+addpath(genpath('/home/hang/GitHub/IndividualConnectome-WithYuwei/braph2individualconnectome'));
 %% Load BrainAtlas
-im_ba = ImporterBrainAtlasXLS( ...
-    'FILE', [which('aal94_atlas.xlsx')], ...
-    'WAITBAR', true ...
-    );
-
-ba = im_ba.get('BA');
+% im_ba = ImporterBrainAtlasXLS( ...
+%     'FILE', [which('aal94_atlas.xlsx')], ...
+%     'WAITBAR', true ...
+%     );
+% 
+% ba = im_ba.get('BA');
 
 %% load Nifty images
 %%group1
-im_gr1_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('AD_PositiveAmyloid.vois.xlsx')) filesep 'AD_PositiveAmyloid'], ...
-    'NIFTI_TYPE', {'WM','GM'},...
+im_gr3_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('Withconverters/AD_PositiveAmyloid.vois.xlsx')) filesep 'AD_PositiveAmyloid'], ...
+    'NIFTI_TYPE', {'wc1','wc2'},...
+    'WAITBAR', true);
+gr3_WM_GM = im_gr3_WM_GM.get('GR');
+
+im_gr3_PET = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('Withconverters/AD_PositiveAmyloid.vois.xlsx')) filesep 'AD_PositiveAmyloid'], ...
+    'NIFTI_TYPE', {'wroriented_raw_pet'},...
+    'WAITBAR', true);
+gr3_PET = im_gr3_PET.get('GR');
+
+%%group2
+im_gr1_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY',[fileparts(which('Withconverters/Healthy_NegativeAmyloid.vois.xlsx')) filesep 'Healthy_NegativeAmyloid'], ...
+    'NIFTI_TYPE', {'wc1','wc2'},...
     'WAITBAR', true);
 gr1_WM_GM = im_gr1_WM_GM.get('GR');
 
-im_gr1_PET = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('AD_PositiveAmyloid.vois.xlsx')) filesep 'AD_PositiveAmyloid'], ...
+im_gr1_PET = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('Withconverters/Healthy_NegativeAmyloid.vois.xlsx')) filesep 'Healthy_NegativeAmyloid'], ...
     'NIFTI_TYPE', {'wroriented_raw_pet'},...
     'WAITBAR', true);
 gr1_PET = im_gr1_PET.get('GR');
 
-%%group2
-im_gr2_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY',[fileparts(which('Healthy_NegativeAmyloid.vois.xlsx')) filesep 'Healthy_NegativeAmyloid'], ...
-    'NIFTI_TYPE', {'WM','GM'},...
+%%group3
+im_gr2_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('Withconverters/MCI_PositiveAmyloid.vois.xlsx')) filesep 'MCI_PositiveAmyloid'], ...
+    'NIFTI_TYPE', {'wc1','wc2'},...
     'WAITBAR', true);
 gr2_WM_GM = im_gr2_WM_GM.get('GR');
 
-im_gr2_PET = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('Healthy_NegativeAmyloid.vois.xlsx')) filesep 'Healthy_NegativeAmyloid'], ...
+im_gr2_PET = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('Withconverters/MCI_PositiveAmyloid.vois.xlsx')) filesep 'MCI_PositiveAmyloid'], ...
     'NIFTI_TYPE', {'wroriented_raw_pet'},...
     'WAITBAR', true);
 gr2_PET = im_gr2_PET.get('GR');
 
-%%group3
-im_gr3_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('MCI_PositiveAmyloid.vois.xlsx')) filesep 'MCI_PositiveAmyloid'], ...
-    'NIFTI_TYPE', {'WM','GM'},...
+%%group4
+im_gr4_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY',[fileparts(which('Withconverters/Healthy_PositiveAmyloid.vois.xlsx')) filesep 'Healthy_PositiveAmyloid'], ...
+    'NIFTI_TYPE', {'wc1','wc2'},...
     'WAITBAR', true);
-gr3_WM_GM = im_gr3_WM_GM.get('GR');
+gr4_WM_GM = im_gr4_WM_GM.get('GR');
 
-im_gr3_PET = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('MCI_PositiveAmyloid.vois.xlsx')) filesep 'MCI_PositiveAmyloid'], ...
+im_gr4_PET = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('Withconverters/Healthy_PositiveAmyloid.vois.xlsx')) filesep 'Healthy_PositiveAmyloid'], ...
     'NIFTI_TYPE', {'wroriented_raw_pet'},...
     'WAITBAR', true);
-gr3_PET = im_gr3_PET.get('GR');
+gr4_PET = im_gr4_PET.get('GR');
 %% PDF Construtor
 path_dict = IndexedDictionary(...
     'IT_CLASS', 'FILE_PATH', ...
     'IT_LIST', {FILE_PATH('PATH', which('upsampled_AAL2.nii')),FILE_PATH('PATH', which('upsampled_TD.nii'))} ...
     );
-% suvr_brain_label = readtable(which('AAL2_Atlas_Labels.csv'));
-% suvr_brain_label = suvr_brain_label.Var4;
-im_gr_pdf1 = PDFConstructor('GR_PET',gr1_PET, ...
+
+mapping_path_dict = IndexedDictionary(...
+    'IT_CLASS', 'FILE_PATH', ...
+    'IT_LIST', {FILE_PATH('PATH', which('AAL2_Atlas_Labels_Abbre.csv')),FILE_PATH('PATH', which('TD_Atlas_Labels.csv'))} ...
+    );
+% Import two brain atlases
+im_ba1 = ImporterBrainAtlasXLS('FILE', which('aal120_atlas.xlsx'),  'WAITBAR', true);
+ba1 = im_ba1.get('BA');
+im_ba2 = ImporterBrainAtlasXLS('FILE', which('TD_atlas.xlsx'), 'WAITBAR', true);
+ba2 = im_ba2.get('BA');
+
+% Create ItemList for BA
+ba_list = {ba1, ba2}; 
+atlas = ba_list{1};
+br_dict = atlas.get('BR_DICT');
+selected_ids = num2cell(1:120);
+selected_br = cellfun(@(id) br_dict.get('IT', id), selected_ids, 'UniformOutput', false);
+selected_br_dict = IndexedDictionary('IT_CLASS', 'BrainRegion', 'IT_LIST',  {selected_br{1:94}});
+gr1 = PDFConstructor('GR_PET',gr1_PET, ...
     'GR_T1',gr1_WM_GM, ...
-    'BA', ba,...
+    'BA', ba_list,...
     'ATLAS_PATH_DICT' ,path_dict, ...
+    'MAPPING_PATH_DICT', mapping_path_dict, ...
     'REF_REGION_LIST',{[9100,9110,9120,9130,9140,9150,9160,9170], 7}, ...
-    'ATLAS_KIND', {'AAL2','TD'});
-pdf_gr1 = im_gr_pdf1.get('GR');
+    'ATLAS_INDEX', 1, ...
+    'ATLAS_KIND', {'AAL2','TD'}, ...
+    'PDF_REGION_SELECTION', selected_br_dict);
+pdf_gr1 = gr1.get('GR');
 
-im_gr_pdf2 = PDFConstructor('GR_PET',gr2_PET, ...
+gr2 = PDFConstructor('GR_PET',gr2_PET, ...
     'GR_T1',gr2_WM_GM, ...
-    'BA', ba,...
+    'BA', ba_list,...
     'ATLAS_PATH_DICT' ,path_dict, ...
+    'MAPPING_PATH_DICT', mapping_path_dict, ...
     'REF_REGION_LIST',{[9100,9110,9120,9130,9140,9150,9160,9170], 7}, ...
-    'ATLAS_KIND', {'AAL2','TD'});
-pdf_gr2 = im_gr_pdf2.get('GR');
+    'ATLAS_INDEX', 1, ...
+    'ATLAS_KIND', {'AAL2','TD'}, ...
+    'PDF_REGION_SELECTION', selected_br_dict);
+pdf_gr2 = gr2.get('GR');
 
-im_gr_pdf3 = PDFConstructor('GR_PET',gr3_PET, ...
+gr3 = PDFConstructor('GR_PET',gr3_PET, ...
     'GR_T1',gr3_WM_GM, ...
-    'BA', ba,...
+    'BA', ba_list,...
     'ATLAS_PATH_DICT' ,path_dict, ...
+    'MAPPING_PATH_DICT', mapping_path_dict, ...
     'REF_REGION_LIST',{[9100,9110,9120,9130,9140,9150,9160,9170], 7}, ...
-    'ATLAS_KIND', {'AAL2','TD'});
-pdf_gr3 = im_gr_pdf3.get('GR');
+    'ATLAS_INDEX', 1, ...
+    'ATLAS_KIND', {'AAL2','TD'}, ...
+    'PDF_REGION_SELECTION', selected_br_dict);
+pdf_gr3 = gr3.get('GR');
+
+
+gr4 = PDFConstructor('GR_PET',gr4_PET, ...
+    'GR_T1',gr4_WM_GM, ...
+    'BA', ba_list,...
+    'ATLAS_PATH_DICT' ,path_dict, ...
+    'MAPPING_PATH_DICT', mapping_path_dict, ...
+    'REF_REGION_LIST',{[9100,9110,9120,9130,9140,9150,9160,9170], 7}, ...
+    'ATLAS_INDEX', 1, ...
+    'ATLAS_KIND', {'AAL2','TD'}, ...
+    'PDF_REGION_SELECTION', selected_br_dict);
+pdf_gr4 = gr4.get('GR');
+
 
 %% Load Groups of SubjectCON divergence based
 g_temp  = GraphWU('STANDARDIZE_RULE', 'range');
@@ -85,10 +136,13 @@ a_WU2 = AnalyzeEnsembleDivergence_FUN_WU( ...
 a_WU3 = AnalyzeEnsembleDivergence_FUN_WU( ...
     'GR', pdf_gr3, ...
     'TEMPLATE', a_WU1);
-
+a_WU4 = AnalyzeEnsembleDivergence_FUN_WU( ...
+    'GR', pdf_gr4, ...
+    'TEMPLATE', a_WU1);
 a_WU1.memorize('G_DICT');
 a_WU2.memorize('G_DICT');
 a_WU3.memorize('G_DICT');
+a_WU4.memorize('G_DICT');
 % gr1_divergence = a_WU1.get('G_DICT');
 % gr2_divergence = a_WU2.get('G_DICT');
 % gr3_divergence = a_WU3.get('G_DICT');
@@ -169,6 +223,29 @@ it_list_voi3 = cellfun(@(sub) NNDataPoint_VOIs( ...
     ), sub_list3, 'UniformOutput', false);
 
 
+% ǵroup 4
+[~, group_folder_name4] = fileparts(im_gr4_PET.get('DIRECTORY'));
+it_list4 = cellfun(@(x) NNDataPoint_Graph_CLA( ...
+    'ID', x.get('ID'), ...
+    'G', x, ...
+    'TARGET_CLASS', {group_folder_name4}), ...
+     a_WU4.get('G_DICT').get('IT_LIST'), ...
+    'UniformOutput', false);
+% Get the subject dictionary and extract the list of subjects
+sub_dict4 = gr4_WM_GM.get('SUB_DICT');
+sub_list4 = sub_dict4.get('IT_LIST'); % Get all subjects as a cell array
+
+% Use cellfun to create NNDataPoint_VOIs for each subject
+it_list_voi4 = cellfun(@(sub) NNDataPoint_VOIs( ...
+    'ID', sub.get('ID'), ...
+    'VOI_DICT', IndexedDictionary( ...
+        'ID', 'subject_idict', ...
+        'IT_CLASS', 'SubjectNIfTI', ...
+        'IT_KEY', IndexedDictionary.getPropDefault(IndexedDictionary.IT_KEY), ...
+        'IT_LIST', sub.get('VOI_DICT').get('IT_LIST') ...
+        ), ...
+    'TARGET_CLASS', {group_folder_name4} ...
+    ), sub_list4, 'UniformOutput', false);
 
 dp_list1 = IndexedDictionary(...
         'IT_CLASS', 'NNDataPoint_Graph_CLA', ...
@@ -185,6 +262,10 @@ dp_list3 = IndexedDictionary(...
         'IT_LIST', it_list3 ...
         );
 
+dp_list4 = IndexedDictionary(...
+        'IT_CLASS', 'NNDataPoint_CON_CLA', ...
+        'IT_LIST', it_list4 ...
+        );
 
 dp_list_voi1 = IndexedDictionary(...
         'IT_CLASS', 'NNDataPoint_VOIs', ...
@@ -201,7 +282,10 @@ dp_list_voi3 = IndexedDictionary(...
         'IT_LIST', it_list_voi3 ...
         );
 
-
+dp_list_voi4 = IndexedDictionary(...
+        'IT_CLASS', 'NNDataPoint_VOIs', ...
+        'IT_LIST', it_list_voi4 ...
+        );
 
 d1 = NNDataset( ...
     'DP_CLASS', 'NNDataPoint_Graph_CLA', ...
@@ -229,66 +313,316 @@ d3_vois = NNDataset( ...
     'DP_CLASS', 'NNDataPoint_VOIs', ...
     'DP_DICT', dp_list_voi3 ...
     );
+d4 = NNDataset( ...
+    'DP_CLASS', 'NNDataPoint_Graph_CLA', ...
+    'DP_DICT', dp_list4 ...
+    );
+d4_vois = NNDataset( ...
+    'DP_CLASS', 'NNDataPoint_VOIs', ...
+    'DP_DICT', dp_list_voi4 ...
+    );
 
-%% Create a classifier cross-validation
+
+
+%% Balanced Classification
+
+% Define neural network template
 nn_template = NNClassifierMLP_VOIs('EPOCHS', 50, 'LAYERS', [128 128]);
-num_dp_d1 = d1.get('DP_DICT').get('LENGTH'); % Number of data points in d1 (assumed same as d1_vois)
-num_dp_d2 = d2.get('DP_DICT').get('LENGTH'); % Number of data points in d2 (assumed same as d2_vois)
-% Generate shuffled split indices for 5 folds
-shuffled_indices_d1 = randperm(num_dp_d1); % Random permutation of indices for d1
-shuffled_indices_d2 = randperm(num_dp_d2); % Random permutation of indices for d2
-% Calculate split points for 5 equal parts
-split_points_d1 = round(linspace(0, num_dp_d1, 6)); % 6 points to define 5 segments
-split_points_d2 = round(linspace(0, num_dp_d2, 6)); % 6 points to define 5 segments
-SPLIT = cell(2, 5);
-for i = 1:5
-    SPLIT{1, i} = shuffled_indices_d1(split_points_d1(i)+1:split_points_d1(i+1));
-    SPLIT{2, i} = shuffled_indices_d2(split_points_d2(i)+1:split_points_d2(i+1));
+
+% Define tasks and corresponding group pairs
+tasks = {'CN_vs_MCI', 'CN_vs_AD', 'CN_vs_CN_POS'};
+group_pairs = {{d1, d2}, {d1, d3}, {d1, d4}};
+dp_lists = {{dp_list1, dp_list2}, {dp_list1, dp_list3}, {dp_list1, dp_list4}};
+dp_list_vois = {{dp_list_voi1, dp_list_voi2}, {dp_list_voi1, dp_list_voi3}, {dp_list_voi1, dp_list_voi4}};
+% tasks  = {'CN_vs_AD'};
+% group_pairs = { {d1, d3}};
+% dp_lists = {{dp_list1, dp_list3}};
+% dp_list_vois = {{dp_list_voi1, dp_list_voi3}};
+
+% Number of runs
+num_runs = 100;
+% Initialize results structure
+results = struct();
+
+% Start timing
+tic
+
+% Perform classification for each task
+for task_idx = 1:length(tasks)
+    task_name = tasks{task_idx};
+    disp(task_name)
+    group1 = group_pairs{task_idx}{1};
+    group2 = group_pairs{task_idx}{2};
+    dp_list1_task = dp_lists{task_idx}{1};
+    dp_list2_task = dp_lists{task_idx}{2};
+    dp_list_voi1_task = dp_list_vois{task_idx}{1};
+    dp_list_voi2_task = dp_list_vois{task_idx}{2};
+
+    x_mean = {};
+    y_mean = {};
+    cm_scores = {};
+    sensitivity_scores = [];
+    specificity_scores = [];
+    auc_scores = [];
+    % Get group sizes
+    num_dp1 = group1.get('DP_DICT').get('LENGTH');
+    num_dp2 = group2.get('DP_DICT').get('LENGTH');
+    if num_dp1 == 0 || num_dp2 == 0
+        error([task_name ' task failed: One of the groups has no subjects.']);
+    end
+    min_size = min(num_dp1, num_dp2);
+    
+    % Parallel loop over runs
+    parfor run = 1:num_runs
+        rng(run); %Set random seed for reproducibility
+        
+        % Balance groups by sampling
+        shuffled_indices1 = randperm(num_dp1, min_size);
+        shuffled_indices2 = randperm(num_dp2, min_size);
+        
+        % Create data subsets
+        dp_subset1 = arrayfun(@(idx) dp_list1_task.get('IT', idx), shuffled_indices1, 'UniformOutput', false);
+        dp_subset2 = arrayfun(@(idx) dp_list2_task.get('IT', idx), shuffled_indices2, 'UniformOutput', false);
+        dp_voi_subset1 = arrayfun(@(idx) dp_list_voi1_task.get('IT', idx), shuffled_indices1, 'UniformOutput', false);
+        dp_voi_subset2 = arrayfun(@(idx) dp_list_voi2_task.get('IT', idx), shuffled_indices2, 'UniformOutput', false);
+        
+        % Create balanced datasets
+        d_balanced1 = NNDataset('DP_CLASS', 'NNDataPoint_Graph_CLA', ...
+            'DP_DICT', IndexedDictionary('IT_CLASS', 'NNDataPoint_Graph_CLA', 'IT_LIST', dp_subset1));
+        d_balanced2 = NNDataset('DP_CLASS', 'NNDataPoint_Graph_CLA', ...
+            'DP_DICT', IndexedDictionary('IT_CLASS', 'NNDataPoint_Graph_CLA', 'IT_LIST', dp_subset2));
+        d_vois_balanced1 = NNDataset('DP_CLASS', 'NNDataPoint_VOIs', ...
+            'DP_DICT', IndexedDictionary('IT_CLASS', 'NNDataPoint_VOIs', 'IT_LIST', dp_voi_subset1));
+        d_vois_balanced2 = NNDataset('DP_CLASS', 'NNDataPoint_VOIs', ...
+            'DP_DICT', IndexedDictionary('IT_CLASS', 'NNDataPoint_VOIs', 'IT_LIST', dp_voi_subset2));
+        
+        % Set up cross-validation splits
+        split_indices1 = randperm(min_size);
+        split_indices2 = randperm(min_size);
+        split_points1 = round(linspace(0, min_size, 6));
+        split_points2 = round(linspace(0, min_size, 6));
+        SPLIT = cell(2, 5);
+        for i = 1:5
+            SPLIT{1, i} = split_indices1(split_points1(i)+1:split_points1(i+1));
+            SPLIT{2, i} = split_indices2(split_points2(i)+1:split_points2(i+1));
+        end
+        
+        % Train and evaluate classifier
+        nncv = NNClassifierMLP_CrossValidation_VOIs('D', {d_balanced1, d_balanced2}, ...
+            'D_VOIS', {d_vois_balanced1, d_vois_balanced2}, 'KFOLDS', 5, ...
+            'NN_TEMPLATE', nn_template, 'SPLIT', SPLIT);
+        nncv.get('TRAIN');
+        
+        [x_mean{run}, y_mean{run}] = get_roc(nncv);
+        % Extract metrics
+        cm = nncv.get('C_MATRIX');
+        av_macro_auc = nncv.get('AV_MACRO_AUC');
+        TP = cm(2,2); TN = cm(1,1); FP = cm(1,2); FN = cm(2,1);
+        sensitivity = TP / (TP + FN);
+        specificity = TN / (TN + FP);
+        % Store results for this run
+        cm_scores{run} = cm;
+        auc_scores(run) = av_macro_auc;
+        sensitivity_scores(run) = sensitivity;
+        specificity_scores(run) = specificity;
+
+    end
+
+    results.(task_name).confusion_matrix = cm_scores;
+    results.(task_name).av_macro_auc = auc_scores;
+    results.(task_name).sensitivity = sensitivity_scores;
+    results.(task_name).specificity = specificity_scores;
+    results.(task_name).ROC_X = x_mean;
+    results.(task_name).ROC_Y = y_mean;
+
 end
-nncv_ad = NNClassifierMLP_CrossValidation_VOIs('D', {d1, d2}, 'D_VOIS', {d1_vois, d2_vois}, 'KFOLDS', 5, 'NN_TEMPLATE', nn_template, 'SPLIT', SPLIT); % d2 healthy, d1 AD
-nncv_ad.get('TRAIN');
+
+% End timing
+toc
+%% Save Results
+
+save('Results/matrix/withConverters/classification_results_divergence_matrixClassification_Balanced.mat', 'results');
+
+%% Generate Boxplots for CN vs. AD
+figure('Name', 'Performance Metrics of divergence for CN vs. AD', 'NumberTitle', 'off');
+sgtitle('Performance Metrics for of divergence CN vs. AD', 'FontSize', 14);
+
+% AUC Boxplot
+subplot(1, 3, 1);
+boxplot(results.CN_vs_AD.av_macro_auc);
+title('AUC');
+xlabel('Runs');
+ylabel('Score');
+ylim([0 1]);
+grid on;
+
+% Sensitivity Boxplot
+subplot(1, 3, 2);
+boxplot(results.CN_vs_AD.sensitivity);
+title('Sensitivity');
+xlabel('Runs');
+ylabel('Score');
+ylim([0 1]);
+grid on;
+
+% Specificity Boxplot
+subplot(1, 3, 3);
+boxplot(results.CN_vs_AD.specificity);
+title('Specificity');
+xlabel('Runs');
+ylabel('Score');
+ylim([0 1]);
+grid on;
 
 
+%% Generate Boxplots for CN vs. MCI
+figure('Name', 'Performance Metrics of divergence for CN vs. MCI', 'NumberTitle', 'off');
+sgtitle('Performance Metrics of divergence for CN vs. MCI', 'FontSize', 14);
 
-%% Evaluate the performance
-confusion_matrix_ad = nncv_ad.get('C_MATRIX');
-av_auc_ad = nncv_ad.get('AV_AUC');
-av_macro_auc_ad = nncv_ad.get('AV_MACRO_AUC');
-sensitivity_ad = confusion_matrix_ad(1,1)/ sum(confusion_matrix_ad(:,1));
-specificity_ad = confusion_matrix_ad(2,2)/ sum(confusion_matrix_ad(:,2));
+% AUC Boxplot
+subplot(1, 3, 1);
+boxplot(results.CN_vs_MCI.av_macro_auc);
+title('AUC');
+xlabel('Runs');
+ylabel('Score');
+ylim([0 1]);
+grid on;
+
+% Sensitivity Boxplot
+subplot(1, 3, 2);
+boxplot(results.CN_vs_MCI.sensitivity);
+title('Sensitivity');
+xlabel('Runs');
+ylabel('Score');
+ylim([0 1]);
+grid on;
+
+% Specificity Boxplot
+subplot(1, 3, 3);
+boxplot(results.CN_vs_MCI.specificity);
+title('Specificity');
+xlabel('Runs');
+ylabel('Score');
+ylim([0 1]);
+grid on;
+
+% Adjust layout
+set(gcf, 'Position', [100, 100, 800, 300]);
+
+%% Generate Boxplots for CN vs. CN pos
+figure('Name', 'Performance Metrics of divergence for CN vs. MCI', 'NumberTitle', 'off');
+sgtitle('Performance Metrics of divergence for CN vs. MCI', 'FontSize', 14);
+
+% AUC Boxplot
+subplot(1, 3, 1);
+boxplot(results.CN_vs_CN_POS.av_macro_auc);
+title('AUC');
+xlabel('Runs');
+ylabel('Score');
+ylim([0 1]);
+grid on;
+
+% Sensitivity Boxplot
+subplot(1, 3, 2);
+boxplot(results.CN_vs_CN_POS.sensitivity);
+title('Sensitivity');
+xlabel('Runs');
+ylabel('Score');
+ylim([0 1]);
+grid on;
+
+% Specificity Boxplot
+subplot(1, 3, 3);
+boxplot(results.CN_vs_CN_POS.specificity);
+title('Specificity');
+xlabel('Runs');
+ylabel('Score');
+ylim([0 1]);
+grid on;
+
+% Adjust layout
+set(gcf, 'Position', [100, 100, 800, 300]);
 
 
-%% Create a classifier cross-validation
-nn_template = NNClassifierMLP_VOIs('EPOCHS', 50, 'LAYERS', [128 128]);
-num_dp_d3 = d3.get('DP_DICT').get('LENGTH'); % Number of data points in d1 (assumed same as d1_vois)
-num_dp_d2 = d2.get('DP_DICT').get('LENGTH'); % Number of data points in d2 (assumed same as d2_vois)
-% Generate shuffled split indices for 5 folds
-shuffled_indices_d3 = randperm(num_dp_d3); % Random permutation of indices for d1
-shuffled_indices_d2 = randperm(num_dp_d2); % Random permutation of indices for d2
-% Calculate split points for 5 equal parts
-split_points_d3 = round(linspace(0, num_dp_d3, 6)); % 6 points to define 5 segments
-split_points_d2 = round(linspace(0, num_dp_d2, 6)); % 6 points to define 5 segments
-SPLIT = cell(2, 5);
-for i = 1:5
-    SPLIT{1, i} = shuffled_indices_d3(split_points_d3(i)+1:split_points_d3(i+1));
-    SPLIT{2, i} = shuffled_indices_d2(split_points_d2(i)+1:split_points_d2(i+1));
+function [x_mean, y_mean] = get_roc(nncv)
+    % GET_ROC Computes mean ROC curve values (FPR and TPR) across folds for a given classifier.
+    %
+    % Inputs:
+    %   nncv - The cross-validation object containing neural networks and evaluators.
+    %
+    % Outputs:
+    %   x_mean - Mean false positive rates (FPR) across all folds.
+    %   y_mean - Mean true positive rates (TPR) across all folds.
+    class_names = {};
+    D = nncv.get('D');
+    for ld = 1:length(D)
+        dataset = D{ld}; % Assuming classes are same across folds
+        dp_dict = dataset.get('DP_DICT');
+        items = dp_dict.get('IT_LIST'); % Get all items
+        target_classes = cellfun(@(dp) dp.get('TARGET_CLASS'), items, 'UniformOutput', false);
+        class_name = unique(cellfun(@unique, target_classes));
+        class_names{ld} = class_name{1};
+    end
+    % Retrieve class names and lists of neural networks and evaluators
+    % class_names = {'negative', 'positive'};%nncv.get('PFROC').get('CLASSNAMES');
+    NN_LIST = nncv.get('NN_LIST');
+    EVALUATOR_LIST = nncv.get('EVALUATOR_LIST');
+
+    % Determine the number of folds
+    num_folds = length(NN_LIST);
+
+    % Initialize cell arrays to store predictions and ground truths
+    predictions_folds = cell(1, num_folds);
+    ground_truth_folds = cell(1, num_folds);
+
+    % Compute predictions for each fold
+    for i = 1:num_folds
+        nn = NN_LIST{i};
+        nne = EVALUATOR_LIST{i};
+        predictions_folds{i} = cell2mat(nn.get('PREDICT', nne.get('D'), nne.get('D_VOIS')));
+    end
+
+    % Retrieve ground truth for each fold
+    for i = 1:num_folds
+        nne = EVALUATOR_LIST{i};
+        ground_truth_folds{i} = nne.get('GROUND_TRUTH');
+    end
+
+    % Initialize arrays to store ROC curve points
+    x_val_run = [];
+    y_val_run = [];
+    counter = 0;
+
+    % Compute ROC curves for each fold and class
+    for k = 1:num_folds
+        predictions_fold = predictions_folds{k};
+        ground_truth_fold = ground_truth_folds{k};
+        rocNet = rocmetrics(ground_truth_fold, predictions_fold, class_names);
+        for j = 1:length(class_names)
+            counter = counter + 1;
+            idx_class = strcmp(rocNet.Metrics.ClassName, class_names{j});
+            y_val_class = rocNet.Metrics(idx_class,:).TruePositiveRate;
+            x_val_class = rocNet.Metrics(idx_class,:).FalsePositiveRate;
+
+            % Ensure consistent length for ROC curves
+            if counter == 1
+                % Use the first curve as the reference
+                y_val_run = y_val_class;
+                x_val_run = x_val_class;
+            else
+                % Interpolate subsequent curves to match the reference length
+                fixed_length = length(x_val_run);
+                x_val_class_interp = interp1(linspace(0, 1, length(x_val_class)), x_val_class, linspace(0, 1, fixed_length), 'linear');
+                y_val_class_interp = interp1(linspace(0, 1, length(y_val_class)), y_val_class, linspace(0, 1, fixed_length), 'linear');
+
+                % Append interpolated values
+                x_val_run = [x_val_run, x_val_class_interp'];
+                y_val_run = [y_val_run, y_val_class_interp'];
+            end
+        end
+    end
+
+    % Compute the mean FPR and TPR across all folds
+    x_mean = mean(x_val_run, 2);
+    y_mean = mean(y_val_run, 2);
 end
-nncv_mci = NNClassifierMLP_CrossValidation_VOIs('D', {d3, d2},'D_VOIS', {d3_vois, d2_vois}, 'KFOLDS', 5, 'NN_TEMPLATE', nn_template, 'SPLIT', SPLIT);%d2 healthy, d3 MCI, d1 AD
-nncv_mci.get('TRAIN');
-
-%% Evaluate the performance
-confusion_matrix_mci = nncv_mci.get('C_MATRIX');
-av_auc_mci = nncv_mci.get('AV_AUC');
-av_macro_auc_mci = nncv_mci.get('AV_MACRO_AUC');
-specificity_mci  = confusion_matrix_mci(1,1)/ sum(confusion_matrix_mci(:,1));
-sensitivity_mci = confusion_matrix_mci(2,2)/ sum(confusion_matrix_mci(:,2));
-
-fprintf('Average AUC CN VS AD: %.4f\n', av_macro_auc_ad);
-fprintf('Average Sensitivity AD: %.4f\n', sensitivity_ad);
-fprintf('Average Specificity AD: %.4f\n', specificity_ad);
-
-fprintf('Average AUC CN VS MCI: %.4f\n', av_macro_auc_mci);
-fprintf('Average Sensitivity MCI: %.4f\n', sensitivity_mci);
-fprintf('Average Specificity MCI: %.4f\n', specificity_mci);
-
-
