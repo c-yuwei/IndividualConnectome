@@ -1,47 +1,41 @@
 % EXAMPLE_CON_WU
 % Script example pipeline Correlation CON WU
 clear variables %#ok<*NASGU>
-%% Load BrainAtlas
-im_ba = ImporterBrainAtlasXLS( ...
-    'FILE', [which('aal94_atlas.xlsx')], ...
-    'WAITBAR', true ...
-    );
-
-ba = im_ba.get('BA');
-
+addpath(genpath('/home/hang/GitHub/Individual-connectome/group_data/ADNI_DATA'));
+addpath(genpath('/home/hang/GitHub/IndividualConnectome-WithYuwei/braph2individualconnectome'));
 %% load Nifty images
 %%group1
-im_gr1_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('AD_PositiveAmyloid.vois.xlsx')) filesep 'AD_PositiveAmyloid'], ...
-    'NIFTI_TYPE', {'wc1','wc2'},...
-    'WAITBAR', true);
-gr1_WM_GM = im_gr1_WM_GM.get('GR');
-
-im_gr1_PET = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('AD_PositiveAmyloid.vois.xlsx')) filesep 'AD_PositiveAmyloid'], ...
-    'NIFTI_TYPE', {'wroriented_raw_pet'},...
-    'WAITBAR', true);
-gr1_PET = im_gr1_PET.get('GR');
-
-%%group2
-im_gr2_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY',[fileparts(which('Healthy_NegativeAmyloid.vois.xlsx')) filesep 'Healthy_NegativeAmyloid'], ...
-    'NIFTI_TYPE', {'wc1','wc2'},...
-    'WAITBAR', true);
-gr2_WM_GM = im_gr2_WM_GM.get('GR');
-
-im_gr2_PET = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('Healthy_NegativeAmyloid.vois.xlsx')) filesep 'Healthy_NegativeAmyloid'], ...
-    'NIFTI_TYPE', {'wroriented_raw_pet'},...
-    'WAITBAR', true);
-gr2_PET = im_gr2_PET.get('GR');
-
-%%group3
-im_gr3_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('MCI_PositiveAmyloid.vois.xlsx')) filesep 'MCI_PositiveAmyloid'], ...
+im_gr3_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('AD_PositiveAmyloid.vois.xlsx')) filesep 'AD_PositiveAmyloid'], ...
     'NIFTI_TYPE', {'wc1','wc2'},...
     'WAITBAR', true);
 gr3_WM_GM = im_gr3_WM_GM.get('GR');
 
-im_gr3_PET = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('MCI_PositiveAmyloid.vois.xlsx')) filesep 'MCI_PositiveAmyloid'], ...
+im_gr3_PET = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('AD_PositiveAmyloid.vois.xlsx')) filesep 'AD_PositiveAmyloid'], ...
     'NIFTI_TYPE', {'wroriented_raw_pet'},...
     'WAITBAR', true);
 gr3_PET = im_gr3_PET.get('GR');
+
+%%group2
+im_gr1_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY',[fileparts(which('Healthy_NegativeAmyloid.vois.xlsx')) filesep 'Healthy_NegativeAmyloid'], ...
+    'NIFTI_TYPE', {'wc1','wc2'},...
+    'WAITBAR', true);
+gr1_WM_GM = im_gr1_WM_GM.get('GR');
+
+im_gr1_PET = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('Healthy_NegativeAmyloid.vois.xlsx')) filesep 'Healthy_NegativeAmyloid'], ...
+    'NIFTI_TYPE', {'wroriented_raw_pet'},...
+    'WAITBAR', true);
+gr1_PET = im_gr1_PET.get('GR');
+
+%%group3
+im_gr2_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('MCI_PositiveAmyloid.vois.xlsx')) filesep 'MCI_PositiveAmyloid'], ...
+    'NIFTI_TYPE', {'wc1','wc2'},...
+    'WAITBAR', true);
+gr2_WM_GM = im_gr2_WM_GM.get('GR');
+
+im_gr2_PET = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('MCI_PositiveAmyloid.vois.xlsx')) filesep 'MCI_PositiveAmyloid'], ...
+    'NIFTI_TYPE', {'wroriented_raw_pet'},...
+    'WAITBAR', true);
+gr2_PET = im_gr2_PET.get('GR');
 %% PDF Construtor
 path_dict = IndexedDictionary(...
     'IT_CLASS', 'FILE_PATH', ...
@@ -64,30 +58,39 @@ atlas = ba_list{1};
 br_dict = atlas.get('BR_DICT');
 selected_ids = num2cell(1:120);
 selected_br = cellfun(@(id) br_dict.get('IT', id), selected_ids, 'UniformOutput', false);
-selected_br_dict = IndexedDictionary('IT_CLASS', 'BrainRegion', 'IT_LIST', selected_br);
-im_gr_pdf1 = PDFConstructor('GR_PET',gr1_PET, ...
+selected_br_dict = IndexedDictionary('IT_CLASS', 'BrainRegion', 'IT_LIST',  {selected_br{1:94}});
+gr1 = PDFConstructor('GR_PET',gr1_PET, ...
     'GR_T1',gr1_WM_GM, ...
-    'BA', ba,...
+    'BA', ba_list,...
     'ATLAS_PATH_DICT' ,path_dict, ...
+    'MAPPING_PATH_DICT', mapping_path_dict, ...
     'REF_REGION_LIST',{[9100,9110,9120,9130,9140,9150,9160,9170], 7}, ...
-    'ATLAS_KIND', {'AAL2','TD'});
-pdf_gr1 = im_gr_pdf1.get('GR');
+    'ATLAS_INDEX', 1, ...
+    'ATLAS_KIND', {'AAL2','TD'}, ...
+    'PDF_REGION_SELECTION', selected_br_dict);
+pdf_gr1 = gr1.get('GR');
 
-im_gr_pdf2 = PDFConstructor('GR_PET',gr2_PET, ...
+gr2 = PDFConstructor('GR_PET',gr2_PET, ...
     'GR_T1',gr2_WM_GM, ...
-    'BA', ba,...
+    'BA', ba_list,...
     'ATLAS_PATH_DICT' ,path_dict, ...
+    'MAPPING_PATH_DICT', mapping_path_dict, ...
     'REF_REGION_LIST',{[9100,9110,9120,9130,9140,9150,9160,9170], 7}, ...
-    'ATLAS_KIND', {'AAL2','TD'});
-pdf_gr2 = im_gr_pdf2.get('GR');
+    'ATLAS_INDEX', 1, ...
+    'ATLAS_KIND', {'AAL2','TD'}, ...
+    'PDF_REGION_SELECTION', selected_br_dict);
+pdf_gr2 = gr2.get('GR');
 
-im_gr_pdf3 = PDFConstructor('GR_PET',gr3_PET, ...
+gr3 = PDFConstructor('GR_PET',gr3_PET, ...
     'GR_T1',gr3_WM_GM, ...
-    'BA', ba,...
+    'BA', ba_list,...
     'ATLAS_PATH_DICT' ,path_dict, ...
+    'MAPPING_PATH_DICT', mapping_path_dict, ...
     'REF_REGION_LIST',{[9100,9110,9120,9130,9140,9150,9160,9170], 7}, ...
-    'ATLAS_KIND', {'AAL2','TD'});
-pdf_gr3 = im_gr_pdf3.get('GR');
+    'ATLAS_INDEX', 1, ...
+    'ATLAS_KIND', {'AAL2','TD'}, ...
+    'PDF_REGION_SELECTION', selected_br_dict);
+pdf_gr3 = gr3.get('GR');
 
 %% Load Groups of SubjectCON Correlation based
 g_temp  = GraphWU('STANDARDIZE_RULE', 'range');
@@ -111,16 +114,8 @@ a_WU3 = AnalyzeEnsemble_FUN_WU( ...
     'GRAPH_TEMPLATE', g_temp...
     );
 gr3_corr = a_WU3.get('G_DICT');
+%%
 
-a_WU1.get('MEASUREENSEMBLE', 'Distance').get('M');
-a_WU1.get('MEASUREENSEMBLE', 'Clustering').get('M');
-
-a_WU2.get('MEASUREENSEMBLE', 'Distance').get('M');
-a_WU2.get('MEASUREENSEMBLE', 'Clustering').get('M');
-
-a_WU3.get('MEASUREENSEMBLE', 'Distance').get('M');
-a_WU3.get('MEASUREENSEMBLE', 'Clustering').get('M');
-%% NN DATASET
 % ǵroup 1
 [~, group_folder_name1] = fileparts(im_gr1_PET.get('DIRECTORY'));
 it_list1 = cellfun(@(x) NNDataPoint_Graph_CLA( ...
@@ -257,77 +252,61 @@ d3_vois = NNDataset( ...
     'DP_DICT', dp_list_voi3 ...
     );
 
-%% Create a classifier cross-validation
-nn_template = NNClassifierMLP_VOIs('EPOCHS', 50, 'LAYERS', [128 128]);
-num_dp_d1 = d1.get('DP_DICT').get('LENGTH'); % Number of data points in d1 (assumed same as d1_vois)
-num_dp_d2 = d2.get('DP_DICT').get('LENGTH'); % Number of data points in d2 (assumed same as d2_vois)
-% Generate shuffled split indices for 5 folds
-% shuffled_indices_d1 = randperm(num_dp_d1); % Random permutation of indices for d1
-% shuffled_indices_d2 = randperm(num_dp_d2); % Random permutation of indices for d2
-% Calculate split points for 5 equal parts
-split_points_d1 = round(linspace(0, num_dp_d1, 6)); % 6 points to define 5 segments
-split_points_d2 = round(linspace(0, num_dp_d2, 6)); % 6 points to define 5 segments
-SPLIT = cell(2, 5);
-for i = 1:5
-    SPLIT{1, i} = shuffled_indices_d1(split_points_d1(i)+1:split_points_d1(i+1));
-    SPLIT{2, i} = shuffled_indices_d2(split_points_d2(i)+1:split_points_d2(i+1));
+
+
+
+
+%% Classification with Train-Test Split
+num_runs = 50;
+train_size = 80;
+confusion_cn_mci = cell(1, num_runs);
+auc_cn_mci = zeros(1, num_runs);
+confusion_cn_ad = cell(1, num_runs);
+auc_cn_ad = zeros(1, num_runs);
+%%
+len_gr1 = length(it_list1);
+len_gr2 = length(it_list2);
+len_gr3 = length(it_list3);
+
+parfor run = 1:num_runs
+    tic
+    rng(run);
+    disp(run)
+    nn_template = NNClassifierMLP_VOIs('EPOCHS', 50, 'LAYERS', [128 128]);
+    num_dp_d1 = d1.get('DP_DICT').get('LENGTH');
+    num_dp_d2 = d2.get('DP_DICT').get('LENGTH');
+    num_dp_d3 = d3.get('DP_DICT').get('LENGTH');
+    shuffled_indices_d1 = randperm(num_dp_d1);
+    shuffled_indices_d2 = randperm(num_dp_d2);
+    shuffled_indices_d3 = randperm(num_dp_d3);
+    split_points_d1 = round(linspace(0, num_dp_d1, 6));
+    split_points_d2 = round(linspace(0, num_dp_d2, 6));
+    split_points_d3 = round(linspace(0, num_dp_d3, 6));
+    SPLIT_cn_mci_ad = cell(3, 5);
+    for i = 1:5
+        SPLIT_cn_mci_ad{1, i} = shuffled_indices_d1(split_points_d1(i)+1:split_points_d1(i+1));
+        SPLIT_cn_mci_ad{2, i} = shuffled_indices_d2(split_points_d2(i)+1:split_points_d2(i+1));
+        SPLIT_cn_mci_ad{3, i} = shuffled_indices_d3(split_points_d3(i)+1:split_points_d3(i+1));   
+    end
+    nncv_mci_ad = NNClassifierMLP_CrossValidation_VOIs('D', {d1, d2, d3}, 'D_VOIS', {d1_vois, d2_vois, d3_vois}, ...
+        'KFOLDS', 5, 'NN_TEMPLATE', nn_template, 'SPLIT', SPLIT_cn_mci_ad);
+    nncv_mci_ad.get('TRAIN');
+
+        % Evaluate performance for CN vs. AD5tr43
+    cm_cn_mci_ad = nncv_mci_ad.get('C_MATRIX');
+    confusion_matrix_cn_mci_ad{run} = cm_cn_mci_ad;
+    av_macro_auc_cn_mci_ad(run) = nncv_mci_ad.get('AV_MACRO_AUC');
+    TP = cm_cn_mci_ad(2,2); TN = cm_cn_mci_ad(1,1); FP = cm_cn_mci_ad(1,2); FN = cm_cn_mci_ad(2,1);
+    sensitivity_cn_mci_ad(run) = TP / (TP + FN);
+    specificity_cn_mci_ad(run) = TN / (TN + FP);
+    toc
 end
-nncv = NNClassifierMLP_CrossValidation_VOIs('D', {d1, d2}, 'D_VOIS', {d1_vois, d2_vois}, 'KFOLDS', 5, 'NN_TEMPLATE', nn_template, 'SPLIT', SPLIT); % d2 healthy, d1 AD
-nncv.get('TRAIN');
+
+%% Save Results
+results.CN_vs_MCI_vs_AD.Confusion = {confusion_matrix_cn_mci_ad};
+results.CN_vs_MCI_vs_AD.AUC = av_macro_auc_cn_mci_ad(av_macro_auc_cn_mci_ad~=0);
+results.CN_vs_MCI_vs_AD.Spe = specificity_cn_mci_ad(specificity_cn_mci_ad~=0);
+results.CN_vs_MCI_vs_AD.Sen = sensitivity_cn_mci_ad(sensitivity_cn_mci_ad~=0);
 
 
-
-%% Evaluate the performance
-confusion_matrix_ad = nncv.get('C_MATRIX');
-av_auc_ad = nncv.get('AV_AUC');
-av_macro_auc_ad = nncv.get('AV_MACRO_AUC');
-sensitivity_ad = confusion_matrix_ad(1,1)/ sum(confusion_matrix_ad(:,1));
-specificity_ad = confusion_matrix_ad(2,2)/ sum(confusion_matrix_ad(:,2));
-
-
-%% Create a classifier cross-validation
-nn_template = NNClassifierMLP_VOIs('EPOCHS', 50, 'LAYERS', [128 128]);
-num_dp_d3 = d3.get('DP_DICT').get('LENGTH'); % Number of data points in d1 (assumed same as d1_vois)
-num_dp_d2 = d2.get('DP_DICT').get('LENGTH'); % Number of data points in d2 (assumed same as d2_vois)
-% Generate shuffled split indices for 5 folds
-% shuffled_indices_d3 = randperm(num_dp_d3); % Random permutation of indices for d1
-% shuffled_indices_d2 = randperm(num_dp_d2); % Random permutation of indices for d2
-% Calculate split points for 5 equal parts
-split_points_d3 = round(linspace(0, num_dp_d3, 6)); % 6 points to define 5 segments
-split_points_d2 = round(linspace(0, num_dp_d2, 6)); % 6 points to define 5 segments
-SPLIT = cell(2, 5);
-for i = 1:5
-    SPLIT{1, i} = shuffled_indices_d3(split_points_d3(i)+1:split_points_d3(i+1));
-    SPLIT{2, i} = shuffled_indices_d2(split_points_d2(i)+1:split_points_d2(i+1));
-end
-nncv = NNClassifierMLP_CrossValidation_VOIs('D', {d3, d2},'D_VOIS', {d3_vois, d2_vois}, 'KFOLDS', 5, 'NN_TEMPLATE', nn_template, 'SPLIT', SPLIT);%d2 healthy, d3 MCI, d1 AD
-nncv.get('TRAIN');
-
-%% Evaluate the performance
-confusion_matrix_mci = nncv.get('C_MATRIX');
-av_auc_mci = nncv.get('AV_AUC');
-av_macro_auc_mci = nncv.get('AV_MACRO_AUC');
-specificity_mci  = confusion_matrix_mci(1,1)/ sum(confusion_matrix_mci(:,1));
-sensitivity_mci = confusion_matrix_mci(2,2)/ sum(confusion_matrix_mci(:,2));
-
-fprintf('Average AUC CN VS AD: %.4f\n', av_macro_auc_ad);
-fprintf('Average Sensitivity AD: %.4f\n', sensitivity_ad);
-fprintf('Average Specificity AD: %.4f\n', specificity_ad);
-
-fprintf('Average AUC CN VS MCI: %.4f\n', av_macro_auc_mci);
-fprintf('Average Sensitivity MCI: %.4f\n', sensitivity_mci);
-fprintf('Average Specificity MCI: %.4f\n', specificity_mci);
-%% add test on example data
-% 
-% num_subjects = a_WU1.get('G_DICT').get('LENGTH');
-% for i = 1:num_subjects
-%     g = a_WU1.get('G_DICT').get('IT', i);
-%     strength = g.get('MEASURE', 'Strength').get('M'); % Strength for all regions
-%     strength20_regions = strength{1}(1:20);
-%     strengthother_regions = strength{1}(21:end);
-%     mean_20 = mean(strength20_regions(:));
-%     mean_others = mean(strengthother_regions(:));
-%     % Assert for each subject
-%     assert(mean_20 > mean_others, ...
-%         sprintf('Test failed for subject %d: The first 20 regions do not have higher correlation than the other regions.', i));
-% end
+save('Results/classification_results_correlation_3class.mat', 'results');
