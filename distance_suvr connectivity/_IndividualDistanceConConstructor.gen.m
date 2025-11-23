@@ -1,5 +1,5 @@
 %% ¡header!
-IndividualDistanceConConstructor < IndividualConConstructorBase (icd, importer of SUVR subject group from .mat) imports a group of subjects with regional SUVR data from a series of XLS/XLSX file.
+IndividualDistanceConConstructor < IndividualConConstructorBase (icd, distance-based subject individual brain connectome Constructor) imports a group of subjects with regional SUVR data from a series of XLS/XLSX file.
 
 %%% ¡description!
 IndividualDistanceConConstructor imports a group of subjects with mean SUVR  
@@ -8,7 +8,6 @@ IndividualDistanceConConstructor imports a group of subjects with mean SUVR
  folder; also, no other files should be in the folder. Each file contains a 
  matrix of values corresponding to the intensity distribution of brain regions.
  The connectivity matrix constructed based on Mahanlanobis Distance is returned
- from ImporterIndividual_Distance_XLS.
 The variables of interest are from another Nifti file named "SUVR_GROUP_MAT.vois.xlsx" 
  (if exisitng) consisting of the following columns: 
  Subject ID (column 1), covariates (subsequent columns). 
@@ -66,35 +65,42 @@ if isempty(varargin) && isempty(icd.get('GR_SUVR').get('SUB_DICT').get('IT_LIST'
     return
 end
 gr_suvr = icd.get('GR_SUVR');
+gr_suvr_ref = icd.get('GR_SUVR_REF');
 for i = 1:1:gr_suvr.get('SUB_DICT').get('LENGTH')
     subj_suvrs{i} = gr_suvr.get('SUB_DICT').get('IT',i).get('ST');
 end
-
+for i = 1:1:gr_suvr.get('SUB_DICT').get('LENGTH')
+    subj_suvrs_ref{i} = gr_suvr_ref.get('SUB_DICT').get('IT',i).get('ST');
+end
+subj_suvrs_ref = cell2mat(subj_suvrs_ref);
+subj_suvrs_ref_regional_mean = mean(subj_suvrs_ref,2);
 maxMahalDistAcrossSubjects = 0;
 mahalDistances_cross_subjects = {};
 for i = 1:1:length(subj_suvrs)
     subj_suvr = subj_suvrs{i};
     uniqueROIs = size(subj_suvr,1);
-    % Calculate the global mean SUVR value for the subject
-    globalMeanSUVR = mean(subj_suvr, 'all');
     % Subtract the global mean from each SUVR value to center the data
-    centeredSUVRMatrix = subj_suvr - globalMeanSUVR;
+    centeredSUVRMatrix = subj_suvr - subj_suvrs_ref_regional_mean;
     % Calculate the covariance matrix of the centered SUVR data
-    covMatrix = cov(centeredSUVRMatrix');
-    invCovMatrix = inv(covMatrix); % Inverse of the covariance matrix
+    covMatrix = cov(subj_suvrs_ref');
+    % invCovMatrix = inv(covMatrix); % Inverse of the covariance matrix
     mahalDistances = zeros(uniqueROIs, uniqueROIs); % To store Mahalanobis distances for each ROI
-    for roi1 = 1:uniqueROIs
-        for roi2 = 1:uniqueROIs
-            if roi1 ~= roi2
-                % For each ROI, the diffVector is its centered SUVR values
-                diffVector_first = centeredSUVRMatrix(roi1);
-                mahalDist1 = sqrt((diffVector_first * invCovMatrix) * diffVector_first'); % Mahalanobis distance calculation
-                diffVector_second = centeredSUVRMatrix(roi2);
-                mahalDist2 = sqrt((diffVector_second * invCovMatrix) * diffVector_second'); % Mahalanobis distance calculation
-                mahalDistances(roi1,roi2) = (mahalDist1+mahalDist2)/2; % Store the computed distance
-            else
-                mahalDistances(roi1,roi2) = 0;
-            end
+    for roi1 = 1:uniqueROIs-1
+        for roi2 = roi1+1:uniqueROIs
+            % 2D residual vector r = [x_i - μ_i; x_j - μ_j]
+            centeredSUVRMatrix_ij  = [centeredSUVRMatrix(roi1); centeredSUVRMatrix(roi2)];  % 2×1
+
+            % 2×2 covariance submatrix for {roi1, roi2}
+            cov_ij  = covMatrix([roi1 roi2], [roi1 roi2]);                  % 2×2
+
+
+            y = cov_ij \\ centeredSUVRMatrix_ij;
+            d = sqrt(centeredSUVRMatrix_ij' * y);                 % = sqrt(r' * inv(S) * r)
+
+
+            % bidirectional-collapsed (symmetric) edge
+            mahalDistances(roi1, roi2) = d;
+            mahalDistances(roi2, roi1) = d;
         end
     end
     % Update maxMahalDistAcrossSubjects if a larger distance is found
@@ -105,13 +111,7 @@ for i = 1:1:length(subj_suvrs)
     mahalDistances_cross_subjects{i} = mahalDistances;
 
 end
-scaledMahalDistMatrix_cross_subjects = {};
-for i = 1:length(mahalDistances_cross_subjects)
-    mahalDistMatrix = mahalDistances_cross_subjects{i};
-    % Scale the Mahalanobis distances
-    scaledMahalDistMatrix_cross_subjects{i} = 1 - mahalDistMatrix / ceil(maxMahalDistAcrossSubjects);
-end
-value = scaledMahalDistMatrix_cross_subjects;
+value = mahalDistances_cross_subjects;
 
 %% ¡tests!
 
@@ -135,25 +135,39 @@ br_dict = atlas.get('BR_DICT');
 selected_ids = num2cell(1:94);
 selected_br = cellfun(@(id) br_dict.get('IT', id), selected_ids, 'UniformOutput', false);
 selected_br_dict = IndexedDictionary('IT_CLASS', 'BrainRegion', 'IT_LIST',  selected_br);
-group_dir = fullfile(fileparts(which('IndividualDeviationConConstructor')),'Example data Nifti', 'Group1');
 
 im_ba = ImporterBrainAtlasXLS('FILE', which('aal94_atlas.xlsx'));
 ba = im_ba.get('BA');
 
-group_dir = fullfile(fileparts(which('IndividualDistanceConConstructor')),'Example data Nifti', 'Group1');
+group_dir1 = fullfile(fileparts(which('IndividualDistanceConConstructor')),'Example data Nifti', 'Group1');
 im_gr1_WM_GM = ImporterGroupSubjNIfTI( ...
-    'DIRECTORY', group_dir, ...
+    'DIRECTORY', group_dir1, ...
     'NIFTI_TYPE', {'T1'}, ...
     'WAITBAR', true ...
     );
 gr1_WM_GM = im_gr1_WM_GM.get('GR');
 
 im_gr1_PET = ImporterGroupSubjNIfTI( ...
-    'DIRECTORY', group_dir, ...
+    'DIRECTORY', group_dir1, ...
     'NIFTI_TYPE', {'PET'}, ...
     'WAITBAR', true ...
     );
 gr1_PET = im_gr1_PET.get('GR');
+
+group_dir2 = fullfile(fileparts(which('IndividualDistanceConConstructor')),'Example data Nifti', 'Group2');
+im_gr2_WM_GM = ImporterGroupSubjNIfTI( ...
+    'DIRECTORY', group_dir2, ...
+    'NIFTI_TYPE', {'T1'}, ...
+    'WAITBAR', true ...
+    );
+gr2_WM_GM = im_gr2_WM_GM.get('GR');
+
+im_gr2_PET = ImporterGroupSubjNIfTI( ...
+    'DIRECTORY', group_dir2, ...
+    'NIFTI_TYPE', {'PET'}, ...
+    'WAITBAR', true ...
+    );
+gr2_PET = im_gr2_PET.get('GR');
 
 path_dict = IndexedDictionary(...
     'IT_CLASS', 'FILE_PATH', ...
@@ -162,20 +176,29 @@ path_dict = IndexedDictionary(...
 
 ref_region_list = [2001];% reference region label
 
-gr = SUVRConstructor('GR_PET',gr1_PET, ...
+gr1 = SUVRConstructor('GR_PET',gr1_PET, ...
     'GR_T1',gr1_WM_GM, ...
     'BA', {ba},...
     'ATLAS_PATH_DICT' ,path_dict, ...
     'REF_REGION_LIST',{ref_region_list}, ...
-    'ATLAS_KIND', {'AAL2'}, ...
     'SUVR_REGION_SELECTION', selected_br_dict);
 
-SUVR_gr1 = gr.get('GR');
+SUVR_gr1 = gr1.get('GR');
+
+gr2 = SUVRConstructor('GR_PET',gr2_PET, ...
+    'GR_T1',gr2_WM_GM, ...
+    'BA', {ba},...
+    'ATLAS_PATH_DICT' ,path_dict, ...
+    'REF_REGION_LIST',{ref_region_list}, ...
+    'SUVR_REGION_SELECTION', selected_br_dict);
+
+SUVR_gr2 = gr2.get('GR');
 
 constructor1 = IndividualDistanceConConstructor( ...
-    'GR_SUVR', SUVR_gr1);
+    'GR_SUVR', SUVR_gr1,'GR_SUVR_REF', SUVR_gr2);
 
 distance_connectomes_gr1 = constructor1.get('GR');
+
 
 g_temp  = GraphWU('STANDARDIZE_RULE', 'range');
 a_WU1 = AnalyzeEnsemble_CON_WU('GR', distance_connectomes_gr1,'GRAPH_TEMPLATE', g_temp);

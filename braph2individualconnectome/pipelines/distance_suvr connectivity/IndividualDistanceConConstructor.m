@@ -8,7 +8,6 @@ classdef IndividualDistanceConConstructor < IndividualConConstructorBase
 	%  folder; also, no other files should be in the folder. Each file contains a 
 	%  matrix of values corresponding to the intensity distribution of brain regions.
 	%  The connectivity matrix constructed based on Mahanlanobis Distance is returned
-	%  from ImporterIndividual_Distance_XLS.
 	% The variables of interest are from another Nifti file named "SUVR_GROUP_MAT.vois.xlsx" 
 	%  (if exisitng) consisting of the following columns: 
 	%  Subject ID (column 1), covariates (subsequent columns). 
@@ -48,33 +47,33 @@ classdef IndividualDistanceConConstructor < IndividualConConstructorBase
 	%  unchecked - sets a property to NOT checked
 	%
 	% IndividualDistanceConConstructor methods (display):
-	%  tostring - string with information about the importer of SUVR subject group from .mat
-	%  disp - displays information about the importer of SUVR subject group from .mat
-	%  tree - displays the tree of the importer of SUVR subject group from .mat
+	%  tostring - string with information about the distance-based subject individual brain connectome Constructor
+	%  disp - displays information about the distance-based subject individual brain connectome Constructor
+	%  tree - displays the tree of the distance-based subject individual brain connectome Constructor
 	%
 	% IndividualDistanceConConstructor methods (miscellanea):
 	%  getNoValue - returns a pointer to a persistent instance of NoValue
 	%               Use it as Element.getNoValue()
 	%  getCallback - returns the callback to a property
-	%  isequal - determines whether two importer of SUVR subject group from .mat are equal (values, locked)
+	%  isequal - determines whether two distance-based subject individual brain connectome Constructor are equal (values, locked)
 	%  getElementList - returns a list with all subelements
-	%  copy - copies the importer of SUVR subject group from .mat
+	%  copy - copies the distance-based subject individual brain connectome Constructor
 	%
 	% IndividualDistanceConConstructor methods (save/load, Static):
-	%  save - saves BRAPH2 importer of SUVR subject group from .mat as b2 file
-	%  load - loads a BRAPH2 importer of SUVR subject group from .mat from a b2 file
+	%  save - saves BRAPH2 distance-based subject individual brain connectome Constructor as b2 file
+	%  load - loads a BRAPH2 distance-based subject individual brain connectome Constructor from a b2 file
 	%
 	% IndividualDistanceConConstructor method (JSON encode):
-	%  encodeJSON - returns a JSON string encoding the importer of SUVR subject group from .mat
+	%  encodeJSON - returns a JSON string encoding the distance-based subject individual brain connectome Constructor
 	%
 	% IndividualDistanceConConstructor method (JSON decode, Static):
-	%   decodeJSON - returns a JSON string encoding the importer of SUVR subject group from .mat
+	%   decodeJSON - returns a JSON string encoding the distance-based subject individual brain connectome Constructor
 	%
 	% IndividualDistanceConConstructor methods (inspection, Static):
-	%  getClass - returns the class of the importer of SUVR subject group from .mat
+	%  getClass - returns the class of the distance-based subject individual brain connectome Constructor
 	%  getSubclasses - returns all subclasses of IndividualDistanceConConstructor
-	%  getProps - returns the property list of the importer of SUVR subject group from .mat
-	%  getPropNumber - returns the property number of the importer of SUVR subject group from .mat
+	%  getProps - returns the property list of the distance-based subject individual brain connectome Constructor
+	%  getPropNumber - returns the property number of the distance-based subject individual brain connectome Constructor
 	%  existsProp - checks whether property exists/error
 	%  existsTag - checks whether tag exists/error
 	%  getPropProp - returns the property number of a property
@@ -122,7 +121,7 @@ classdef IndividualDistanceConConstructor < IndividualConConstructorBase
 	
 	methods % constructor
 		function icd = IndividualDistanceConConstructor(varargin)
-			%IndividualDistanceConConstructor() creates a importer of SUVR subject group from .mat.
+			%IndividualDistanceConConstructor() creates a distance-based subject individual brain connectome Constructor.
 			%
 			% IndividualDistanceConConstructor(PROP, VALUE, ...) with property PROP initialized to VALUE.
 			%
@@ -153,12 +152,12 @@ classdef IndividualDistanceConConstructor < IndividualConConstructorBase
 	end
 	methods (Static) % inspection
 		function build = getBuild()
-			%GETBUILD returns the build of the importer of SUVR subject group from .mat.
+			%GETBUILD returns the build of the distance-based subject individual brain connectome Constructor.
 			%
 			% BUILD = IndividualDistanceConConstructor.GETBUILD() returns the build of 'IndividualDistanceConConstructor'.
 			%
 			% Alternative forms to call this method are:
-			%  BUILD = ICD.GETBUILD() returns the build of the importer of SUVR subject group from .mat ICD.
+			%  BUILD = ICD.GETBUILD() returns the build of the distance-based subject individual brain connectome Constructor ICD.
 			%  BUILD = Element.GETBUILD(ICD) returns the build of 'ICD'.
 			%  BUILD = Element.GETBUILD('IndividualDistanceConConstructor') returns the build of 'IndividualDistanceConConstructor'.
 			%
@@ -168,12 +167,12 @@ classdef IndividualDistanceConConstructor < IndividualConConstructorBase
 			build = 1;
 		end
 		function icd_class = getClass()
-			%GETCLASS returns the class of the importer of SUVR subject group from .mat.
+			%GETCLASS returns the class of the distance-based subject individual brain connectome Constructor.
 			%
 			% CLASS = IndividualDistanceConConstructor.GETCLASS() returns the class 'IndividualDistanceConConstructor'.
 			%
 			% Alternative forms to call this method are:
-			%  CLASS = ICD.GETCLASS() returns the class of the importer of SUVR subject group from .mat ICD.
+			%  CLASS = ICD.GETCLASS() returns the class of the distance-based subject individual brain connectome Constructor ICD.
 			%  CLASS = Element.GETCLASS(ICD) returns the class of 'ICD'.
 			%  CLASS = Element.GETCLASS('IndividualDistanceConConstructor') returns 'IndividualDistanceConConstructor'.
 			%
@@ -183,12 +182,12 @@ classdef IndividualDistanceConConstructor < IndividualConConstructorBase
 			icd_class = 'IndividualDistanceConConstructor';
 		end
 		function subclass_list = getSubclasses()
-			%GETSUBCLASSES returns all subclasses of the importer of SUVR subject group from .mat.
+			%GETSUBCLASSES returns all subclasses of the distance-based subject individual brain connectome Constructor.
 			%
 			% LIST = IndividualDistanceConConstructor.GETSUBCLASSES() returns all subclasses of 'IndividualDistanceConConstructor'.
 			%
 			% Alternative forms to call this method are:
-			%  LIST = ICD.GETSUBCLASSES() returns all subclasses of the importer of SUVR subject group from .mat ICD.
+			%  LIST = ICD.GETSUBCLASSES() returns all subclasses of the distance-based subject individual brain connectome Constructor ICD.
 			%  LIST = Element.GETSUBCLASSES(ICD) returns all subclasses of 'ICD'.
 			%  LIST = Element.GETSUBCLASSES('IndividualDistanceConConstructor') returns all subclasses of 'IndividualDistanceConConstructor'.
 			%
@@ -200,16 +199,16 @@ classdef IndividualDistanceConConstructor < IndividualConConstructorBase
 			subclass_list = { 'IndividualDistanceConConstructor' }; %CET: Computational Efficiency Trick
 		end
 		function prop_list = getProps(category)
-			%GETPROPS returns the property list of importer of SUVR subject group from .mat.
+			%GETPROPS returns the property list of distance-based subject individual brain connectome Constructor.
 			%
-			% PROPS = IndividualDistanceConConstructor.GETPROPS() returns the property list of importer of SUVR subject group from .mat
+			% PROPS = IndividualDistanceConConstructor.GETPROPS() returns the property list of distance-based subject individual brain connectome Constructor
 			%  as a row vector.
 			%
 			% PROPS = IndividualDistanceConConstructor.GETPROPS(CATEGORY) returns the property list 
 			%  of category CATEGORY.
 			%
 			% Alternative forms to call this method are:
-			%  PROPS = ICD.GETPROPS([CATEGORY]) returns the property list of the importer of SUVR subject group from .mat ICD.
+			%  PROPS = ICD.GETPROPS([CATEGORY]) returns the property list of the distance-based subject individual brain connectome Constructor ICD.
 			%  PROPS = Element.GETPROPS(ICD[, CATEGORY]) returns the property list of 'ICD'.
 			%  PROPS = Element.GETPROPS('IndividualDistanceConConstructor'[, CATEGORY]) returns the property list of 'IndividualDistanceConConstructor'.
 			%
@@ -245,15 +244,15 @@ classdef IndividualDistanceConConstructor < IndividualConConstructorBase
 			end
 		end
 		function prop_number = getPropNumber(varargin)
-			%GETPROPNUMBER returns the property number of importer of SUVR subject group from .mat.
+			%GETPROPNUMBER returns the property number of distance-based subject individual brain connectome Constructor.
 			%
-			% N = IndividualDistanceConConstructor.GETPROPNUMBER() returns the property number of importer of SUVR subject group from .mat.
+			% N = IndividualDistanceConConstructor.GETPROPNUMBER() returns the property number of distance-based subject individual brain connectome Constructor.
 			%
-			% N = IndividualDistanceConConstructor.GETPROPNUMBER(CATEGORY) returns the property number of importer of SUVR subject group from .mat
+			% N = IndividualDistanceConConstructor.GETPROPNUMBER(CATEGORY) returns the property number of distance-based subject individual brain connectome Constructor
 			%  of category CATEGORY
 			%
 			% Alternative forms to call this method are:
-			%  N = ICD.GETPROPNUMBER([CATEGORY]) returns the property number of the importer of SUVR subject group from .mat ICD.
+			%  N = ICD.GETPROPNUMBER([CATEGORY]) returns the property number of the distance-based subject individual brain connectome Constructor ICD.
 			%  N = Element.GETPROPNUMBER(ICD) returns the property number of 'ICD'.
 			%  N = Element.GETPROPNUMBER('IndividualDistanceConConstructor') returns the property number of 'IndividualDistanceConConstructor'.
 			%
@@ -289,7 +288,7 @@ classdef IndividualDistanceConConstructor < IndividualConConstructorBase
 			end
 		end
 		function check_out = existsProp(prop)
-			%EXISTSPROP checks whether property exists in importer of SUVR subject group from .mat/error.
+			%EXISTSPROP checks whether property exists in distance-based subject individual brain connectome Constructor/error.
 			%
 			% CHECK = IndividualDistanceConConstructor.EXISTSPROP(PROP) checks whether the property PROP exists.
 			%
@@ -327,7 +326,7 @@ classdef IndividualDistanceConConstructor < IndividualConConstructorBase
 			end
 		end
 		function check_out = existsTag(tag)
-			%EXISTSTAG checks whether tag exists in importer of SUVR subject group from .mat/error.
+			%EXISTSTAG checks whether tag exists in distance-based subject individual brain connectome Constructor/error.
 			%
 			% CHECK = IndividualDistanceConConstructor.EXISTSTAG(TAG) checks whether a property with tag TAG exists.
 			%
@@ -668,35 +667,42 @@ classdef IndividualDistanceConConstructor < IndividualConConstructorBase
 					    return
 					end
 					gr_suvr = icd.get('GR_SUVR');
+					gr_suvr_ref = icd.get('GR_SUVR_REF');
 					for i = 1:1:gr_suvr.get('SUB_DICT').get('LENGTH')
 					    subj_suvrs{i} = gr_suvr.get('SUB_DICT').get('IT',i).get('ST');
 					end
-					
+					for i = 1:1:gr_suvr.get('SUB_DICT').get('LENGTH')
+					    subj_suvrs_ref{i} = gr_suvr_ref.get('SUB_DICT').get('IT',i).get('ST');
+					end
+					subj_suvrs_ref = cell2mat(subj_suvrs_ref);
+					subj_suvrs_ref_regional_mean = mean(subj_suvrs_ref,2);
 					maxMahalDistAcrossSubjects = 0;
 					mahalDistances_cross_subjects = {};
 					for i = 1:1:length(subj_suvrs)
 					    subj_suvr = subj_suvrs{i};
 					    uniqueROIs = size(subj_suvr,1);
-					    % Calculate the global mean SUVR value for the subject
-					    globalMeanSUVR = mean(subj_suvr, 'all');
 					    % Subtract the global mean from each SUVR value to center the data
-					    centeredSUVRMatrix = subj_suvr - globalMeanSUVR;
+					    centeredSUVRMatrix = subj_suvr - subj_suvrs_ref_regional_mean;
 					    % Calculate the covariance matrix of the centered SUVR data
-					    covMatrix = cov(centeredSUVRMatrix');
-					    invCovMatrix = inv(covMatrix); % Inverse of the covariance matrix
+					    covMatrix = cov(subj_suvrs_ref');
+					    % invCovMatrix = inv(covMatrix); % Inverse of the covariance matrix
 					    mahalDistances = zeros(uniqueROIs, uniqueROIs); % To store Mahalanobis distances for each ROI
-					    for roi1 = 1:uniqueROIs
-					        for roi2 = 1:uniqueROIs
-					            if roi1 ~= roi2
-					                % For each ROI, the diffVector is its centered SUVR values
-					                diffVector_first = centeredSUVRMatrix(roi1);
-					                mahalDist1 = sqrt((diffVector_first * invCovMatrix) * diffVector_first'); % Mahalanobis distance calculation
-					                diffVector_second = centeredSUVRMatrix(roi2);
-					                mahalDist2 = sqrt((diffVector_second * invCovMatrix) * diffVector_second'); % Mahalanobis distance calculation
-					                mahalDistances(roi1,roi2) = (mahalDist1+mahalDist2)/2; % Store the computed distance
-					            else
-					                mahalDistances(roi1,roi2) = 0;
-					            end
+					    for roi1 = 1:uniqueROIs-1
+					        for roi2 = roi1+1:uniqueROIs
+					            % 2D residual vector r = [x_i - μ_i; x_j - μ_j]
+					            centeredSUVRMatrix_ij  = [centeredSUVRMatrix(roi1); centeredSUVRMatrix(roi2)];  % 2×1
+					
+					            % 2×2 covariance submatrix for {roi1, roi2}
+					            cov_ij  = covMatrix([roi1 roi2], [roi1 roi2]);                  % 2×2
+					
+					
+					            y = cov_ij \ centeredSUVRMatrix_ij;
+					            d = sqrt(centeredSUVRMatrix_ij' * y);                 % = sqrt(r' * inv(S) * r)
+					
+					
+					            % bidirectional-collapsed (symmetric) edge
+					            mahalDistances(roi1, roi2) = d;
+					            mahalDistances(roi2, roi1) = d;
 					        end
 					    end
 					    % Update maxMahalDistAcrossSubjects if a larger distance is found
@@ -707,13 +713,7 @@ classdef IndividualDistanceConConstructor < IndividualConConstructorBase
 					    mahalDistances_cross_subjects{i} = mahalDistances;
 					
 					end
-					scaledMahalDistMatrix_cross_subjects = {};
-					for i = 1:length(mahalDistances_cross_subjects)
-					    mahalDistMatrix = mahalDistances_cross_subjects{i};
-					    % Scale the Mahalanobis distances
-					    scaledMahalDistMatrix_cross_subjects{i} = 1 - mahalDistMatrix / ceil(maxMahalDistAcrossSubjects);
-					end
-					value = scaledMahalDistMatrix_cross_subjects;
+					value = mahalDistances_cross_subjects;
 					
 				otherwise
 					if prop <= 13

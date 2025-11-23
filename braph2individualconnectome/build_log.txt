@@ -26,11 +26,6 @@ NNDataPoint_Graph_CLA,1
 NNDataPoint_Graph_REG,1
 NNDataPoint_Measure_CLA,1
 NNDataPoint_Measure_REG,1
-NNRegressorMLP,1
-NNRegressorMLP_CrossValidation,1
-NNRegressorMLP_CrossValidationPF_Scatter,1
-NNRegressorMLP_Evaluator,1
-NNRegressorMLP_EvaluatorPF_Scatter,1
 NNxMLP_FeatureImportance,1
 NNxMLP_FeatureImportanceAcrossMeasures,1
 NNxMLP_FeatureImportanceAcrossMeasures_CV,1

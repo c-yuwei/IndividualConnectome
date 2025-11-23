@@ -153,13 +153,13 @@ CONNECTOME_CONSTRUCT_METHOD (query, cell) defines the method for individual conn
 gr_pdf = a.get('GR');
 JSdivMatrix_cross_subjects = {};
 for sub_index = 1:1:gr_pdf.get('SUB_DICT').get('LENGTH')
-    subj_suvrs = gr_pdf.get('SUB_DICT').get('IT',sub_index).get('FUN');
-    numROIs = size(subj_suvrs,2);
+    subj_pdf = gr_pdf.get('SUB_DICT').get('IT',sub_index).get('FUN');
+    numROIs = size(subj_pdf,2);
     JSdivMatrix = zeros(numROIs, numROIs);
     for i = 1:numROIs
         for j = 1:numROIs % Calculate for all pairs including self-comparison
-            p = subj_suvrs(:,i); % Assuming the density estimates are the 2nd element
-            q = subj_suvrs(:,j);
+            p = subj_pdf(:,i); % Assuming the density estimates are the 2nd element
+            q = subj_pdf(:,j);
 
             % Ensure p and q are normalized to sum to 1
             p = p / sum(p);
@@ -243,7 +243,6 @@ gr = PDFConstructor('GR_PET', gr1_PET, ...
     'ATLAS_PATH_DICT', path_dict, ...
     'MAPPING_PATH_DICT', mapping_path_dict, ...
     'REF_REGION_LIST', ref_region_list, ...
-    'ATLAS_KIND', {'AAL2'}, ...
     'PDF_REGION_SELECTION', selected_br_dict);
 PDF_gr1 = gr.get('GR');
 

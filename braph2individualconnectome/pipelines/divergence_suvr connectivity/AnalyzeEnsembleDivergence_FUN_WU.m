@@ -20,7 +20,7 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 	%  <strong>12</strong> <strong>G_DICT</strong> 	G_DICT (result, idict) is the graph (GraphWU) ensemble of Jensen–Shannon divergence individual connectivity matrix.
 	%  <strong>13</strong> <strong>ME_DICT</strong> 	ME_DICT (result, idict) contains the calculated measures of the graph ensemble.
 	%  <strong>14</strong> <strong>MEASUREENSEMBLE</strong> 	MEASUREENSEMBLE (query, item) returns an ensemble-based measure.
-	%  <strong>15</strong> <strong>CONNECTOME_CONSTUCT_METHOD</strong> 	CONNECTOME_CONSTUCT_METHOD (query, cell) defines the method for individual connectome construction.
+	%  <strong>15</strong> <strong>CONNECTOME_CONSTRUCT_METHOD</strong> 	CONNECTOME_CONSTRUCT_METHOD (query, cell) defines the method for individual connectome construction.
 	%
 	% AnalyzeEnsembleDivergence_FUN_WU methods (constructor):
 	%  AnalyzeEnsembleDivergence_FUN_WU - constructor
@@ -113,10 +113,10 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 	% BUILD BRAPH2 7 class_name 1
 	
 	properties (Constant) % properties
-		CONNECTOME_CONSTUCT_METHOD = 15; %CET: Computational Efficiency Trick
-		CONNECTOME_CONSTUCT_METHOD_TAG = 'CONNECTOME_CONSTUCT_METHOD';
-		CONNECTOME_CONSTUCT_METHOD_CATEGORY = 6;
-		CONNECTOME_CONSTUCT_METHOD_FORMAT = 16;
+		CONNECTOME_CONSTRUCT_METHOD = 15; %CET: Computational Efficiency Trick
+		CONNECTOME_CONSTRUCT_METHOD_TAG = 'CONNECTOME_CONSTRUCT_METHOD';
+		CONNECTOME_CONSTRUCT_METHOD_CATEGORY = 6;
+		CONNECTOME_CONSTRUCT_METHOD_FORMAT = 16;
 	end
 	methods % constructor
 		function a = AnalyzeEnsembleDivergence_FUN_WU(varargin)
@@ -144,7 +144,7 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 			%  <strong>12</strong> <strong>G_DICT</strong> 	G_DICT (result, idict) is the graph (GraphWU) ensemble of Jensen–Shannon divergence individual connectivity matrix.
 			%  <strong>13</strong> <strong>ME_DICT</strong> 	ME_DICT (result, idict) contains the calculated measures of the graph ensemble.
 			%  <strong>14</strong> <strong>MEASUREENSEMBLE</strong> 	MEASUREENSEMBLE (query, item) returns an ensemble-based measure.
-			%  <strong>15</strong> <strong>CONNECTOME_CONSTUCT_METHOD</strong> 	CONNECTOME_CONSTUCT_METHOD (query, cell) defines the method for individual connectome construction.
+			%  <strong>15</strong> <strong>CONNECTOME_CONSTRUCT_METHOD</strong> 	CONNECTOME_CONSTRUCT_METHOD (query, cell) defines the method for individual connectome construction.
 			%
 			% See also Category, Format.
 			
@@ -352,7 +352,7 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 			%
 			% See also getProps, existsTag.
 			
-			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'GR'  'GRAPH_TEMPLATE'  'G_DICT'  'ME_DICT'  'MEASUREENSEMBLE'  'CONNECTOME_CONSTUCT_METHOD' })); %CET: Computational Efficiency Trick
+			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'GR'  'GRAPH_TEMPLATE'  'G_DICT'  'ME_DICT'  'MEASUREENSEMBLE'  'CONNECTOME_CONSTRUCT_METHOD' })); %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
@@ -385,7 +385,7 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 			%  getPropSettings, getPropDefault, checkProp.
 			
 			if ischar(pointer)
-				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'GR'  'GRAPH_TEMPLATE'  'G_DICT'  'ME_DICT'  'MEASUREENSEMBLE'  'CONNECTOME_CONSTUCT_METHOD' })); % tag = pointer %CET: Computational Efficiency Trick
+				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'GR'  'GRAPH_TEMPLATE'  'G_DICT'  'ME_DICT'  'MEASUREENSEMBLE'  'CONNECTOME_CONSTRUCT_METHOD' })); % tag = pointer %CET: Computational Efficiency Trick
 			else % numeric
 				prop = pointer;
 			end
@@ -414,7 +414,7 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 				tag = pointer;
 			else % numeric
 				%CET: Computational Efficiency Trick
-				analyzeensembledivergence_fun_wu_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'GR'  'GRAPH_TEMPLATE'  'G_DICT'  'ME_DICT'  'MEASUREENSEMBLE'  'CONNECTOME_CONSTUCT_METHOD' };
+				analyzeensembledivergence_fun_wu_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'GR'  'GRAPH_TEMPLATE'  'G_DICT'  'ME_DICT'  'MEASUREENSEMBLE'  'CONNECTOME_CONSTRUCT_METHOD' };
 				tag = analyzeensembledivergence_fun_wu_tag_list{pointer}; % prop = pointer
 			end
 		end
@@ -493,7 +493,7 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 			prop = AnalyzeEnsembleDivergence_FUN_WU.getPropProp(pointer);
 			
 			%CET: Computational Efficiency Trick
-			analyzeensembledivergence_fun_wu_description_list = { 'ELCLASS (constant, string) is the class of the ensemble-based graph analysis with functional data.'  'NAME (constant, string) is the name of the ensemble-based graph analysis with functional data.'  'DESCRIPTION (constant, string) is the description of the ensemble-based graph analysis with functional data.'  'TEMPLATE (parameter, item) is the template of the ensemble-based graph analysis with functional data.'  'ID (data, string) is a few-letter code for the ensemble-based graph analysis with functional data.'  'LABEL (metadata, string) is an extended label of the ensemble-based graph analysis with functional data.'  'NOTES (metadata, string) are some specific notes about the ensemble-based graph analysis with functional data.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'WAITBAR (gui, logical) detemines whether to show the waitbar.'  'GR (data, item) is the subject group, which also defines the subject class SubjectFUN.'  'GRAPH_TEMPLATE (parameter, item) is the graph template to set all graph and measure parameters.'  'G_DICT (result, idict) is the graph (GraphWU) ensemble of Jensen–Shannon divergence individual connectivity matrix.'  'ME_DICT (result, idict) contains the calculated measures of the graph ensemble.'  'MEASUREENSEMBLE (query, item) returns an ensemble-based measure.'  'CONNECTOME_CONSTUCT_METHOD (query, cell) defines the method for individual connectome construction.' };
+			analyzeensembledivergence_fun_wu_description_list = { 'ELCLASS (constant, string) is the class of the ensemble-based graph analysis with functional data.'  'NAME (constant, string) is the name of the ensemble-based graph analysis with functional data.'  'DESCRIPTION (constant, string) is the description of the ensemble-based graph analysis with functional data.'  'TEMPLATE (parameter, item) is the template of the ensemble-based graph analysis with functional data.'  'ID (data, string) is a few-letter code for the ensemble-based graph analysis with functional data.'  'LABEL (metadata, string) is an extended label of the ensemble-based graph analysis with functional data.'  'NOTES (metadata, string) are some specific notes about the ensemble-based graph analysis with functional data.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'WAITBAR (gui, logical) detemines whether to show the waitbar.'  'GR (data, item) is the subject group, which also defines the subject class SubjectFUN.'  'GRAPH_TEMPLATE (parameter, item) is the graph template to set all graph and measure parameters.'  'G_DICT (result, idict) is the graph (GraphWU) ensemble of Jensen–Shannon divergence individual connectivity matrix.'  'ME_DICT (result, idict) contains the calculated measures of the graph ensemble.'  'MEASUREENSEMBLE (query, item) returns an ensemble-based measure.'  'CONNECTOME_CONSTRUCT_METHOD (query, cell) defines the method for individual connectome construction.' };
 			prop_description = analyzeensembledivergence_fun_wu_description_list{prop};
 		end
 		function prop_settings = getPropSettings(pointer)
@@ -519,7 +519,7 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 			prop = AnalyzeEnsembleDivergence_FUN_WU.getPropProp(pointer);
 			
 			switch prop %CET: Computational Efficiency Trick
-				case 15 % AnalyzeEnsembleDivergence_FUN_WU.CONNECTOME_CONSTUCT_METHOD
+				case 15 % AnalyzeEnsembleDivergence_FUN_WU.CONNECTOME_CONSTRUCT_METHOD
 					prop_settings = Format.getFormatSettings(16);
 				case 11 % AnalyzeEnsembleDivergence_FUN_WU.GRAPH_TEMPLATE
 					prop_settings = 'GraphWU';
@@ -552,7 +552,7 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 			prop = AnalyzeEnsembleDivergence_FUN_WU.getPropProp(pointer);
 			
 			switch prop %CET: Computational Efficiency Trick
-				case 15 % AnalyzeEnsembleDivergence_FUN_WU.CONNECTOME_CONSTUCT_METHOD
+				case 15 % AnalyzeEnsembleDivergence_FUN_WU.CONNECTOME_CONSTRUCT_METHOD
 					prop_default = Format.getFormatDefault(16, AnalyzeEnsembleDivergence_FUN_WU.getPropSettings(prop));
 				case 1 % AnalyzeEnsembleDivergence_FUN_WU.ELCLASS
 					prop_default = 'AnalyzeEnsembleDivergence_FUN_WU';
@@ -638,7 +638,7 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 			prop = AnalyzeEnsembleDivergence_FUN_WU.getPropProp(pointer);
 			
 			switch prop
-				case 15 % AnalyzeEnsembleDivergence_FUN_WU.CONNECTOME_CONSTUCT_METHOD
+				case 15 % AnalyzeEnsembleDivergence_FUN_WU.CONNECTOME_CONSTRUCT_METHOD
 					check = Format.checkFormat(16, value, AnalyzeEnsembleDivergence_FUN_WU.getPropSettings(prop));
 				case 11 % AnalyzeEnsembleDivergence_FUN_WU.GRAPH_TEMPLATE
 					check = Format.checkFormat(8, value, AnalyzeEnsembleDivergence_FUN_WU.getPropSettings(prop));
@@ -678,17 +678,17 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 			%  postset, postprocessing, checkValue.
 			
 			switch prop
-				case 15 % AnalyzeEnsembleDivergence_FUN_WU.CONNECTOME_CONSTUCT_METHOD
+				case 15 % AnalyzeEnsembleDivergence_FUN_WU.CONNECTOME_CONSTRUCT_METHOD
 					gr_pdf = a.get('GR');
 					JSdivMatrix_cross_subjects = {};
 					for sub_index = 1:1:gr_pdf.get('SUB_DICT').get('LENGTH')
-					    subj_suvrs = gr_pdf.get('SUB_DICT').get('IT',sub_index).get('FUN');
-					    numROIs = size(subj_suvrs,2);
+					    subj_pdf = gr_pdf.get('SUB_DICT').get('IT',sub_index).get('FUN');
+					    numROIs = size(subj_pdf,2);
 					    JSdivMatrix = zeros(numROIs, numROIs);
 					    for i = 1:numROIs
 					        for j = 1:numROIs % Calculate for all pairs including self-comparison
-					            p = subj_suvrs(:,i); % Assuming the density estimates are the 2nd element
-					            q = subj_suvrs(:,j);
+					            p = subj_pdf(:,i); % Assuming the density estimates are the 2nd element
+					            q = subj_pdf(:,j);
 					
 					            % Ensure p and q are normalized to sum to 1
 					            p = p / sum(p);
@@ -711,7 +711,7 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 					rng_settings_ = rng(); rng(a.getPropSeed(12), 'twister')
 					
 					g_dict = IndexedDictionary('IT_CLASS', 'GraphWU');
-					connectivityMatrix = a.get('CONNECTOME_CONSTUCT_METHOD');
+					connectivityMatrix = a.get('CONNECTOME_CONSTRUCT_METHOD');
 					gr_pdf = a.get('GR');
 					wb = braph2waitbar(a.get('WAITBAR'), 0, ['Build up individual connectivity matrix for subjects ...']);
 					for i = 1:1:gr_pdf.get('SUB_DICT').get('LENGTH')
