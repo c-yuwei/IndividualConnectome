@@ -2393,7 +2393,6 @@ braph2individualconnectome/pipelines/divergence_suvr connectivity/Example data N
 braph2individualconnectome/pipelines/divergence_suvr connectivity/Example data Nifti/Group2/Group2_subject_8/Group2_subject_8_T1.nii
 braph2individualconnectome/pipelines/divergence_suvr connectivity/Example data Nifti/Group2/Group2_subject_9/Group2_subject_9_PET.nii
 braph2individualconnectome/pipelines/divergence_suvr connectivity/Example data Nifti/Group2/Group2_subject_9/Group2_subject_9_T1.nii
-braph2individualconnectome/pipelines/divergence_suvr connectivity/example_Individual_DivergenceCon_WU.m
 braph2individualconnectome/pipelines/divergence_suvr connectivity/PDFConstructor.m
 braph2individualconnectome/pipelines/divergence_suvr connectivity/test_PDFConstructor.m
 braph2individualconnectome/pipelines/functional NN/Example data NN CLA FUN TXT/atlas.txt
