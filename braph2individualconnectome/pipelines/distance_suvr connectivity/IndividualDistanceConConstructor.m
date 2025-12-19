@@ -704,14 +704,8 @@ classdef IndividualDistanceConConstructor < IndividualConConstructorBase
 					            mahalDistances(roi1, roi2) = d;
 					            mahalDistances(roi2, roi1) = d;
 					        end
-					    end
-					    % Update maxMahalDistAcrossSubjects if a larger distance is found
-					    currentMax = max(mahalDistances(:));
-					    if currentMax > maxMahalDistAcrossSubjects
-					        maxMahalDistAcrossSubjects = currentMax;
-					    end
-					    mahalDistances_cross_subjects{i} = mahalDistances;
-					
+                        end
+					    mahalDistances_cross_subjects{i} = mahalDistances;					
 					end
 					value = mahalDistances_cross_subjects;
 					
