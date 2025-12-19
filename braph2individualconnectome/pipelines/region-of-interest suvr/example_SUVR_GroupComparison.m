@@ -1,15 +1,7 @@
 % EXAMPLE_CON_WU
 % Script example pipeline Distance CON WU
 
-clear variables %#ok<*NASGU>
-%% Load BrainAtlas
-% im_ba = ImporterBrainAtlasXLS( ...
-%     'FILE', [which('aal120_atlas.xlsx')], ...
-%     'WAITBAR', true ...
-%     );
-% 
-% ba = im_ba.get('BA');
-
+clear variables 
 %% load group data
 im_gr3_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('AD_PositiveAmyloid.vois.xlsx')) filesep 'AD_PositiveAmyloid'], ...
     'NIFTI_TYPE', {'wc1','wc2'},...
