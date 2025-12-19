@@ -1,15 +1,7 @@
 % EXAMPLE_CON_WU
 % Script example pipeline Distance CON WU
 
-clear variables %#ok<*NASGU>
-%% Load BrainAtlas
-% im_ba = ImporterBrainAtlasXLS( ...
-%     'FILE', [which('aal120_atlas.xlsx')], ...
-%     'WAITBAR', true ...
-%     );
-% 
-% ba = im_ba.get('BA');
-
+clear variables
 %% load group data
 im_gr3_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('AD_PositiveAmyloid.vois.xlsx')) filesep 'AD_PositiveAmyloid'], ...
     'NIFTI_TYPE', {'wc1','wc2'},...
@@ -21,7 +13,7 @@ im_gr3_PET = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('AD_PositiveAm
     'WAITBAR', true);
 gr3_PET = im_gr3_PET.get('GR');
 
-%%group2
+%%group1
 im_gr1_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY',[fileparts(which('Healthy_PositiveAmyloid.vois.xlsx')) filesep 'Healthy_PositiveAmyloid'], ...
     'NIFTI_TYPE', {'wc1','wc2'},...
     'WAITBAR', true);
@@ -32,7 +24,7 @@ im_gr1_PET = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('Healthy_Posit
     'WAITBAR', true);
 gr1_PET = im_gr1_PET.get('GR');
 
-%%group3
+%%group2
 im_gr2_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('MCI_PositiveAmyloid.vois.xlsx')) filesep 'MCI_PositiveAmyloid'], ...
     'NIFTI_TYPE', {'wc1','wc2'},...
     'WAITBAR', true);
@@ -211,15 +203,9 @@ for h = 1:length(tasks)
         % Train MLP classifier without VOI input
         nncv = NNClassifierMLP_CrossValidation_VOIs('D', {d1_st, d2_st},'D_VOIS', {d1_vois, d2_vois}, 'KFOLDS', num_folds, 'NN_TEMPLATE', nn_template, 'SPLIT', SPLIT);
         nncv.get('TRAIN');
-        % [x_mean{run}, y_mean{run}] = get_roc(nncv);
-        
         % Evaluate performance
         confusion_matrix = nncv.get('C_MATRIX');
         auc = nncv.get('AV_MACRO_AUC');
-        % nncv.get('PFROC').memorize('H_TOOLBAR')
-        % nncv.get('PFROC').get('DRAW')
-        % PFROCX = nncv.get('PFROC').get('ROC_DICT').get('IT',1).get('X');    
-        % PFROCY = nncv.get('PFROC').get('ROC_DICT').get('IT',1).get('Y');
         % Calculate sensitivity and specificity
         tp = confusion_matrix(2,2);
         tn = confusion_matrix(1,1);
@@ -233,23 +219,13 @@ for h = 1:length(tasks)
         sensitivity_scores(run) = sensitivity;
         specificity_scores(run) = specificity;
         confusion_matrixs{run} = confusion_matrix;
-        % PFROCXs{run} = PFROCX;
-        % PFROCYs{run} = PFROCY;
+
     end
-        % Compute mean PFROCX and PFROCY across runs
-    % Compute mean PFROCX and PFROCY across runs with variable lengths
-    % max_length = max(cellfun(@length, PFROCXs)); % Find maximum length across runs
-    % interpolated_PFROCXs = cellfun(@(x) interp1(1:length(x), x, linspace(1, length(x), max_length), 'linear', 'extrap'), {PFROCXs{1:2}}, 'UniformOutput', false);
-    % interpolated_PFROCYs = cellfun(@(y) interp1(1:length(y), y, linspace(1, length(y), max_length), 'linear', 'extrap'), PFROCYs, 'UniformOutput', false);
-    % mean_PFROCX = mean(cell2mat(interpolated_PFROCXs'), 1); % Mean across runs
-    % mean_PFROCY = mean(cell2mat(interpolated_PFROCYs'), 1); % Mean across runs
 
     results.(task_name).Confusion = {confusion_matrixs};
     results.(task_name).AUC = auc_scores(auc_scores~=0);
     results.(task_name).specificity = specificity_scores(specificity_scores~=0);
     results.(task_name).sensitivity = sensitivity_scores(sensitivity_scores~=0);
-    % results.(task_name).ROC_X = mean_PFROCX; % Store mean PFROCX
-    % results.(task_name).ROC_Y = mean_PFROCY; % Store mean PFROCY
     
     % Plot performance metrics
     figure('Name', ['Performance Metrics with MultiplexWU for ' task_name], 'NumberTitle', 'off');
@@ -282,215 +258,5 @@ for h = 1:length(tasks)
     set(gcf, 'Position', [100, 100, 800, 300]);
 end
 
-% save('/home/hang/GitHub/IndividualConnectome-WithYuwei/Results/FDG PET/matrix/withConverters/BaselineAsSUVRVector/Classification_SUVRVectorWithoutStandardizeAndSemipositiveBalanced(CNpos).mat', 'results');
+% save('/home/hang/GitHub/IndividualConnectome-WithYuwei/Results/FDG PET/matrix/withConverters/BaselineAsSUVRVector/Classification_SUVRVectorWithoutStandardizeAndSemipositiveBalanced(CNpos)WithVOI.mat', 'results');
 
-% %% Balance the Groups Before Training
-% % Determine the size of each group
-% group_size1 = d1.get('DP_DICT').get('LENGTH'); % CN
-% group_size2 = d2.get('DP_DICT').get('LENGTH'); % MCI_pos
-% group_size3 = d3.get('DP_DICT').get('LENGTH'); % AD_pos
-% 
-% % Find the minimum group size
-% min_group_size = min([group_size1, group_size2, group_size3]);
-% 
-% fprintf('Group sizes before balancing - CN: %d, MCI_pos: %d, AD_pos: %d\n', group_size1, group_size2, group_size3);
-% fprintf('Balancing all groups to size: %d\n', min_group_size);
-% 
-% 
-% % Undersample d1 (CN) if necessary
-% if group_size1 > min_group_size
-%     rand_indices_d1 = randperm(group_size1, min_group_size);
-%     % Validate indices
-%     if any(rand_indices_d1 < 1) || any(rand_indices_d1 > group_size1)
-%         error('rand_indices_d1 contains invalid indices: %s', mat2str(rand_indices_d1));
-%     end
-%     d1_balanced = NNDataset('DP_CLASS', 'NNDataPoint_Measure_CLA', ...
-%         'DP_DICT', IndexedDictionary('IT_CLASS', 'NNDataPoint_Measure_CLA', ...
-%         'IT_LIST', it_list1(rand_indices_d1)));
-%     d1_vois_balanced = NNDataset('DP_CLASS', 'NNDataPoint_VOIs', ...
-%         'DP_DICT', IndexedDictionary('IT_CLASS', 'NNDataPoint_VOIs', ...
-%         'IT_LIST', it_list_voi1(rand_indices_d1)));
-% else
-%     d1 = d1;
-%     d1_vois = d1_vois;
-% end
-% 
-% % Undersample d2 (MCI_pos) if necessary
-% if group_size2 > min_group_size
-%     rand_indices_d2 = randperm(group_size2, min_group_size);
-%     % Validate indices
-%     if any(rand_indices_d2 < 1) || any(rand_indices_d2 > group_size2)
-%         error('rand_indices_d2 contains invalid indices: %s', mat2str(rand_indices_d2));
-%     end
-%     d2_balanced = NNDataset('DP_CLASS', 'NNDataPoint_Measure_CLA', ...
-%         'DP_DICT', IndexedDictionary('IT_CLASS', 'NNDataPoint_Measure_CLA', ...
-%         'IT_LIST', it_list2(rand_indices_d2)));
-%     d2_vois_balanced = NNDataset('DP_CLASS', 'NNDataPoint_VOIs', ...
-%         'DP_DICT', IndexedDictionary('IT_CLASS', 'NNDataPoint_VOIs', ...
-%         'IT_LIST', it_list_voi2(rand_indices_d2)));
-% else
-%     d2 = d2;
-%     d2_vois = d2_vois;
-% end
-% 
-% % Undersample d3 (AD_pos) if necessary
-% if group_size3 > min_group_size
-%     rand_indices_d3 = randperm(group_size3, min_group_size);
-%     % Validate indices
-%     if any(rand_indices_d3 < 1) || any(rand_indices_d3 > group_size3)
-%         error('rand_indices_d3 contains invalid indices: %s', mat2str(rand_indices_d3));
-%     end
-%     d3_balanced = NNDataset('DP_CLASS', 'NNDataPoint_Measure_CLA', ...
-%         'DP_DICT', IndexedDictionary('IT_CLASS', 'NNDataPoint_Measure_CLA', ...
-%         'IT_LIST', it_list3(rand_indices_d3)));
-%     d3_vois_balanced = NNDataset('DP_CLASS', 'NNDataPoint_VOIs', ...
-%         'DP_DICT', IndexedDictionary('IT_CLASS', 'NNDataPoint_VOIs', ...
-%         'IT_LIST', it_list_voi3(rand_indices_d3)));
-% else
-%     d3 = d3;
-%     d3_vois = d3_vois;
-% end
-% 
-% %% Create a classifier cross-validation
-% nn_template = NNClassifierMLP_VOIs('EPOCHS', 50, 'LAYERS', [128 128]);
-% num_dp_d1 = d1.get('DP_DICT').get('LENGTH'); % Number of data points in d1 (assumed same as d1_vois)
-% num_dp_d2 = d2.get('DP_DICT').get('LENGTH'); % Number of data points in d2 (assumed same as d2_vois)
-% % Generate shuffled split indices for 5 folds
-% % shuffled_indices_d1 = randperm(num_dp_d1); % Random permutation of indices for d1
-% % shuffled_indices_d2 = randperm(num_dp_d2); % Random permutation of indices for d2
-% % Calculate split points for 5 equal parts
-% split_points_d1 = round(linspace(0, num_dp_d1, 6)); % 6 points to define 5 segments
-% split_points_d2 = round(linspace(0, num_dp_d2, 6)); % 6 points to define 5 segments
-% SPLIT = cell(2, 5);
-% for i = 1:5
-%     SPLIT{1, i} = shuffled_indices_d1(split_points_d1(i)+1:split_points_d1(i+1));
-%     SPLIT{2, i} = shuffled_indices_d2(split_points_d2(i)+1:split_points_d2(i+1));
-% end
-% nncv = NNClassifierMLP_CrossValidation_VOIs('D', {d1, d2}, 'D_VOIS', {d1_vois, d2_vois}, 'KFOLDS', 5, 'NN_TEMPLATE', nn_template, 'SPLIT', SPLIT); % d2 healthy, d1 AD
-% nncv.get('TRAIN');
-% 
-% % Evaluate the feature importance
-% % fi_template = NNxMLP_FeatureImportance_VOIs('P', 1000, 'APPLY_BONFERRONI', true, 'APPLY_CONFIDENCE_INTERVALS', true);
-% % fi_cv = NNxMLP_FeatureImportance_VOIs_CV('NNCV', nncv, 'FI_TEMPLATE', fi_template);
-% % fi_cv_score = fi_cv.get('RESHAPED_AV_FEATURE_IMPORTANCE');
-% %% Evaluate the performance
-% confusion_matrix_ad = nncv.get('C_MATRIX');
-% av_auc_ad = nncv.get('AV_AUC');
-% av_macro_auc_ad = nncv.get('AV_MACRO_AUC');
-% sensitivity_ad = confusion_matrix_ad(1,1)/ sum(confusion_matrix_ad(:,1));
-% specificity_ad = confusion_matrix_ad(2,2)/ sum(confusion_matrix_ad(:,2));
-% 
-% 
-% %% Create a classifier cross-validation
-% nn_template = NNClassifierMLP_VOIs('EPOCHS', 50, 'LAYERS', [128 128]);
-% num_dp_d3 = d3.get('DP_DICT').get('LENGTH'); % Number of data points in d1 (assumed same as d1_vois)
-% num_dp_d2 = d2.get('DP_DICT').get('LENGTH'); % Number of data points in d2 (assumed same as d2_vois)
-% % Generate shuffled split indices for 5 folds
-% % shuffled_indices_d3 = randperm(num_dp_d3); % Random permutation of indices for d1
-% % shuffled_indices_d2 = randperm(num_dp_d2); % Random permutation of indices for d2
-% % Calculate split points for 5 equal parts
-% split_points_d3 = round(linspace(0, num_dp_d3, 6)); % 6 points to define 5 segments
-% split_points_d2 = round(linspace(0, num_dp_d2, 6)); % 6 points to define 5 segments
-% SPLIT = cell(2, 5);
-% for i = 1:5
-%     SPLIT{1, i} = shuffled_indices_d3(split_points_d3(i)+1:split_points_d3(i+1));
-%     SPLIT{2, i} = shuffled_indices_d2(split_points_d2(i)+1:split_points_d2(i+1));
-% end
-% nncv = NNClassifierMLP_CrossValidation_VOIs('D', {d3, d2},'D_VOIS', {d3_vois, d2_vois}, 'KFOLDS', 5, 'NN_TEMPLATE', nn_template, 'SPLIT', SPLIT);%d2 healthy, d3 MCI, d1 AD
-% nncv.get('TRAIN');
-% % fi_template = NNxMLP_FeatureImportance_VOIs('P', 1000, 'APPLY_BONFERRONI', true, 'APPLY_CONFIDENCE_INTERVALS', true);
-% % fi_cv = NNxMLP_FeatureImportance_VOIs_CV('NNCV', nncv, 'FI_TEMPLATE', fi_template);
-% % fi_cv_score = fi_cv.get('RESHAPED_AV_FEATURE_IMPORT
-% 
-% 
-% 
-% %% Evaluate the performance
-% confusion_matrix_mci = nncv.get('C_MATRIX');
-% av_auc_mci = nncv.get('AV_AUC');
-% av_macro_auc_mci = nncv.get('AV_MACRO_AUC');
-% specificity_mci  = confusion_matrix_mci(1,1)/ sum(confusion_matrix_mci(:,1));
-% sensitivity_mci = confusion_matrix_mci(2,2)/ sum(confusion_matrix_mci(:,2));
-% 
-% 
-% 
-% fprintf('Average AUC CN VS AD: %.4f\n', av_macro_auc_ad);
-% fprintf('Average Sensitivity AD: %.4f\n', sensitivity_ad);
-% fprintf('Average Specificity AD: %.4f\n', specificity_ad);
-% 
-% fprintf('Average AUC CN VS MCI: %.4f\n', av_macro_auc_mci);
-% fprintf('Average Sensitivity MCI: %.4f\n', sensitivity_mci);
-% fprintf('Average Specificity MCI: %.4f\n', specificity_mci);
-% ROC function
-function [x_mean, y_mean] = get_roc(nncv)
-    class_names = {};
-    D = nncv.get('D');
-    for ld = 1:length(D)
-        dataset = D{ld}; % Assuming classes are same across folds
-        dp_dict = dataset.get('DP_DICT');
-        items = dp_dict.get('IT_LIST'); % Get all items
-        target_classes = cellfun(@(dp) dp.get('TARGET_CLASS'), items, 'UniformOutput', false);
-        class_name = unique(cellfun(@unique, target_classes));
-        class_names{ld} = class_name{1};
-    end
-    % Retrieve class names and lists of neural networks and evaluators
-    NN_LIST = nncv.get('NN_LIST');
-    EVALUATOR_LIST = nncv.get('EVALUATOR_LIST');
-    
-    % Determine the number of folds
-    num_folds = length(NN_LIST);
-    
-    % Initialize cell arrays to store predictions and ground truths
-    predictions_folds = cell(1, num_folds);
-    ground_truth_folds = cell(1, num_folds);
-    
-    % Compute predictions for each fold
-    for i = 1:num_folds
-        nn = NN_LIST{i};
-        nne = EVALUATOR_LIST{i};
-        predictions_folds{i} = cell2mat(nn.get('PREDICT', nne.get('D'), nne.get('D_VOIS')));
-    end
-    
-    % Retrieve ground truth for each fold
-    for i = 1:num_folds
-        nne = EVALUATOR_LIST{i};
-        ground_truth_folds{i} = nne.get('GROUND_TRUTH');
-    end
-    
-    % Initialize arrays to store ROC curve points
-    x_val_run = [];
-    y_val_run = [];
-    counter = 0;
-    
-    % Compute ROC curves for each fold and class
-    for k = 1:num_folds
-        predictions_fold = predictions_folds{k};
-        ground_truth_fold = ground_truth_folds{k};
-        rocNet = rocmetrics(ground_truth_fold, predictions_fold, class_names);
-        for j = 1:length(class_names)
-            counter = counter + 1;
-            idx_class = strcmp(rocNet.Metrics.ClassName, class_names{j});
-            y_val_class = rocNet.Metrics(idx_class,:).TruePositiveRate;
-            x_val_class = rocNet.Metrics(idx_class,:).FalsePositiveRate;
-            
-            % Ensure consistent length for ROC curves
-            if counter == 1
-                % Use the first curve as the reference
-                y_val_run = y_val_class;
-                x_val_run = x_val_class;
-            else
-                % Interpolate subsequent curves to match the reference length
-                fixed_length = length(x_val_run);
-                x_val_class_interp = interp1(linspace(0, 1, length(x_val_class)), x_val_class, linspace(0, 1, fixed_length), 'linear');
-                y_val_class_interp = interp1(linspace(0, 1, length(y_val_class)), y_val_class, linspace(0, 1, fixed_length), 'linear');
-                
-                % Append interpolated values
-                x_val_run = [x_val_run, x_val_class_interp'];
-                y_val_run = [y_val_run, y_val_class_interp'];
-            end
-        end
-    end
-    
-    % Compute the mean FPR and TPR across all folds
-    x_mean = mean(x_val_run, 2);
-    y_mean = mean(y_val_run, 2);
-end
