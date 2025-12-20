@@ -2,7 +2,7 @@
 clear; clc;
 
 % Add paths to necessary toolboxes
-addpath(genpath(which('braph2individualconnectome')));
+addpath(genpath(fileparts(which('braph2individualconnectome'))));
 
 % Function to extract RID from subject ID
 extract_rid = @(id) str2double(extractAfter(id,'_S_'));

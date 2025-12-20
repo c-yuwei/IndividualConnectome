@@ -2,8 +2,7 @@
 clear; clc;
 
 % Add paths to necessary toolboxes
-addpath(genpath(which('braph2individualconnectome')));
-
+addpath(genpath(fileparts(which('braph2individualconnectome'))));
 
 % Load group data for CN_neg, MCI_pos, AD_pos, CN_pos
 im_gr3_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('Withconverters/AD_PositiveAmyloid.vois.xlsx')) filesep 'AD_PositiveAmyloid'], ...
@@ -461,4 +460,4 @@ for h = 1:length(tasks)
     set(gcf, 'Position', [100, 100, 800, 300]);
 end
 
-% save('Results/FDG PET/matrix/withConverters/CorrelationSUVRDoubleLayer_Balanced(CN pos).mat', 'results');
+save('Results/FDG PET/matrix/withConverters/CorrelationSUVRDoubleLayer_Balanced(CN pos).mat', 'results');
