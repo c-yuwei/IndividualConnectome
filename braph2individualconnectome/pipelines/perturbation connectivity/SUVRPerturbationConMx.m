@@ -2,14 +2,7 @@
 clear; clc;
 
 % Add paths to necessary toolboxes
-addpath(genpath('/home/hang/GitHub/IndividualConnectome-WithYuwei/braph2individualconnectome'));
-addpath(genpath('/home/hang/GitHub/Individual-connectome/group_data/ADNI_DATA'));
-
-% Load VOI Table for MetaROI Extraction (if needed for other purposes)
-voi_table = readtable('/media/hang/EXTERNAL_US/Data/1_HANG_FDG_PET/demographic/UCBERKELEYFDG_8mm_02_17_23_19Jun2024.csv');
-bl_meta_rows = voi_table(strcmp(voi_table.VISCODE2, 'bl') & strcmp(voi_table.ROINAME, 'MetaROI'), :);
-rid_list = bl_meta_rows.RID; % 807×1 double vector
-mean_list = bl_meta_rows.MEAN; % 807×1 double vector
+addpath(genpath(which('braph2individualconnectome')));
 
 % Function to extract RID from subject ID
 extract_rid = @(id) str2double(extractAfter(id,'_S_'));
@@ -405,79 +398,5 @@ for h = 1:length(tasks)
     set(gcf, 'Position', [100, 100, 800, 300]);
 end
 
-save('Results/FDG PET/matrix/withConverters/BaselineAsSUVRVector/PerturbationSUVRDoubleLayer_Balanced(CN_pos).mat', 'results');
+% save('Results/FDG PET/matrix/withConverters/BaselineAsSUVRVector/PerturbationSUVRDoubleLayer_Balanced(CN_pos).mat', 'results');
 
-% ROC function
-% function [x_mean, y_mean] = get_roc(nncv)
-%     class_names = {};
-%     D = nncv.get('D');
-%     for ld = 1:length(D)
-%         dataset = D{ld}; % Assuming classes are same across folds
-%         dp_dict = dataset.get('DP_DICT');
-%         items = dp_dict.get('IT_LIST'); % Get all items
-%         target_classes = cellfun(@(dp) dp.get('TARGET_CLASS'), items, 'UniformOutput', false);
-%         class_name = unique(cellfun(@unique, target_classes));
-%         class_names{ld} = class_name{1};
-%     end
-%     % Retrieve class names and lists of neural networks and evaluators
-%     NN_LIST = nncv.get('NN_LIST');
-%     EVALUATOR_LIST = nncv.get('EVALUATOR_LIST');
-% 
-%     % Determine the number of folds
-%     num_folds = length(NN_LIST);
-% 
-%     % Initialize cell arrays to store predictions and ground truths
-%     predictions_folds = cell(1, num_folds);
-%     ground_truth_folds = cell(1, num_folds);
-% 
-%     % Compute predictions for each fold
-%     for i = 1:num_folds
-%         nn = NN_LIST{i};
-%         nne = EVALUATOR_LIST{i};
-%         predictions_folds{i} = cell2mat(nn.get('PREDICT', nne.get('D'), nne.get('D_VOIS')));
-%     end
-% 
-%     % Retrieve ground truth for each fold
-%     for i = 1:num_folds
-%         nne = EVALUATOR_LIST{i};
-%         ground_truth_folds{i} = nne.get('GROUND_TRUTH');
-%     end
-% 
-%     % Initialize arrays to store ROC curve points
-%     x_val_run = [];
-%     y_val_run = [];
-%     counter = 0;
-% 
-%     % Compute ROC curves for each fold and class
-%     for k = 1:num_folds
-%         predictions_fold = predictions_folds{k};
-%         ground_truth_fold = ground_truth_folds{k};
-%         rocNet = rocmetrics(ground_truth_fold, predictions_fold, class_names);
-%         for j = 1:length(class_names)
-%             counter = counter + 1;
-%             idx_class = strcmp(rocNet.Metrics.ClassName, class_names{j});
-%             y_val_class = rocNet.Metrics(idx_class,:).TruePositiveRate;
-%             x_val_class = rocNet.Metrics(idx_class,:).FalsePositiveRate;
-% 
-%             % Ensure consistent length for ROC curves
-%             if counter == 1
-%                 % Use the first curve as the reference
-%                 y_val_run = y_val_class;
-%                 x_val_run = x_val_class;
-%             else
-%                 % Interpolate subsequent curves to match the reference length
-%                 fixed_length = length(x_val_run);
-%                 x_val_class_interp = interp1(linspace(0, 1, length(x_val_class)), x_val_class, linspace(0, 1, fixed_length), 'linear');
-%                 y_val_class_interp = interp1(linspace(0, 1, length(y_val_class)), y_val_class, linspace(0, 1, fixed_length), 'linear');
-% 
-%                 % Append interpolated values
-%                 x_val_run = [x_val_run, x_val_class_interp'];
-%                 y_val_run = [y_val_run, y_val_class_interp'];
-%             end
-%         end
-%     end
-% 
-%     % Compute the mean FPR and TPR across all folds
-%     x_mean = mean(x_val_run, 2);
-%     y_mean = mean(y_val_run, 2);
-% end

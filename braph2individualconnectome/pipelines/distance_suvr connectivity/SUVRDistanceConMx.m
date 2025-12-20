@@ -2,17 +2,7 @@
 clear; clc;
 
 % Add paths to necessary toolboxes
-addpath(genpath('/home/hang/GitHub/IndividualConnectome-WithYuwei/braph2individualconnectome'));
-addpath(genpath('/home/hang/GitHub/Individual-connectome/group_data/ADNI_DATA'));
-
-% Load VOI Table for MetaROI Extraction (if needed for other purposes)
-voi_table = readtable('/media/hang/EXTERNAL_US/Data/1_HANG_FDG_PET/demographic/UCBERKELEYFDG_8mm_02_17_23_19Jun2024.csv');
-bl_meta_rows = voi_table(strcmp(voi_table.VISCODE2, 'bl') & strcmp(voi_table.ROINAME, 'MetaROI'), :);
-rid_list = bl_meta_rows.RID; % 807×1 double vector
-mean_list = bl_meta_rows.MEAN; % 807×1 double vector
-
-% Function to extract RID from subject ID
-extract_rid = @(id) str2double(extractAfter(id,'_S_'));
+addpath(genpath(which('braph2individualconnectome')));
 
 % Load group data for CN_neg, MCI_pos, AD_pos, CN_pos
 im_gr3_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('Withconverters/AD_PositiveAmyloid.vois.xlsx')) filesep 'AD_PositiveAmyloid'], ...
@@ -405,5 +395,5 @@ for h = 1:length(tasks)
     set(gcf, 'Position', [100, 100, 800, 300]);
 end
 
-save('Results/FDG PET/matrix/withConverters/BaselineAsSUVRVector/classification_DistanceSingleLayer_Balanced(CN pos)NEW_ref_distance.mat', 'results');
+% save('Results/FDG PET/matrix/withConverters/BaselineAsSUVRVector/classification_DistanceSingleLayer_Balanced(CN pos)NEW_ref_distance.mat', 'results');
 
