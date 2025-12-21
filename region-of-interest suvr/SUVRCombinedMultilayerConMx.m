@@ -401,5 +401,5 @@ for h = 1:length(tasks)
 end
 
 %% Save results
-save('Results/FDG PET/matrix/withConverters/classification_CombinedMultilayerConMx_SUVR_BalancedNewDistance.mat', 'results');
+save('classification_CombinedMultilayerConMx_SUVR_BalancedNewDistance.mat', 'results');
 
