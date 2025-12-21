@@ -261,5 +261,5 @@ for h = 1:length(tasks)
     set(gcf, 'Position', [100, 100, 800, 300]);
 end
 
-% save('/home/hang/GitHub/IndividualConnectome-WithYuwei/Results/FDG PET/matrix/withConverters/BaselineAsSUVRVector/Classification_SUVRVectorWithoutStandardizeAndSemipositiveBalanced(CNpos)WithVOI.mat', 'results');
+save('/home/hang/GitHub/IndividualConnectome-WithYuwei/Results/FDG PET/matrix/withConverters/BaselineAsSUVRVector/Classification_SUVRVectorWithoutStandardizeAndSemipositiveBalanced(CNpos)WithVOI.mat', 'results');
 

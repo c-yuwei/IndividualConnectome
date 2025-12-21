@@ -393,4 +393,4 @@ for h = 1:length(tasks)
     set(gcf, 'Position', [100, 100, 800, 300]);
 end
 
-save('Results/matrix/withConverters/BaselineAsSUVRVector/classification_SingleLayer_SUVR_Balanced(CN pos).mat', 'results');
+save('Results/FDG PET/matrix/withConverters/BaselineAsSUVRVector/classification_SingleLayer_SUVR_Balanced(CN pos).mat', 'results');
