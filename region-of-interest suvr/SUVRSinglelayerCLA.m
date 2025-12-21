@@ -2,7 +2,8 @@
 clear; clc;
 
 % Add paths to necessary toolboxes
-addpath(genpath(fileparts(which('braph2individualconnectome'))));
+addpath(genpath(fileparts(which('braph2individualconnectome.m'))));
+addpath(genpath(fileparts(which('AD_PositiveAmyloid.vois.xlsx'))));
 
 % Load group data for CN_neg, MCI_pos, AD_pos, CN_pos
 im_gr3_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('Withconverters/AD_PositiveAmyloid.vois.xlsx')) filesep 'AD_PositiveAmyloid'], ...
@@ -33,7 +34,7 @@ im_gr4_PET = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('Withconverter
     'NIFTI_TYPE', {'wroriented_raw_pet'}, 'WAITBAR', true);
 gr4_PET = im_gr4_PET.get('GR');
 
-%% PDF Constructor
+%% SUVR Constructor
 path_dict = IndexedDictionary(...
     'IT_CLASS', 'FILE_PATH', ...
     'IT_LIST', {FILE_PATH('PATH', which('upsampled_AAL2.nii')), FILE_PATH('PATH', which('upsampled_TD.nii'))} ...
@@ -65,7 +66,6 @@ gr1 = SUVRConstructor('GR_PET', gr1_PET, ...
     'MAPPING_PATH_DICT', mapping_path_dict, ...
     'REF_REGION_LIST', {[9100,9110,9120,9130,9140,9150,9160,9170], 7}, ...
     'ATLAS_INDEX', 1, ...
-    'ATLAS_KIND', {'AAL2','TD'}, ...
     'SUVR_REGION_SELECTION', selected_br_dict);
 SUVR_gr1 = gr1.get('GR');
 
@@ -76,7 +76,6 @@ gr2 = SUVRConstructor('GR_PET', gr2_PET, ...
     'MAPPING_PATH_DICT', mapping_path_dict, ...
     'REF_REGION_LIST', {[9100,9110,9120,9130,9140,9150,9160,9170], 7}, ...
     'ATLAS_INDEX', 1, ...
-    'ATLAS_KIND', {'AAL2','TD'}, ...
     'SUVR_REGION_SELECTION', selected_br_dict);
 SUVR_gr2 = gr2.get('GR');
 
@@ -87,7 +86,6 @@ gr3 = SUVRConstructor('GR_PET', gr3_PET, ...
     'MAPPING_PATH_DICT', mapping_path_dict, ...
     'REF_REGION_LIST', {[9100,9110,9120,9130,9140,9150,9160,9170], 7}, ...
     'ATLAS_INDEX', 1, ...
-    'ATLAS_KIND', {'AAL2','TD'}, ...
     'SUVR_REGION_SELECTION', selected_br_dict);
 SUVR_gr3 = gr3.get('GR');
 
@@ -98,7 +96,6 @@ gr4 = SUVRConstructor('GR_PET', gr4_PET, ...
     'MAPPING_PATH_DICT', mapping_path_dict, ...
     'REF_REGION_LIST', {[9100,9110,9120,9130,9140,9150,9160,9170], 7}, ...
     'ATLAS_INDEX', 1, ...
-    'ATLAS_KIND', {'AAL2','TD'}, ...
     'SUVR_REGION_SELECTION', selected_br_dict);
 SUVR_gr4 = gr4.get('GR');
 %%
@@ -340,8 +337,7 @@ for h = 1:length(tasks)
         % Train MLP classifier with VOIs
         nncv = NNClassifierMLP_CrossValidation_VOIs('D', {d1_con, d2_con}, 'D_VOIS', {d1_voi, d2_voi}, 'KFOLDS', num_folds, 'NN_TEMPLATE', nn_template, 'SPLIT', SPLIT);
         nncv.get('TRAIN');
-        [x_mean{run}, y_mean{run}] = get_roc(nncv);
-        
+    
         % Evaluate performance
         confusion_matrix = nncv.get('C_MATRIX');
         auc = nncv.get('AV_MACRO_AUC');
@@ -365,8 +361,6 @@ for h = 1:length(tasks)
     results.(task_name).AUC = auc_scores(auc_scores~=0);
     results.(task_name).specificity = specificity_scores(specificity_scores~=0);
     results.(task_name).sensitivity = sensitivity_scores(sensitivity_scores~=0);
-    results.(task_name).ROC_X = x_mean;
-    results.(task_name).ROC_Y = y_mean;
     
     % Plot performance metrics
     figure('Name', ['Performance Metrics with MultiplexWU for ' task_name], 'NumberTitle', 'off');
@@ -400,78 +394,3 @@ for h = 1:length(tasks)
 end
 
 save('Results/matrix/withConverters/BaselineAsSUVRVector/classification_SingleLayer_SUVR_Balanced(CN pos).mat', 'results');
-
-% ROC function
-function [x_mean, y_mean] = get_roc(nncv)
-    class_names = {};
-    D = nncv.get('D');
-    for ld = 1:length(D)
-        dataset = D{ld}; % Assuming classes are same across folds
-        dp_dict = dataset.get('DP_DICT');
-        items = dp_dict.get('IT_LIST'); % Get all items
-        target_classes = cellfun(@(dp) dp.get('TARGET_CLASS'), items, 'UniformOutput', false);
-        class_name = unique(cellfun(@unique, target_classes));
-        class_names{ld} = class_name{1};
-    end
-    % Retrieve class names and lists of neural networks and evaluators
-    NN_LIST = nncv.get('NN_LIST');
-    EVALUATOR_LIST = nncv.get('EVALUATOR_LIST');
-    
-    % Determine the number of folds
-    num_folds = length(NN_LIST);
-    
-    % Initialize cell arrays to store predictions and ground truths
-    predictions_folds = cell(1, num_folds);
-    ground_truth_folds = cell(1, num_folds);
-    
-    % Compute predictions for each fold
-    for i = 1:num_folds
-        nn = NN_LIST{i};
-        nne = EVALUATOR_LIST{i};
-        predictions_folds{i} = cell2mat(nn.get('PREDICT', nne.get('D'), nne.get('D_VOIS')));
-    end
-    
-    % Retrieve ground truth for each fold
-    for i = 1:num_folds
-        nne = EVALUATOR_LIST{i};
-        ground_truth_folds{i} = nne.get('GROUND_TRUTH');
-    end
-    
-    % Initialize arrays to store ROC curve points
-    x_val_run = [];
-    y_val_run = [];
-    counter = 0;
-    
-    % Compute ROC curves for each fold and class
-    for k = 1:num_folds
-        predictions_fold = predictions_folds{k};
-        ground_truth_fold = ground_truth_folds{k};
-        rocNet = rocmetrics(ground_truth_fold, predictions_fold, class_names);
-        for j = 1:length(class_names)
-            counter = counter + 1;
-            idx_class = strcmp(rocNet.Metrics.ClassName, class_names{j});
-            y_val_class = rocNet.Metrics(idx_class,:).TruePositiveRate;
-            x_val_class = rocNet.Metrics(idx_class,:).FalsePositiveRate;
-            
-            % Ensure consistent length for ROC curves
-            if counter == 1
-                % Use the first curve as the reference
-                y_val_run = y_val_class;
-                x_val_run = x_val_class;
-            else
-                % Interpolate subsequent curves to match the reference length
-                fixed_length = length(x_val_run);
-                x_val_class_interp = interp1(linspace(0, 1, length(x_val_class)), x_val_class, linspace(0, 1, fixed_length), 'linear');
-                y_val_class_interp = interp1(linspace(0, 1, length(y_val_class)), y_val_class, linspace(0, 1, fixed_length), 'linear');
-                
-                % Append interpolated values
-                x_val_run = [x_val_run, x_val_class_interp'];
-                y_val_run = [y_val_run, y_val_class_interp'];
-            end
-        end
-    end
-    
-    % Compute the mean FPR and TPR across all folds
-    x_mean = mean(x_val_run, 2);
-    y_mean = mean(y_val_run, 2);
-end

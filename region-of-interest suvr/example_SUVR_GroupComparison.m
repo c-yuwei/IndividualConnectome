@@ -2,6 +2,9 @@
 % Script example pipeline Distance CON WU
 
 clear variables
+% Add paths to necessary toolboxes
+addpath(genpath(fileparts(which('braph2individualconnectome'))));
+addpath(genpath(fileparts(which('AD_PositiveAmyloid.vois.xlsx'))));
 %% load group data
 im_gr3_WM_GM = ImporterGroupSubjNIfTI('DIRECTORY', [fileparts(which('AD_PositiveAmyloid.vois.xlsx')) filesep 'AD_PositiveAmyloid'], ...
     'NIFTI_TYPE', {'wc1','wc2'},...
