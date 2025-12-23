@@ -9371,3 +9371,5 @@ recyclle/SVMPerturbation.m
 *.braph2
 
 *.svg
+*.pdf
+*.mat
