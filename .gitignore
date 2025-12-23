@@ -9259,7 +9259,6 @@ Results/FDG PET/statistical analysis/tt2.m
 Results/group_ttest2.m
 Results/group_ttest2_connectivity.m
 Results/ROI_ploting.m
-Results/SaveMeanandCI.m
 Results/zhilei/AUC_classification_binary_zhile.eps
 Results/zhilei/baseline CN AD.jpg
 Results/zhilei/sen_classification_binary.eps
@@ -9370,4 +9369,4 @@ recyclle/SUVRSinglelayerCLA.m
 recyclle/SUVRSinglelayerREG.m
 recyclle/SVMPerturbation.m
 *.braph2
-*.mat
+
