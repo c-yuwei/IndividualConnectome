@@ -74,3 +74,10 @@ for j = 1:length(group_pairs)
     disp(group_table);
 end
 
+% Function to calculate mean and 95% CI
+function [mean_val, ci] = calc_mean_ci(data)
+    mean_val = mean(data);
+    std_dev = std(data);
+    n = length(data);
+    ci = 1.96 * (std_dev / sqrt(n)); % 95% CI
+end
