@@ -96,8 +96,8 @@ end
 
 % Create diagonal mask
 num_regions = size(healthy_SUVR, 2);
-DiagMask = diag(ones(num_regions, 1));
-R_adjusted = R - DiagMask;
+% DiagMask = diag(ones(num_regions, 1));
+% R_adjusted = R - DiagMask;
 
 % Compute normalization factor F
 F = (1 - (R .^ 2)) / (N - 1);
