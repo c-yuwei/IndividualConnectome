@@ -671,7 +671,7 @@ classdef IndividualDistanceConConstructor < IndividualConConstructorBase
 					for i = 1:1:gr_suvr.get('SUB_DICT').get('LENGTH')
 					    subj_suvrs{i} = gr_suvr.get('SUB_DICT').get('IT',i).get('ST');
 					end
-					for i = 1:1:gr_suvr.get('SUB_DICT').get('LENGTH')
+					for i = 1:1:gr_suvr_ref.get('SUB_DICT').get('LENGTH')
 					    subj_suvrs_ref{i} = gr_suvr_ref.get('SUB_DICT').get('IT',i).get('ST');
 					end
 					subj_suvrs_ref = cell2mat(subj_suvrs_ref);
