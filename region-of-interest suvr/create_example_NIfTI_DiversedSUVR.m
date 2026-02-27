@@ -90,7 +90,7 @@ function create_example_NIfTI(atlas_path, output_dir, group_names, num_files_per
 
             % Precompute ROI means vector per subject (n_regions x 1)
             % Special: regions 21:40 with covariance in Group2
-            special_idxs = find(ismember(1:num_regions, 21:40));
+            special_idxs = find(ismember(1:num_regions, 1:num_regions));
             n_special = length(special_idxs);
             if ~isempty(special_idxs)
                 % Shared marginal mean/std base
@@ -141,12 +141,12 @@ function create_example_NIfTI(atlas_path, output_dir, group_names, num_files_per
 
 
             simulated_nifti_path = fullfile(sub_folder, [sub_id '_PET.nii']);
-            %niftiwrite(int16(simulated_data), simulated_nifti_path, atlas_info);
+            niftiwrite(int16(simulated_data), simulated_nifti_path, atlas_info);
             fprintf('Saved simulated NIfTI file: %s\n', simulated_nifti_path);
 
             % Save atlas mask NIfTI file using niftiwrite
             mask_nifti_path = fullfile(sub_folder, [sub_id '_T1.nii']);
-           % niftiwrite(int16(atlas_mask), mask_nifti_path, atlas_info);
+            niftiwrite(int16(atlas_mask), mask_nifti_path, atlas_info);
             fprintf('Saved atlas mask NIfTI file: %s\n', mask_nifti_path);
 
 
@@ -165,7 +165,7 @@ function create_example_NIfTI(atlas_path, output_dir, group_names, num_files_per
         % Save VOIs table for the group
         vois_file_path = fullfile(fileparts(group_dir), [group_name '.vois.xlsx']);
         vois_table = cell2table(vois1(2:end, :), 'VariableNames', vois1(1, :));  % Skip second row
-        %writetable(vois_table, vois_file_path);
+        writetable(vois_table, vois_file_path);
         fprintf('Saved VOIs to: %s\n', vois_file_path);
     end
 end
