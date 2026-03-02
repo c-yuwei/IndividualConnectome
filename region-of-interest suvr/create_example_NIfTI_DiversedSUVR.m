@@ -79,15 +79,6 @@ function create_example_NIfTI(atlas_path, output_dir, group_names, num_files_per
             means_all_regions = zeros(1, num_regions);  % For VOIs
             stds_all_regions = zeros(1, num_regions);  % For VOIs
 
-            % Generate a shared random variable for the first 20 regions (Group 1 only)
-            shared_random_variable_mean = abs((rand + 1) * 10);  % Ensure positive shared base mean
-            shared_random_variable_std = abs(1 + rand * 2);      % Ensure positive shared base std deviation
-
-            % Generate independent random variables for all regions
-            independent_means = abs((rand(num_regions, 1) + 1) * 10);  % Ensure positive independent base means
-            independent_stds = abs(1 + rand(num_regions, 1) * 9);      % Ensure positive independent base std deviations
-            imax = 10;
-
             % Precompute ROI means vector per subject (n_regions x 1)
             % Special: regions 21:40 with covariance in Group2
             special_idxs = find(ismember(1:num_regions, 1:num_regions));
