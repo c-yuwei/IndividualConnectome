@@ -22,6 +22,13 @@ This distribution reuses the core analytical infrastructure of the standard BRAP
 
 Within this repository, the pipelines are organised under dedicated folders according to their input representation and connectome-construction strategy.
 
+<img width="976" height="680" alt="image" src="https://github.com/user-attachments/assets/9da55d26-5632-4594-becb-43b70d46eab0" />
+
+> 
+> **Landing GUI**
+> This figure shows the landing graphical user interface (GUI) after running `braph2individualconnectome`. The landing GUI provides **seven ready-to-use pipelines** for converting preprocessed neuroimaging data into ROI- or PDF-based representations, constructing **individual similarity connectomes**, and performing downstream graph-theoretical and neural-network analyses. After opening a pipeline, users can follow the full workflow step by step through the BRAPH 2 interface.
+> 
+
 ### 1. Neuroimaging conversion to **regional-of-interest (ROI) values**
 - **Pipeline folder:** `braph2individualconnectome/pipelines/Neuroimaging conversion structural/`
 - **Example script:** `braph2individualconnectome/pipelines/Neuroimaging conversion structural/example_IMG_ROI_PET.m`
