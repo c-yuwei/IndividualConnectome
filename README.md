@@ -8,7 +8,7 @@
 
 # BRAPH 2 Individual Connectome
 
-The **BRAPH 2 Individual Connectome** distribution provides end-to-end pipelines for constructing and analysing **individual similarity connectomes** from preprocessed neuroimaging data, including **positron emission tomography (PET)** and **T1-weighted magnetic resonance imaging (T1-weighted MRI)**. It supports both **region-of-interest (ROI)-based** approaches, where each brain region is represented by one summary value such as regional **Standardized Uptake Value Ratio (SUVR)** or gray-matter probability, and **probability density function (PDF)-based** approaches, where each brain region is represented by the distribution of voxel values within that region. This enables users to move from preprocessed images to subject-level connectomes, graph-theoretical analysis, and deep-learning classification within a unified framework.
+The **BRAPH 2 Individual Connectome** distribution provides end-to-end pipelines for constructing and analysing **individual similarity connectomes** from preprocessed neuroimaging data, including **positron emission tomography (PET)** and **T1-weighted magnetic resonance imaging (T1-weighted MRI)**. It supports both **region-of-interest (ROI)-based** approaches, where each brain region is represented by one summary value such as regional Standardized Uptake Value Ratio (SUVR) or gray-matter probability, and **probability density function (PDF)-based** approaches, where each brain region is represented by the distribution of voxel values within that region. This enables users to move from preprocessed images to subject-level connectomes, graph-theoretical analysis, and deep-learning classification within a unified framework.
 
 This distribution supports the analyses presented in the following manuscript and enables users to apply the same workflow to their own datasets, via both command-line scripts and a ready-to-use graphical user interface:
 
@@ -21,6 +21,13 @@ This distribution reuses the core analytical infrastructure of the standard BRAP
 ## Pipelines and folder structure
 
 Within this repository, the pipelines are organised under dedicated folders according to their input representation and connectome-construction strategy.
+
+<img width="976" height="680" alt="image" src="https://github.com/user-attachments/assets/9da55d26-5632-4594-becb-43b70d46eab0" />
+
+> 
+> **Landing GUI**
+> This figure shows the landing graphical user interface (GUI) after running `braph2individualconnectome`. The landing GUI provides **seven ready-to-use pipelines** for converting preprocessed neuroimaging data into ROI- or PDF-based representations, constructing **individual similarity connectomes**, and performing downstream graph-theoretical and neural-network analyses. After opening a pipeline, users can follow the full workflow step by step through the BRAPH 2 interface.
+> 
 
 ### 1. Neuroimaging conversion to **regional-of-interest (ROI) values**
 - **Pipeline folder:** `braph2individualconnectome/pipelines/Neuroimaging conversion structural/`
