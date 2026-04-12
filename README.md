@@ -8,14 +8,13 @@
 
 # BRAPH 2 Individual Connectome
 
-The **BRAPH 2 Individual Connectome** distribution provides end-to-end pipelines for constructing and analysing **individual similarity connectomes** from preprocessed neuroimaging data, including **PET** and **T1-weighted MRI**. The distribution supports both **ROI-based** and **PDF-based** approaches, enabling users to move from preprocessed images to subject-level connectomes, graph-theoretical analysis, and deep-learning classification within a unified framework.
+The **BRAPH 2 Individual Connectome** distribution provides end-to-end pipelines for constructing and analysing **individual similarity connectomes** from preprocessed neuroimaging data, including **positron emission tomography (PET)** and **T1-weighted magnetic resonance imaging (T1-weighted MRI)**. It supports both **region-of-interest (ROI)-based** approaches, where each brain region is represented by one summary value such as regional **Standardized Uptake Value Ratio (SUVR)** or gray-matter probability, and **probability density function (PDF)-based** approaches, where each brain region is represented by the distribution of voxel values within that region. This enables users to move from preprocessed images to subject-level connectomes, graph-theoretical analysis, and deep-learning classification within a unified framework.
 
-More specifically, this distribution supports:
-- conversion of preprocessed neuroimaging data into **regional-of-interest (ROI) values**
-- conversion of preprocessed neuroimaging data into **regional probability density functions (PDFs)**
-- construction of **individual similarity connectomes** from ROI values or PDFs
-- graph-theoretical analysis at both group and individual-connectome level
-- neural-network classification with optional **variables of interest** such as age, sex, and education
+This distribution supports the analyses presented in the following manuscript and enables users to apply the same workflow to their own datasets, via both command-line scripts and a ready-to-use graphical user interface:
+
+> Zhao et al., *A Framework for Multi-Method Individual
+Connectome Construction* (preprint).  
+> [arXiv:XXX.XXXX]
 
 This distribution reuses the core analytical infrastructure of the standard BRAPH 2 distribution. For a general introduction to BRAPH 2, please refer to the main [BRAPH 2](https://github.com/braph-software/BRAPH-2/tree/develop) repository and its [tutorials](https://github.com/braph-software/BRAPH-2/tree/develop/tutorials).
 
@@ -23,49 +22,59 @@ This distribution reuses the core analytical infrastructure of the standard BRAP
 
 Within this repository, the pipelines are organised under dedicated folders according to their input representation and connectome-construction strategy.
 
-### 1. Neuroimaging conversion structural
-Computes regional-of-interest (ROI) values from preprocessed neuroimaging data, such as PET or T1-weighted MRI.
+### 1. Neuroimaging conversion to **regional-of-interest (ROI) values**
+- **Pipeline folder:** `braph2individualconnectome/pipelines/Neuroimaging conversion structural/`
+- **Example script:** `braph2individualconnectome/pipelines/Neuroimaging conversion structural/example_IMG_ROI_PET.m`
 
-This pipeline is intended for workflows where each subject is represented by one scalar value per brain region, for example regional SUVR, cortical thickness, or gray-matter probability summary.
+This pipeline computes **region-of-interest (ROI) values** from preprocessed neuroimaging data, such as PET or T1-weighted MRI.
 
-### 2. Neuroimaging conversion PDFs
-Computes regional probability density functions (PDFs) from preprocessed neuroimaging data, such as PET or T1-weighted MRI.
+It is intended for workflows where each subject is represented by one scalar value per brain region, for example regional SUVR, cortical thickness, or gray-matter probability summary.
 
-This pipeline is intended for workflows where each subject is represented not only by a regional average, but by the full within-region distribution of voxel values.
+### 2. Neuroimaging conversion to **regional probability density functions (PDFs)**
+- **Pipeline folder:** `braph2individualconnectome/pipelines/Neuroimaging conversion PDFs/`
+- **Example script:** `braph2individualconnectome/pipelines/Neuroimaging conversion PDFs/example_IMG_PDFs_PET.m`
 
-### 3. Structural Mahalanobis connectivity
-Constructs an **individual similarity connectome** from ROI values using a Mahalanobis-distance-based strategy. This approach aims to capture subject-level inter-regional similarity structure beyond simple univariate summaries.
+This pipeline computes **regional probability density functions (PDFs)** from preprocessed neuroimaging data, such as PET or T1-weighted MRI.
+
+It is intended for workflows where each subject is represented not only by a regional average, but by the full within-region distribution of voxel values.
+
+### 3. ROI-value conversion to connectivity with Mahalanobis distance
+- **Pipeline folder:** `braph2individualconnectome/pipelines/Structural mahalanobis connectivity/`
+- **Example script:** `braph2individualconnectome/pipelines/Structural mahalanobis connectivity/example_ST_MAHALANOBIS_CON.m`
+
+This pipeline constructs an **individual similarity connectome** from ROI values using a Mahalanobis-distance-based strategy. It aims to capture subject-level inter-regional similarity structure beyond simple univariate summaries.
 
 > Reference to be added.
 
-### 4. Structural perturbation connectivity
-Constructs an **individual similarity connectome** from ROI values using a perturbation-based strategy. This approach is designed to quantify subject-level inter-regional similarity through controlled perturbation of the regional feature representation.
+### 4. ROI-value conversion to connectivity with perturbation
+- **Pipeline folder:** `braph2individualconnectome/pipelines/Structural perturbation connectivity/`
+- **Example script:** `braph2individualconnectome/pipelines/Structural perturbation connectivity/example_ST_PERTURBATION_CON.m`
+
+This pipeline constructs an **individual similarity connectome** from ROI values using a perturbation-based strategy. It is designed to quantify subject-level inter-regional similarity through controlled perturbation of the regional feature representation.
 
 > Reference to be added.
 
-### 5. PDFs correlation connectivity
-Constructs an **individual similarity connectome** from regional PDFs using correlation. This approach captures similarity between brain regions by comparing the shapes of their within-region voxel-value distributions.
+### 5. PDFs conversion to connectivity with correlation
+- **Pipeline folder:** `braph2individualconnectome/pipelines/PDFs correlation connectivity/`
+- **Example script:** `braph2individualconnectome/pipelines/PDFs correlation connectivity/example_PDFs_CORR_CON.m`
+
+This pipeline constructs an **individual similarity connectome** from regional PDFs using correlation. It captures similarity between brain regions by comparing the shapes of their within-region voxel-value distributions.
 
 > Reference to be added.
 
-### 6. PDFs divergence connectivity
-Constructs an **individual similarity connectome** from regional PDFs using divergence. This approach captures differences or similarity between regional voxel-value distributions in a way that is sensitive to distributional shape.
+### 6. PDFs conversion to connectivity with divergence
+- **Pipeline folder:** `braph2individualconnectome/pipelines/PDFs divergence connectivity/`
+- **Example script:** `braph2individualconnectome/pipelines/PDFs divergence connectivity/example_PDFs_DIV_CON.m`
+
+This pipeline constructs an **individual similarity connectome** from regional PDFs using divergence. It captures differences or similarity between regional voxel-value distributions in a way that is sensitive to distributional shape.
 
 > Reference to be added.
 
 ### 7. Variable-of-interest NN
-Provides neural-network classification that incorporates both imaging-derived features and **variables of interest** such as age, sex, and education. This pipeline is intended to support classification while also enabling meaningful interpretation of important brain regions, complementing the subject-level connectome analyses.
+This pipeline provides neural-network classification that incorporates both imaging-derived features and **variables of interest** such as age, sex, and education.
 
-## Folder structure
+It is intended to support classification while also enabling meaningful interpretation of important brain regions, complementing the subject-level connectome analyses.
 
-The repository is organised around these pipelines and their corresponding study or example folders. In general, each pipeline folder contains:
-- the pipeline implementation
-- study/example folders
-- input data folders
-- output/result folders
-- example scripts reproducing the expected workflow
-
-More detailed folder descriptions will be added as the repository structure is finalised.
 
 ## Software requirements
 
@@ -122,3 +131,8 @@ Before recompiling, remove the existing compiled distribution folder and take it
 ## Citing
 
 If you use BRAPH 2 Individual Connectome in your work, please cite:
+
+> Reference to be added.
+
+> Chang et al., *BRAPH 2: a flexible, open-source, reproducible, community-oriented, easy-to-use framework for network analyses in neurosciences* (preprint).
+> [biorXiv:10.1101/2025.04.11.648455](https://doi.org/10.1101/2025.04.11.648455)
