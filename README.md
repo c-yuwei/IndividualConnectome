@@ -48,7 +48,7 @@ This pipeline constructs an **individual similarity connectome** from ROI values
 
 > Reference to be added.
 
-### 5. PDF conversion to connectivity with correlation
+### 5. PDFs conversion to connectivity with correlation
 - **Pipeline folder:** `braph2individualconnectome/pipelines/PDFs correlation connectivity/`
 - **Example script:** `braph2individualconnectome/pipelines/PDFs correlation connectivity/example_PDFs_CORR_CON.m`
 
@@ -56,7 +56,7 @@ This pipeline constructs an **individual similarity connectome** from regional P
 
 > Reference to be added.
 
-### 6. PDF conversion to connectivity with divergence
+### 6. PDFs conversion to connectivity with divergence
 - **Pipeline folder:** `braph2individualconnectome/pipelines/PDFs divergence connectivity/`
 - **Example script:** `braph2individualconnectome/pipelines/PDFs divergence connectivity/example_PDFs_DIV_CON.m`
 
