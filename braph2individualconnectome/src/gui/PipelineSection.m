@@ -4,17 +4,6 @@ classdef PipelineSection < ConcreteElement
 	%
 	% A Pipeline Section (PipelineSection) represents a section of executable code in a pipeline.
 	%
-	% The list of PipelineSection properties is:
-	%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the pipeline section.
-	%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the pipeline section.
-	%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the pipeline section.
-	%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the pipeline section.
-	%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the pipeline section.
-	%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the pipeline section.
-	%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the pipeline section.
-	%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
-	%  <strong>9</strong> <strong>PC_DICT</strong> 	PC_DICT (data, idict) is an indexed dictionary with the executable code lines.
-	%
 	% PipelineSection methods (constructor):
 	%  PipelineSection - constructor
 	%
@@ -103,13 +92,13 @@ classdef PipelineSection < ConcreteElement
 	%
 	% See also PipelinePP_PSDict, Pipeline, PipelineSection.
 	%
-	% BUILD BRAPH2 7 class_name 1
+	% BUILD BRAPH2 BRAPH2.BUILD class_name 1
 	
 	properties (Constant) % properties
-		PC_DICT = 9; %CET: Computational Efficiency Trick
+		PC_DICT = ConcreteElement.getPropNumber() + 1;
 		PC_DICT_TAG = 'PC_DICT';
-		PC_DICT_CATEGORY = 4;
-		PC_DICT_FORMAT = 10;
+		PC_DICT_CATEGORY = Category.DATA;
+		PC_DICT_FORMAT = Format.IDICT;
 	end
 	methods % constructor
 		function ps = PipelineSection(varargin)
@@ -122,16 +111,6 @@ classdef PipelineSection < ConcreteElement
 			% Multiple properties can be initialized at once identifying
 			%  them with either property numbers (PROP) or tags (TAG).
 			%
-			% The list of PipelineSection properties is:
-			%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the pipeline section.
-			%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the pipeline section.
-			%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the pipeline section.
-			%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the pipeline section.
-			%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the pipeline section.
-			%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the pipeline section.
-			%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the pipeline section.
-			%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
-			%  <strong>9</strong> <strong>PC_DICT</strong> 	PC_DICT (data, idict) is an indexed dictionary with the executable code lines.
 			%
 			% See also Category, Format.
 			
@@ -184,7 +163,7 @@ classdef PipelineSection < ConcreteElement
 			%
 			% See also subclasses.
 			
-			subclass_list = { 'PipelineSection' }; %CET: Computational Efficiency Trick
+			subclass_list = subclasses('PipelineSection', [], [], true);
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of pipeline section.
@@ -205,26 +184,52 @@ classdef PipelineSection < ConcreteElement
 			%
 			% See also getPropNumber, Category.
 			
-			%CET: Computational Efficiency Trick
-			
 			if nargin == 0
-				prop_list = [1 2 3 4 5 6 7 8 9];
+				prop_list = [ ...
+					ConcreteElement.getProps() ...
+						PipelineSection.PC_DICT ...
+						];
 				return
 			end
 			
 			switch category
-				case 1 % Category.CONSTANT
-					prop_list = [1 2 3];
-				case 2 % Category.METADATA
-					prop_list = [6 7];
-				case 3 % Category.PARAMETER
-					prop_list = 4;
-				case 4 % Category.DATA
-					prop_list = [5 9];
-				case 6 % Category.QUERY
-					prop_list = 8;
-				otherwise
-					prop_list = [];
+				case Category.CONSTANT
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.CONSTANT) ...
+						];
+				case Category.METADATA
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.METADATA) ...
+						];
+				case Category.PARAMETER
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.PARAMETER) ...
+						];
+				case Category.DATA
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.DATA) ...
+						PipelineSection.PC_DICT ...
+						];
+				case Category.RESULT
+					prop_list = [
+						ConcreteElement.getProps(Category.RESULT) ...
+						];
+				case Category.QUERY
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.QUERY) ...
+						];
+				case Category.EVANESCENT
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.EVANESCENT) ...
+						];
+				case Category.FIGURE
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.FIGURE) ...
+						];
+				case Category.GUI
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.GUI) ...
+						];
 			end
 		end
 		function prop_number = getPropNumber(varargin)
@@ -245,27 +250,7 @@ classdef PipelineSection < ConcreteElement
 			%
 			% See also getProps, Category.
 			
-			%CET: Computational Efficiency Trick
-			
-			if nargin == 0
-				prop_number = 9;
-				return
-			end
-			
-			switch varargin{1} % category = varargin{1}
-				case 1 % Category.CONSTANT
-					prop_number = 3;
-				case 2 % Category.METADATA
-					prop_number = 2;
-				case 3 % Category.PARAMETER
-					prop_number = 1;
-				case 4 % Category.DATA
-					prop_number = 2;
-				case 6 % Category.QUERY
-					prop_number = 1;
-				otherwise
-					prop_number = 0;
-			end
+			prop_number = numel(PipelineSection.getProps(varargin{:}));
 		end
 		function check_out = existsProp(prop)
 			%EXISTSPROP checks whether property exists in pipeline section/error.
@@ -293,14 +278,14 @@ classdef PipelineSection < ConcreteElement
 			%
 			% See also getProps, existsTag.
 			
-			check = prop >= 1 && prop <= 9 && round(prop) == prop; %CET: Computational Efficiency Trick
+			check = any(prop == PipelineSection.getProps());
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					['BRAPH2' ':PipelineSection:' 'WrongInput'], ...
-					['BRAPH2' ':PipelineSection:' 'WrongInput' '\n' ...
+					[BRAPH2.STR ':PipelineSection:' BRAPH2.WRONG_INPUT], ...
+					[BRAPH2.STR ':PipelineSection:' BRAPH2.WRONG_INPUT '\n' ...
 					'The value ' tostring(prop, 100, ' ...') ' is not a valid prop for PipelineSection.'] ...
 					)
 			end
@@ -331,14 +316,15 @@ classdef PipelineSection < ConcreteElement
 			%
 			% See also getProps, existsTag.
 			
-			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'PC_DICT' })); %CET: Computational Efficiency Trick
+			pipelinesection_tag_list = cellfun(@(x) PipelineSection.getPropTag(x), num2cell(PipelineSection.getProps()), 'UniformOutput', false);
+			check = any(strcmp(tag, pipelinesection_tag_list));
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					['BRAPH2' ':PipelineSection:' 'WrongInput'], ...
-					['BRAPH2' ':PipelineSection:' 'WrongInput' '\n' ...
+					[BRAPH2.STR ':PipelineSection:' BRAPH2.WRONG_INPUT], ...
+					[BRAPH2.STR ':PipelineSection:' BRAPH2.WRONG_INPUT '\n' ...
 					'The value ' tag ' is not a valid tag for PipelineSection.'] ...
 					)
 			end
@@ -364,7 +350,8 @@ classdef PipelineSection < ConcreteElement
 			%  getPropSettings, getPropDefault, checkProp.
 			
 			if ischar(pointer)
-				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'PC_DICT' })); % tag = pointer %CET: Computational Efficiency Trick
+				pipelinesection_tag_list = cellfun(@(x) PipelineSection.getPropTag(x), num2cell(PipelineSection.getProps()), 'UniformOutput', false);
+				prop = find(strcmp(pointer, pipelinesection_tag_list)); % tag = pointer
 			else % numeric
 				prop = pointer;
 			end
@@ -392,9 +379,14 @@ classdef PipelineSection < ConcreteElement
 			if ischar(pointer)
 				tag = pointer;
 			else % numeric
-				%CET: Computational Efficiency Trick
-				pipelinesection_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'PC_DICT' };
-				tag = pipelinesection_tag_list{pointer}; % prop = pointer
+				prop = pointer;
+				
+				switch prop
+					case PipelineSection.PC_DICT
+						tag = PipelineSection.PC_DICT_TAG;
+					otherwise
+						tag = getPropTag@ConcreteElement(prop);
+				end
 			end
 		end
 		function prop_category = getPropCategory(pointer)
@@ -419,9 +411,12 @@ classdef PipelineSection < ConcreteElement
 			
 			prop = PipelineSection.getPropProp(pointer);
 			
-			%CET: Computational Efficiency Trick
-			pipelinesection_category_list = { 1  1  1  3  4  2  2  6  4 };
-			prop_category = pipelinesection_category_list{prop};
+			switch prop
+				case PipelineSection.PC_DICT
+					prop_category = PipelineSection.PC_DICT_CATEGORY;
+				otherwise
+					prop_category = getPropCategory@ConcreteElement(prop);
+			end
 		end
 		function prop_format = getPropFormat(pointer)
 			%GETPROPFORMAT returns the format of a property.
@@ -445,9 +440,12 @@ classdef PipelineSection < ConcreteElement
 			
 			prop = PipelineSection.getPropProp(pointer);
 			
-			%CET: Computational Efficiency Trick
-			pipelinesection_format_list = { 2  2  2  8  2  2  2  2  10 };
-			prop_format = pipelinesection_format_list{prop};
+			switch prop
+				case PipelineSection.PC_DICT
+					prop_format = PipelineSection.PC_DICT_FORMAT;
+				otherwise
+					prop_format = getPropFormat@ConcreteElement(prop);
+			end
 		end
 		function prop_description = getPropDescription(pointer)
 			%GETPROPDESCRIPTION returns the description of a property.
@@ -471,9 +469,26 @@ classdef PipelineSection < ConcreteElement
 			
 			prop = PipelineSection.getPropProp(pointer);
 			
-			%CET: Computational Efficiency Trick
-			pipelinesection_description_list = { 'ELCLASS (constant, string) is the class of the pipeline section.'  'NAME (constant, string) is the name of the pipeline section.'  'DESCRIPTION (constant, string) is the description of the pipeline section.'  'TEMPLATE (parameter, item) is the template of the pipeline section.'  'ID (data, string) is a few-letter code for the pipeline section.'  'LABEL (metadata, string) is an extended label of the pipeline section.'  'NOTES (metadata, string) are some specific notes about the pipeline section.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'PC_DICT (data, idict) is an indexed dictionary with the executable code lines.' };
-			prop_description = pipelinesection_description_list{prop};
+			switch prop
+				case PipelineSection.PC_DICT
+					prop_description = 'PC_DICT (data, idict) is an indexed dictionary with the executable code lines.';
+				case PipelineSection.ELCLASS
+					prop_description = 'ELCLASS (constant, string) is the class of the pipeline section.';
+				case PipelineSection.NAME
+					prop_description = 'NAME (constant, string) is the name of the pipeline section.';
+				case PipelineSection.DESCRIPTION
+					prop_description = 'DESCRIPTION (constant, string) is the description of the pipeline section.';
+				case PipelineSection.TEMPLATE
+					prop_description = 'TEMPLATE (parameter, item) is the template of the pipeline section.';
+				case PipelineSection.ID
+					prop_description = 'ID (data, string) is a few-letter code for the pipeline section.';
+				case PipelineSection.LABEL
+					prop_description = 'LABEL (metadata, string) is an extended label of the pipeline section.';
+				case PipelineSection.NOTES
+					prop_description = 'NOTES (metadata, string) are some specific notes about the pipeline section.';
+				otherwise
+					prop_description = getPropDescription@ConcreteElement(prop);
+			end
 		end
 		function prop_settings = getPropSettings(pointer)
 			%GETPROPSETTINGS returns the settings of a property.
@@ -497,10 +512,10 @@ classdef PipelineSection < ConcreteElement
 			
 			prop = PipelineSection.getPropProp(pointer);
 			
-			switch prop %CET: Computational Efficiency Trick
-				case 9 % PipelineSection.PC_DICT
+			switch prop
+				case PipelineSection.PC_DICT
 					prop_settings = 'PipelineCode';
-				case 4 % PipelineSection.TEMPLATE
+				case PipelineSection.TEMPLATE
 					prop_settings = 'PipelineSection';
 				otherwise
 					prop_settings = getPropSettings@ConcreteElement(prop);
@@ -528,22 +543,22 @@ classdef PipelineSection < ConcreteElement
 			
 			prop = PipelineSection.getPropProp(pointer);
 			
-			switch prop %CET: Computational Efficiency Trick
-				case 9 % PipelineSection.PC_DICT
-					prop_default = Format.getFormatDefault(10, PipelineSection.getPropSettings(prop));
-				case 1 % PipelineSection.ELCLASS
+			switch prop
+				case PipelineSection.PC_DICT
+					prop_default = Format.getFormatDefault(Format.IDICT, PipelineSection.getPropSettings(prop));
+				case PipelineSection.ELCLASS
 					prop_default = 'PipelineSection';
-				case 2 % PipelineSection.NAME
+				case PipelineSection.NAME
 					prop_default = 'Pipeline Section';
-				case 3 % PipelineSection.DESCRIPTION
+				case PipelineSection.DESCRIPTION
 					prop_default = 'A Pipeline Section (PipelineSection) represents a section of executable code in a pipeline.';
-				case 4 % PipelineSection.TEMPLATE
-					prop_default = Format.getFormatDefault(8, PipelineSection.getPropSettings(prop));
-				case 5 % PipelineSection.ID
+				case PipelineSection.TEMPLATE
+					prop_default = Format.getFormatDefault(Format.ITEM, PipelineSection.getPropSettings(prop));
+				case PipelineSection.ID
 					prop_default = 'PipelineSection ID';
-				case 6 % PipelineSection.LABEL
+				case PipelineSection.LABEL
 					prop_default = 'PipelineSection label';
-				case 7 % PipelineSection.NOTES
+				case PipelineSection.NOTES
 					prop_default = 'PipelineSection notes';
 				otherwise
 					prop_default = getPropDefault@ConcreteElement(prop);
@@ -590,15 +605,15 @@ classdef PipelineSection < ConcreteElement
 			% 
 			% PS.CHECKPROP(POINTER, VALUE) throws an error if VALUE is
 			%  NOT an acceptable value for the format of the property POINTER.
-			%  Error id: BRAPH2:PipelineSection:WrongInput
+			%  Error id: €BRAPH2.STR€:PipelineSection:€BRAPH2.WRONG_INPUT€
 			% 
 			% Alternative forms to call this method are (POINTER = PROP or TAG):
 			%  PS.CHECKPROP(POINTER, VALUE) throws error if VALUE has not a valid format for PROP of PS.
-			%   Error id: BRAPH2:PipelineSection:WrongInput
+			%   Error id: €BRAPH2.STR€:PipelineSection:€BRAPH2.WRONG_INPUT€
 			%  Element.CHECKPROP(PipelineSection, PROP, VALUE) throws error if VALUE has not a valid format for PROP of PipelineSection.
-			%   Error id: BRAPH2:PipelineSection:WrongInput
+			%   Error id: €BRAPH2.STR€:PipelineSection:€BRAPH2.WRONG_INPUT€
 			%  PS.CHECKPROP(PipelineSection, PROP, VALUE) throws error if VALUE has not a valid format for PROP of PipelineSection.
-			%   Error id: BRAPH2:PipelineSection:WrongInput]
+			%   Error id: €BRAPH2.STR€:PipelineSection:€BRAPH2.WRONG_INPUT€]
 			% 
 			% Note that the Element.CHECKPROP(PS) and Element.CHECKPROP('PipelineSection')
 			%  are less computationally efficient.
@@ -609,12 +624,12 @@ classdef PipelineSection < ConcreteElement
 			prop = PipelineSection.getPropProp(pointer);
 			
 			switch prop
-				case 9 % PipelineSection.PC_DICT
-					check = Format.checkFormat(10, value, PipelineSection.getPropSettings(prop));
-				case 4 % PipelineSection.TEMPLATE
-					check = Format.checkFormat(8, value, PipelineSection.getPropSettings(prop));
+				case PipelineSection.PC_DICT % __PipelineSection.PC_DICT__
+					check = Format.checkFormat(Format.IDICT, value, PipelineSection.getPropSettings(prop));
+				case PipelineSection.TEMPLATE % __PipelineSection.TEMPLATE__
+					check = Format.checkFormat(Format.ITEM, value, PipelineSection.getPropSettings(prop));
 				otherwise
-					if prop <= 8
+					if prop <= ConcreteElement.getPropNumber()
 						check = checkProp@ConcreteElement(prop, value);
 					end
 			end
@@ -623,8 +638,8 @@ classdef PipelineSection < ConcreteElement
 				prop_check = check;
 			elseif ~check
 				error( ...
-					['BRAPH2' ':PipelineSection:' 'WrongInput'], ...
-					['BRAPH2' ':PipelineSection:' 'WrongInput' '\n' ...
+					[BRAPH2.STR ':PipelineSection:' BRAPH2.WRONG_INPUT], ...
+					[BRAPH2.STR ':PipelineSection:' BRAPH2.WRONG_INPUT '\n' ...
 					'The value ' tostring(value, 100, ' ...') ' is not a valid property ' PipelineSection.getPropTag(prop) ' (' PipelineSection.getFormatTag(PipelineSection.getPropFormat(prop)) ').'] ...
 					)
 			end

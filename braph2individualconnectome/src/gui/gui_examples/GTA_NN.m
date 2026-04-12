@@ -4,25 +4,6 @@ classdef GTA_NN < ConcreteElement
 	%
 	% GTA_NN tests PanelPropScalar.
 	%
-	% The list of GTA_NN properties is:
-	%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the concrete element (ConcreteElement).
-	%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the concrete element.
-	%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the concrete element.
-	%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the concrete element.
-	%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the concrete element.
-	%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the concrete element.
-	%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the concrete element.
-	%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
-	%  <strong>9</strong> <strong>NN_C</strong> 	NN_C (constant, scalar) is a prop constant scalar.
-	%  <strong>10</strong> <strong>NN_M</strong> 	NN_M (metadata, scalar) is a prop metadata scalar.
-	%  <strong>11</strong> <strong>NN_P</strong> 	NN_P (parameter, scalar) is a prop parameter scalar.
-	%  <strong>12</strong> <strong>NN_D</strong> 	NN_D (data, scalar) is a prop data scalar.
-	%  <strong>13</strong> <strong>NN_R</strong> 	NN_R (result, scalar) is a prop result scalar.
-	%  <strong>14</strong> <strong>NN_Q</strong> 	NN_Q (query, scalar) is a prop query scalar.
-	%  <strong>15</strong> <strong>NN_E</strong> 	NN_E (evanescent, scalar) is a prop evanescent scalar.
-	%  <strong>16</strong> <strong>NN_F</strong> 	NN_F (figure, scalar) is a prop figure scalar.
-	%  <strong>17</strong> <strong>NN_G</strong> 	NN_G (gui, scalar) is a prop gui scalar.
-	%
 	% GTA_NN methods (constructor):
 	%  GTA_NN - constructor
 	%
@@ -111,53 +92,53 @@ classdef GTA_NN < ConcreteElement
 	%
 	% See also PanelPropScalar.
 	%
-	% BUILD BRAPH2 7 class_name 1
+	% BUILD BRAPH2 BRAPH2.BUILD class_name 1
 	
 	properties (Constant) % properties
-		NN_C = 9; %CET: Computational Efficiency Trick
+		NN_C = ConcreteElement.getPropNumber() + 1;
 		NN_C_TAG = 'NN_C';
-		NN_C_CATEGORY = 1;
-		NN_C_FORMAT = 11;
+		NN_C_CATEGORY = Category.CONSTANT;
+		NN_C_FORMAT = Format.SCALAR;
 		
-		NN_M = 10; %CET: Computational Efficiency Trick
+		NN_M = ConcreteElement.getPropNumber() + 2;
 		NN_M_TAG = 'NN_M';
-		NN_M_CATEGORY = 2;
-		NN_M_FORMAT = 11;
+		NN_M_CATEGORY = Category.METADATA;
+		NN_M_FORMAT = Format.SCALAR;
 		
-		NN_P = 11; %CET: Computational Efficiency Trick
+		NN_P = ConcreteElement.getPropNumber() + 3;
 		NN_P_TAG = 'NN_P';
-		NN_P_CATEGORY = 3;
-		NN_P_FORMAT = 11;
+		NN_P_CATEGORY = Category.PARAMETER;
+		NN_P_FORMAT = Format.SCALAR;
 		
-		NN_D = 12; %CET: Computational Efficiency Trick
+		NN_D = ConcreteElement.getPropNumber() + 4;
 		NN_D_TAG = 'NN_D';
-		NN_D_CATEGORY = 4;
-		NN_D_FORMAT = 11;
+		NN_D_CATEGORY = Category.DATA;
+		NN_D_FORMAT = Format.SCALAR;
 		
-		NN_R = 13; %CET: Computational Efficiency Trick
+		NN_R = ConcreteElement.getPropNumber() + 5;
 		NN_R_TAG = 'NN_R';
-		NN_R_CATEGORY = 5;
-		NN_R_FORMAT = 11;
+		NN_R_CATEGORY = Category.RESULT;
+		NN_R_FORMAT = Format.SCALAR;
 		
-		NN_Q = 14; %CET: Computational Efficiency Trick
+		NN_Q = ConcreteElement.getPropNumber() + 6;
 		NN_Q_TAG = 'NN_Q';
-		NN_Q_CATEGORY = 6;
-		NN_Q_FORMAT = 11;
+		NN_Q_CATEGORY = Category.QUERY;
+		NN_Q_FORMAT = Format.SCALAR;
 		
-		NN_E = 15; %CET: Computational Efficiency Trick
+		NN_E = ConcreteElement.getPropNumber() + 7;
 		NN_E_TAG = 'NN_E';
-		NN_E_CATEGORY = 7;
-		NN_E_FORMAT = 11;
+		NN_E_CATEGORY = Category.EVANESCENT;
+		NN_E_FORMAT = Format.SCALAR;
 		
-		NN_F = 16; %CET: Computational Efficiency Trick
+		NN_F = ConcreteElement.getPropNumber() + 8;
 		NN_F_TAG = 'NN_F';
-		NN_F_CATEGORY = 8;
-		NN_F_FORMAT = 11;
+		NN_F_CATEGORY = Category.FIGURE;
+		NN_F_FORMAT = Format.SCALAR;
 		
-		NN_G = 17; %CET: Computational Efficiency Trick
+		NN_G = ConcreteElement.getPropNumber() + 9;
 		NN_G_TAG = 'NN_G';
-		NN_G_CATEGORY = 9;
-		NN_G_FORMAT = 11;
+		NN_G_CATEGORY = Category.GUI;
+		NN_G_FORMAT = Format.SCALAR;
 	end
 	methods % constructor
 		function gt = GTA_NN(varargin)
@@ -170,24 +151,6 @@ classdef GTA_NN < ConcreteElement
 			% Multiple properties can be initialized at once identifying
 			%  them with either property numbers (PROP) or tags (TAG).
 			%
-			% The list of GTA_NN properties is:
-			%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the concrete element (ConcreteElement).
-			%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the concrete element.
-			%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the concrete element.
-			%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the concrete element.
-			%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the concrete element.
-			%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the concrete element.
-			%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the concrete element.
-			%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
-			%  <strong>9</strong> <strong>NN_C</strong> 	NN_C (constant, scalar) is a prop constant scalar.
-			%  <strong>10</strong> <strong>NN_M</strong> 	NN_M (metadata, scalar) is a prop metadata scalar.
-			%  <strong>11</strong> <strong>NN_P</strong> 	NN_P (parameter, scalar) is a prop parameter scalar.
-			%  <strong>12</strong> <strong>NN_D</strong> 	NN_D (data, scalar) is a prop data scalar.
-			%  <strong>13</strong> <strong>NN_R</strong> 	NN_R (result, scalar) is a prop result scalar.
-			%  <strong>14</strong> <strong>NN_Q</strong> 	NN_Q (query, scalar) is a prop query scalar.
-			%  <strong>15</strong> <strong>NN_E</strong> 	NN_E (evanescent, scalar) is a prop evanescent scalar.
-			%  <strong>16</strong> <strong>NN_F</strong> 	NN_F (figure, scalar) is a prop figure scalar.
-			%  <strong>17</strong> <strong>NN_G</strong> 	NN_G (gui, scalar) is a prop gui scalar.
 			%
 			% See also Category, Format.
 			
@@ -240,7 +203,7 @@ classdef GTA_NN < ConcreteElement
 			%
 			% See also subclasses.
 			
-			subclass_list = { 'GTA_NN' }; %CET: Computational Efficiency Trick
+			subclass_list = subclasses('GTA_NN', [], [], true);
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of test A PanelPropScalar.
@@ -261,34 +224,68 @@ classdef GTA_NN < ConcreteElement
 			%
 			% See also getPropNumber, Category.
 			
-			%CET: Computational Efficiency Trick
-			
 			if nargin == 0
-				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17];
+				prop_list = [ ...
+					ConcreteElement.getProps() ...
+						GTA_NN.NN_C ...
+						GTA_NN.NN_M ...
+						GTA_NN.NN_P ...
+						GTA_NN.NN_D ...
+						GTA_NN.NN_R ...
+						GTA_NN.NN_Q ...
+						GTA_NN.NN_E ...
+						GTA_NN.NN_F ...
+						GTA_NN.NN_G ...
+						];
 				return
 			end
 			
 			switch category
-				case 1 % Category.CONSTANT
-					prop_list = [1 2 3 9];
-				case 2 % Category.METADATA
-					prop_list = [6 7 10];
-				case 3 % Category.PARAMETER
-					prop_list = [4 11];
-				case 4 % Category.DATA
-					prop_list = [5 12];
-				case 5 % Category.RESULT
-					prop_list = 13;
-				case 6 % Category.QUERY
-					prop_list = [8 14];
-				case 7 % Category.EVANESCENT
-					prop_list = 15;
-				case 8 % Category.FIGURE
-					prop_list = 16;
-				case 9 % Category.GUI
-					prop_list = 17;
-				otherwise
-					prop_list = [];
+				case Category.CONSTANT
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.CONSTANT) ...
+						GTA_NN.NN_C ...
+						];
+				case Category.METADATA
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.METADATA) ...
+						GTA_NN.NN_M ...
+						];
+				case Category.PARAMETER
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.PARAMETER) ...
+						GTA_NN.NN_P ...
+						];
+				case Category.DATA
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.DATA) ...
+						GTA_NN.NN_D ...
+						];
+				case Category.RESULT
+					prop_list = [
+						ConcreteElement.getProps(Category.RESULT) ...
+						GTA_NN.NN_R ...
+						];
+				case Category.QUERY
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.QUERY) ...
+						GTA_NN.NN_Q ...
+						];
+				case Category.EVANESCENT
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.EVANESCENT) ...
+						GTA_NN.NN_E ...
+						];
+				case Category.FIGURE
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.FIGURE) ...
+						GTA_NN.NN_F ...
+						];
+				case Category.GUI
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.GUI) ...
+						GTA_NN.NN_G ...
+						];
 			end
 		end
 		function prop_number = getPropNumber(varargin)
@@ -309,35 +306,7 @@ classdef GTA_NN < ConcreteElement
 			%
 			% See also getProps, Category.
 			
-			%CET: Computational Efficiency Trick
-			
-			if nargin == 0
-				prop_number = 17;
-				return
-			end
-			
-			switch varargin{1} % category = varargin{1}
-				case 1 % Category.CONSTANT
-					prop_number = 4;
-				case 2 % Category.METADATA
-					prop_number = 3;
-				case 3 % Category.PARAMETER
-					prop_number = 2;
-				case 4 % Category.DATA
-					prop_number = 2;
-				case 5 % Category.RESULT
-					prop_number = 1;
-				case 6 % Category.QUERY
-					prop_number = 2;
-				case 7 % Category.EVANESCENT
-					prop_number = 1;
-				case 8 % Category.FIGURE
-					prop_number = 1;
-				case 9 % Category.GUI
-					prop_number = 1;
-				otherwise
-					prop_number = 0;
-			end
+			prop_number = numel(GTA_NN.getProps(varargin{:}));
 		end
 		function check_out = existsProp(prop)
 			%EXISTSPROP checks whether property exists in test A PanelPropScalar/error.
@@ -365,14 +334,14 @@ classdef GTA_NN < ConcreteElement
 			%
 			% See also getProps, existsTag.
 			
-			check = prop >= 1 && prop <= 17 && round(prop) == prop; %CET: Computational Efficiency Trick
+			check = any(prop == GTA_NN.getProps());
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					['BRAPH2' ':GTA_NN:' 'WrongInput'], ...
-					['BRAPH2' ':GTA_NN:' 'WrongInput' '\n' ...
+					[BRAPH2.STR ':GTA_NN:' BRAPH2.WRONG_INPUT], ...
+					[BRAPH2.STR ':GTA_NN:' BRAPH2.WRONG_INPUT '\n' ...
 					'The value ' tostring(prop, 100, ' ...') ' is not a valid prop for GTA_NN.'] ...
 					)
 			end
@@ -403,14 +372,15 @@ classdef GTA_NN < ConcreteElement
 			%
 			% See also getProps, existsTag.
 			
-			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'NN_C'  'NN_M'  'NN_P'  'NN_D'  'NN_R'  'NN_Q'  'NN_E'  'NN_F'  'NN_G' })); %CET: Computational Efficiency Trick
+			gta_nn_tag_list = cellfun(@(x) GTA_NN.getPropTag(x), num2cell(GTA_NN.getProps()), 'UniformOutput', false);
+			check = any(strcmp(tag, gta_nn_tag_list));
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					['BRAPH2' ':GTA_NN:' 'WrongInput'], ...
-					['BRAPH2' ':GTA_NN:' 'WrongInput' '\n' ...
+					[BRAPH2.STR ':GTA_NN:' BRAPH2.WRONG_INPUT], ...
+					[BRAPH2.STR ':GTA_NN:' BRAPH2.WRONG_INPUT '\n' ...
 					'The value ' tag ' is not a valid tag for GTA_NN.'] ...
 					)
 			end
@@ -436,7 +406,8 @@ classdef GTA_NN < ConcreteElement
 			%  getPropSettings, getPropDefault, checkProp.
 			
 			if ischar(pointer)
-				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'NN_C'  'NN_M'  'NN_P'  'NN_D'  'NN_R'  'NN_Q'  'NN_E'  'NN_F'  'NN_G' })); % tag = pointer %CET: Computational Efficiency Trick
+				gta_nn_tag_list = cellfun(@(x) GTA_NN.getPropTag(x), num2cell(GTA_NN.getProps()), 'UniformOutput', false);
+				prop = find(strcmp(pointer, gta_nn_tag_list)); % tag = pointer
 			else % numeric
 				prop = pointer;
 			end
@@ -464,9 +435,30 @@ classdef GTA_NN < ConcreteElement
 			if ischar(pointer)
 				tag = pointer;
 			else % numeric
-				%CET: Computational Efficiency Trick
-				gta_nn_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'NN_C'  'NN_M'  'NN_P'  'NN_D'  'NN_R'  'NN_Q'  'NN_E'  'NN_F'  'NN_G' };
-				tag = gta_nn_tag_list{pointer}; % prop = pointer
+				prop = pointer;
+				
+				switch prop
+					case GTA_NN.NN_C
+						tag = GTA_NN.NN_C_TAG;
+					case GTA_NN.NN_M
+						tag = GTA_NN.NN_M_TAG;
+					case GTA_NN.NN_P
+						tag = GTA_NN.NN_P_TAG;
+					case GTA_NN.NN_D
+						tag = GTA_NN.NN_D_TAG;
+					case GTA_NN.NN_R
+						tag = GTA_NN.NN_R_TAG;
+					case GTA_NN.NN_Q
+						tag = GTA_NN.NN_Q_TAG;
+					case GTA_NN.NN_E
+						tag = GTA_NN.NN_E_TAG;
+					case GTA_NN.NN_F
+						tag = GTA_NN.NN_F_TAG;
+					case GTA_NN.NN_G
+						tag = GTA_NN.NN_G_TAG;
+					otherwise
+						tag = getPropTag@ConcreteElement(prop);
+				end
 			end
 		end
 		function prop_category = getPropCategory(pointer)
@@ -491,9 +483,28 @@ classdef GTA_NN < ConcreteElement
 			
 			prop = GTA_NN.getPropProp(pointer);
 			
-			%CET: Computational Efficiency Trick
-			gta_nn_category_list = { 1  1  1  3  4  2  2  6  1  2  3  4  5  6  7  8  9 };
-			prop_category = gta_nn_category_list{prop};
+			switch prop
+				case GTA_NN.NN_C
+					prop_category = GTA_NN.NN_C_CATEGORY;
+				case GTA_NN.NN_M
+					prop_category = GTA_NN.NN_M_CATEGORY;
+				case GTA_NN.NN_P
+					prop_category = GTA_NN.NN_P_CATEGORY;
+				case GTA_NN.NN_D
+					prop_category = GTA_NN.NN_D_CATEGORY;
+				case GTA_NN.NN_R
+					prop_category = GTA_NN.NN_R_CATEGORY;
+				case GTA_NN.NN_Q
+					prop_category = GTA_NN.NN_Q_CATEGORY;
+				case GTA_NN.NN_E
+					prop_category = GTA_NN.NN_E_CATEGORY;
+				case GTA_NN.NN_F
+					prop_category = GTA_NN.NN_F_CATEGORY;
+				case GTA_NN.NN_G
+					prop_category = GTA_NN.NN_G_CATEGORY;
+				otherwise
+					prop_category = getPropCategory@ConcreteElement(prop);
+			end
 		end
 		function prop_format = getPropFormat(pointer)
 			%GETPROPFORMAT returns the format of a property.
@@ -517,9 +528,28 @@ classdef GTA_NN < ConcreteElement
 			
 			prop = GTA_NN.getPropProp(pointer);
 			
-			%CET: Computational Efficiency Trick
-			gta_nn_format_list = { 2  2  2  8  2  2  2  2  11  11  11  11  11  11  11  11  11 };
-			prop_format = gta_nn_format_list{prop};
+			switch prop
+				case GTA_NN.NN_C
+					prop_format = GTA_NN.NN_C_FORMAT;
+				case GTA_NN.NN_M
+					prop_format = GTA_NN.NN_M_FORMAT;
+				case GTA_NN.NN_P
+					prop_format = GTA_NN.NN_P_FORMAT;
+				case GTA_NN.NN_D
+					prop_format = GTA_NN.NN_D_FORMAT;
+				case GTA_NN.NN_R
+					prop_format = GTA_NN.NN_R_FORMAT;
+				case GTA_NN.NN_Q
+					prop_format = GTA_NN.NN_Q_FORMAT;
+				case GTA_NN.NN_E
+					prop_format = GTA_NN.NN_E_FORMAT;
+				case GTA_NN.NN_F
+					prop_format = GTA_NN.NN_F_FORMAT;
+				case GTA_NN.NN_G
+					prop_format = GTA_NN.NN_G_FORMAT;
+				otherwise
+					prop_format = getPropFormat@ConcreteElement(prop);
+			end
 		end
 		function prop_description = getPropDescription(pointer)
 			%GETPROPDESCRIPTION returns the description of a property.
@@ -543,9 +573,28 @@ classdef GTA_NN < ConcreteElement
 			
 			prop = GTA_NN.getPropProp(pointer);
 			
-			%CET: Computational Efficiency Trick
-			gta_nn_description_list = { 'ELCLASS (constant, string) is the class of the concrete element (ConcreteElement).'  'NAME (constant, string) is the name of the concrete element.'  'DESCRIPTION (constant, string) is the description of the concrete element.'  'TEMPLATE (parameter, item) is the template of the concrete element.'  'ID (data, string) is a few-letter code for the concrete element.'  'LABEL (metadata, string) is an extended label of the concrete element.'  'NOTES (metadata, string) are some specific notes about the concrete element.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'NN_C (constant, scalar) is a prop constant scalar.'  'NN_M (metadata, scalar) is a prop metadata scalar.'  'NN_P (parameter, scalar) is a prop parameter scalar.'  'NN_D (data, scalar) is a prop data scalar.'  'NN_R (result, scalar) is a prop result scalar.'  'NN_Q (query, scalar) is a prop query scalar.'  'NN_E (evanescent, scalar) is a prop evanescent scalar.'  'NN_F (figure, scalar) is a prop figure scalar.'  'NN_G (gui, scalar) is a prop gui scalar.' };
-			prop_description = gta_nn_description_list{prop};
+			switch prop
+				case GTA_NN.NN_C
+					prop_description = 'NN_C (constant, scalar) is a prop constant scalar.';
+				case GTA_NN.NN_M
+					prop_description = 'NN_M (metadata, scalar) is a prop metadata scalar.';
+				case GTA_NN.NN_P
+					prop_description = 'NN_P (parameter, scalar) is a prop parameter scalar.';
+				case GTA_NN.NN_D
+					prop_description = 'NN_D (data, scalar) is a prop data scalar.';
+				case GTA_NN.NN_R
+					prop_description = 'NN_R (result, scalar) is a prop result scalar.';
+				case GTA_NN.NN_Q
+					prop_description = 'NN_Q (query, scalar) is a prop query scalar.';
+				case GTA_NN.NN_E
+					prop_description = 'NN_E (evanescent, scalar) is a prop evanescent scalar.';
+				case GTA_NN.NN_F
+					prop_description = 'NN_F (figure, scalar) is a prop figure scalar.';
+				case GTA_NN.NN_G
+					prop_description = 'NN_G (gui, scalar) is a prop gui scalar.';
+				otherwise
+					prop_description = getPropDescription@ConcreteElement(prop);
+			end
 		end
 		function prop_settings = getPropSettings(pointer)
 			%GETPROPSETTINGS returns the settings of a property.
@@ -569,25 +618,25 @@ classdef GTA_NN < ConcreteElement
 			
 			prop = GTA_NN.getPropProp(pointer);
 			
-			switch prop %CET: Computational Efficiency Trick
-				case 9 % GTA_NN.NN_C
-					prop_settings = Format.getFormatSettings(11);
-				case 10 % GTA_NN.NN_M
-					prop_settings = Format.getFormatSettings(11);
-				case 11 % GTA_NN.NN_P
-					prop_settings = Format.getFormatSettings(11);
-				case 12 % GTA_NN.NN_D
-					prop_settings = Format.getFormatSettings(11);
-				case 13 % GTA_NN.NN_R
-					prop_settings = Format.getFormatSettings(11);
-				case 14 % GTA_NN.NN_Q
-					prop_settings = Format.getFormatSettings(11);
-				case 15 % GTA_NN.NN_E
-					prop_settings = Format.getFormatSettings(11);
-				case 16 % GTA_NN.NN_F
-					prop_settings = Format.getFormatSettings(11);
-				case 17 % GTA_NN.NN_G
-					prop_settings = Format.getFormatSettings(11);
+			switch prop
+				case GTA_NN.NN_C
+					prop_settings = Format.getFormatSettings(Format.SCALAR);
+				case GTA_NN.NN_M
+					prop_settings = Format.getFormatSettings(Format.SCALAR);
+				case GTA_NN.NN_P
+					prop_settings = Format.getFormatSettings(Format.SCALAR);
+				case GTA_NN.NN_D
+					prop_settings = Format.getFormatSettings(Format.SCALAR);
+				case GTA_NN.NN_R
+					prop_settings = Format.getFormatSettings(Format.SCALAR);
+				case GTA_NN.NN_Q
+					prop_settings = Format.getFormatSettings(Format.SCALAR);
+				case GTA_NN.NN_E
+					prop_settings = Format.getFormatSettings(Format.SCALAR);
+				case GTA_NN.NN_F
+					prop_settings = Format.getFormatSettings(Format.SCALAR);
+				case GTA_NN.NN_G
+					prop_settings = Format.getFormatSettings(Format.SCALAR);
 				otherwise
 					prop_settings = getPropSettings@ConcreteElement(prop);
 			end
@@ -614,25 +663,25 @@ classdef GTA_NN < ConcreteElement
 			
 			prop = GTA_NN.getPropProp(pointer);
 			
-			switch prop %CET: Computational Efficiency Trick
-				case 9 % GTA_NN.NN_C
-					prop_default = Format.getFormatDefault(11, GTA_NN.getPropSettings(prop));
-				case 10 % GTA_NN.NN_M
-					prop_default = Format.getFormatDefault(11, GTA_NN.getPropSettings(prop));
-				case 11 % GTA_NN.NN_P
-					prop_default = Format.getFormatDefault(11, GTA_NN.getPropSettings(prop));
-				case 12 % GTA_NN.NN_D
-					prop_default = Format.getFormatDefault(11, GTA_NN.getPropSettings(prop));
-				case 13 % GTA_NN.NN_R
-					prop_default = Format.getFormatDefault(11, GTA_NN.getPropSettings(prop));
-				case 14 % GTA_NN.NN_Q
-					prop_default = Format.getFormatDefault(11, GTA_NN.getPropSettings(prop));
-				case 15 % GTA_NN.NN_E
-					prop_default = Format.getFormatDefault(11, GTA_NN.getPropSettings(prop));
-				case 16 % GTA_NN.NN_F
-					prop_default = Format.getFormatDefault(11, GTA_NN.getPropSettings(prop));
-				case 17 % GTA_NN.NN_G
-					prop_default = Format.getFormatDefault(11, GTA_NN.getPropSettings(prop));
+			switch prop
+				case GTA_NN.NN_C
+					prop_default = Format.getFormatDefault(Format.SCALAR, GTA_NN.getPropSettings(prop));
+				case GTA_NN.NN_M
+					prop_default = Format.getFormatDefault(Format.SCALAR, GTA_NN.getPropSettings(prop));
+				case GTA_NN.NN_P
+					prop_default = Format.getFormatDefault(Format.SCALAR, GTA_NN.getPropSettings(prop));
+				case GTA_NN.NN_D
+					prop_default = Format.getFormatDefault(Format.SCALAR, GTA_NN.getPropSettings(prop));
+				case GTA_NN.NN_R
+					prop_default = Format.getFormatDefault(Format.SCALAR, GTA_NN.getPropSettings(prop));
+				case GTA_NN.NN_Q
+					prop_default = Format.getFormatDefault(Format.SCALAR, GTA_NN.getPropSettings(prop));
+				case GTA_NN.NN_E
+					prop_default = Format.getFormatDefault(Format.SCALAR, GTA_NN.getPropSettings(prop));
+				case GTA_NN.NN_F
+					prop_default = Format.getFormatDefault(Format.SCALAR, GTA_NN.getPropSettings(prop));
+				case GTA_NN.NN_G
+					prop_default = Format.getFormatDefault(Format.SCALAR, GTA_NN.getPropSettings(prop));
 				otherwise
 					prop_default = getPropDefault@ConcreteElement(prop);
 			end
@@ -678,15 +727,15 @@ classdef GTA_NN < ConcreteElement
 			% 
 			% GT.CHECKPROP(POINTER, VALUE) throws an error if VALUE is
 			%  NOT an acceptable value for the format of the property POINTER.
-			%  Error id: BRAPH2:GTA_NN:WrongInput
+			%  Error id: €BRAPH2.STR€:GTA_NN:€BRAPH2.WRONG_INPUT€
 			% 
 			% Alternative forms to call this method are (POINTER = PROP or TAG):
 			%  GT.CHECKPROP(POINTER, VALUE) throws error if VALUE has not a valid format for PROP of GT.
-			%   Error id: BRAPH2:GTA_NN:WrongInput
+			%   Error id: €BRAPH2.STR€:GTA_NN:€BRAPH2.WRONG_INPUT€
 			%  Element.CHECKPROP(GTA_NN, PROP, VALUE) throws error if VALUE has not a valid format for PROP of GTA_NN.
-			%   Error id: BRAPH2:GTA_NN:WrongInput
+			%   Error id: €BRAPH2.STR€:GTA_NN:€BRAPH2.WRONG_INPUT€
 			%  GT.CHECKPROP(GTA_NN, PROP, VALUE) throws error if VALUE has not a valid format for PROP of GTA_NN.
-			%   Error id: BRAPH2:GTA_NN:WrongInput]
+			%   Error id: €BRAPH2.STR€:GTA_NN:€BRAPH2.WRONG_INPUT€]
 			% 
 			% Note that the Element.CHECKPROP(GT) and Element.CHECKPROP('GTA_NN')
 			%  are less computationally efficient.
@@ -697,26 +746,26 @@ classdef GTA_NN < ConcreteElement
 			prop = GTA_NN.getPropProp(pointer);
 			
 			switch prop
-				case 9 % GTA_NN.NN_C
-					check = Format.checkFormat(11, value, GTA_NN.getPropSettings(prop));
-				case 10 % GTA_NN.NN_M
-					check = Format.checkFormat(11, value, GTA_NN.getPropSettings(prop));
-				case 11 % GTA_NN.NN_P
-					check = Format.checkFormat(11, value, GTA_NN.getPropSettings(prop));
-				case 12 % GTA_NN.NN_D
-					check = Format.checkFormat(11, value, GTA_NN.getPropSettings(prop));
-				case 13 % GTA_NN.NN_R
-					check = Format.checkFormat(11, value, GTA_NN.getPropSettings(prop));
-				case 14 % GTA_NN.NN_Q
-					check = Format.checkFormat(11, value, GTA_NN.getPropSettings(prop));
-				case 15 % GTA_NN.NN_E
-					check = Format.checkFormat(11, value, GTA_NN.getPropSettings(prop));
-				case 16 % GTA_NN.NN_F
-					check = Format.checkFormat(11, value, GTA_NN.getPropSettings(prop));
-				case 17 % GTA_NN.NN_G
-					check = Format.checkFormat(11, value, GTA_NN.getPropSettings(prop));
+				case GTA_NN.NN_C % __GTA_NN.NN_C__
+					check = Format.checkFormat(Format.SCALAR, value, GTA_NN.getPropSettings(prop));
+				case GTA_NN.NN_M % __GTA_NN.NN_M__
+					check = Format.checkFormat(Format.SCALAR, value, GTA_NN.getPropSettings(prop));
+				case GTA_NN.NN_P % __GTA_NN.NN_P__
+					check = Format.checkFormat(Format.SCALAR, value, GTA_NN.getPropSettings(prop));
+				case GTA_NN.NN_D % __GTA_NN.NN_D__
+					check = Format.checkFormat(Format.SCALAR, value, GTA_NN.getPropSettings(prop));
+				case GTA_NN.NN_R % __GTA_NN.NN_R__
+					check = Format.checkFormat(Format.SCALAR, value, GTA_NN.getPropSettings(prop));
+				case GTA_NN.NN_Q % __GTA_NN.NN_Q__
+					check = Format.checkFormat(Format.SCALAR, value, GTA_NN.getPropSettings(prop));
+				case GTA_NN.NN_E % __GTA_NN.NN_E__
+					check = Format.checkFormat(Format.SCALAR, value, GTA_NN.getPropSettings(prop));
+				case GTA_NN.NN_F % __GTA_NN.NN_F__
+					check = Format.checkFormat(Format.SCALAR, value, GTA_NN.getPropSettings(prop));
+				case GTA_NN.NN_G % __GTA_NN.NN_G__
+					check = Format.checkFormat(Format.SCALAR, value, GTA_NN.getPropSettings(prop));
 				otherwise
-					if prop <= 8
+					if prop <= ConcreteElement.getPropNumber()
 						check = checkProp@ConcreteElement(prop, value);
 					end
 			end
@@ -725,8 +774,8 @@ classdef GTA_NN < ConcreteElement
 				prop_check = check;
 			elseif ~check
 				error( ...
-					['BRAPH2' ':GTA_NN:' 'WrongInput'], ...
-					['BRAPH2' ':GTA_NN:' 'WrongInput' '\n' ...
+					[BRAPH2.STR ':GTA_NN:' BRAPH2.WRONG_INPUT], ...
+					[BRAPH2.STR ':GTA_NN:' BRAPH2.WRONG_INPUT '\n' ...
 					'The value ' tostring(value, 100, ' ...') ' is not a valid property ' GTA_NN.getPropTag(prop) ' (' GTA_NN.getFormatTag(GTA_NN.getPropFormat(prop)) ').'] ...
 					)
 			end

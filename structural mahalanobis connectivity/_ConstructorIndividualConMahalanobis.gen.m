@@ -1,0 +1,215 @@
+%% ¡header!
+ConstructorIndividualConMahalanobis < ConstructorIndividualConBase (icd, distance-based subject individual brain connectome Constructor) imports a group of subjects with regional SUVR data from a series of XLS/XLSX file.
+
+%%% ¡description!
+IndividualDistanceConConstructor imports a group of subjects with mean SUVR  
+ (standarize uptake value ratio) data from a series of nifti files 
+ contained in a folder named "group_data". All these files must be in the same 
+ folder; also, no other files should be in the folder. Each file contains a 
+ matrix of values corresponding to the intensity distribution of brain regions.
+ The connectivity matrix constructed based on Mahanlanobis Distance is returned
+The variables of interest are from another Nifti file named "SUVR_GROUP_MAT.vois.xlsx" 
+ (if exisitng) consisting of the following columns: 
+ Subject ID (column 1), covariates (subsequent columns). 
+ The 1st row contains the headers, the 2nd row a string with the categorical
+ variables of interest, and each subsequent row the values for each subject.
+
+%%% ¡seealso!
+Group, SubjectCON, ExporterGroupSubjectCON_XLS
+
+%%% ¡build!
+1
+
+%% ¡props_update!
+
+%%% ¡prop!
+ELCLASS (constant, string) is the class of the subject individual distance based connectivity constructor.
+%%%% ¡default!
+'ConstructorIndividualConMahalanobis'
+
+%%% ¡prop!
+NAME (constant, string) is the name of the subject individual distance based connectivity constructor.
+%%%% ¡default!
+'Distance based connectivity constructor'
+
+%%% ¡prop!
+DESCRIPTION (constant, string) is the description of the subject individual distance based connectivity constructor.
+%%%% ¡default!
+'IndividualDistanceConConstructor construct distance based connectome for a group of subjects with nifti file.'
+
+%%% ¡prop!
+TEMPLATE (parameter, item) is the template of the subject individual distance based connectivity constructor.
+%%%% ¡settings!
+'IndividualDistanceConConstructor'
+
+%%% ¡prop!
+ID (data, string) is a few-letter code for the subject individual distance based connectivity constructor.
+%%%% ¡default!
+'IndividualDistanceConConstructor ID'
+
+%%% ¡prop!
+LABEL (metadata, string) is an extended label of the subject individual distance based connectivity constructor.
+%%%% ¡default!
+'IndividualDistanceConConstructor label'
+
+%%% ¡prop!
+NOTES (metadata, string) are some specific notes about the subject individual distance based connectivity constructor.
+%%%% ¡default!
+'IndividualDistanceConConstructor notes'
+
+%%% ¡prop!
+CONNECTOME_CONSTRUCT_METHOD (query, cell) defines the method for Mahalanobis distance individual connectome construction.
+%%%% ¡calculate!
+if isempty(varargin) && isempty(icd.get('GR_SUVR').get('SUB_DICT').get('IT_LIST'))
+    value = {};
+    return
+end
+gr_suvr = icd.get('GR_SUVR');
+gr_suvr_ref = icd.get('GR_SUVR_REF');
+for i = 1:1:gr_suvr.get('SUB_DICT').get('LENGTH')
+    subj_suvrs{i} = gr_suvr.get('SUB_DICT').get('IT',i).get('ST');
+end
+for i = 1:1:gr_suvr_ref.get('SUB_DICT').get('LENGTH')
+    subj_suvrs_ref{i} = gr_suvr_ref.get('SUB_DICT').get('IT',i).get('ST');
+end
+subj_suvrs_ref = cell2mat(subj_suvrs_ref);
+subj_suvrs_ref_regional_mean = mean(subj_suvrs_ref,2);
+maxMahalDistAcrossSubjects = 0;
+mahalDistances_cross_subjects = {};
+for i = 1:1:length(subj_suvrs)
+    subj_suvr = subj_suvrs{i};
+    uniqueROIs = size(subj_suvr,1);
+    % Subtract the global mean from each SUVR value to center the data
+    centeredSUVRMatrix = subj_suvr - subj_suvrs_ref_regional_mean;
+    % Calculate the covariance matrix of the centered SUVR data
+    covMatrix = cov(subj_suvrs_ref');
+    % invCovMatrix = inv(covMatrix); % Inverse of the covariance matrix
+    mahalDistances = zeros(uniqueROIs, uniqueROIs); % To store Mahalanobis distances for each ROI
+    for roi1 = 1:uniqueROIs-1
+        for roi2 = roi1+1:uniqueROIs
+            % 2D residual vector r = [x_i - μ_i; x_j - μ_j]
+            centeredSUVRMatrix_ij  = [centeredSUVRMatrix(roi1); centeredSUVRMatrix(roi2)];  % 2×1
+
+            % 2×2 covariance submatrix for {roi1, roi2}
+            cov_ij  = covMatrix([roi1 roi2], [roi1 roi2]);                  % 2×2
+
+
+            y = cov_ij \\ centeredSUVRMatrix_ij;
+            d = sqrt(centeredSUVRMatrix_ij' * y);                 % = sqrt(r' * inv(S) * r)
+
+
+            % bidirectional-collapsed (symmetric) edge
+            mahalDistances(roi1, roi2) = d;
+            mahalDistances(roi2, roi1) = d;
+        end
+    end
+    mahalDistances_cross_subjects{i} = mahalDistances;
+end
+value = mahalDistances_cross_subjects;
+
+%% ¡tests!
+
+%%% ¡test!
+%%%% ¡name!
+Example data
+%%%% ¡code!
+group_dir = fullfile(fileparts(which('IndividualDistanceConConstructor')),'Example data Nifti');
+if ~exist(group_dir)
+    create_example_NIfTI([],group_dir)
+end
+
+%%% ¡test!
+%%%% ¡name!
+Verify the Distance-based individual connectome pipeline
+%%%% ¡code!
+im_ba = ImporterBrainAtlasXLS('FILE', which('aal94_atlas.xlsx'));
+ba = im_ba.get('BA');
+atlas = ba;
+br_dict = atlas.get('BR_DICT');
+selected_ids = num2cell(1:94);
+selected_br = cellfun(@(id) br_dict.get('IT', id), selected_ids, 'UniformOutput', false);
+selected_br_dict = IndexedDictionary('IT_CLASS', 'BrainRegion', 'IT_LIST',  selected_br);
+
+im_ba = ImporterBrainAtlasXLS('FILE', which('aal94_atlas.xlsx'));
+ba = im_ba.get('BA');
+
+group_dir1 = fullfile(fileparts(which('IndividualDistanceConConstructor')),'Example data Nifti', 'Group1');
+im_gr1_WM_GM = ImporterGroupSubjNIfTI( ...
+    'DIRECTORY', group_dir1, ...
+    'NIFTI_TYPE', {'T1'}, ...
+    'WAITBAR', true ...
+    );
+gr1_WM_GM = im_gr1_WM_GM.get('GR');
+
+im_gr1_PET = ImporterGroupSubjNIfTI( ...
+    'DIRECTORY', group_dir1, ...
+    'NIFTI_TYPE', {'PET'}, ...
+    'WAITBAR', true ...
+    );
+gr1_PET = im_gr1_PET.get('GR');
+
+group_dir2 = fullfile(fileparts(which('IndividualDistanceConConstructor')),'Example data Nifti', 'Group2');
+im_gr2_WM_GM = ImporterGroupSubjNIfTI( ...
+    'DIRECTORY', group_dir2, ...
+    'NIFTI_TYPE', {'T1'}, ...
+    'WAITBAR', true ...
+    );
+gr2_WM_GM = im_gr2_WM_GM.get('GR');
+
+im_gr2_PET = ImporterGroupSubjNIfTI( ...
+    'DIRECTORY', group_dir2, ...
+    'NIFTI_TYPE', {'PET'}, ...
+    'WAITBAR', true ...
+    );
+gr2_PET = im_gr2_PET.get('GR');
+
+path_dict = IndexedDictionary(...
+    'IT_CLASS', 'FILE_PATH', ...
+    'IT_LIST', {FILE_PATH('PATH', which('upsampled_AAL2.nii'))} ...
+    );
+
+ref_region_list = [2001];% reference region label
+
+gr1 = SUVRConstructor('GR_PET',gr1_PET, ...
+    'GR_T1',gr1_WM_GM, ...
+    'BA', {ba},...
+    'ATLAS_PATH_DICT' ,path_dict, ...
+    'REF_REGION_LIST',{ref_region_list}, ...
+    'SUVR_REGION_SELECTION', selected_br_dict);
+
+SUVR_gr1 = gr1.get('GR');
+
+gr2 = SUVRConstructor('GR_PET',gr2_PET, ...
+    'GR_T1',gr2_WM_GM, ...
+    'BA', {ba},...
+    'ATLAS_PATH_DICT' ,path_dict, ...
+    'REF_REGION_LIST',{ref_region_list}, ...
+    'SUVR_REGION_SELECTION', selected_br_dict);
+
+SUVR_gr2 = gr2.get('GR');
+
+constructor1 = IndividualDistanceConConstructor( ...
+    'GR_SUVR', SUVR_gr1,'GR_SUVR_REF', SUVR_gr2);
+
+distance_connectomes_gr1 = constructor1.get('GR');
+
+
+g_temp  = GraphWU('STANDARDIZE_RULE', 'range');
+a_WU1 = AnalyzeEnsemble_CON_WU('GR', distance_connectomes_gr1,'GRAPH_TEMPLATE', g_temp);
+num_subjects = a_WU1.get('G_DICT').get('LENGTH');
+
+% Initialize arrays for strength measures
+strength_first20_1 = zeros(num_subjects, 20);
+strength_others_1 = zeros(num_subjects,size(distance_connectomes_gr1.get('SUB_DICT').get('IT', 1).get('CON'),1)- 20);
+
+for i = 1:num_subjects
+    g = a_WU1.get('G_DICT').get('IT', i);
+    strength = g.get('MEASURE', 'Strength').get('M'); % Strength for all regions
+    strength20_regions = strength{1}(1:20,:);
+    strengthother_regions = strength{1}(21:end,:);
+    mean_20 = mean(strength20_regions(:));
+    mean_others = mean(strengthother_regions(:));
+    % Assert for each subject
+    assert(mean_20 < mean_others, ...
+        sprintf('Test failed for subject %d: The first 20 regions do not have higher distance than the other regions.', i));
+end

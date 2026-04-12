@@ -5,56 +5,6 @@ classdef NNxMLP_FeatureImportanceBrainSurfacePP_Measure < PanelProp
 	% A panel for neural networks feature importance analysis with the graph measures of the subjects (NNxMLP_FeatureImportanceBrainSurfacePP_Measure) 
 	%  plots the panel to show the feature importance values, matching the layer number and node number of the graph measures.
 	%
-	% The list of NNxMLP_FeatureImportanceBrainSurfacePP_Measure properties is:
-	%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the panel for feature importance.
-	%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the panel for feature importance.
-	%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the panel for feature importance.
-	%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the panel for feature importance.
-	%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the panel for feature importance.
-	%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the panel for feature importance.
-	%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the panel for feature importance.
-	%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
-	%  <strong>9</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) detemines whether to show the waitbar.
-	%  <strong>10</strong> <strong>H_WAITBAR</strong> 	H_WAITBAR (evanescent, handle) is the waitbar handle.
-	%  <strong>11</strong> <strong>DRAW</strong> 	DRAW (query, logical) draws the property panel.
-	%  <strong>12</strong> <strong>DRAWN</strong> 	DRAWN (query, logical) returns whether the panel has been drawn.
-	%  <strong>13</strong> <strong>PARENT</strong> 	PARENT (gui, item) is the panel parent.
-	%  <strong>14</strong> <strong>BKGCOLOR</strong> 	BKGCOLOR (figure, color) is the panel background color.
-	%  <strong>15</strong> <strong>H</strong> 	H (evanescent, handle) is the panel handle.
-	%  <strong>16</strong> <strong>SHOW</strong> 	SHOW (query, logical) shows the figure containing the panel and, possibly, the item figures.
-	%  <strong>17</strong> <strong>HIDE</strong> 	HIDE (query, logical) hides the figure containing the panel and, possibly, the item figures.
-	%  <strong>18</strong> <strong>DELETE</strong> 	DELETE (query, logical) resets the handles when the panel is deleted.
-	%  <strong>19</strong> <strong>CLOSE</strong> 	CLOSE (query, logical) closes the figure containing the panel and, possibly, the item figures.
-	%  <strong>20</strong> <strong>X_DRAW</strong> 	X_DRAW (query, logical) draws the prop panel.
-	%  <strong>21</strong> <strong>UPDATE</strong> 	UPDATE (query, logical) updates the content and permissions of the table.
-	%  <strong>22</strong> <strong>REDRAW</strong> 	REDRAW (query, logical) resizes the prop panel and repositions its graphical objects.
-	%  <strong>23</strong> <strong>EL</strong> 	EL (data, item) is the element.
-	%  <strong>24</strong> <strong>PROP</strong> 	PROP (data, scalar) is the prop number.
-	%  <strong>25</strong> <strong>HEIGHT</strong> 	HEIGHT (gui, size) is the pixel height of the prop panel.
-	%  <strong>26</strong> <strong>TITLE</strong> 	TITLE (gui, string) is the property title.
-	%  <strong>27</strong> <strong>LABEL_TITLE</strong> 	LABEL_TITLE (evanescent, handle) is the handle for the title uilabel.
-	%  <strong>28</strong> <strong>BUTTON_CB</strong> 	BUTTON_CB (evanescent, handle) is the handle for the callback button [only for PARAMETER, DATA, FIGURE and GUI].
-	%  <strong>29</strong> <strong>GUI_CB</strong> 	GUI_CB (data, item) is the handle to the item figure.
-	%  <strong>30</strong> <strong>LISTENER_CB</strong> 	LISTENER_CB (evanescent, handle) contains the listener to the updates in the property callback.
-	%  <strong>31</strong> <strong>BUTTON_CALC</strong> 	BUTTON_CALC (evanescent, handle) is the handle for the calculate button [only for RESULT, QUERY and EVANESCENT].
-	%  <strong>32</strong> <strong>BUTTON_DEL</strong> 	BUTTON_DEL (evanescent, handle) is the handle for the delete button [only for RESULT, QUERY and EVANESCENT].
-	%  <strong>33</strong> <strong>LISTENER_SET</strong> 	LISTENER_SET (evanescent, handlelist) contains the listeners to the PropSet events.
-	%  <strong>34</strong> <strong>LISTENER_MEMORIZED</strong> 	LISTENER_MEMORIZED (evanescent, handlelist) contains the listeners to the PropMemorized events.
-	%  <strong>35</strong> <strong>LISTENER_LOCKED</strong> 	LISTENER_LOCKED (evanescent, handlelist) contains the listeners to the PropLocked events.
-	%  <strong>36</strong> <strong>D</strong> 	D (metadata, item) is the input dataset.
-	%  <strong>37</strong> <strong>RESHAPED_PROP</strong> 	RESHAPED_PROP (data, scalar) is the prop number for the reshaped prop.
-	%  <strong>38</strong> <strong>BA</strong> 	BA (parameter, item) is the brain atlas.
-	%  <strong>39</strong> <strong>ENABLE</strong> 	ENABLE (gui, option) switches table between on and off.
-	%  <strong>40</strong> <strong>ROWNAME</strong> 	ROWNAME (gui, stringlist) determines the table row names.
-	%  <strong>41</strong> <strong>COLUMNNAME</strong> 	COLUMNNAME (gui, stringlist) determines the table column names.
-	%  <strong>42</strong> <strong>MENU_EXPORT</strong> 	MENU_EXPORT (gui, logical) determines whether to show the context menu to export data.
-	%  <strong>43</strong> <strong>TABLE_HEIGHT</strong> 	TABLE_HEIGHT (gui, size) is the pixel height of the prop panel when the table is shown.
-	%  <strong>44</strong> <strong>SELECTED</strong> 	SELECTED (gui, cvector) is the list of selected items.
-	%  <strong>45</strong> <strong>TABLE</strong> 	TABLE (evanescent, handle) is the table.
-	%  <strong>46</strong> <strong>CONTEXTMENU</strong> 	CONTEXTMENU (evanescent, handle) is the context menu.
-	%  <strong>47</strong> <strong>GUI_B_DICT</strong> 	GUI_B_DICT (gui, idict) contains the GUIs for the brain measures.
-	%  <strong>48</strong> <strong>GUI_FI_DICT</strong> 	GUI_FI_DICT (gui, idict) contains the GUIs for the feature measures.
-	%
 	% NNxMLP_FeatureImportanceBrainSurfacePP_Measure methods (constructor):
 	%  NNxMLP_FeatureImportanceBrainSurfacePP_Measure - constructor
 	%
@@ -143,73 +93,73 @@ classdef NNxMLP_FeatureImportanceBrainSurfacePP_Measure < PanelProp
 	%
 	% See also NNxMLP_FeatureImportanceBrainSurface, NNxMLP_FeatureImportanceBrainSurfacePP_Graph, NNxMLP_FeatureImportanceBrainSurfacePP_Data.
 	%
-	% BUILD BRAPH2 7 class_name 1
+	% BUILD BRAPH2 BRAPH2.BUILD class_name 1
 	
 	properties (Constant) % properties
-		D = 36; %CET: Computational Efficiency Trick
+		D = PanelProp.getPropNumber() + 1;
 		D_TAG = 'D';
-		D_CATEGORY = 2;
-		D_FORMAT = 8;
+		D_CATEGORY = Category.METADATA;
+		D_FORMAT = Format.ITEM;
 		
-		RESHAPED_PROP = 37; %CET: Computational Efficiency Trick
+		RESHAPED_PROP = PanelProp.getPropNumber() + 2;
 		RESHAPED_PROP_TAG = 'RESHAPED_PROP';
-		RESHAPED_PROP_CATEGORY = 4;
-		RESHAPED_PROP_FORMAT = 11;
+		RESHAPED_PROP_CATEGORY = Category.DATA;
+		RESHAPED_PROP_FORMAT = Format.SCALAR;
 		
-		BA = 38; %CET: Computational Efficiency Trick
+		BA = PanelProp.getPropNumber() + 3;
 		BA_TAG = 'BA';
-		BA_CATEGORY = 3;
-		BA_FORMAT = 8;
+		BA_CATEGORY = Category.PARAMETER;
+		BA_FORMAT = Format.ITEM;
 		
-		ENABLE = 39; %CET: Computational Efficiency Trick
+		ENABLE = PanelProp.getPropNumber() + 4;
 		ENABLE_TAG = 'ENABLE';
-		ENABLE_CATEGORY = 9;
-		ENABLE_FORMAT = 5;
+		ENABLE_CATEGORY = Category.GUI;
+		ENABLE_FORMAT = Format.OPTION;
 		
-		ROWNAME = 40; %CET: Computational Efficiency Trick
+		ROWNAME = PanelProp.getPropNumber() + 5;
 		ROWNAME_TAG = 'ROWNAME';
-		ROWNAME_CATEGORY = 9;
-		ROWNAME_FORMAT = 3;
+		ROWNAME_CATEGORY = Category.GUI;
+		ROWNAME_FORMAT = Format.STRINGLIST;
 		
-		COLUMNNAME = 41; %CET: Computational Efficiency Trick
+		COLUMNNAME = PanelProp.getPropNumber() + 6;
 		COLUMNNAME_TAG = 'COLUMNNAME';
-		COLUMNNAME_CATEGORY = 9;
-		COLUMNNAME_FORMAT = 3;
+		COLUMNNAME_CATEGORY = Category.GUI;
+		COLUMNNAME_FORMAT = Format.STRINGLIST;
 		
-		MENU_EXPORT = 42; %CET: Computational Efficiency Trick
+		MENU_EXPORT = PanelProp.getPropNumber() + 7;
 		MENU_EXPORT_TAG = 'MENU_EXPORT';
-		MENU_EXPORT_CATEGORY = 9;
-		MENU_EXPORT_FORMAT = 4;
+		MENU_EXPORT_CATEGORY = Category.GUI;
+		MENU_EXPORT_FORMAT = Format.LOGICAL;
 		
-		TABLE_HEIGHT = 43; %CET: Computational Efficiency Trick
+		TABLE_HEIGHT = PanelProp.getPropNumber() + 8;
 		TABLE_HEIGHT_TAG = 'TABLE_HEIGHT';
-		TABLE_HEIGHT_CATEGORY = 9;
-		TABLE_HEIGHT_FORMAT = 22;
+		TABLE_HEIGHT_CATEGORY = Category.GUI;
+		TABLE_HEIGHT_FORMAT = Format.SIZE;
 		
-		SELECTED = 44; %CET: Computational Efficiency Trick
+		SELECTED = PanelProp.getPropNumber() + 9;
 		SELECTED_TAG = 'SELECTED';
-		SELECTED_CATEGORY = 9;
-		SELECTED_FORMAT = 13;
+		SELECTED_CATEGORY = Category.GUI;
+		SELECTED_FORMAT = Format.CVECTOR;
 		
-		TABLE = 45; %CET: Computational Efficiency Trick
+		TABLE = PanelProp.getPropNumber() + 10;
 		TABLE_TAG = 'TABLE';
-		TABLE_CATEGORY = 7;
-		TABLE_FORMAT = 18;
+		TABLE_CATEGORY = Category.EVANESCENT;
+		TABLE_FORMAT = Format.HANDLE;
 		
-		CONTEXTMENU = 46; %CET: Computational Efficiency Trick
+		CONTEXTMENU = PanelProp.getPropNumber() + 11;
 		CONTEXTMENU_TAG = 'CONTEXTMENU';
-		CONTEXTMENU_CATEGORY = 7;
-		CONTEXTMENU_FORMAT = 18;
+		CONTEXTMENU_CATEGORY = Category.EVANESCENT;
+		CONTEXTMENU_FORMAT = Format.HANDLE;
 		
-		GUI_B_DICT = 47; %CET: Computational Efficiency Trick
+		GUI_B_DICT = PanelProp.getPropNumber() + 12;
 		GUI_B_DICT_TAG = 'GUI_B_DICT';
-		GUI_B_DICT_CATEGORY = 9;
-		GUI_B_DICT_FORMAT = 10;
+		GUI_B_DICT_CATEGORY = Category.GUI;
+		GUI_B_DICT_FORMAT = Format.IDICT;
 		
-		GUI_FI_DICT = 48; %CET: Computational Efficiency Trick
+		GUI_FI_DICT = PanelProp.getPropNumber() + 13;
 		GUI_FI_DICT_TAG = 'GUI_FI_DICT';
-		GUI_FI_DICT_CATEGORY = 9;
-		GUI_FI_DICT_FORMAT = 10;
+		GUI_FI_DICT_CATEGORY = Category.GUI;
+		GUI_FI_DICT_FORMAT = Format.IDICT;
 	end
 	methods % constructor
 		function pr = NNxMLP_FeatureImportanceBrainSurfacePP_Measure(varargin)
@@ -222,55 +172,6 @@ classdef NNxMLP_FeatureImportanceBrainSurfacePP_Measure < PanelProp
 			% Multiple properties can be initialized at once identifying
 			%  them with either property numbers (PROP) or tags (TAG).
 			%
-			% The list of NNxMLP_FeatureImportanceBrainSurfacePP_Measure properties is:
-			%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the panel for feature importance.
-			%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the panel for feature importance.
-			%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the panel for feature importance.
-			%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the panel for feature importance.
-			%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the panel for feature importance.
-			%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the panel for feature importance.
-			%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the panel for feature importance.
-			%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
-			%  <strong>9</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) detemines whether to show the waitbar.
-			%  <strong>10</strong> <strong>H_WAITBAR</strong> 	H_WAITBAR (evanescent, handle) is the waitbar handle.
-			%  <strong>11</strong> <strong>DRAW</strong> 	DRAW (query, logical) draws the property panel.
-			%  <strong>12</strong> <strong>DRAWN</strong> 	DRAWN (query, logical) returns whether the panel has been drawn.
-			%  <strong>13</strong> <strong>PARENT</strong> 	PARENT (gui, item) is the panel parent.
-			%  <strong>14</strong> <strong>BKGCOLOR</strong> 	BKGCOLOR (figure, color) is the panel background color.
-			%  <strong>15</strong> <strong>H</strong> 	H (evanescent, handle) is the panel handle.
-			%  <strong>16</strong> <strong>SHOW</strong> 	SHOW (query, logical) shows the figure containing the panel and, possibly, the item figures.
-			%  <strong>17</strong> <strong>HIDE</strong> 	HIDE (query, logical) hides the figure containing the panel and, possibly, the item figures.
-			%  <strong>18</strong> <strong>DELETE</strong> 	DELETE (query, logical) resets the handles when the panel is deleted.
-			%  <strong>19</strong> <strong>CLOSE</strong> 	CLOSE (query, logical) closes the figure containing the panel and, possibly, the item figures.
-			%  <strong>20</strong> <strong>X_DRAW</strong> 	X_DRAW (query, logical) draws the prop panel.
-			%  <strong>21</strong> <strong>UPDATE</strong> 	UPDATE (query, logical) updates the content and permissions of the table.
-			%  <strong>22</strong> <strong>REDRAW</strong> 	REDRAW (query, logical) resizes the prop panel and repositions its graphical objects.
-			%  <strong>23</strong> <strong>EL</strong> 	EL (data, item) is the element.
-			%  <strong>24</strong> <strong>PROP</strong> 	PROP (data, scalar) is the prop number.
-			%  <strong>25</strong> <strong>HEIGHT</strong> 	HEIGHT (gui, size) is the pixel height of the prop panel.
-			%  <strong>26</strong> <strong>TITLE</strong> 	TITLE (gui, string) is the property title.
-			%  <strong>27</strong> <strong>LABEL_TITLE</strong> 	LABEL_TITLE (evanescent, handle) is the handle for the title uilabel.
-			%  <strong>28</strong> <strong>BUTTON_CB</strong> 	BUTTON_CB (evanescent, handle) is the handle for the callback button [only for PARAMETER, DATA, FIGURE and GUI].
-			%  <strong>29</strong> <strong>GUI_CB</strong> 	GUI_CB (data, item) is the handle to the item figure.
-			%  <strong>30</strong> <strong>LISTENER_CB</strong> 	LISTENER_CB (evanescent, handle) contains the listener to the updates in the property callback.
-			%  <strong>31</strong> <strong>BUTTON_CALC</strong> 	BUTTON_CALC (evanescent, handle) is the handle for the calculate button [only for RESULT, QUERY and EVANESCENT].
-			%  <strong>32</strong> <strong>BUTTON_DEL</strong> 	BUTTON_DEL (evanescent, handle) is the handle for the delete button [only for RESULT, QUERY and EVANESCENT].
-			%  <strong>33</strong> <strong>LISTENER_SET</strong> 	LISTENER_SET (evanescent, handlelist) contains the listeners to the PropSet events.
-			%  <strong>34</strong> <strong>LISTENER_MEMORIZED</strong> 	LISTENER_MEMORIZED (evanescent, handlelist) contains the listeners to the PropMemorized events.
-			%  <strong>35</strong> <strong>LISTENER_LOCKED</strong> 	LISTENER_LOCKED (evanescent, handlelist) contains the listeners to the PropLocked events.
-			%  <strong>36</strong> <strong>D</strong> 	D (metadata, item) is the input dataset.
-			%  <strong>37</strong> <strong>RESHAPED_PROP</strong> 	RESHAPED_PROP (data, scalar) is the prop number for the reshaped prop.
-			%  <strong>38</strong> <strong>BA</strong> 	BA (parameter, item) is the brain atlas.
-			%  <strong>39</strong> <strong>ENABLE</strong> 	ENABLE (gui, option) switches table between on and off.
-			%  <strong>40</strong> <strong>ROWNAME</strong> 	ROWNAME (gui, stringlist) determines the table row names.
-			%  <strong>41</strong> <strong>COLUMNNAME</strong> 	COLUMNNAME (gui, stringlist) determines the table column names.
-			%  <strong>42</strong> <strong>MENU_EXPORT</strong> 	MENU_EXPORT (gui, logical) determines whether to show the context menu to export data.
-			%  <strong>43</strong> <strong>TABLE_HEIGHT</strong> 	TABLE_HEIGHT (gui, size) is the pixel height of the prop panel when the table is shown.
-			%  <strong>44</strong> <strong>SELECTED</strong> 	SELECTED (gui, cvector) is the list of selected items.
-			%  <strong>45</strong> <strong>TABLE</strong> 	TABLE (evanescent, handle) is the table.
-			%  <strong>46</strong> <strong>CONTEXTMENU</strong> 	CONTEXTMENU (evanescent, handle) is the context menu.
-			%  <strong>47</strong> <strong>GUI_B_DICT</strong> 	GUI_B_DICT (gui, idict) contains the GUIs for the brain measures.
-			%  <strong>48</strong> <strong>GUI_FI_DICT</strong> 	GUI_FI_DICT (gui, idict) contains the GUIs for the feature measures.
 			%
 			% See also Category, Format.
 			
@@ -323,7 +224,7 @@ classdef NNxMLP_FeatureImportanceBrainSurfacePP_Measure < PanelProp
 			%
 			% See also subclasses.
 			
-			subclass_list = { 'NNxMLP_FeatureImportanceBrainSurfacePP_Measure' }; %CET: Computational Efficiency Trick
+			subclass_list = subclasses('NNxMLP_FeatureImportanceBrainSurfacePP_Measure', [], [], true);
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of panel property feature importance.
@@ -344,32 +245,76 @@ classdef NNxMLP_FeatureImportanceBrainSurfacePP_Measure < PanelProp
 			%
 			% See also getPropNumber, Category.
 			
-			%CET: Computational Efficiency Trick
-			
 			if nargin == 0
-				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48];
+				prop_list = [ ...
+					PanelProp.getProps() ...
+						NNxMLP_FeatureImportanceBrainSurfacePP_Measure.D ...
+						NNxMLP_FeatureImportanceBrainSurfacePP_Measure.RESHAPED_PROP ...
+						NNxMLP_FeatureImportanceBrainSurfacePP_Measure.BA ...
+						NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ENABLE ...
+						NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ROWNAME ...
+						NNxMLP_FeatureImportanceBrainSurfacePP_Measure.COLUMNNAME ...
+						NNxMLP_FeatureImportanceBrainSurfacePP_Measure.MENU_EXPORT ...
+						NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE_HEIGHT ...
+						NNxMLP_FeatureImportanceBrainSurfacePP_Measure.SELECTED ...
+						NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE ...
+						NNxMLP_FeatureImportanceBrainSurfacePP_Measure.CONTEXTMENU ...
+						NNxMLP_FeatureImportanceBrainSurfacePP_Measure.GUI_B_DICT ...
+						NNxMLP_FeatureImportanceBrainSurfacePP_Measure.GUI_FI_DICT ...
+						];
 				return
 			end
 			
 			switch category
-				case 1 % Category.CONSTANT
-					prop_list = [1 2 3];
-				case 2 % Category.METADATA
-					prop_list = [6 7 36];
-				case 3 % Category.PARAMETER
-					prop_list = [4 38];
-				case 4 % Category.DATA
-					prop_list = [5 23 24 29 37];
-				case 6 % Category.QUERY
-					prop_list = [8 11 12 16 17 18 19 20 21 22];
-				case 7 % Category.EVANESCENT
-					prop_list = [10 15 27 28 30 31 32 33 34 35 45 46];
-				case 8 % Category.FIGURE
-					prop_list = 14;
-				case 9 % Category.GUI
-					prop_list = [9 13 25 26 39 40 41 42 43 44 47 48];
-				otherwise
-					prop_list = [];
+				case Category.CONSTANT
+					prop_list = [ ...
+						PanelProp.getProps(Category.CONSTANT) ...
+						];
+				case Category.METADATA
+					prop_list = [ ...
+						PanelProp.getProps(Category.METADATA) ...
+						NNxMLP_FeatureImportanceBrainSurfacePP_Measure.D ...
+						];
+				case Category.PARAMETER
+					prop_list = [ ...
+						PanelProp.getProps(Category.PARAMETER) ...
+						NNxMLP_FeatureImportanceBrainSurfacePP_Measure.BA ...
+						];
+				case Category.DATA
+					prop_list = [ ...
+						PanelProp.getProps(Category.DATA) ...
+						NNxMLP_FeatureImportanceBrainSurfacePP_Measure.RESHAPED_PROP ...
+						];
+				case Category.RESULT
+					prop_list = [
+						PanelProp.getProps(Category.RESULT) ...
+						];
+				case Category.QUERY
+					prop_list = [ ...
+						PanelProp.getProps(Category.QUERY) ...
+						];
+				case Category.EVANESCENT
+					prop_list = [ ...
+						PanelProp.getProps(Category.EVANESCENT) ...
+						NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE ...
+						NNxMLP_FeatureImportanceBrainSurfacePP_Measure.CONTEXTMENU ...
+						];
+				case Category.FIGURE
+					prop_list = [ ...
+						PanelProp.getProps(Category.FIGURE) ...
+						];
+				case Category.GUI
+					prop_list = [ ...
+						PanelProp.getProps(Category.GUI) ...
+						NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ENABLE ...
+						NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ROWNAME ...
+						NNxMLP_FeatureImportanceBrainSurfacePP_Measure.COLUMNNAME ...
+						NNxMLP_FeatureImportanceBrainSurfacePP_Measure.MENU_EXPORT ...
+						NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE_HEIGHT ...
+						NNxMLP_FeatureImportanceBrainSurfacePP_Measure.SELECTED ...
+						NNxMLP_FeatureImportanceBrainSurfacePP_Measure.GUI_B_DICT ...
+						NNxMLP_FeatureImportanceBrainSurfacePP_Measure.GUI_FI_DICT ...
+						];
 			end
 		end
 		function prop_number = getPropNumber(varargin)
@@ -390,33 +335,7 @@ classdef NNxMLP_FeatureImportanceBrainSurfacePP_Measure < PanelProp
 			%
 			% See also getProps, Category.
 			
-			%CET: Computational Efficiency Trick
-			
-			if nargin == 0
-				prop_number = 48;
-				return
-			end
-			
-			switch varargin{1} % category = varargin{1}
-				case 1 % Category.CONSTANT
-					prop_number = 3;
-				case 2 % Category.METADATA
-					prop_number = 3;
-				case 3 % Category.PARAMETER
-					prop_number = 2;
-				case 4 % Category.DATA
-					prop_number = 5;
-				case 6 % Category.QUERY
-					prop_number = 10;
-				case 7 % Category.EVANESCENT
-					prop_number = 12;
-				case 8 % Category.FIGURE
-					prop_number = 1;
-				case 9 % Category.GUI
-					prop_number = 12;
-				otherwise
-					prop_number = 0;
-			end
+			prop_number = numel(NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getProps(varargin{:}));
 		end
 		function check_out = existsProp(prop)
 			%EXISTSPROP checks whether property exists in panel property feature importance/error.
@@ -444,14 +363,14 @@ classdef NNxMLP_FeatureImportanceBrainSurfacePP_Measure < PanelProp
 			%
 			% See also getProps, existsTag.
 			
-			check = prop >= 1 && prop <= 48 && round(prop) == prop; %CET: Computational Efficiency Trick
+			check = any(prop == NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getProps());
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					['BRAPH2' ':NNxMLP_FeatureImportanceBrainSurfacePP_Measure:' 'WrongInput'], ...
-					['BRAPH2' ':NNxMLP_FeatureImportanceBrainSurfacePP_Measure:' 'WrongInput' '\n' ...
+					[BRAPH2.STR ':NNxMLP_FeatureImportanceBrainSurfacePP_Measure:' BRAPH2.WRONG_INPUT], ...
+					[BRAPH2.STR ':NNxMLP_FeatureImportanceBrainSurfacePP_Measure:' BRAPH2.WRONG_INPUT '\n' ...
 					'The value ' tostring(prop, 100, ' ...') ' is not a valid prop for NNxMLP_FeatureImportanceBrainSurfacePP_Measure.'] ...
 					)
 			end
@@ -482,14 +401,15 @@ classdef NNxMLP_FeatureImportanceBrainSurfacePP_Measure < PanelProp
 			%
 			% See also getProps, existsTag.
 			
-			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'H_WAITBAR'  'DRAW'  'DRAWN'  'PARENT'  'BKGCOLOR'  'H'  'SHOW'  'HIDE'  'DELETE'  'CLOSE'  'X_DRAW'  'UPDATE'  'REDRAW'  'EL'  'PROP'  'HEIGHT'  'TITLE'  'LABEL_TITLE'  'BUTTON_CB'  'GUI_CB'  'LISTENER_CB'  'BUTTON_CALC'  'BUTTON_DEL'  'LISTENER_SET'  'LISTENER_MEMORIZED'  'LISTENER_LOCKED'  'D'  'RESHAPED_PROP'  'BA'  'ENABLE'  'ROWNAME'  'COLUMNNAME'  'MENU_EXPORT'  'TABLE_HEIGHT'  'SELECTED'  'TABLE'  'CONTEXTMENU'  'GUI_B_DICT'  'GUI_FI_DICT' })); %CET: Computational Efficiency Trick
+			nnxmlp_featureimportancebrainsurfacepp_measure_tag_list = cellfun(@(x) NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropTag(x), num2cell(NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getProps()), 'UniformOutput', false);
+			check = any(strcmp(tag, nnxmlp_featureimportancebrainsurfacepp_measure_tag_list));
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					['BRAPH2' ':NNxMLP_FeatureImportanceBrainSurfacePP_Measure:' 'WrongInput'], ...
-					['BRAPH2' ':NNxMLP_FeatureImportanceBrainSurfacePP_Measure:' 'WrongInput' '\n' ...
+					[BRAPH2.STR ':NNxMLP_FeatureImportanceBrainSurfacePP_Measure:' BRAPH2.WRONG_INPUT], ...
+					[BRAPH2.STR ':NNxMLP_FeatureImportanceBrainSurfacePP_Measure:' BRAPH2.WRONG_INPUT '\n' ...
 					'The value ' tag ' is not a valid tag for NNxMLP_FeatureImportanceBrainSurfacePP_Measure.'] ...
 					)
 			end
@@ -515,7 +435,8 @@ classdef NNxMLP_FeatureImportanceBrainSurfacePP_Measure < PanelProp
 			%  getPropSettings, getPropDefault, checkProp.
 			
 			if ischar(pointer)
-				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'H_WAITBAR'  'DRAW'  'DRAWN'  'PARENT'  'BKGCOLOR'  'H'  'SHOW'  'HIDE'  'DELETE'  'CLOSE'  'X_DRAW'  'UPDATE'  'REDRAW'  'EL'  'PROP'  'HEIGHT'  'TITLE'  'LABEL_TITLE'  'BUTTON_CB'  'GUI_CB'  'LISTENER_CB'  'BUTTON_CALC'  'BUTTON_DEL'  'LISTENER_SET'  'LISTENER_MEMORIZED'  'LISTENER_LOCKED'  'D'  'RESHAPED_PROP'  'BA'  'ENABLE'  'ROWNAME'  'COLUMNNAME'  'MENU_EXPORT'  'TABLE_HEIGHT'  'SELECTED'  'TABLE'  'CONTEXTMENU'  'GUI_B_DICT'  'GUI_FI_DICT' })); % tag = pointer %CET: Computational Efficiency Trick
+				nnxmlp_featureimportancebrainsurfacepp_measure_tag_list = cellfun(@(x) NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropTag(x), num2cell(NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getProps()), 'UniformOutput', false);
+				prop = find(strcmp(pointer, nnxmlp_featureimportancebrainsurfacepp_measure_tag_list)); % tag = pointer
 			else % numeric
 				prop = pointer;
 			end
@@ -543,9 +464,38 @@ classdef NNxMLP_FeatureImportanceBrainSurfacePP_Measure < PanelProp
 			if ischar(pointer)
 				tag = pointer;
 			else % numeric
-				%CET: Computational Efficiency Trick
-				nnxmlp_featureimportancebrainsurfacepp_measure_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'H_WAITBAR'  'DRAW'  'DRAWN'  'PARENT'  'BKGCOLOR'  'H'  'SHOW'  'HIDE'  'DELETE'  'CLOSE'  'X_DRAW'  'UPDATE'  'REDRAW'  'EL'  'PROP'  'HEIGHT'  'TITLE'  'LABEL_TITLE'  'BUTTON_CB'  'GUI_CB'  'LISTENER_CB'  'BUTTON_CALC'  'BUTTON_DEL'  'LISTENER_SET'  'LISTENER_MEMORIZED'  'LISTENER_LOCKED'  'D'  'RESHAPED_PROP'  'BA'  'ENABLE'  'ROWNAME'  'COLUMNNAME'  'MENU_EXPORT'  'TABLE_HEIGHT'  'SELECTED'  'TABLE'  'CONTEXTMENU'  'GUI_B_DICT'  'GUI_FI_DICT' };
-				tag = nnxmlp_featureimportancebrainsurfacepp_measure_tag_list{pointer}; % prop = pointer
+				prop = pointer;
+				
+				switch prop
+					case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.D
+						tag = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.D_TAG;
+					case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.RESHAPED_PROP
+						tag = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.RESHAPED_PROP_TAG;
+					case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.BA
+						tag = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.BA_TAG;
+					case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ENABLE
+						tag = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ENABLE_TAG;
+					case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ROWNAME
+						tag = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ROWNAME_TAG;
+					case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.COLUMNNAME
+						tag = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.COLUMNNAME_TAG;
+					case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.MENU_EXPORT
+						tag = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.MENU_EXPORT_TAG;
+					case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE_HEIGHT
+						tag = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE_HEIGHT_TAG;
+					case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.SELECTED
+						tag = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.SELECTED_TAG;
+					case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE
+						tag = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE_TAG;
+					case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.CONTEXTMENU
+						tag = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.CONTEXTMENU_TAG;
+					case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.GUI_B_DICT
+						tag = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.GUI_B_DICT_TAG;
+					case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.GUI_FI_DICT
+						tag = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.GUI_FI_DICT_TAG;
+					otherwise
+						tag = getPropTag@PanelProp(prop);
+				end
 			end
 		end
 		function prop_category = getPropCategory(pointer)
@@ -570,9 +520,36 @@ classdef NNxMLP_FeatureImportanceBrainSurfacePP_Measure < PanelProp
 			
 			prop = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropProp(pointer);
 			
-			%CET: Computational Efficiency Trick
-			nnxmlp_featureimportancebrainsurfacepp_measure_category_list = { 1  1  1  3  4  2  2  6  9  7  6  6  9  8  7  6  6  6  6  6  6  6  4  4  9  9  7  7  4  7  7  7  7  7  7  2  4  3  9  9  9  9  9  9  7  7  9  9 };
-			prop_category = nnxmlp_featureimportancebrainsurfacepp_measure_category_list{prop};
+			switch prop
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.D
+					prop_category = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.D_CATEGORY;
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.RESHAPED_PROP
+					prop_category = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.RESHAPED_PROP_CATEGORY;
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.BA
+					prop_category = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.BA_CATEGORY;
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ENABLE
+					prop_category = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ENABLE_CATEGORY;
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ROWNAME
+					prop_category = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ROWNAME_CATEGORY;
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.COLUMNNAME
+					prop_category = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.COLUMNNAME_CATEGORY;
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.MENU_EXPORT
+					prop_category = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.MENU_EXPORT_CATEGORY;
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE_HEIGHT
+					prop_category = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE_HEIGHT_CATEGORY;
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.SELECTED
+					prop_category = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.SELECTED_CATEGORY;
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE
+					prop_category = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE_CATEGORY;
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.CONTEXTMENU
+					prop_category = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.CONTEXTMENU_CATEGORY;
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.GUI_B_DICT
+					prop_category = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.GUI_B_DICT_CATEGORY;
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.GUI_FI_DICT
+					prop_category = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.GUI_FI_DICT_CATEGORY;
+				otherwise
+					prop_category = getPropCategory@PanelProp(prop);
+			end
 		end
 		function prop_format = getPropFormat(pointer)
 			%GETPROPFORMAT returns the format of a property.
@@ -596,9 +573,36 @@ classdef NNxMLP_FeatureImportanceBrainSurfacePP_Measure < PanelProp
 			
 			prop = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropProp(pointer);
 			
-			%CET: Computational Efficiency Trick
-			nnxmlp_featureimportancebrainsurfacepp_measure_format_list = { 2  2  2  8  2  2  2  2  4  18  4  4  8  20  18  4  4  4  4  4  4  4  8  11  22  2  18  18  8  18  18  18  19  19  19  8  11  8  5  3  3  4  22  13  18  18  10  10 };
-			prop_format = nnxmlp_featureimportancebrainsurfacepp_measure_format_list{prop};
+			switch prop
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.D
+					prop_format = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.D_FORMAT;
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.RESHAPED_PROP
+					prop_format = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.RESHAPED_PROP_FORMAT;
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.BA
+					prop_format = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.BA_FORMAT;
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ENABLE
+					prop_format = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ENABLE_FORMAT;
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ROWNAME
+					prop_format = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ROWNAME_FORMAT;
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.COLUMNNAME
+					prop_format = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.COLUMNNAME_FORMAT;
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.MENU_EXPORT
+					prop_format = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.MENU_EXPORT_FORMAT;
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE_HEIGHT
+					prop_format = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE_HEIGHT_FORMAT;
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.SELECTED
+					prop_format = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.SELECTED_FORMAT;
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE
+					prop_format = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE_FORMAT;
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.CONTEXTMENU
+					prop_format = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.CONTEXTMENU_FORMAT;
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.GUI_B_DICT
+					prop_format = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.GUI_B_DICT_FORMAT;
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.GUI_FI_DICT
+					prop_format = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.GUI_FI_DICT_FORMAT;
+				otherwise
+					prop_format = getPropFormat@PanelProp(prop);
+			end
 		end
 		function prop_description = getPropDescription(pointer)
 			%GETPROPDESCRIPTION returns the description of a property.
@@ -622,9 +626,68 @@ classdef NNxMLP_FeatureImportanceBrainSurfacePP_Measure < PanelProp
 			
 			prop = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropProp(pointer);
 			
-			%CET: Computational Efficiency Trick
-			nnxmlp_featureimportancebrainsurfacepp_measure_description_list = { 'ELCLASS (constant, string) is the class of the panel for feature importance.'  'NAME (constant, string) is the name of the panel for feature importance.'  'DESCRIPTION (constant, string) is the description of the panel for feature importance.'  'TEMPLATE (parameter, item) is the template of the panel for feature importance.'  'ID (data, string) is a few-letter code for the panel for feature importance.'  'LABEL (metadata, string) is an extended label of the panel for feature importance.'  'NOTES (metadata, string) are some specific notes about the panel for feature importance.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'WAITBAR (gui, logical) detemines whether to show the waitbar.'  'H_WAITBAR (evanescent, handle) is the waitbar handle.'  'DRAW (query, logical) draws the property panel.'  'DRAWN (query, logical) returns whether the panel has been drawn.'  'PARENT (gui, item) is the panel parent.'  'BKGCOLOR (figure, color) is the panel background color.'  'H (evanescent, handle) is the panel handle.'  'SHOW (query, logical) shows the figure containing the panel and, possibly, the item figures.'  'HIDE (query, logical) hides the figure containing the panel and, possibly, the item figures.'  'DELETE (query, logical) resets the handles when the panel is deleted.'  'CLOSE (query, logical) closes the figure containing the panel and, possibly, the item figures.'  'X_DRAW (query, logical) draws the prop panel.'  'UPDATE (query, logical) updates the content and permissions of the table.'  'REDRAW (query, logical) resizes the prop panel and repositions its graphical objects.'  'EL (data, item) is the element.'  'PROP (data, scalar) is the prop number.'  'HEIGHT (gui, size) is the pixel height of the prop panel.'  'TITLE (gui, string) is the property title.'  'LABEL_TITLE (evanescent, handle) is the handle for the title uilabel.'  'BUTTON_CB (evanescent, handle) is the handle for the callback button [only for PARAMETER, DATA, FIGURE and GUI].'  'GUI_CB (data, item) is the handle to the item figure.'  'LISTENER_CB (evanescent, handle) contains the listener to the updates in the property callback.'  'BUTTON_CALC (evanescent, handle) is the handle for the calculate button [only for RESULT, QUERY and EVANESCENT].'  'BUTTON_DEL (evanescent, handle) is the handle for the delete button [only for RESULT, QUERY and EVANESCENT].'  'LISTENER_SET (evanescent, handlelist) contains the listeners to the PropSet events.'  'LISTENER_MEMORIZED (evanescent, handlelist) contains the listeners to the PropMemorized events.'  'LISTENER_LOCKED (evanescent, handlelist) contains the listeners to the PropLocked events.'  'D (metadata, item) is the input dataset.'  'RESHAPED_PROP (data, scalar) is the prop number for the reshaped prop.'  'BA (parameter, item) is the brain atlas.'  'ENABLE (gui, option) switches table between on and off.'  'ROWNAME (gui, stringlist) determines the table row names.'  'COLUMNNAME (gui, stringlist) determines the table column names.'  'MENU_EXPORT (gui, logical) determines whether to show the context menu to export data.'  'TABLE_HEIGHT (gui, size) is the pixel height of the prop panel when the table is shown.'  'SELECTED (gui, cvector) is the list of selected items.'  'TABLE (evanescent, handle) is the table.'  'CONTEXTMENU (evanescent, handle) is the context menu.'  'GUI_B_DICT (gui, idict) contains the GUIs for the brain measures.'  'GUI_FI_DICT (gui, idict) contains the GUIs for the feature measures.' };
-			prop_description = nnxmlp_featureimportancebrainsurfacepp_measure_description_list{prop};
+			switch prop
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.D
+					prop_description = 'D (metadata, item) is the input dataset.';
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.RESHAPED_PROP
+					prop_description = 'RESHAPED_PROP (data, scalar) is the prop number for the reshaped prop.';
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.BA
+					prop_description = 'BA (parameter, item) is the brain atlas.';
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ENABLE
+					prop_description = 'ENABLE (gui, option) switches table between on and off.';
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ROWNAME
+					prop_description = 'ROWNAME (gui, stringlist) determines the table row names.';
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.COLUMNNAME
+					prop_description = 'COLUMNNAME (gui, stringlist) determines the table column names.';
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.MENU_EXPORT
+					prop_description = 'MENU_EXPORT (gui, logical) determines whether to show the context menu to export data.';
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE_HEIGHT
+					prop_description = 'TABLE_HEIGHT (gui, size) is the pixel height of the prop panel when the table is shown.';
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.SELECTED
+					prop_description = 'SELECTED (gui, cvector) is the list of selected items.';
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE
+					prop_description = 'TABLE (evanescent, handle) is the table.';
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.CONTEXTMENU
+					prop_description = 'CONTEXTMENU (evanescent, handle) is the context menu.';
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.GUI_B_DICT
+					prop_description = 'GUI_B_DICT (gui, idict) contains the GUIs for the brain measures.';
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.GUI_FI_DICT
+					prop_description = 'GUI_FI_DICT (gui, idict) contains the GUIs for the feature measures.';
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ELCLASS
+					prop_description = 'ELCLASS (constant, string) is the class of the panel for feature importance.';
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.NAME
+					prop_description = 'NAME (constant, string) is the name of the panel for feature importance.';
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.DESCRIPTION
+					prop_description = 'DESCRIPTION (constant, string) is the description of the panel for feature importance.';
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TEMPLATE
+					prop_description = 'TEMPLATE (parameter, item) is the template of the panel for feature importance.';
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ID
+					prop_description = 'ID (data, string) is a few-letter code for the panel for feature importance.';
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.LABEL
+					prop_description = 'LABEL (metadata, string) is an extended label of the panel for feature importance.';
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.NOTES
+					prop_description = 'NOTES (metadata, string) are some specific notes about the panel for feature importance.';
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.EL
+					prop_description = 'EL (data, item) is the element.';
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.PROP
+					prop_description = 'PROP (data, scalar) is the prop number.';
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.X_DRAW
+					prop_description = 'X_DRAW (query, logical) draws the prop panel.';
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.UPDATE
+					prop_description = 'UPDATE (query, logical) updates the content and permissions of the table.';
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.REDRAW
+					prop_description = 'REDRAW (query, logical) resizes the prop panel and repositions its graphical objects.';
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.SHOW
+					prop_description = 'SHOW (query, logical) shows the figure containing the panel and, possibly, the item figures.';
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.HIDE
+					prop_description = 'HIDE (query, logical) hides the figure containing the panel and, possibly, the item figures.';
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.DELETE
+					prop_description = 'DELETE (query, logical) resets the handles when the panel is deleted.';
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.CLOSE
+					prop_description = 'CLOSE (query, logical) closes the figure containing the panel and, possibly, the item figures.';
+				otherwise
+					prop_description = getPropDescription@PanelProp(prop);
+			end
 		end
 		function prop_settings = getPropSettings(pointer)
 			%GETPROPSETTINGS returns the settings of a property.
@@ -648,34 +711,34 @@ classdef NNxMLP_FeatureImportanceBrainSurfacePP_Measure < PanelProp
 			
 			prop = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropProp(pointer);
 			
-			switch prop %CET: Computational Efficiency Trick
-				case 36 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.D
-					prop_settings = Format.getFormatSettings(8);
-				case 37 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.RESHAPED_PROP
-					prop_settings = Format.getFormatSettings(11);
-				case 38 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.BA
+			switch prop
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.D
+					prop_settings = Format.getFormatSettings(Format.ITEM);
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.RESHAPED_PROP
+					prop_settings = Format.getFormatSettings(Format.SCALAR);
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.BA
 					prop_settings = 'BrainAtlas';
-				case 39 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ENABLE
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ENABLE
 					prop_settings = {'on', 'off'};
-				case 40 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ROWNAME
-					prop_settings = Format.getFormatSettings(3);
-				case 41 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.COLUMNNAME
-					prop_settings = Format.getFormatSettings(3);
-				case 42 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.MENU_EXPORT
-					prop_settings = Format.getFormatSettings(4);
-				case 43 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE_HEIGHT
-					prop_settings = Format.getFormatSettings(22);
-				case 44 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.SELECTED
-					prop_settings = Format.getFormatSettings(13);
-				case 45 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE
-					prop_settings = Format.getFormatSettings(18);
-				case 46 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.CONTEXTMENU
-					prop_settings = Format.getFormatSettings(18);
-				case 47 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.GUI_B_DICT
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ROWNAME
+					prop_settings = Format.getFormatSettings(Format.STRINGLIST);
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.COLUMNNAME
+					prop_settings = Format.getFormatSettings(Format.STRINGLIST);
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.MENU_EXPORT
+					prop_settings = Format.getFormatSettings(Format.LOGICAL);
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE_HEIGHT
+					prop_settings = Format.getFormatSettings(Format.SIZE);
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.SELECTED
+					prop_settings = Format.getFormatSettings(Format.CVECTOR);
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE
+					prop_settings = Format.getFormatSettings(Format.HANDLE);
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.CONTEXTMENU
+					prop_settings = Format.getFormatSettings(Format.HANDLE);
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.GUI_B_DICT
 					prop_settings = 'GUIFig';
-				case 48 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.GUI_FI_DICT
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.GUI_FI_DICT
 					prop_settings = 'GUIElement';
-				case 4 % NNxMLP_FeatureImportanceBrainSurfacePP_4
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TEMPLATE
 					prop_settings = 'NNxMLP_FeatureImportanceBrainSurfacePP_Measure';
 				otherwise
 					prop_settings = getPropSettings@PanelProp(prop);
@@ -703,51 +766,51 @@ classdef NNxMLP_FeatureImportanceBrainSurfacePP_Measure < PanelProp
 			
 			prop = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropProp(pointer);
 			
-			switch prop %CET: Computational Efficiency Trick
-				case 36 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.D
+			switch prop
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.D
 					prop_default = NNDataset();
-				case 37 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.RESHAPED_PROP
-					prop_default = 25;
-				case 38 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.BA
-					prop_default = Format.getFormatDefault(8, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
-				case 39 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ENABLE
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.RESHAPED_PROP
+					prop_default = NNxMLP_FeatureImportanceBrainSurface.RESHAPED_FEATURE_IMPORTANCE;
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.BA
+					prop_default = Format.getFormatDefault(Format.ITEM, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ENABLE
 					prop_default = 'on';
-				case 40 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ROWNAME
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ROWNAME
 					prop_default = {'numbered'};
-				case 41 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.COLUMNNAME
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.COLUMNNAME
 					prop_default = {'numbered'};
-				case 42 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.MENU_EXPORT
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.MENU_EXPORT
 					prop_default = true;
-				case 43 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE_HEIGHT
-					prop_default = 240;
-				case 44 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.SELECTED
-					prop_default = Format.getFormatDefault(13, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
-				case 45 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE
-					prop_default = Format.getFormatDefault(18, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
-				case 46 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.CONTEXTMENU
-					prop_default = Format.getFormatDefault(18, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
-				case 47 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.GUI_B_DICT
-					prop_default = Format.getFormatDefault(10, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
-				case 48 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.GUI_FI_DICT
-					prop_default = Format.getFormatDefault(10, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
-				case 1 % NNxMLP_FeatureImportanceBrainSurfacePP_1
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE_HEIGHT
+					prop_default = s(20);
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.SELECTED
+					prop_default = Format.getFormatDefault(Format.CVECTOR, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE
+					prop_default = Format.getFormatDefault(Format.HANDLE, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.CONTEXTMENU
+					prop_default = Format.getFormatDefault(Format.HANDLE, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.GUI_B_DICT
+					prop_default = Format.getFormatDefault(Format.IDICT, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.GUI_FI_DICT
+					prop_default = Format.getFormatDefault(Format.IDICT, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ELCLASS
 					prop_default = 'NNxMLP_FeatureImportanceBrainSurfacePP_Measure';
-				case 2 % NNxMLP_FeatureImportanceBrainSurfacePP_2
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.NAME
 					prop_default = 'A Panel for Neural Networks Feature Importance';
-				case 3 % NNxMLP_FeatureImportanceBrainSurfacePP_3
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.DESCRIPTION
 					prop_default = 'A panel for neural networks feature importance analysis with the graph measures of the subjects (NNxMLP_FeatureImportanceBrainSurfacePP_Measure) plots the panel to show the feature importance values, matching the layer number and node number of the graph measures.';
-				case 4 % NNxMLP_FeatureImportanceBrainSurfacePP_4
-					prop_default = Format.getFormatDefault(8, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
-				case 5 % NNxMLP_FeatureImportanceBrainSurfacePP_5
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TEMPLATE
+					prop_default = Format.getFormatDefault(Format.ITEM, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ID
 					prop_default = 'NNxMLP_FeatureImportanceBrainSurfacePP_Measure ID';
-				case 6 % NNxMLP_FeatureImportanceBrainSurfacePP_6
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.LABEL
 					prop_default = 'NNxMLP_FeatureImportanceBrainSurfacePP_Measure label';
-				case 7 % NNxMLP_FeatureImportanceBrainSurfacePP_7
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.NOTES
 					prop_default = 'NNxMLP_FeatureImportanceBrainSurfacePP_Measure notes';
-				case 23 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.EL
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.EL
 					prop_default = NNxMLP_FeatureImportanceBrainSurface();
-				case 24 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.PROP
-					prop_default = 24;
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.PROP
+					prop_default = NNxMLP_FeatureImportanceBrainSurface.FEATURE_IMPORTANCE;
 				otherwise
 					prop_default = getPropDefault@PanelProp(prop);
 			end
@@ -787,8 +850,8 @@ classdef NNxMLP_FeatureImportanceBrainSurfacePP_Measure < PanelProp
 			%  By default, this function does not do anything, so it should be
 			%  implemented in the subclasses of Element when needed.
 			%
-			% Conditioning is only used for props of 2,
-			%  3, 4, 8 and 9.
+			% Conditioning is only used for props of Category.METADATA,
+			%  Category.PARAMETER, Category.DATA, Category.FIGURE and Category.GUI.
 			%
 			% See also preset, checkProp, postset, postprocessing, calculateValue,
 			%  checkValue.
@@ -796,13 +859,13 @@ classdef NNxMLP_FeatureImportanceBrainSurfacePP_Measure < PanelProp
 			prop = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropProp(pointer);
 			
 			switch prop
-				case 44 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.SELECTED
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.SELECTED % __NNxMLP_FeatureImportanceBrainSurfacePP_Measure.SELECTED__
 					if isrow(value)
 					    value = value';
 					end
 					
 				otherwise
-					if prop <= 35
+					if prop <= PanelProp.getPropNumber()
 						value = conditioning@PanelProp(pointer, value);
 					end
 			end
@@ -823,15 +886,15 @@ classdef NNxMLP_FeatureImportanceBrainSurfacePP_Measure < PanelProp
 			% 
 			% PR.CHECKPROP(POINTER, VALUE) throws an error if VALUE is
 			%  NOT an acceptable value for the format of the property POINTER.
-			%  Error id: BRAPH2:NNxMLP_FeatureImportanceBrainSurfacePP_Measure:WrongInput
+			%  Error id: €BRAPH2.STR€:NNxMLP_FeatureImportanceBrainSurfacePP_Measure:€BRAPH2.WRONG_INPUT€
 			% 
 			% Alternative forms to call this method are (POINTER = PROP or TAG):
 			%  PR.CHECKPROP(POINTER, VALUE) throws error if VALUE has not a valid format for PROP of PR.
-			%   Error id: BRAPH2:NNxMLP_FeatureImportanceBrainSurfacePP_Measure:WrongInput
+			%   Error id: €BRAPH2.STR€:NNxMLP_FeatureImportanceBrainSurfacePP_Measure:€BRAPH2.WRONG_INPUT€
 			%  Element.CHECKPROP(NNxMLP_FeatureImportanceBrainSurfacePP_Measure, PROP, VALUE) throws error if VALUE has not a valid format for PROP of NNxMLP_FeatureImportanceBrainSurfacePP_Measure.
-			%   Error id: BRAPH2:NNxMLP_FeatureImportanceBrainSurfacePP_Measure:WrongInput
+			%   Error id: €BRAPH2.STR€:NNxMLP_FeatureImportanceBrainSurfacePP_Measure:€BRAPH2.WRONG_INPUT€
 			%  PR.CHECKPROP(NNxMLP_FeatureImportanceBrainSurfacePP_Measure, PROP, VALUE) throws error if VALUE has not a valid format for PROP of NNxMLP_FeatureImportanceBrainSurfacePP_Measure.
-			%   Error id: BRAPH2:NNxMLP_FeatureImportanceBrainSurfacePP_Measure:WrongInput]
+			%   Error id: €BRAPH2.STR€:NNxMLP_FeatureImportanceBrainSurfacePP_Measure:€BRAPH2.WRONG_INPUT€]
 			% 
 			% Note that the Element.CHECKPROP(PR) and Element.CHECKPROP('NNxMLP_FeatureImportanceBrainSurfacePP_Measure')
 			%  are less computationally efficient.
@@ -842,36 +905,36 @@ classdef NNxMLP_FeatureImportanceBrainSurfacePP_Measure < PanelProp
 			prop = NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropProp(pointer);
 			
 			switch prop
-				case 36 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.D
-					check = Format.checkFormat(8, value, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
-				case 37 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.RESHAPED_PROP
-					check = Format.checkFormat(11, value, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
-				case 38 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.BA
-					check = Format.checkFormat(8, value, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
-				case 39 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ENABLE
-					check = Format.checkFormat(5, value, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
-				case 40 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ROWNAME
-					check = Format.checkFormat(3, value, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
-				case 41 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.COLUMNNAME
-					check = Format.checkFormat(3, value, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
-				case 42 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.MENU_EXPORT
-					check = Format.checkFormat(4, value, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
-				case 43 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE_HEIGHT
-					check = Format.checkFormat(22, value, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
-				case 44 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.SELECTED
-					check = Format.checkFormat(13, value, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
-				case 45 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE
-					check = Format.checkFormat(18, value, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
-				case 46 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.CONTEXTMENU
-					check = Format.checkFormat(18, value, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
-				case 47 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.GUI_B_DICT
-					check = Format.checkFormat(10, value, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
-				case 48 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.GUI_FI_DICT
-					check = Format.checkFormat(10, value, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
-				case 4 % NNxMLP_FeatureImportanceBrainSurfacePP_4
-					check = Format.checkFormat(8, value, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.D % __NNxMLP_FeatureImportanceBrainSurfacePP_Measure.D__
+					check = Format.checkFormat(Format.ITEM, value, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.RESHAPED_PROP % __NNxMLP_FeatureImportanceBrainSurfacePP_Measure.RESHAPED_PROP__
+					check = Format.checkFormat(Format.SCALAR, value, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.BA % __NNxMLP_FeatureImportanceBrainSurfacePP_Measure.BA__
+					check = Format.checkFormat(Format.ITEM, value, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ENABLE % __NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ENABLE__
+					check = Format.checkFormat(Format.OPTION, value, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ROWNAME % __NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ROWNAME__
+					check = Format.checkFormat(Format.STRINGLIST, value, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.COLUMNNAME % __NNxMLP_FeatureImportanceBrainSurfacePP_Measure.COLUMNNAME__
+					check = Format.checkFormat(Format.STRINGLIST, value, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.MENU_EXPORT % __NNxMLP_FeatureImportanceBrainSurfacePP_Measure.MENU_EXPORT__
+					check = Format.checkFormat(Format.LOGICAL, value, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE_HEIGHT % __NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE_HEIGHT__
+					check = Format.checkFormat(Format.SIZE, value, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.SELECTED % __NNxMLP_FeatureImportanceBrainSurfacePP_Measure.SELECTED__
+					check = Format.checkFormat(Format.CVECTOR, value, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE % __NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE__
+					check = Format.checkFormat(Format.HANDLE, value, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.CONTEXTMENU % __NNxMLP_FeatureImportanceBrainSurfacePP_Measure.CONTEXTMENU__
+					check = Format.checkFormat(Format.HANDLE, value, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.GUI_B_DICT % __NNxMLP_FeatureImportanceBrainSurfacePP_Measure.GUI_B_DICT__
+					check = Format.checkFormat(Format.IDICT, value, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.GUI_FI_DICT % __NNxMLP_FeatureImportanceBrainSurfacePP_Measure.GUI_FI_DICT__
+					check = Format.checkFormat(Format.IDICT, value, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TEMPLATE % __NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TEMPLATE__
+					check = Format.checkFormat(Format.ITEM, value, NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropSettings(prop));
 				otherwise
-					if prop <= 35
+					if prop <= PanelProp.getPropNumber()
 						check = checkProp@PanelProp(prop, value);
 					end
 			end
@@ -880,8 +943,8 @@ classdef NNxMLP_FeatureImportanceBrainSurfacePP_Measure < PanelProp
 				prop_check = check;
 			elseif ~check
 				error( ...
-					['BRAPH2' ':NNxMLP_FeatureImportanceBrainSurfacePP_Measure:' 'WrongInput'], ...
-					['BRAPH2' ':NNxMLP_FeatureImportanceBrainSurfacePP_Measure:' 'WrongInput' '\n' ...
+					[BRAPH2.STR ':NNxMLP_FeatureImportanceBrainSurfacePP_Measure:' BRAPH2.WRONG_INPUT], ...
+					[BRAPH2.STR ':NNxMLP_FeatureImportanceBrainSurfacePP_Measure:' BRAPH2.WRONG_INPUT '\n' ...
 					'The value ' tostring(value, 100, ' ...') ' is not a valid property ' NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropTag(prop) ' (' NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getFormatTag(NNxMLP_FeatureImportanceBrainSurfacePP_Measure.getPropFormat(prop)) ').'] ...
 					)
 			end
@@ -901,18 +964,18 @@ classdef NNxMLP_FeatureImportanceBrainSurfacePP_Measure < PanelProp
 			%  checkValue.
 			
 			switch prop
-				case 40 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ROWNAME
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ROWNAME % __NNxMLP_FeatureImportanceBrainSurfacePP_Measure.ROWNAME__
 					if pr.get('DRAWN')
 					    pr.get('UPDATE')
 					end
 					
-				case 41 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.COLUMNNAME
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.COLUMNNAME % __NNxMLP_FeatureImportanceBrainSurfacePP_Measure.COLUMNNAME__
 					if pr.get('DRAWN')
 					    pr.get('UPDATE')
 					end
 					
 				otherwise
-					if prop <= 35
+					if prop <= PanelProp.getPropNumber()
 						postset@PanelProp(pr, prop);
 					end
 			end
@@ -923,23 +986,23 @@ classdef NNxMLP_FeatureImportanceBrainSurfacePP_Measure < PanelProp
 			%CALCULATEVALUE calculates the value of a property.
 			%
 			% VALUE = CALCULATEVALUE(EL, PROP) calculates the value of the property
-			%  PROP. It works only with properties with 5,
-			%  6, and 7. By default this function
+			%  PROP. It works only with properties with Category.RESULT,
+			%  Category.QUERY, and Category.EVANESCENT. By default this function
 			%  returns the default value for the prop and should be implemented in the
 			%  subclasses of Element when needed.
 			%
 			% VALUE = CALCULATEVALUE(EL, PROP, VARARGIN) works with properties with
-			%  6.
+			%  Category.QUERY.
 			%
 			% See also getPropDefaultConditioned, conditioning, preset, checkProp,
 			%  postset, postprocessing, checkValue.
 			
 			switch prop
-				case 45 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE % __NNxMLP_FeatureImportanceBrainSurfacePP_Measure.TABLE__
 					table = uitable( ...
 					    'Parent', pr.memorize('H'), ... % H = p for Panel
 					    'Tag', 'table', ...
-					    'FontSize', 12, ...
+					    'FontSize', BRAPH2.FONTSIZE, ...
 					    'ColumnSortable', true, ...
 					    'ColumnName', {'', 'Measure', 'Shape', 'Scope', 'Notes'}, ...
 					    'ColumnFormat', {'logical',  'char', 'char', 'char', 'char'}, ...
@@ -949,7 +1012,7 @@ classdef NNxMLP_FeatureImportanceBrainSurfacePP_Measure < PanelProp
 					    );
 					value = table;
 					
-				case 46 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.CONTEXTMENU
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.CONTEXTMENU % __NNxMLP_FeatureImportanceBrainSurfacePP_Measure.CONTEXTMENU__
 					contextmenu = uicontextmenu( ...
 					    'Parent', ancestor(pr.get('H'), 'figure'), ...
 					    'Tag', 'CONTEXTMENU' ...
@@ -1003,15 +1066,15 @@ classdef NNxMLP_FeatureImportanceBrainSurfacePP_Measure < PanelProp
 					
 					value = contextmenu;
 					
-				case 20 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.X_DRAW
-					value = calculateValue@PanelProp(pr, 20, varargin{:}); % also warning
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.X_DRAW % __NNxMLP_FeatureImportanceBrainSurfacePP_Measure.X_DRAW__
+					value = calculateValue@PanelProp(pr, PanelProp.X_DRAW, varargin{:}); % also warning
 					if value
 					    pr.memorize('TABLE')
 					    pr.memorize('CONTEXTMENU')
 					end
 					
-				case 21 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.UPDATE
-					value = calculateValue@PanelProp(pr, 21, varargin{:}); % also warning
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.UPDATE % __NNxMLP_FeatureImportanceBrainSurfacePP_Measure.UPDATE__
+					value = calculateValue@PanelProp(pr, PanelProp.UPDATE, varargin{:}); % also warning
 					if value
 					    el = pr.get('EL');
 					    prop = pr.get('PROP');
@@ -1027,16 +1090,16 @@ classdef NNxMLP_FeatureImportanceBrainSurfacePP_Measure < PanelProp
 					    end
 					end
 					
-				case 22 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.REDRAW
-					value = calculateValue@PanelProp(pr, 22, varargin{:}); % also warning
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.REDRAW % __NNxMLP_FeatureImportanceBrainSurfacePP_Measure.REDRAW__
+					value = calculateValue@PanelProp(pr, PanelProp.REDRAW, varargin{:}); % also warning
 					if value
 					    w_p = get_from_varargin(w(pr.get('H'), 'pixels'), 'Width', varargin);
 					    
-					    set(pr.get('TABLE'), 'Position', [4 4 w_p-8 max(1, pr.get('HEIGHT')-27)])
+					    set(pr.get('TABLE'), 'Position', [s(.3) s(.3) w_p-s(.6) max(1, pr.get('HEIGHT')-s(2.2))])
 					end
 					
-				case 16 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.SHOW
-					value = calculateValue@PanelProp(pr, 16, varargin{:}); % also warning
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.SHOW % __NNxMLP_FeatureImportanceBrainSurfacePP_Measure.SHOW__
+					value = calculateValue@PanelProp(pr, PanelProp.SHOW, varargin{:}); % also warning
 					if value
 					    % figures for brain figure
 					    gui_b_dict = pr.get('GUI_B_DICT');
@@ -1056,8 +1119,8 @@ classdef NNxMLP_FeatureImportanceBrainSurfacePP_Measure < PanelProp
 					    end
 					end
 					
-				case 17 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.HIDE
-					value = calculateValue@PanelProp(pr, 17, varargin{:}); % also warning
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.HIDE % __NNxMLP_FeatureImportanceBrainSurfacePP_Measure.HIDE__
+					value = calculateValue@PanelProp(pr, PanelProp.HIDE, varargin{:}); % also warning
 					if value
 					    % figures for brain figures
 					    gui_b_dict = pr.get('GUI_B_DICT');
@@ -1077,15 +1140,15 @@ classdef NNxMLP_FeatureImportanceBrainSurfacePP_Measure < PanelProp
 					    end
 					end
 					
-				case 18 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.DELETE
-					value = calculateValue@PanelProp(pr, 18, varargin{:}); % also warning
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.DELETE % __NNxMLP_FeatureImportanceBrainSurfacePP_Measure.DELETE__
+					value = calculateValue@PanelProp(pr, PanelProp.DELETE, varargin{:}); % also warning
 					if value
 					    pr.set('TABLE', Element.getNoValue())
 					    pr.set('CONTEXTMENU', Element.getNoValue())
 					end
 					
-				case 19 % NNxMLP_FeatureImportanceBrainSurfacePP_Measure.CLOSE
-					value = calculateValue@PanelProp(pr, 19, varargin{:}); % also warning
+				case NNxMLP_FeatureImportanceBrainSurfacePP_Measure.CLOSE % __NNxMLP_FeatureImportanceBrainSurfacePP_Measure.CLOSE__
+					value = calculateValue@PanelProp(pr, PanelProp.CLOSE, varargin{:}); % also warning
 					if value
 					    % figures for brain figures
 					    gui_b_dict = pr.get('GUI_B_DICT');
@@ -1106,7 +1169,7 @@ classdef NNxMLP_FeatureImportanceBrainSurfacePP_Measure < PanelProp
 					end
 					
 				otherwise
-					if prop <= 35
+					if prop <= PanelProp.getPropNumber()
 						value = calculateValue@PanelProp(pr, prop, varargin{:});
 					else
 						value = calculateValue@Element(pr, prop, varargin{:});
@@ -1172,31 +1235,31 @@ classdef NNxMLP_FeatureImportanceBrainSurfacePP_Measure < PanelProp
 			
 			            brain_atlas = el.get('BA'); 
 			            switch Element.getPropDefault(measure, 'SHAPE')
-			                case 1 % Measure.GLOBAL
+			                case Measure.GLOBAL % __Measure.GLOBAL__
 			                    switch Element.getPropDefault(measure, 'SCOPE')
-			                        case 1 % Measure.SUPERGLOBAL
+			                        case Measure.SUPERGLOBAL % __Measure.SUPERGLOBAL__
 			                            mbfipf = NNxMLP_FeatureImportanceBrainSurfacePF_GS('FI', value, 'BA', brain_atlas, 'D', input_dataset);
-			                        case 2 % Measure.UNILAYER
+			                        case Measure.UNILAYER % __Measure.UNILAYER__
 			                            mbfipf = NNxMLP_FeatureImportanceBrainSurfacePF_GU('FI', value, 'BA', brain_atlas, 'D', input_dataset);
-			                        case 3 % Measure.BILAYER
+			                        case Measure.BILAYER % __Measure.BILAYER__
 			                            mbfipf = NNxMLP_FeatureImportanceBrainSurfacePF_GB('FI', value, 'BA', brain_atlas, 'D', input_dataset);
 			                    end
-			                case 2 % Measure.NODAL
+			                case Measure.NODAL % __Measure.NODAL__
 			                    switch Element.getPropDefault(measure, 'SCOPE')
-			                        case 1 % Measure.SUPERGLOBAL
+			                        case Measure.SUPERGLOBAL % __Measure.SUPERGLOBAL__
 			                            mbfipf = NNxMLP_FeatureImportanceBrainSurfacePF_NS('FI', value, 'BA', brain_atlas, 'D', input_dataset);
-			                        case 2 % Measure.UNILAYER
+			                        case Measure.UNILAYER % __Measure.UNILAYER__
 			                            mbfipf = NNxMLP_FeatureImportanceBrainSurfacePF_NU('FI', value, 'BA', brain_atlas, 'D', input_dataset);
-			                        case 3 % Measure.BILAYER
+			                        case Measure.BILAYER % __Measure.BILAYER__
 			                            mbfipf = NNxMLP_FeatureImportanceBrainSurfacePF_NB('FI', value, 'BA', brain_atlas, 'D', input_dataset);
 			                    end
-			                case 3 % Measure.BINODAL
+			                case Measure.BINODAL % __Measure.BINODAL__
 			                    switch Element.getPropDefault(measure, 'SCOPE')
-			                        case 1 % Measure.SUPERGLOBAL
+			                        case Measure.SUPERGLOBAL % __Measure.SUPERGLOBAL__
 			                            mbfipf = NNxMLP_FeatureImportanceBrainSurfacePF_BS('FI', value, 'BA', brain_atlas, 'D', input_dataset);
-			                        case 2 % Measure.UNILAYER
+			                        case Measure.UNILAYER % __Measure.UNILAYER__
 			                            mbfipf = NNxMLP_FeatureImportanceBrainSurfacePF_BU('FI', value, 'BA', brain_atlas, 'D', input_dataset);
-			                        case 3 % Measure.BILAYER
+			                        case Measure.BILAYER % __Measure.BILAYER__
 			                            mbfipf = NNxMLP_FeatureImportanceBrainSurfacePF_BB('FI', value, 'BA', brain_atlas, 'D', input_dataset);
 			                    end
 			            end
@@ -1330,19 +1393,19 @@ classdef NNxMLP_FeatureImportanceBrainSurfacePP_Measure < PanelProp
 			
 			        data{mi, 2} = eval([m_list{mi} '.getPropDefault(''NAME'')']);
 			
-			        if Element.getPropDefault(m_list{mi}, 'SHAPE') == 2
+			        if Element.getPropDefault(m_list{mi}, 'SHAPE') == Measure.NODAL
 			            data{mi, 3} = 'NODAL';
-			        elseif Element.getPropDefault(m_list{mi}, 'SHAPE') == 1
+			        elseif Element.getPropDefault(m_list{mi}, 'SHAPE') == Measure.GLOBAL
 			            data{mi, 3} = 'GLOBAL';
-			        elseif Element.getPropDefault(m_list{mi}, 'SHAPE') == 3
+			        elseif Element.getPropDefault(m_list{mi}, 'SHAPE') == Measure.BINODAL
 			            data{mi, 3} = 'BINODAL';
 			        end
 			
-			        if Element.getPropDefault(m_list{mi}, 'SCOPE') == 1
+			        if Element.getPropDefault(m_list{mi}, 'SCOPE') == Measure.SUPERGLOBAL
 			            data{mi, 4} = 'SUPERGLOBAL';
-			        elseif Element.getPropDefault(m_list{mi}, 'SCOPE') == 2
+			        elseif Element.getPropDefault(m_list{mi}, 'SCOPE') == Measure.UNILAYER
 			            data{mi, 4} = 'UNILAYER';
-			        elseif Element.getPropDefault(m_list{mi}, 'SCOPE') == 3
+			        elseif Element.getPropDefault(m_list{mi}, 'SCOPE') == Measure.BILAYER
 			            data{mi, 4} = 'BILAYER';
 			        end
 			        

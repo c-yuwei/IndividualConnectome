@@ -4,25 +4,6 @@ classdef GTA_DI < ConcreteElement
 	%
 	% GTA_DI tests PanelPropIDict.
 	%
-	% The list of GTA_DI properties is:
-	%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the concrete element (ConcreteElement).
-	%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the concrete element.
-	%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the concrete element.
-	%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the concrete element.
-	%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the concrete element.
-	%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the concrete element.
-	%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the concrete element.
-	%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
-	%  <strong>9</strong> <strong>DI_C</strong> 	DI_C (constant, idict) is a prop constant idict.
-	%  <strong>10</strong> <strong>DI_M</strong> 	DI_M (metadata, idict) is a prop metadata idict.
-	%  <strong>11</strong> <strong>DI_P</strong> 	DI_P (parameter, idict) is a prop parameter idict.
-	%  <strong>12</strong> <strong>DI_D</strong> 	DI_D (data, idict) is a prop data idict.
-	%  <strong>13</strong> <strong>DI_R</strong> 	DI_R (result, idict) is a prop result idict.
-	%  <strong>14</strong> <strong>DI_Q</strong> 	DI_Q (query, idict) is a prop query idict.
-	%  <strong>15</strong> <strong>DI_E</strong> 	DI_E (evanescent, idict) is a prop evanescent idict.
-	%  <strong>16</strong> <strong>DI_F</strong> 	DI_F (figure, idict) is a prop figure idict.
-	%  <strong>17</strong> <strong>DI_G</strong> 	DI_G (gui, idict) is a prop gui idict.
-	%
 	% GTA_DI methods (constructor):
 	%  GTA_DI - constructor
 	%
@@ -111,53 +92,53 @@ classdef GTA_DI < ConcreteElement
 	%
 	% See also PanelPropIDict.
 	%
-	% BUILD BRAPH2 7 class_name 1
+	% BUILD BRAPH2 BRAPH2.BUILD class_name 1
 	
 	properties (Constant) % properties
-		DI_C = 9; %CET: Computational Efficiency Trick
+		DI_C = ConcreteElement.getPropNumber() + 1;
 		DI_C_TAG = 'DI_C';
-		DI_C_CATEGORY = 1;
-		DI_C_FORMAT = 10;
+		DI_C_CATEGORY = Category.CONSTANT;
+		DI_C_FORMAT = Format.IDICT;
 		
-		DI_M = 10; %CET: Computational Efficiency Trick
+		DI_M = ConcreteElement.getPropNumber() + 2;
 		DI_M_TAG = 'DI_M';
-		DI_M_CATEGORY = 2;
-		DI_M_FORMAT = 10;
+		DI_M_CATEGORY = Category.METADATA;
+		DI_M_FORMAT = Format.IDICT;
 		
-		DI_P = 11; %CET: Computational Efficiency Trick
+		DI_P = ConcreteElement.getPropNumber() + 3;
 		DI_P_TAG = 'DI_P';
-		DI_P_CATEGORY = 3;
-		DI_P_FORMAT = 10;
+		DI_P_CATEGORY = Category.PARAMETER;
+		DI_P_FORMAT = Format.IDICT;
 		
-		DI_D = 12; %CET: Computational Efficiency Trick
+		DI_D = ConcreteElement.getPropNumber() + 4;
 		DI_D_TAG = 'DI_D';
-		DI_D_CATEGORY = 4;
-		DI_D_FORMAT = 10;
+		DI_D_CATEGORY = Category.DATA;
+		DI_D_FORMAT = Format.IDICT;
 		
-		DI_R = 13; %CET: Computational Efficiency Trick
+		DI_R = ConcreteElement.getPropNumber() + 5;
 		DI_R_TAG = 'DI_R';
-		DI_R_CATEGORY = 5;
-		DI_R_FORMAT = 10;
+		DI_R_CATEGORY = Category.RESULT;
+		DI_R_FORMAT = Format.IDICT;
 		
-		DI_Q = 14; %CET: Computational Efficiency Trick
+		DI_Q = ConcreteElement.getPropNumber() + 6;
 		DI_Q_TAG = 'DI_Q';
-		DI_Q_CATEGORY = 6;
-		DI_Q_FORMAT = 10;
+		DI_Q_CATEGORY = Category.QUERY;
+		DI_Q_FORMAT = Format.IDICT;
 		
-		DI_E = 15; %CET: Computational Efficiency Trick
+		DI_E = ConcreteElement.getPropNumber() + 7;
 		DI_E_TAG = 'DI_E';
-		DI_E_CATEGORY = 7;
-		DI_E_FORMAT = 10;
+		DI_E_CATEGORY = Category.EVANESCENT;
+		DI_E_FORMAT = Format.IDICT;
 		
-		DI_F = 16; %CET: Computational Efficiency Trick
+		DI_F = ConcreteElement.getPropNumber() + 8;
 		DI_F_TAG = 'DI_F';
-		DI_F_CATEGORY = 8;
-		DI_F_FORMAT = 10;
+		DI_F_CATEGORY = Category.FIGURE;
+		DI_F_FORMAT = Format.IDICT;
 		
-		DI_G = 17; %CET: Computational Efficiency Trick
+		DI_G = ConcreteElement.getPropNumber() + 9;
 		DI_G_TAG = 'DI_G';
-		DI_G_CATEGORY = 9;
-		DI_G_FORMAT = 10;
+		DI_G_CATEGORY = Category.GUI;
+		DI_G_FORMAT = Format.IDICT;
 	end
 	methods % constructor
 		function gt = GTA_DI(varargin)
@@ -170,24 +151,6 @@ classdef GTA_DI < ConcreteElement
 			% Multiple properties can be initialized at once identifying
 			%  them with either property numbers (PROP) or tags (TAG).
 			%
-			% The list of GTA_DI properties is:
-			%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the concrete element (ConcreteElement).
-			%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the concrete element.
-			%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the concrete element.
-			%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the concrete element.
-			%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the concrete element.
-			%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the concrete element.
-			%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the concrete element.
-			%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
-			%  <strong>9</strong> <strong>DI_C</strong> 	DI_C (constant, idict) is a prop constant idict.
-			%  <strong>10</strong> <strong>DI_M</strong> 	DI_M (metadata, idict) is a prop metadata idict.
-			%  <strong>11</strong> <strong>DI_P</strong> 	DI_P (parameter, idict) is a prop parameter idict.
-			%  <strong>12</strong> <strong>DI_D</strong> 	DI_D (data, idict) is a prop data idict.
-			%  <strong>13</strong> <strong>DI_R</strong> 	DI_R (result, idict) is a prop result idict.
-			%  <strong>14</strong> <strong>DI_Q</strong> 	DI_Q (query, idict) is a prop query idict.
-			%  <strong>15</strong> <strong>DI_E</strong> 	DI_E (evanescent, idict) is a prop evanescent idict.
-			%  <strong>16</strong> <strong>DI_F</strong> 	DI_F (figure, idict) is a prop figure idict.
-			%  <strong>17</strong> <strong>DI_G</strong> 	DI_G (gui, idict) is a prop gui idict.
 			%
 			% See also Category, Format.
 			
@@ -240,7 +203,7 @@ classdef GTA_DI < ConcreteElement
 			%
 			% See also subclasses.
 			
-			subclass_list = { 'GTA_DI' }; %CET: Computational Efficiency Trick
+			subclass_list = subclasses('GTA_DI', [], [], true);
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of test A PanelPropIDict.
@@ -261,34 +224,68 @@ classdef GTA_DI < ConcreteElement
 			%
 			% See also getPropNumber, Category.
 			
-			%CET: Computational Efficiency Trick
-			
 			if nargin == 0
-				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17];
+				prop_list = [ ...
+					ConcreteElement.getProps() ...
+						GTA_DI.DI_C ...
+						GTA_DI.DI_M ...
+						GTA_DI.DI_P ...
+						GTA_DI.DI_D ...
+						GTA_DI.DI_R ...
+						GTA_DI.DI_Q ...
+						GTA_DI.DI_E ...
+						GTA_DI.DI_F ...
+						GTA_DI.DI_G ...
+						];
 				return
 			end
 			
 			switch category
-				case 1 % Category.CONSTANT
-					prop_list = [1 2 3 9];
-				case 2 % Category.METADATA
-					prop_list = [6 7 10];
-				case 3 % Category.PARAMETER
-					prop_list = [4 11];
-				case 4 % Category.DATA
-					prop_list = [5 12];
-				case 5 % Category.RESULT
-					prop_list = 13;
-				case 6 % Category.QUERY
-					prop_list = [8 14];
-				case 7 % Category.EVANESCENT
-					prop_list = 15;
-				case 8 % Category.FIGURE
-					prop_list = 16;
-				case 9 % Category.GUI
-					prop_list = 17;
-				otherwise
-					prop_list = [];
+				case Category.CONSTANT
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.CONSTANT) ...
+						GTA_DI.DI_C ...
+						];
+				case Category.METADATA
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.METADATA) ...
+						GTA_DI.DI_M ...
+						];
+				case Category.PARAMETER
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.PARAMETER) ...
+						GTA_DI.DI_P ...
+						];
+				case Category.DATA
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.DATA) ...
+						GTA_DI.DI_D ...
+						];
+				case Category.RESULT
+					prop_list = [
+						ConcreteElement.getProps(Category.RESULT) ...
+						GTA_DI.DI_R ...
+						];
+				case Category.QUERY
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.QUERY) ...
+						GTA_DI.DI_Q ...
+						];
+				case Category.EVANESCENT
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.EVANESCENT) ...
+						GTA_DI.DI_E ...
+						];
+				case Category.FIGURE
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.FIGURE) ...
+						GTA_DI.DI_F ...
+						];
+				case Category.GUI
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.GUI) ...
+						GTA_DI.DI_G ...
+						];
 			end
 		end
 		function prop_number = getPropNumber(varargin)
@@ -309,35 +306,7 @@ classdef GTA_DI < ConcreteElement
 			%
 			% See also getProps, Category.
 			
-			%CET: Computational Efficiency Trick
-			
-			if nargin == 0
-				prop_number = 17;
-				return
-			end
-			
-			switch varargin{1} % category = varargin{1}
-				case 1 % Category.CONSTANT
-					prop_number = 4;
-				case 2 % Category.METADATA
-					prop_number = 3;
-				case 3 % Category.PARAMETER
-					prop_number = 2;
-				case 4 % Category.DATA
-					prop_number = 2;
-				case 5 % Category.RESULT
-					prop_number = 1;
-				case 6 % Category.QUERY
-					prop_number = 2;
-				case 7 % Category.EVANESCENT
-					prop_number = 1;
-				case 8 % Category.FIGURE
-					prop_number = 1;
-				case 9 % Category.GUI
-					prop_number = 1;
-				otherwise
-					prop_number = 0;
-			end
+			prop_number = numel(GTA_DI.getProps(varargin{:}));
 		end
 		function check_out = existsProp(prop)
 			%EXISTSPROP checks whether property exists in test A PanelPropIDict/error.
@@ -365,14 +334,14 @@ classdef GTA_DI < ConcreteElement
 			%
 			% See also getProps, existsTag.
 			
-			check = prop >= 1 && prop <= 17 && round(prop) == prop; %CET: Computational Efficiency Trick
+			check = any(prop == GTA_DI.getProps());
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					['BRAPH2' ':GTA_DI:' 'WrongInput'], ...
-					['BRAPH2' ':GTA_DI:' 'WrongInput' '\n' ...
+					[BRAPH2.STR ':GTA_DI:' BRAPH2.WRONG_INPUT], ...
+					[BRAPH2.STR ':GTA_DI:' BRAPH2.WRONG_INPUT '\n' ...
 					'The value ' tostring(prop, 100, ' ...') ' is not a valid prop for GTA_DI.'] ...
 					)
 			end
@@ -403,14 +372,15 @@ classdef GTA_DI < ConcreteElement
 			%
 			% See also getProps, existsTag.
 			
-			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'DI_C'  'DI_M'  'DI_P'  'DI_D'  'DI_R'  'DI_Q'  'DI_E'  'DI_F'  'DI_G' })); %CET: Computational Efficiency Trick
+			gta_di_tag_list = cellfun(@(x) GTA_DI.getPropTag(x), num2cell(GTA_DI.getProps()), 'UniformOutput', false);
+			check = any(strcmp(tag, gta_di_tag_list));
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					['BRAPH2' ':GTA_DI:' 'WrongInput'], ...
-					['BRAPH2' ':GTA_DI:' 'WrongInput' '\n' ...
+					[BRAPH2.STR ':GTA_DI:' BRAPH2.WRONG_INPUT], ...
+					[BRAPH2.STR ':GTA_DI:' BRAPH2.WRONG_INPUT '\n' ...
 					'The value ' tag ' is not a valid tag for GTA_DI.'] ...
 					)
 			end
@@ -436,7 +406,8 @@ classdef GTA_DI < ConcreteElement
 			%  getPropSettings, getPropDefault, checkProp.
 			
 			if ischar(pointer)
-				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'DI_C'  'DI_M'  'DI_P'  'DI_D'  'DI_R'  'DI_Q'  'DI_E'  'DI_F'  'DI_G' })); % tag = pointer %CET: Computational Efficiency Trick
+				gta_di_tag_list = cellfun(@(x) GTA_DI.getPropTag(x), num2cell(GTA_DI.getProps()), 'UniformOutput', false);
+				prop = find(strcmp(pointer, gta_di_tag_list)); % tag = pointer
 			else % numeric
 				prop = pointer;
 			end
@@ -464,9 +435,30 @@ classdef GTA_DI < ConcreteElement
 			if ischar(pointer)
 				tag = pointer;
 			else % numeric
-				%CET: Computational Efficiency Trick
-				gta_di_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'DI_C'  'DI_M'  'DI_P'  'DI_D'  'DI_R'  'DI_Q'  'DI_E'  'DI_F'  'DI_G' };
-				tag = gta_di_tag_list{pointer}; % prop = pointer
+				prop = pointer;
+				
+				switch prop
+					case GTA_DI.DI_C
+						tag = GTA_DI.DI_C_TAG;
+					case GTA_DI.DI_M
+						tag = GTA_DI.DI_M_TAG;
+					case GTA_DI.DI_P
+						tag = GTA_DI.DI_P_TAG;
+					case GTA_DI.DI_D
+						tag = GTA_DI.DI_D_TAG;
+					case GTA_DI.DI_R
+						tag = GTA_DI.DI_R_TAG;
+					case GTA_DI.DI_Q
+						tag = GTA_DI.DI_Q_TAG;
+					case GTA_DI.DI_E
+						tag = GTA_DI.DI_E_TAG;
+					case GTA_DI.DI_F
+						tag = GTA_DI.DI_F_TAG;
+					case GTA_DI.DI_G
+						tag = GTA_DI.DI_G_TAG;
+					otherwise
+						tag = getPropTag@ConcreteElement(prop);
+				end
 			end
 		end
 		function prop_category = getPropCategory(pointer)
@@ -491,9 +483,28 @@ classdef GTA_DI < ConcreteElement
 			
 			prop = GTA_DI.getPropProp(pointer);
 			
-			%CET: Computational Efficiency Trick
-			gta_di_category_list = { 1  1  1  3  4  2  2  6  1  2  3  4  5  6  7  8  9 };
-			prop_category = gta_di_category_list{prop};
+			switch prop
+				case GTA_DI.DI_C
+					prop_category = GTA_DI.DI_C_CATEGORY;
+				case GTA_DI.DI_M
+					prop_category = GTA_DI.DI_M_CATEGORY;
+				case GTA_DI.DI_P
+					prop_category = GTA_DI.DI_P_CATEGORY;
+				case GTA_DI.DI_D
+					prop_category = GTA_DI.DI_D_CATEGORY;
+				case GTA_DI.DI_R
+					prop_category = GTA_DI.DI_R_CATEGORY;
+				case GTA_DI.DI_Q
+					prop_category = GTA_DI.DI_Q_CATEGORY;
+				case GTA_DI.DI_E
+					prop_category = GTA_DI.DI_E_CATEGORY;
+				case GTA_DI.DI_F
+					prop_category = GTA_DI.DI_F_CATEGORY;
+				case GTA_DI.DI_G
+					prop_category = GTA_DI.DI_G_CATEGORY;
+				otherwise
+					prop_category = getPropCategory@ConcreteElement(prop);
+			end
 		end
 		function prop_format = getPropFormat(pointer)
 			%GETPROPFORMAT returns the format of a property.
@@ -517,9 +528,28 @@ classdef GTA_DI < ConcreteElement
 			
 			prop = GTA_DI.getPropProp(pointer);
 			
-			%CET: Computational Efficiency Trick
-			gta_di_format_list = { 2  2  2  8  2  2  2  2  10  10  10  10  10  10  10  10  10 };
-			prop_format = gta_di_format_list{prop};
+			switch prop
+				case GTA_DI.DI_C
+					prop_format = GTA_DI.DI_C_FORMAT;
+				case GTA_DI.DI_M
+					prop_format = GTA_DI.DI_M_FORMAT;
+				case GTA_DI.DI_P
+					prop_format = GTA_DI.DI_P_FORMAT;
+				case GTA_DI.DI_D
+					prop_format = GTA_DI.DI_D_FORMAT;
+				case GTA_DI.DI_R
+					prop_format = GTA_DI.DI_R_FORMAT;
+				case GTA_DI.DI_Q
+					prop_format = GTA_DI.DI_Q_FORMAT;
+				case GTA_DI.DI_E
+					prop_format = GTA_DI.DI_E_FORMAT;
+				case GTA_DI.DI_F
+					prop_format = GTA_DI.DI_F_FORMAT;
+				case GTA_DI.DI_G
+					prop_format = GTA_DI.DI_G_FORMAT;
+				otherwise
+					prop_format = getPropFormat@ConcreteElement(prop);
+			end
 		end
 		function prop_description = getPropDescription(pointer)
 			%GETPROPDESCRIPTION returns the description of a property.
@@ -543,9 +573,28 @@ classdef GTA_DI < ConcreteElement
 			
 			prop = GTA_DI.getPropProp(pointer);
 			
-			%CET: Computational Efficiency Trick
-			gta_di_description_list = { 'ELCLASS (constant, string) is the class of the concrete element (ConcreteElement).'  'NAME (constant, string) is the name of the concrete element.'  'DESCRIPTION (constant, string) is the description of the concrete element.'  'TEMPLATE (parameter, item) is the template of the concrete element.'  'ID (data, string) is a few-letter code for the concrete element.'  'LABEL (metadata, string) is an extended label of the concrete element.'  'NOTES (metadata, string) are some specific notes about the concrete element.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'DI_C (constant, idict) is a prop constant idict.'  'DI_M (metadata, idict) is a prop metadata idict.'  'DI_P (parameter, idict) is a prop parameter idict.'  'DI_D (data, idict) is a prop data idict.'  'DI_R (result, idict) is a prop result idict.'  'DI_Q (query, idict) is a prop query idict.'  'DI_E (evanescent, idict) is a prop evanescent idict.'  'DI_F (figure, idict) is a prop figure idict.'  'DI_G (gui, idict) is a prop gui idict.' };
-			prop_description = gta_di_description_list{prop};
+			switch prop
+				case GTA_DI.DI_C
+					prop_description = 'DI_C (constant, idict) is a prop constant idict.';
+				case GTA_DI.DI_M
+					prop_description = 'DI_M (metadata, idict) is a prop metadata idict.';
+				case GTA_DI.DI_P
+					prop_description = 'DI_P (parameter, idict) is a prop parameter idict.';
+				case GTA_DI.DI_D
+					prop_description = 'DI_D (data, idict) is a prop data idict.';
+				case GTA_DI.DI_R
+					prop_description = 'DI_R (result, idict) is a prop result idict.';
+				case GTA_DI.DI_Q
+					prop_description = 'DI_Q (query, idict) is a prop query idict.';
+				case GTA_DI.DI_E
+					prop_description = 'DI_E (evanescent, idict) is a prop evanescent idict.';
+				case GTA_DI.DI_F
+					prop_description = 'DI_F (figure, idict) is a prop figure idict.';
+				case GTA_DI.DI_G
+					prop_description = 'DI_G (gui, idict) is a prop gui idict.';
+				otherwise
+					prop_description = getPropDescription@ConcreteElement(prop);
+			end
 		end
 		function prop_settings = getPropSettings(pointer)
 			%GETPROPSETTINGS returns the settings of a property.
@@ -569,25 +618,25 @@ classdef GTA_DI < ConcreteElement
 			
 			prop = GTA_DI.getPropProp(pointer);
 			
-			switch prop %CET: Computational Efficiency Trick
-				case 9 % GTA_DI.DI_C
-					prop_settings = Format.getFormatSettings(10);
-				case 10 % GTA_DI.DI_M
-					prop_settings = Format.getFormatSettings(10);
-				case 11 % GTA_DI.DI_P
-					prop_settings = Format.getFormatSettings(10);
-				case 12 % GTA_DI.DI_D
-					prop_settings = Format.getFormatSettings(10);
-				case 13 % GTA_DI.DI_R
-					prop_settings = Format.getFormatSettings(10);
-				case 14 % GTA_DI.DI_Q
-					prop_settings = Format.getFormatSettings(10);
-				case 15 % GTA_DI.DI_E
-					prop_settings = Format.getFormatSettings(10);
-				case 16 % GTA_DI.DI_F
-					prop_settings = Format.getFormatSettings(10);
-				case 17 % GTA_DI.DI_G
-					prop_settings = Format.getFormatSettings(10);
+			switch prop
+				case GTA_DI.DI_C
+					prop_settings = Format.getFormatSettings(Format.IDICT);
+				case GTA_DI.DI_M
+					prop_settings = Format.getFormatSettings(Format.IDICT);
+				case GTA_DI.DI_P
+					prop_settings = Format.getFormatSettings(Format.IDICT);
+				case GTA_DI.DI_D
+					prop_settings = Format.getFormatSettings(Format.IDICT);
+				case GTA_DI.DI_R
+					prop_settings = Format.getFormatSettings(Format.IDICT);
+				case GTA_DI.DI_Q
+					prop_settings = Format.getFormatSettings(Format.IDICT);
+				case GTA_DI.DI_E
+					prop_settings = Format.getFormatSettings(Format.IDICT);
+				case GTA_DI.DI_F
+					prop_settings = Format.getFormatSettings(Format.IDICT);
+				case GTA_DI.DI_G
+					prop_settings = Format.getFormatSettings(Format.IDICT);
 				otherwise
 					prop_settings = getPropSettings@ConcreteElement(prop);
 			end
@@ -614,25 +663,25 @@ classdef GTA_DI < ConcreteElement
 			
 			prop = GTA_DI.getPropProp(pointer);
 			
-			switch prop %CET: Computational Efficiency Trick
-				case 9 % GTA_DI.DI_C
-					prop_default = Format.getFormatDefault(10, GTA_DI.getPropSettings(prop));
-				case 10 % GTA_DI.DI_M
-					prop_default = Format.getFormatDefault(10, GTA_DI.getPropSettings(prop));
-				case 11 % GTA_DI.DI_P
-					prop_default = Format.getFormatDefault(10, GTA_DI.getPropSettings(prop));
-				case 12 % GTA_DI.DI_D
-					prop_default = Format.getFormatDefault(10, GTA_DI.getPropSettings(prop));
-				case 13 % GTA_DI.DI_R
-					prop_default = Format.getFormatDefault(10, GTA_DI.getPropSettings(prop));
-				case 14 % GTA_DI.DI_Q
-					prop_default = Format.getFormatDefault(10, GTA_DI.getPropSettings(prop));
-				case 15 % GTA_DI.DI_E
-					prop_default = Format.getFormatDefault(10, GTA_DI.getPropSettings(prop));
-				case 16 % GTA_DI.DI_F
-					prop_default = Format.getFormatDefault(10, GTA_DI.getPropSettings(prop));
-				case 17 % GTA_DI.DI_G
-					prop_default = Format.getFormatDefault(10, GTA_DI.getPropSettings(prop));
+			switch prop
+				case GTA_DI.DI_C
+					prop_default = Format.getFormatDefault(Format.IDICT, GTA_DI.getPropSettings(prop));
+				case GTA_DI.DI_M
+					prop_default = Format.getFormatDefault(Format.IDICT, GTA_DI.getPropSettings(prop));
+				case GTA_DI.DI_P
+					prop_default = Format.getFormatDefault(Format.IDICT, GTA_DI.getPropSettings(prop));
+				case GTA_DI.DI_D
+					prop_default = Format.getFormatDefault(Format.IDICT, GTA_DI.getPropSettings(prop));
+				case GTA_DI.DI_R
+					prop_default = Format.getFormatDefault(Format.IDICT, GTA_DI.getPropSettings(prop));
+				case GTA_DI.DI_Q
+					prop_default = Format.getFormatDefault(Format.IDICT, GTA_DI.getPropSettings(prop));
+				case GTA_DI.DI_E
+					prop_default = Format.getFormatDefault(Format.IDICT, GTA_DI.getPropSettings(prop));
+				case GTA_DI.DI_F
+					prop_default = Format.getFormatDefault(Format.IDICT, GTA_DI.getPropSettings(prop));
+				case GTA_DI.DI_G
+					prop_default = Format.getFormatDefault(Format.IDICT, GTA_DI.getPropSettings(prop));
 				otherwise
 					prop_default = getPropDefault@ConcreteElement(prop);
 			end
@@ -678,15 +727,15 @@ classdef GTA_DI < ConcreteElement
 			% 
 			% GT.CHECKPROP(POINTER, VALUE) throws an error if VALUE is
 			%  NOT an acceptable value for the format of the property POINTER.
-			%  Error id: BRAPH2:GTA_DI:WrongInput
+			%  Error id: €BRAPH2.STR€:GTA_DI:€BRAPH2.WRONG_INPUT€
 			% 
 			% Alternative forms to call this method are (POINTER = PROP or TAG):
 			%  GT.CHECKPROP(POINTER, VALUE) throws error if VALUE has not a valid format for PROP of GT.
-			%   Error id: BRAPH2:GTA_DI:WrongInput
+			%   Error id: €BRAPH2.STR€:GTA_DI:€BRAPH2.WRONG_INPUT€
 			%  Element.CHECKPROP(GTA_DI, PROP, VALUE) throws error if VALUE has not a valid format for PROP of GTA_DI.
-			%   Error id: BRAPH2:GTA_DI:WrongInput
+			%   Error id: €BRAPH2.STR€:GTA_DI:€BRAPH2.WRONG_INPUT€
 			%  GT.CHECKPROP(GTA_DI, PROP, VALUE) throws error if VALUE has not a valid format for PROP of GTA_DI.
-			%   Error id: BRAPH2:GTA_DI:WrongInput]
+			%   Error id: €BRAPH2.STR€:GTA_DI:€BRAPH2.WRONG_INPUT€]
 			% 
 			% Note that the Element.CHECKPROP(GT) and Element.CHECKPROP('GTA_DI')
 			%  are less computationally efficient.
@@ -697,26 +746,26 @@ classdef GTA_DI < ConcreteElement
 			prop = GTA_DI.getPropProp(pointer);
 			
 			switch prop
-				case 9 % GTA_DI.DI_C
-					check = Format.checkFormat(10, value, GTA_DI.getPropSettings(prop));
-				case 10 % GTA_DI.DI_M
-					check = Format.checkFormat(10, value, GTA_DI.getPropSettings(prop));
-				case 11 % GTA_DI.DI_P
-					check = Format.checkFormat(10, value, GTA_DI.getPropSettings(prop));
-				case 12 % GTA_DI.DI_D
-					check = Format.checkFormat(10, value, GTA_DI.getPropSettings(prop));
-				case 13 % GTA_DI.DI_R
-					check = Format.checkFormat(10, value, GTA_DI.getPropSettings(prop));
-				case 14 % GTA_DI.DI_Q
-					check = Format.checkFormat(10, value, GTA_DI.getPropSettings(prop));
-				case 15 % GTA_DI.DI_E
-					check = Format.checkFormat(10, value, GTA_DI.getPropSettings(prop));
-				case 16 % GTA_DI.DI_F
-					check = Format.checkFormat(10, value, GTA_DI.getPropSettings(prop));
-				case 17 % GTA_DI.DI_G
-					check = Format.checkFormat(10, value, GTA_DI.getPropSettings(prop));
+				case GTA_DI.DI_C % __GTA_DI.DI_C__
+					check = Format.checkFormat(Format.IDICT, value, GTA_DI.getPropSettings(prop));
+				case GTA_DI.DI_M % __GTA_DI.DI_M__
+					check = Format.checkFormat(Format.IDICT, value, GTA_DI.getPropSettings(prop));
+				case GTA_DI.DI_P % __GTA_DI.DI_P__
+					check = Format.checkFormat(Format.IDICT, value, GTA_DI.getPropSettings(prop));
+				case GTA_DI.DI_D % __GTA_DI.DI_D__
+					check = Format.checkFormat(Format.IDICT, value, GTA_DI.getPropSettings(prop));
+				case GTA_DI.DI_R % __GTA_DI.DI_R__
+					check = Format.checkFormat(Format.IDICT, value, GTA_DI.getPropSettings(prop));
+				case GTA_DI.DI_Q % __GTA_DI.DI_Q__
+					check = Format.checkFormat(Format.IDICT, value, GTA_DI.getPropSettings(prop));
+				case GTA_DI.DI_E % __GTA_DI.DI_E__
+					check = Format.checkFormat(Format.IDICT, value, GTA_DI.getPropSettings(prop));
+				case GTA_DI.DI_F % __GTA_DI.DI_F__
+					check = Format.checkFormat(Format.IDICT, value, GTA_DI.getPropSettings(prop));
+				case GTA_DI.DI_G % __GTA_DI.DI_G__
+					check = Format.checkFormat(Format.IDICT, value, GTA_DI.getPropSettings(prop));
 				otherwise
-					if prop <= 8
+					if prop <= ConcreteElement.getPropNumber()
 						check = checkProp@ConcreteElement(prop, value);
 					end
 			end
@@ -725,8 +774,8 @@ classdef GTA_DI < ConcreteElement
 				prop_check = check;
 			elseif ~check
 				error( ...
-					['BRAPH2' ':GTA_DI:' 'WrongInput'], ...
-					['BRAPH2' ':GTA_DI:' 'WrongInput' '\n' ...
+					[BRAPH2.STR ':GTA_DI:' BRAPH2.WRONG_INPUT], ...
+					[BRAPH2.STR ':GTA_DI:' BRAPH2.WRONG_INPUT '\n' ...
 					'The value ' tostring(value, 100, ' ...') ' is not a valid property ' GTA_DI.getPropTag(prop) ' (' GTA_DI.getFormatTag(GTA_DI.getPropFormat(prop)) ').'] ...
 					)
 			end

@@ -4,25 +4,6 @@ classdef GTA_SZ < ConcreteElement
 	%
 	% GTA_SZ tests PanelPropSize.
 	%
-	% The list of GTA_SZ properties is:
-	%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the concrete element (ConcreteElement).
-	%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the concrete element.
-	%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the concrete element.
-	%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the concrete element.
-	%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the concrete element.
-	%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the concrete element.
-	%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the concrete element.
-	%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
-	%  <strong>9</strong> <strong>SZ_C</strong> 	SZ_C (constant, size) is a prop constant size.
-	%  <strong>10</strong> <strong>SZ_M</strong> 	SZ_M (metadata, size) is a prop metadata size.
-	%  <strong>11</strong> <strong>SZ_P</strong> 	SZ_P (parameter, size) is a prop parameter size.
-	%  <strong>12</strong> <strong>SZ_D</strong> 	SZ_D (data, size) is a prop data size.
-	%  <strong>13</strong> <strong>SZ_R</strong> 	SZ_R (result, size) is a prop result size.
-	%  <strong>14</strong> <strong>SZ_Q</strong> 	SZ_Q (query, size) is a prop query size.
-	%  <strong>15</strong> <strong>SZ_E</strong> 	SZ_E (evanescent, size) is a prop evanescent size.
-	%  <strong>16</strong> <strong>SZ_F</strong> 	SZ_F (figure, size) is a prop figure size.
-	%  <strong>17</strong> <strong>SZ_G</strong> 	SZ_G (gui, size) is a prop gui size.
-	%
 	% GTA_SZ methods (constructor):
 	%  GTA_SZ - constructor
 	%
@@ -111,53 +92,53 @@ classdef GTA_SZ < ConcreteElement
 	%
 	% See also PanelPropSize.
 	%
-	% BUILD BRAPH2 7 class_name 1
+	% BUILD BRAPH2 BRAPH2.BUILD class_name 1
 	
 	properties (Constant) % properties
-		SZ_C = 9; %CET: Computational Efficiency Trick
+		SZ_C = ConcreteElement.getPropNumber() + 1;
 		SZ_C_TAG = 'SZ_C';
-		SZ_C_CATEGORY = 1;
-		SZ_C_FORMAT = 22;
+		SZ_C_CATEGORY = Category.CONSTANT;
+		SZ_C_FORMAT = Format.SIZE;
 		
-		SZ_M = 10; %CET: Computational Efficiency Trick
+		SZ_M = ConcreteElement.getPropNumber() + 2;
 		SZ_M_TAG = 'SZ_M';
-		SZ_M_CATEGORY = 2;
-		SZ_M_FORMAT = 22;
+		SZ_M_CATEGORY = Category.METADATA;
+		SZ_M_FORMAT = Format.SIZE;
 		
-		SZ_P = 11; %CET: Computational Efficiency Trick
+		SZ_P = ConcreteElement.getPropNumber() + 3;
 		SZ_P_TAG = 'SZ_P';
-		SZ_P_CATEGORY = 3;
-		SZ_P_FORMAT = 22;
+		SZ_P_CATEGORY = Category.PARAMETER;
+		SZ_P_FORMAT = Format.SIZE;
 		
-		SZ_D = 12; %CET: Computational Efficiency Trick
+		SZ_D = ConcreteElement.getPropNumber() + 4;
 		SZ_D_TAG = 'SZ_D';
-		SZ_D_CATEGORY = 4;
-		SZ_D_FORMAT = 22;
+		SZ_D_CATEGORY = Category.DATA;
+		SZ_D_FORMAT = Format.SIZE;
 		
-		SZ_R = 13; %CET: Computational Efficiency Trick
+		SZ_R = ConcreteElement.getPropNumber() + 5;
 		SZ_R_TAG = 'SZ_R';
-		SZ_R_CATEGORY = 5;
-		SZ_R_FORMAT = 22;
+		SZ_R_CATEGORY = Category.RESULT;
+		SZ_R_FORMAT = Format.SIZE;
 		
-		SZ_Q = 14; %CET: Computational Efficiency Trick
+		SZ_Q = ConcreteElement.getPropNumber() + 6;
 		SZ_Q_TAG = 'SZ_Q';
-		SZ_Q_CATEGORY = 6;
-		SZ_Q_FORMAT = 22;
+		SZ_Q_CATEGORY = Category.QUERY;
+		SZ_Q_FORMAT = Format.SIZE;
 		
-		SZ_E = 15; %CET: Computational Efficiency Trick
+		SZ_E = ConcreteElement.getPropNumber() + 7;
 		SZ_E_TAG = 'SZ_E';
-		SZ_E_CATEGORY = 7;
-		SZ_E_FORMAT = 22;
+		SZ_E_CATEGORY = Category.EVANESCENT;
+		SZ_E_FORMAT = Format.SIZE;
 		
-		SZ_F = 16; %CET: Computational Efficiency Trick
+		SZ_F = ConcreteElement.getPropNumber() + 8;
 		SZ_F_TAG = 'SZ_F';
-		SZ_F_CATEGORY = 8;
-		SZ_F_FORMAT = 22;
+		SZ_F_CATEGORY = Category.FIGURE;
+		SZ_F_FORMAT = Format.SIZE;
 		
-		SZ_G = 17; %CET: Computational Efficiency Trick
+		SZ_G = ConcreteElement.getPropNumber() + 9;
 		SZ_G_TAG = 'SZ_G';
-		SZ_G_CATEGORY = 9;
-		SZ_G_FORMAT = 22;
+		SZ_G_CATEGORY = Category.GUI;
+		SZ_G_FORMAT = Format.SIZE;
 	end
 	methods % constructor
 		function gt = GTA_SZ(varargin)
@@ -170,24 +151,6 @@ classdef GTA_SZ < ConcreteElement
 			% Multiple properties can be initialized at once identifying
 			%  them with either property numbers (PROP) or tags (TAG).
 			%
-			% The list of GTA_SZ properties is:
-			%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the concrete element (ConcreteElement).
-			%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the concrete element.
-			%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the concrete element.
-			%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the concrete element.
-			%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the concrete element.
-			%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the concrete element.
-			%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the concrete element.
-			%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
-			%  <strong>9</strong> <strong>SZ_C</strong> 	SZ_C (constant, size) is a prop constant size.
-			%  <strong>10</strong> <strong>SZ_M</strong> 	SZ_M (metadata, size) is a prop metadata size.
-			%  <strong>11</strong> <strong>SZ_P</strong> 	SZ_P (parameter, size) is a prop parameter size.
-			%  <strong>12</strong> <strong>SZ_D</strong> 	SZ_D (data, size) is a prop data size.
-			%  <strong>13</strong> <strong>SZ_R</strong> 	SZ_R (result, size) is a prop result size.
-			%  <strong>14</strong> <strong>SZ_Q</strong> 	SZ_Q (query, size) is a prop query size.
-			%  <strong>15</strong> <strong>SZ_E</strong> 	SZ_E (evanescent, size) is a prop evanescent size.
-			%  <strong>16</strong> <strong>SZ_F</strong> 	SZ_F (figure, size) is a prop figure size.
-			%  <strong>17</strong> <strong>SZ_G</strong> 	SZ_G (gui, size) is a prop gui size.
 			%
 			% See also Category, Format.
 			
@@ -240,7 +203,7 @@ classdef GTA_SZ < ConcreteElement
 			%
 			% See also subclasses.
 			
-			subclass_list = { 'GTA_SZ' }; %CET: Computational Efficiency Trick
+			subclass_list = subclasses('GTA_SZ', [], [], true);
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of test A PanelPropSize.
@@ -261,34 +224,68 @@ classdef GTA_SZ < ConcreteElement
 			%
 			% See also getPropNumber, Category.
 			
-			%CET: Computational Efficiency Trick
-			
 			if nargin == 0
-				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17];
+				prop_list = [ ...
+					ConcreteElement.getProps() ...
+						GTA_SZ.SZ_C ...
+						GTA_SZ.SZ_M ...
+						GTA_SZ.SZ_P ...
+						GTA_SZ.SZ_D ...
+						GTA_SZ.SZ_R ...
+						GTA_SZ.SZ_Q ...
+						GTA_SZ.SZ_E ...
+						GTA_SZ.SZ_F ...
+						GTA_SZ.SZ_G ...
+						];
 				return
 			end
 			
 			switch category
-				case 1 % Category.CONSTANT
-					prop_list = [1 2 3 9];
-				case 2 % Category.METADATA
-					prop_list = [6 7 10];
-				case 3 % Category.PARAMETER
-					prop_list = [4 11];
-				case 4 % Category.DATA
-					prop_list = [5 12];
-				case 5 % Category.RESULT
-					prop_list = 13;
-				case 6 % Category.QUERY
-					prop_list = [8 14];
-				case 7 % Category.EVANESCENT
-					prop_list = 15;
-				case 8 % Category.FIGURE
-					prop_list = 16;
-				case 9 % Category.GUI
-					prop_list = 17;
-				otherwise
-					prop_list = [];
+				case Category.CONSTANT
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.CONSTANT) ...
+						GTA_SZ.SZ_C ...
+						];
+				case Category.METADATA
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.METADATA) ...
+						GTA_SZ.SZ_M ...
+						];
+				case Category.PARAMETER
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.PARAMETER) ...
+						GTA_SZ.SZ_P ...
+						];
+				case Category.DATA
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.DATA) ...
+						GTA_SZ.SZ_D ...
+						];
+				case Category.RESULT
+					prop_list = [
+						ConcreteElement.getProps(Category.RESULT) ...
+						GTA_SZ.SZ_R ...
+						];
+				case Category.QUERY
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.QUERY) ...
+						GTA_SZ.SZ_Q ...
+						];
+				case Category.EVANESCENT
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.EVANESCENT) ...
+						GTA_SZ.SZ_E ...
+						];
+				case Category.FIGURE
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.FIGURE) ...
+						GTA_SZ.SZ_F ...
+						];
+				case Category.GUI
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.GUI) ...
+						GTA_SZ.SZ_G ...
+						];
 			end
 		end
 		function prop_number = getPropNumber(varargin)
@@ -309,35 +306,7 @@ classdef GTA_SZ < ConcreteElement
 			%
 			% See also getProps, Category.
 			
-			%CET: Computational Efficiency Trick
-			
-			if nargin == 0
-				prop_number = 17;
-				return
-			end
-			
-			switch varargin{1} % category = varargin{1}
-				case 1 % Category.CONSTANT
-					prop_number = 4;
-				case 2 % Category.METADATA
-					prop_number = 3;
-				case 3 % Category.PARAMETER
-					prop_number = 2;
-				case 4 % Category.DATA
-					prop_number = 2;
-				case 5 % Category.RESULT
-					prop_number = 1;
-				case 6 % Category.QUERY
-					prop_number = 2;
-				case 7 % Category.EVANESCENT
-					prop_number = 1;
-				case 8 % Category.FIGURE
-					prop_number = 1;
-				case 9 % Category.GUI
-					prop_number = 1;
-				otherwise
-					prop_number = 0;
-			end
+			prop_number = numel(GTA_SZ.getProps(varargin{:}));
 		end
 		function check_out = existsProp(prop)
 			%EXISTSPROP checks whether property exists in test A PanelPropSize/error.
@@ -365,14 +334,14 @@ classdef GTA_SZ < ConcreteElement
 			%
 			% See also getProps, existsTag.
 			
-			check = prop >= 1 && prop <= 17 && round(prop) == prop; %CET: Computational Efficiency Trick
+			check = any(prop == GTA_SZ.getProps());
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					['BRAPH2' ':GTA_SZ:' 'WrongInput'], ...
-					['BRAPH2' ':GTA_SZ:' 'WrongInput' '\n' ...
+					[BRAPH2.STR ':GTA_SZ:' BRAPH2.WRONG_INPUT], ...
+					[BRAPH2.STR ':GTA_SZ:' BRAPH2.WRONG_INPUT '\n' ...
 					'The value ' tostring(prop, 100, ' ...') ' is not a valid prop for GTA_SZ.'] ...
 					)
 			end
@@ -403,14 +372,15 @@ classdef GTA_SZ < ConcreteElement
 			%
 			% See also getProps, existsTag.
 			
-			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'SZ_C'  'SZ_M'  'SZ_P'  'SZ_D'  'SZ_R'  'SZ_Q'  'SZ_E'  'SZ_F'  'SZ_G' })); %CET: Computational Efficiency Trick
+			gta_sz_tag_list = cellfun(@(x) GTA_SZ.getPropTag(x), num2cell(GTA_SZ.getProps()), 'UniformOutput', false);
+			check = any(strcmp(tag, gta_sz_tag_list));
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					['BRAPH2' ':GTA_SZ:' 'WrongInput'], ...
-					['BRAPH2' ':GTA_SZ:' 'WrongInput' '\n' ...
+					[BRAPH2.STR ':GTA_SZ:' BRAPH2.WRONG_INPUT], ...
+					[BRAPH2.STR ':GTA_SZ:' BRAPH2.WRONG_INPUT '\n' ...
 					'The value ' tag ' is not a valid tag for GTA_SZ.'] ...
 					)
 			end
@@ -436,7 +406,8 @@ classdef GTA_SZ < ConcreteElement
 			%  getPropSettings, getPropDefault, checkProp.
 			
 			if ischar(pointer)
-				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'SZ_C'  'SZ_M'  'SZ_P'  'SZ_D'  'SZ_R'  'SZ_Q'  'SZ_E'  'SZ_F'  'SZ_G' })); % tag = pointer %CET: Computational Efficiency Trick
+				gta_sz_tag_list = cellfun(@(x) GTA_SZ.getPropTag(x), num2cell(GTA_SZ.getProps()), 'UniformOutput', false);
+				prop = find(strcmp(pointer, gta_sz_tag_list)); % tag = pointer
 			else % numeric
 				prop = pointer;
 			end
@@ -464,9 +435,30 @@ classdef GTA_SZ < ConcreteElement
 			if ischar(pointer)
 				tag = pointer;
 			else % numeric
-				%CET: Computational Efficiency Trick
-				gta_sz_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'SZ_C'  'SZ_M'  'SZ_P'  'SZ_D'  'SZ_R'  'SZ_Q'  'SZ_E'  'SZ_F'  'SZ_G' };
-				tag = gta_sz_tag_list{pointer}; % prop = pointer
+				prop = pointer;
+				
+				switch prop
+					case GTA_SZ.SZ_C
+						tag = GTA_SZ.SZ_C_TAG;
+					case GTA_SZ.SZ_M
+						tag = GTA_SZ.SZ_M_TAG;
+					case GTA_SZ.SZ_P
+						tag = GTA_SZ.SZ_P_TAG;
+					case GTA_SZ.SZ_D
+						tag = GTA_SZ.SZ_D_TAG;
+					case GTA_SZ.SZ_R
+						tag = GTA_SZ.SZ_R_TAG;
+					case GTA_SZ.SZ_Q
+						tag = GTA_SZ.SZ_Q_TAG;
+					case GTA_SZ.SZ_E
+						tag = GTA_SZ.SZ_E_TAG;
+					case GTA_SZ.SZ_F
+						tag = GTA_SZ.SZ_F_TAG;
+					case GTA_SZ.SZ_G
+						tag = GTA_SZ.SZ_G_TAG;
+					otherwise
+						tag = getPropTag@ConcreteElement(prop);
+				end
 			end
 		end
 		function prop_category = getPropCategory(pointer)
@@ -491,9 +483,28 @@ classdef GTA_SZ < ConcreteElement
 			
 			prop = GTA_SZ.getPropProp(pointer);
 			
-			%CET: Computational Efficiency Trick
-			gta_sz_category_list = { 1  1  1  3  4  2  2  6  1  2  3  4  5  6  7  8  9 };
-			prop_category = gta_sz_category_list{prop};
+			switch prop
+				case GTA_SZ.SZ_C
+					prop_category = GTA_SZ.SZ_C_CATEGORY;
+				case GTA_SZ.SZ_M
+					prop_category = GTA_SZ.SZ_M_CATEGORY;
+				case GTA_SZ.SZ_P
+					prop_category = GTA_SZ.SZ_P_CATEGORY;
+				case GTA_SZ.SZ_D
+					prop_category = GTA_SZ.SZ_D_CATEGORY;
+				case GTA_SZ.SZ_R
+					prop_category = GTA_SZ.SZ_R_CATEGORY;
+				case GTA_SZ.SZ_Q
+					prop_category = GTA_SZ.SZ_Q_CATEGORY;
+				case GTA_SZ.SZ_E
+					prop_category = GTA_SZ.SZ_E_CATEGORY;
+				case GTA_SZ.SZ_F
+					prop_category = GTA_SZ.SZ_F_CATEGORY;
+				case GTA_SZ.SZ_G
+					prop_category = GTA_SZ.SZ_G_CATEGORY;
+				otherwise
+					prop_category = getPropCategory@ConcreteElement(prop);
+			end
 		end
 		function prop_format = getPropFormat(pointer)
 			%GETPROPFORMAT returns the format of a property.
@@ -517,9 +528,28 @@ classdef GTA_SZ < ConcreteElement
 			
 			prop = GTA_SZ.getPropProp(pointer);
 			
-			%CET: Computational Efficiency Trick
-			gta_sz_format_list = { 2  2  2  8  2  2  2  2  22  22  22  22  22  22  22  22  22 };
-			prop_format = gta_sz_format_list{prop};
+			switch prop
+				case GTA_SZ.SZ_C
+					prop_format = GTA_SZ.SZ_C_FORMAT;
+				case GTA_SZ.SZ_M
+					prop_format = GTA_SZ.SZ_M_FORMAT;
+				case GTA_SZ.SZ_P
+					prop_format = GTA_SZ.SZ_P_FORMAT;
+				case GTA_SZ.SZ_D
+					prop_format = GTA_SZ.SZ_D_FORMAT;
+				case GTA_SZ.SZ_R
+					prop_format = GTA_SZ.SZ_R_FORMAT;
+				case GTA_SZ.SZ_Q
+					prop_format = GTA_SZ.SZ_Q_FORMAT;
+				case GTA_SZ.SZ_E
+					prop_format = GTA_SZ.SZ_E_FORMAT;
+				case GTA_SZ.SZ_F
+					prop_format = GTA_SZ.SZ_F_FORMAT;
+				case GTA_SZ.SZ_G
+					prop_format = GTA_SZ.SZ_G_FORMAT;
+				otherwise
+					prop_format = getPropFormat@ConcreteElement(prop);
+			end
 		end
 		function prop_description = getPropDescription(pointer)
 			%GETPROPDESCRIPTION returns the description of a property.
@@ -543,9 +573,28 @@ classdef GTA_SZ < ConcreteElement
 			
 			prop = GTA_SZ.getPropProp(pointer);
 			
-			%CET: Computational Efficiency Trick
-			gta_sz_description_list = { 'ELCLASS (constant, string) is the class of the concrete element (ConcreteElement).'  'NAME (constant, string) is the name of the concrete element.'  'DESCRIPTION (constant, string) is the description of the concrete element.'  'TEMPLATE (parameter, item) is the template of the concrete element.'  'ID (data, string) is a few-letter code for the concrete element.'  'LABEL (metadata, string) is an extended label of the concrete element.'  'NOTES (metadata, string) are some specific notes about the concrete element.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'SZ_C (constant, size) is a prop constant size.'  'SZ_M (metadata, size) is a prop metadata size.'  'SZ_P (parameter, size) is a prop parameter size.'  'SZ_D (data, size) is a prop data size.'  'SZ_R (result, size) is a prop result size.'  'SZ_Q (query, size) is a prop query size.'  'SZ_E (evanescent, size) is a prop evanescent size.'  'SZ_F (figure, size) is a prop figure size.'  'SZ_G (gui, size) is a prop gui size.' };
-			prop_description = gta_sz_description_list{prop};
+			switch prop
+				case GTA_SZ.SZ_C
+					prop_description = 'SZ_C (constant, size) is a prop constant size.';
+				case GTA_SZ.SZ_M
+					prop_description = 'SZ_M (metadata, size) is a prop metadata size.';
+				case GTA_SZ.SZ_P
+					prop_description = 'SZ_P (parameter, size) is a prop parameter size.';
+				case GTA_SZ.SZ_D
+					prop_description = 'SZ_D (data, size) is a prop data size.';
+				case GTA_SZ.SZ_R
+					prop_description = 'SZ_R (result, size) is a prop result size.';
+				case GTA_SZ.SZ_Q
+					prop_description = 'SZ_Q (query, size) is a prop query size.';
+				case GTA_SZ.SZ_E
+					prop_description = 'SZ_E (evanescent, size) is a prop evanescent size.';
+				case GTA_SZ.SZ_F
+					prop_description = 'SZ_F (figure, size) is a prop figure size.';
+				case GTA_SZ.SZ_G
+					prop_description = 'SZ_G (gui, size) is a prop gui size.';
+				otherwise
+					prop_description = getPropDescription@ConcreteElement(prop);
+			end
 		end
 		function prop_settings = getPropSettings(pointer)
 			%GETPROPSETTINGS returns the settings of a property.
@@ -569,25 +618,25 @@ classdef GTA_SZ < ConcreteElement
 			
 			prop = GTA_SZ.getPropProp(pointer);
 			
-			switch prop %CET: Computational Efficiency Trick
-				case 9 % GTA_SZ.SZ_C
-					prop_settings = Format.getFormatSettings(22);
-				case 10 % GTA_SZ.SZ_M
-					prop_settings = Format.getFormatSettings(22);
-				case 11 % GTA_SZ.SZ_P
-					prop_settings = Format.getFormatSettings(22);
-				case 12 % GTA_SZ.SZ_D
-					prop_settings = Format.getFormatSettings(22);
-				case 13 % GTA_SZ.SZ_R
-					prop_settings = Format.getFormatSettings(22);
-				case 14 % GTA_SZ.SZ_Q
-					prop_settings = Format.getFormatSettings(22);
-				case 15 % GTA_SZ.SZ_E
-					prop_settings = Format.getFormatSettings(22);
-				case 16 % GTA_SZ.SZ_F
-					prop_settings = Format.getFormatSettings(22);
-				case 17 % GTA_SZ.SZ_G
-					prop_settings = Format.getFormatSettings(22);
+			switch prop
+				case GTA_SZ.SZ_C
+					prop_settings = Format.getFormatSettings(Format.SIZE);
+				case GTA_SZ.SZ_M
+					prop_settings = Format.getFormatSettings(Format.SIZE);
+				case GTA_SZ.SZ_P
+					prop_settings = Format.getFormatSettings(Format.SIZE);
+				case GTA_SZ.SZ_D
+					prop_settings = Format.getFormatSettings(Format.SIZE);
+				case GTA_SZ.SZ_R
+					prop_settings = Format.getFormatSettings(Format.SIZE);
+				case GTA_SZ.SZ_Q
+					prop_settings = Format.getFormatSettings(Format.SIZE);
+				case GTA_SZ.SZ_E
+					prop_settings = Format.getFormatSettings(Format.SIZE);
+				case GTA_SZ.SZ_F
+					prop_settings = Format.getFormatSettings(Format.SIZE);
+				case GTA_SZ.SZ_G
+					prop_settings = Format.getFormatSettings(Format.SIZE);
 				otherwise
 					prop_settings = getPropSettings@ConcreteElement(prop);
 			end
@@ -614,25 +663,25 @@ classdef GTA_SZ < ConcreteElement
 			
 			prop = GTA_SZ.getPropProp(pointer);
 			
-			switch prop %CET: Computational Efficiency Trick
-				case 9 % GTA_SZ.SZ_C
-					prop_default = Format.getFormatDefault(22, GTA_SZ.getPropSettings(prop));
-				case 10 % GTA_SZ.SZ_M
-					prop_default = Format.getFormatDefault(22, GTA_SZ.getPropSettings(prop));
-				case 11 % GTA_SZ.SZ_P
-					prop_default = Format.getFormatDefault(22, GTA_SZ.getPropSettings(prop));
-				case 12 % GTA_SZ.SZ_D
-					prop_default = Format.getFormatDefault(22, GTA_SZ.getPropSettings(prop));
-				case 13 % GTA_SZ.SZ_R
-					prop_default = Format.getFormatDefault(22, GTA_SZ.getPropSettings(prop));
-				case 14 % GTA_SZ.SZ_Q
-					prop_default = Format.getFormatDefault(22, GTA_SZ.getPropSettings(prop));
-				case 15 % GTA_SZ.SZ_E
-					prop_default = Format.getFormatDefault(22, GTA_SZ.getPropSettings(prop));
-				case 16 % GTA_SZ.SZ_F
-					prop_default = Format.getFormatDefault(22, GTA_SZ.getPropSettings(prop));
-				case 17 % GTA_SZ.SZ_G
-					prop_default = Format.getFormatDefault(22, GTA_SZ.getPropSettings(prop));
+			switch prop
+				case GTA_SZ.SZ_C
+					prop_default = Format.getFormatDefault(Format.SIZE, GTA_SZ.getPropSettings(prop));
+				case GTA_SZ.SZ_M
+					prop_default = Format.getFormatDefault(Format.SIZE, GTA_SZ.getPropSettings(prop));
+				case GTA_SZ.SZ_P
+					prop_default = Format.getFormatDefault(Format.SIZE, GTA_SZ.getPropSettings(prop));
+				case GTA_SZ.SZ_D
+					prop_default = Format.getFormatDefault(Format.SIZE, GTA_SZ.getPropSettings(prop));
+				case GTA_SZ.SZ_R
+					prop_default = Format.getFormatDefault(Format.SIZE, GTA_SZ.getPropSettings(prop));
+				case GTA_SZ.SZ_Q
+					prop_default = Format.getFormatDefault(Format.SIZE, GTA_SZ.getPropSettings(prop));
+				case GTA_SZ.SZ_E
+					prop_default = Format.getFormatDefault(Format.SIZE, GTA_SZ.getPropSettings(prop));
+				case GTA_SZ.SZ_F
+					prop_default = Format.getFormatDefault(Format.SIZE, GTA_SZ.getPropSettings(prop));
+				case GTA_SZ.SZ_G
+					prop_default = Format.getFormatDefault(Format.SIZE, GTA_SZ.getPropSettings(prop));
 				otherwise
 					prop_default = getPropDefault@ConcreteElement(prop);
 			end
@@ -678,15 +727,15 @@ classdef GTA_SZ < ConcreteElement
 			% 
 			% GT.CHECKPROP(POINTER, VALUE) throws an error if VALUE is
 			%  NOT an acceptable value for the format of the property POINTER.
-			%  Error id: BRAPH2:GTA_SZ:WrongInput
+			%  Error id: €BRAPH2.STR€:GTA_SZ:€BRAPH2.WRONG_INPUT€
 			% 
 			% Alternative forms to call this method are (POINTER = PROP or TAG):
 			%  GT.CHECKPROP(POINTER, VALUE) throws error if VALUE has not a valid format for PROP of GT.
-			%   Error id: BRAPH2:GTA_SZ:WrongInput
+			%   Error id: €BRAPH2.STR€:GTA_SZ:€BRAPH2.WRONG_INPUT€
 			%  Element.CHECKPROP(GTA_SZ, PROP, VALUE) throws error if VALUE has not a valid format for PROP of GTA_SZ.
-			%   Error id: BRAPH2:GTA_SZ:WrongInput
+			%   Error id: €BRAPH2.STR€:GTA_SZ:€BRAPH2.WRONG_INPUT€
 			%  GT.CHECKPROP(GTA_SZ, PROP, VALUE) throws error if VALUE has not a valid format for PROP of GTA_SZ.
-			%   Error id: BRAPH2:GTA_SZ:WrongInput]
+			%   Error id: €BRAPH2.STR€:GTA_SZ:€BRAPH2.WRONG_INPUT€]
 			% 
 			% Note that the Element.CHECKPROP(GT) and Element.CHECKPROP('GTA_SZ')
 			%  are less computationally efficient.
@@ -697,26 +746,26 @@ classdef GTA_SZ < ConcreteElement
 			prop = GTA_SZ.getPropProp(pointer);
 			
 			switch prop
-				case 9 % GTA_SZ.SZ_C
-					check = Format.checkFormat(22, value, GTA_SZ.getPropSettings(prop));
-				case 10 % GTA_SZ.SZ_M
-					check = Format.checkFormat(22, value, GTA_SZ.getPropSettings(prop));
-				case 11 % GTA_SZ.SZ_P
-					check = Format.checkFormat(22, value, GTA_SZ.getPropSettings(prop));
-				case 12 % GTA_SZ.SZ_D
-					check = Format.checkFormat(22, value, GTA_SZ.getPropSettings(prop));
-				case 13 % GTA_SZ.SZ_R
-					check = Format.checkFormat(22, value, GTA_SZ.getPropSettings(prop));
-				case 14 % GTA_SZ.SZ_Q
-					check = Format.checkFormat(22, value, GTA_SZ.getPropSettings(prop));
-				case 15 % GTA_SZ.SZ_E
-					check = Format.checkFormat(22, value, GTA_SZ.getPropSettings(prop));
-				case 16 % GTA_SZ.SZ_F
-					check = Format.checkFormat(22, value, GTA_SZ.getPropSettings(prop));
-				case 17 % GTA_SZ.SZ_G
-					check = Format.checkFormat(22, value, GTA_SZ.getPropSettings(prop));
+				case GTA_SZ.SZ_C % __GTA_SZ.SZ_C__
+					check = Format.checkFormat(Format.SIZE, value, GTA_SZ.getPropSettings(prop));
+				case GTA_SZ.SZ_M % __GTA_SZ.SZ_M__
+					check = Format.checkFormat(Format.SIZE, value, GTA_SZ.getPropSettings(prop));
+				case GTA_SZ.SZ_P % __GTA_SZ.SZ_P__
+					check = Format.checkFormat(Format.SIZE, value, GTA_SZ.getPropSettings(prop));
+				case GTA_SZ.SZ_D % __GTA_SZ.SZ_D__
+					check = Format.checkFormat(Format.SIZE, value, GTA_SZ.getPropSettings(prop));
+				case GTA_SZ.SZ_R % __GTA_SZ.SZ_R__
+					check = Format.checkFormat(Format.SIZE, value, GTA_SZ.getPropSettings(prop));
+				case GTA_SZ.SZ_Q % __GTA_SZ.SZ_Q__
+					check = Format.checkFormat(Format.SIZE, value, GTA_SZ.getPropSettings(prop));
+				case GTA_SZ.SZ_E % __GTA_SZ.SZ_E__
+					check = Format.checkFormat(Format.SIZE, value, GTA_SZ.getPropSettings(prop));
+				case GTA_SZ.SZ_F % __GTA_SZ.SZ_F__
+					check = Format.checkFormat(Format.SIZE, value, GTA_SZ.getPropSettings(prop));
+				case GTA_SZ.SZ_G % __GTA_SZ.SZ_G__
+					check = Format.checkFormat(Format.SIZE, value, GTA_SZ.getPropSettings(prop));
 				otherwise
-					if prop <= 8
+					if prop <= ConcreteElement.getPropNumber()
 						check = checkProp@ConcreteElement(prop, value);
 					end
 			end
@@ -725,8 +774,8 @@ classdef GTA_SZ < ConcreteElement
 				prop_check = check;
 			elseif ~check
 				error( ...
-					['BRAPH2' ':GTA_SZ:' 'WrongInput'], ...
-					['BRAPH2' ':GTA_SZ:' 'WrongInput' '\n' ...
+					[BRAPH2.STR ':GTA_SZ:' BRAPH2.WRONG_INPUT], ...
+					[BRAPH2.STR ':GTA_SZ:' BRAPH2.WRONG_INPUT '\n' ...
 					'The value ' tostring(value, 100, ' ...') ' is not a valid property ' GTA_SZ.getPropTag(prop) ' (' GTA_SZ.getFormatTag(GTA_SZ.getPropFormat(prop)) ').'] ...
 					)
 			end

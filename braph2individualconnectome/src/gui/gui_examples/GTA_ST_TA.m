@@ -4,25 +4,6 @@ classdef GTA_ST_TA < ConcreteElement
 	%
 	% GTA_ST_TA tests PanelPropStringTextArea.
 	%
-	% The list of GTA_ST_TA properties is:
-	%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the concrete element (ConcreteElement).
-	%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the concrete element.
-	%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the concrete element.
-	%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the concrete element.
-	%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the concrete element.
-	%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the concrete element.
-	%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the concrete element.
-	%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
-	%  <strong>9</strong> <strong>ST_C</strong> 	ST_C (constant, string) is a prop constant string.
-	%  <strong>10</strong> <strong>ST_M</strong> 	ST_M (metadata, string) is a prop metadata string.
-	%  <strong>11</strong> <strong>ST_P</strong> 	ST_P (parameter, string) is a prop parameter string.
-	%  <strong>12</strong> <strong>ST_D</strong> 	ST_D (data, string) is a prop data string.
-	%  <strong>13</strong> <strong>ST_R</strong> 	ST_R (result, string) is a prop result string.
-	%  <strong>14</strong> <strong>ST_Q</strong> 	ST_Q (query, string) is a prop query string.
-	%  <strong>15</strong> <strong>ST_E</strong> 	ST_E (evanescent, string) is a prop evanescent string.
-	%  <strong>16</strong> <strong>ST_F</strong> 	ST_F (figure, string) is a prop figure string.
-	%  <strong>17</strong> <strong>ST_G</strong> 	ST_G (gui, string) is a prop gui string.
-	%
 	% GTA_ST_TA methods (constructor):
 	%  GTA_ST_TA - constructor
 	%
@@ -111,53 +92,53 @@ classdef GTA_ST_TA < ConcreteElement
 	%
 	% See also PanelPropStringTextArea.
 	%
-	% BUILD BRAPH2 7 class_name 1
+	% BUILD BRAPH2 BRAPH2.BUILD class_name 1
 	
 	properties (Constant) % properties
-		ST_C = 9; %CET: Computational Efficiency Trick
+		ST_C = ConcreteElement.getPropNumber() + 1;
 		ST_C_TAG = 'ST_C';
-		ST_C_CATEGORY = 1;
-		ST_C_FORMAT = 2;
+		ST_C_CATEGORY = Category.CONSTANT;
+		ST_C_FORMAT = Format.STRING;
 		
-		ST_M = 10; %CET: Computational Efficiency Trick
+		ST_M = ConcreteElement.getPropNumber() + 2;
 		ST_M_TAG = 'ST_M';
-		ST_M_CATEGORY = 2;
-		ST_M_FORMAT = 2;
+		ST_M_CATEGORY = Category.METADATA;
+		ST_M_FORMAT = Format.STRING;
 		
-		ST_P = 11; %CET: Computational Efficiency Trick
+		ST_P = ConcreteElement.getPropNumber() + 3;
 		ST_P_TAG = 'ST_P';
-		ST_P_CATEGORY = 3;
-		ST_P_FORMAT = 2;
+		ST_P_CATEGORY = Category.PARAMETER;
+		ST_P_FORMAT = Format.STRING;
 		
-		ST_D = 12; %CET: Computational Efficiency Trick
+		ST_D = ConcreteElement.getPropNumber() + 4;
 		ST_D_TAG = 'ST_D';
-		ST_D_CATEGORY = 4;
-		ST_D_FORMAT = 2;
+		ST_D_CATEGORY = Category.DATA;
+		ST_D_FORMAT = Format.STRING;
 		
-		ST_R = 13; %CET: Computational Efficiency Trick
+		ST_R = ConcreteElement.getPropNumber() + 5;
 		ST_R_TAG = 'ST_R';
-		ST_R_CATEGORY = 5;
-		ST_R_FORMAT = 2;
+		ST_R_CATEGORY = Category.RESULT;
+		ST_R_FORMAT = Format.STRING;
 		
-		ST_Q = 14; %CET: Computational Efficiency Trick
+		ST_Q = ConcreteElement.getPropNumber() + 6;
 		ST_Q_TAG = 'ST_Q';
-		ST_Q_CATEGORY = 6;
-		ST_Q_FORMAT = 2;
+		ST_Q_CATEGORY = Category.QUERY;
+		ST_Q_FORMAT = Format.STRING;
 		
-		ST_E = 15; %CET: Computational Efficiency Trick
+		ST_E = ConcreteElement.getPropNumber() + 7;
 		ST_E_TAG = 'ST_E';
-		ST_E_CATEGORY = 7;
-		ST_E_FORMAT = 2;
+		ST_E_CATEGORY = Category.EVANESCENT;
+		ST_E_FORMAT = Format.STRING;
 		
-		ST_F = 16; %CET: Computational Efficiency Trick
+		ST_F = ConcreteElement.getPropNumber() + 8;
 		ST_F_TAG = 'ST_F';
-		ST_F_CATEGORY = 8;
-		ST_F_FORMAT = 2;
+		ST_F_CATEGORY = Category.FIGURE;
+		ST_F_FORMAT = Format.STRING;
 		
-		ST_G = 17; %CET: Computational Efficiency Trick
+		ST_G = ConcreteElement.getPropNumber() + 9;
 		ST_G_TAG = 'ST_G';
-		ST_G_CATEGORY = 9;
-		ST_G_FORMAT = 2;
+		ST_G_CATEGORY = Category.GUI;
+		ST_G_FORMAT = Format.STRING;
 	end
 	methods % constructor
 		function gt = GTA_ST_TA(varargin)
@@ -170,24 +151,6 @@ classdef GTA_ST_TA < ConcreteElement
 			% Multiple properties can be initialized at once identifying
 			%  them with either property numbers (PROP) or tags (TAG).
 			%
-			% The list of GTA_ST_TA properties is:
-			%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the concrete element (ConcreteElement).
-			%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the concrete element.
-			%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the concrete element.
-			%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the concrete element.
-			%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the concrete element.
-			%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the concrete element.
-			%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the concrete element.
-			%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
-			%  <strong>9</strong> <strong>ST_C</strong> 	ST_C (constant, string) is a prop constant string.
-			%  <strong>10</strong> <strong>ST_M</strong> 	ST_M (metadata, string) is a prop metadata string.
-			%  <strong>11</strong> <strong>ST_P</strong> 	ST_P (parameter, string) is a prop parameter string.
-			%  <strong>12</strong> <strong>ST_D</strong> 	ST_D (data, string) is a prop data string.
-			%  <strong>13</strong> <strong>ST_R</strong> 	ST_R (result, string) is a prop result string.
-			%  <strong>14</strong> <strong>ST_Q</strong> 	ST_Q (query, string) is a prop query string.
-			%  <strong>15</strong> <strong>ST_E</strong> 	ST_E (evanescent, string) is a prop evanescent string.
-			%  <strong>16</strong> <strong>ST_F</strong> 	ST_F (figure, string) is a prop figure string.
-			%  <strong>17</strong> <strong>ST_G</strong> 	ST_G (gui, string) is a prop gui string.
 			%
 			% See also Category, Format.
 			
@@ -240,7 +203,7 @@ classdef GTA_ST_TA < ConcreteElement
 			%
 			% See also subclasses.
 			
-			subclass_list = { 'GTA_ST_TA' }; %CET: Computational Efficiency Trick
+			subclass_list = subclasses('GTA_ST_TA', [], [], true);
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of test A PanelPropStringTextArea.
@@ -261,34 +224,68 @@ classdef GTA_ST_TA < ConcreteElement
 			%
 			% See also getPropNumber, Category.
 			
-			%CET: Computational Efficiency Trick
-			
 			if nargin == 0
-				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17];
+				prop_list = [ ...
+					ConcreteElement.getProps() ...
+						GTA_ST_TA.ST_C ...
+						GTA_ST_TA.ST_M ...
+						GTA_ST_TA.ST_P ...
+						GTA_ST_TA.ST_D ...
+						GTA_ST_TA.ST_R ...
+						GTA_ST_TA.ST_Q ...
+						GTA_ST_TA.ST_E ...
+						GTA_ST_TA.ST_F ...
+						GTA_ST_TA.ST_G ...
+						];
 				return
 			end
 			
 			switch category
-				case 1 % Category.CONSTANT
-					prop_list = [1 2 3 9];
-				case 2 % Category.METADATA
-					prop_list = [6 7 10];
-				case 3 % Category.PARAMETER
-					prop_list = [4 11];
-				case 4 % Category.DATA
-					prop_list = [5 12];
-				case 5 % Category.RESULT
-					prop_list = 13;
-				case 6 % Category.QUERY
-					prop_list = [8 14];
-				case 7 % Category.EVANESCENT
-					prop_list = 15;
-				case 8 % Category.FIGURE
-					prop_list = 16;
-				case 9 % Category.GUI
-					prop_list = 17;
-				otherwise
-					prop_list = [];
+				case Category.CONSTANT
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.CONSTANT) ...
+						GTA_ST_TA.ST_C ...
+						];
+				case Category.METADATA
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.METADATA) ...
+						GTA_ST_TA.ST_M ...
+						];
+				case Category.PARAMETER
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.PARAMETER) ...
+						GTA_ST_TA.ST_P ...
+						];
+				case Category.DATA
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.DATA) ...
+						GTA_ST_TA.ST_D ...
+						];
+				case Category.RESULT
+					prop_list = [
+						ConcreteElement.getProps(Category.RESULT) ...
+						GTA_ST_TA.ST_R ...
+						];
+				case Category.QUERY
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.QUERY) ...
+						GTA_ST_TA.ST_Q ...
+						];
+				case Category.EVANESCENT
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.EVANESCENT) ...
+						GTA_ST_TA.ST_E ...
+						];
+				case Category.FIGURE
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.FIGURE) ...
+						GTA_ST_TA.ST_F ...
+						];
+				case Category.GUI
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.GUI) ...
+						GTA_ST_TA.ST_G ...
+						];
 			end
 		end
 		function prop_number = getPropNumber(varargin)
@@ -309,35 +306,7 @@ classdef GTA_ST_TA < ConcreteElement
 			%
 			% See also getProps, Category.
 			
-			%CET: Computational Efficiency Trick
-			
-			if nargin == 0
-				prop_number = 17;
-				return
-			end
-			
-			switch varargin{1} % category = varargin{1}
-				case 1 % Category.CONSTANT
-					prop_number = 4;
-				case 2 % Category.METADATA
-					prop_number = 3;
-				case 3 % Category.PARAMETER
-					prop_number = 2;
-				case 4 % Category.DATA
-					prop_number = 2;
-				case 5 % Category.RESULT
-					prop_number = 1;
-				case 6 % Category.QUERY
-					prop_number = 2;
-				case 7 % Category.EVANESCENT
-					prop_number = 1;
-				case 8 % Category.FIGURE
-					prop_number = 1;
-				case 9 % Category.GUI
-					prop_number = 1;
-				otherwise
-					prop_number = 0;
-			end
+			prop_number = numel(GTA_ST_TA.getProps(varargin{:}));
 		end
 		function check_out = existsProp(prop)
 			%EXISTSPROP checks whether property exists in test A PanelPropStringTextArea/error.
@@ -365,14 +334,14 @@ classdef GTA_ST_TA < ConcreteElement
 			%
 			% See also getProps, existsTag.
 			
-			check = prop >= 1 && prop <= 17 && round(prop) == prop; %CET: Computational Efficiency Trick
+			check = any(prop == GTA_ST_TA.getProps());
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					['BRAPH2' ':GTA_ST_TA:' 'WrongInput'], ...
-					['BRAPH2' ':GTA_ST_TA:' 'WrongInput' '\n' ...
+					[BRAPH2.STR ':GTA_ST_TA:' BRAPH2.WRONG_INPUT], ...
+					[BRAPH2.STR ':GTA_ST_TA:' BRAPH2.WRONG_INPUT '\n' ...
 					'The value ' tostring(prop, 100, ' ...') ' is not a valid prop for GTA_ST_TA.'] ...
 					)
 			end
@@ -403,14 +372,15 @@ classdef GTA_ST_TA < ConcreteElement
 			%
 			% See also getProps, existsTag.
 			
-			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'ST_C'  'ST_M'  'ST_P'  'ST_D'  'ST_R'  'ST_Q'  'ST_E'  'ST_F'  'ST_G' })); %CET: Computational Efficiency Trick
+			gta_st_ta_tag_list = cellfun(@(x) GTA_ST_TA.getPropTag(x), num2cell(GTA_ST_TA.getProps()), 'UniformOutput', false);
+			check = any(strcmp(tag, gta_st_ta_tag_list));
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					['BRAPH2' ':GTA_ST_TA:' 'WrongInput'], ...
-					['BRAPH2' ':GTA_ST_TA:' 'WrongInput' '\n' ...
+					[BRAPH2.STR ':GTA_ST_TA:' BRAPH2.WRONG_INPUT], ...
+					[BRAPH2.STR ':GTA_ST_TA:' BRAPH2.WRONG_INPUT '\n' ...
 					'The value ' tag ' is not a valid tag for GTA_ST_TA.'] ...
 					)
 			end
@@ -436,7 +406,8 @@ classdef GTA_ST_TA < ConcreteElement
 			%  getPropSettings, getPropDefault, checkProp.
 			
 			if ischar(pointer)
-				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'ST_C'  'ST_M'  'ST_P'  'ST_D'  'ST_R'  'ST_Q'  'ST_E'  'ST_F'  'ST_G' })); % tag = pointer %CET: Computational Efficiency Trick
+				gta_st_ta_tag_list = cellfun(@(x) GTA_ST_TA.getPropTag(x), num2cell(GTA_ST_TA.getProps()), 'UniformOutput', false);
+				prop = find(strcmp(pointer, gta_st_ta_tag_list)); % tag = pointer
 			else % numeric
 				prop = pointer;
 			end
@@ -464,9 +435,30 @@ classdef GTA_ST_TA < ConcreteElement
 			if ischar(pointer)
 				tag = pointer;
 			else % numeric
-				%CET: Computational Efficiency Trick
-				gta_st_ta_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'ST_C'  'ST_M'  'ST_P'  'ST_D'  'ST_R'  'ST_Q'  'ST_E'  'ST_F'  'ST_G' };
-				tag = gta_st_ta_tag_list{pointer}; % prop = pointer
+				prop = pointer;
+				
+				switch prop
+					case GTA_ST_TA.ST_C
+						tag = GTA_ST_TA.ST_C_TAG;
+					case GTA_ST_TA.ST_M
+						tag = GTA_ST_TA.ST_M_TAG;
+					case GTA_ST_TA.ST_P
+						tag = GTA_ST_TA.ST_P_TAG;
+					case GTA_ST_TA.ST_D
+						tag = GTA_ST_TA.ST_D_TAG;
+					case GTA_ST_TA.ST_R
+						tag = GTA_ST_TA.ST_R_TAG;
+					case GTA_ST_TA.ST_Q
+						tag = GTA_ST_TA.ST_Q_TAG;
+					case GTA_ST_TA.ST_E
+						tag = GTA_ST_TA.ST_E_TAG;
+					case GTA_ST_TA.ST_F
+						tag = GTA_ST_TA.ST_F_TAG;
+					case GTA_ST_TA.ST_G
+						tag = GTA_ST_TA.ST_G_TAG;
+					otherwise
+						tag = getPropTag@ConcreteElement(prop);
+				end
 			end
 		end
 		function prop_category = getPropCategory(pointer)
@@ -491,9 +483,28 @@ classdef GTA_ST_TA < ConcreteElement
 			
 			prop = GTA_ST_TA.getPropProp(pointer);
 			
-			%CET: Computational Efficiency Trick
-			gta_st_ta_category_list = { 1  1  1  3  4  2  2  6  1  2  3  4  5  6  7  8  9 };
-			prop_category = gta_st_ta_category_list{prop};
+			switch prop
+				case GTA_ST_TA.ST_C
+					prop_category = GTA_ST_TA.ST_C_CATEGORY;
+				case GTA_ST_TA.ST_M
+					prop_category = GTA_ST_TA.ST_M_CATEGORY;
+				case GTA_ST_TA.ST_P
+					prop_category = GTA_ST_TA.ST_P_CATEGORY;
+				case GTA_ST_TA.ST_D
+					prop_category = GTA_ST_TA.ST_D_CATEGORY;
+				case GTA_ST_TA.ST_R
+					prop_category = GTA_ST_TA.ST_R_CATEGORY;
+				case GTA_ST_TA.ST_Q
+					prop_category = GTA_ST_TA.ST_Q_CATEGORY;
+				case GTA_ST_TA.ST_E
+					prop_category = GTA_ST_TA.ST_E_CATEGORY;
+				case GTA_ST_TA.ST_F
+					prop_category = GTA_ST_TA.ST_F_CATEGORY;
+				case GTA_ST_TA.ST_G
+					prop_category = GTA_ST_TA.ST_G_CATEGORY;
+				otherwise
+					prop_category = getPropCategory@ConcreteElement(prop);
+			end
 		end
 		function prop_format = getPropFormat(pointer)
 			%GETPROPFORMAT returns the format of a property.
@@ -517,9 +528,28 @@ classdef GTA_ST_TA < ConcreteElement
 			
 			prop = GTA_ST_TA.getPropProp(pointer);
 			
-			%CET: Computational Efficiency Trick
-			gta_st_ta_format_list = { 2  2  2  8  2  2  2  2  2  2  2  2  2  2  2  2  2 };
-			prop_format = gta_st_ta_format_list{prop};
+			switch prop
+				case GTA_ST_TA.ST_C
+					prop_format = GTA_ST_TA.ST_C_FORMAT;
+				case GTA_ST_TA.ST_M
+					prop_format = GTA_ST_TA.ST_M_FORMAT;
+				case GTA_ST_TA.ST_P
+					prop_format = GTA_ST_TA.ST_P_FORMAT;
+				case GTA_ST_TA.ST_D
+					prop_format = GTA_ST_TA.ST_D_FORMAT;
+				case GTA_ST_TA.ST_R
+					prop_format = GTA_ST_TA.ST_R_FORMAT;
+				case GTA_ST_TA.ST_Q
+					prop_format = GTA_ST_TA.ST_Q_FORMAT;
+				case GTA_ST_TA.ST_E
+					prop_format = GTA_ST_TA.ST_E_FORMAT;
+				case GTA_ST_TA.ST_F
+					prop_format = GTA_ST_TA.ST_F_FORMAT;
+				case GTA_ST_TA.ST_G
+					prop_format = GTA_ST_TA.ST_G_FORMAT;
+				otherwise
+					prop_format = getPropFormat@ConcreteElement(prop);
+			end
 		end
 		function prop_description = getPropDescription(pointer)
 			%GETPROPDESCRIPTION returns the description of a property.
@@ -543,9 +573,28 @@ classdef GTA_ST_TA < ConcreteElement
 			
 			prop = GTA_ST_TA.getPropProp(pointer);
 			
-			%CET: Computational Efficiency Trick
-			gta_st_ta_description_list = { 'ELCLASS (constant, string) is the class of the concrete element (ConcreteElement).'  'NAME (constant, string) is the name of the concrete element.'  'DESCRIPTION (constant, string) is the description of the concrete element.'  'TEMPLATE (parameter, item) is the template of the concrete element.'  'ID (data, string) is a few-letter code for the concrete element.'  'LABEL (metadata, string) is an extended label of the concrete element.'  'NOTES (metadata, string) are some specific notes about the concrete element.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'ST_C (constant, string) is a prop constant string.'  'ST_M (metadata, string) is a prop metadata string.'  'ST_P (parameter, string) is a prop parameter string.'  'ST_D (data, string) is a prop data string.'  'ST_R (result, string) is a prop result string.'  'ST_Q (query, string) is a prop query string.'  'ST_E (evanescent, string) is a prop evanescent string.'  'ST_F (figure, string) is a prop figure string.'  'ST_G (gui, string) is a prop gui string.' };
-			prop_description = gta_st_ta_description_list{prop};
+			switch prop
+				case GTA_ST_TA.ST_C
+					prop_description = 'ST_C (constant, string) is a prop constant string.';
+				case GTA_ST_TA.ST_M
+					prop_description = 'ST_M (metadata, string) is a prop metadata string.';
+				case GTA_ST_TA.ST_P
+					prop_description = 'ST_P (parameter, string) is a prop parameter string.';
+				case GTA_ST_TA.ST_D
+					prop_description = 'ST_D (data, string) is a prop data string.';
+				case GTA_ST_TA.ST_R
+					prop_description = 'ST_R (result, string) is a prop result string.';
+				case GTA_ST_TA.ST_Q
+					prop_description = 'ST_Q (query, string) is a prop query string.';
+				case GTA_ST_TA.ST_E
+					prop_description = 'ST_E (evanescent, string) is a prop evanescent string.';
+				case GTA_ST_TA.ST_F
+					prop_description = 'ST_F (figure, string) is a prop figure string.';
+				case GTA_ST_TA.ST_G
+					prop_description = 'ST_G (gui, string) is a prop gui string.';
+				otherwise
+					prop_description = getPropDescription@ConcreteElement(prop);
+			end
 		end
 		function prop_settings = getPropSettings(pointer)
 			%GETPROPSETTINGS returns the settings of a property.
@@ -569,25 +618,25 @@ classdef GTA_ST_TA < ConcreteElement
 			
 			prop = GTA_ST_TA.getPropProp(pointer);
 			
-			switch prop %CET: Computational Efficiency Trick
-				case 9 % GTA_ST_TA.ST_C
-					prop_settings = Format.getFormatSettings(2);
-				case 10 % GTA_ST_TA.ST_M
-					prop_settings = Format.getFormatSettings(2);
-				case 11 % GTA_ST_TA.ST_P
-					prop_settings = Format.getFormatSettings(2);
-				case 12 % GTA_ST_TA.ST_D
-					prop_settings = Format.getFormatSettings(2);
-				case 13 % GTA_ST_TA.ST_R
-					prop_settings = Format.getFormatSettings(2);
-				case 14 % GTA_ST_TA.ST_Q
-					prop_settings = Format.getFormatSettings(2);
-				case 15 % GTA_ST_TA.ST_E
-					prop_settings = Format.getFormatSettings(2);
-				case 16 % GTA_ST_TA.ST_F
-					prop_settings = Format.getFormatSettings(2);
-				case 17 % GTA_ST_TA.ST_G
-					prop_settings = Format.getFormatSettings(2);
+			switch prop
+				case GTA_ST_TA.ST_C
+					prop_settings = Format.getFormatSettings(Format.STRING);
+				case GTA_ST_TA.ST_M
+					prop_settings = Format.getFormatSettings(Format.STRING);
+				case GTA_ST_TA.ST_P
+					prop_settings = Format.getFormatSettings(Format.STRING);
+				case GTA_ST_TA.ST_D
+					prop_settings = Format.getFormatSettings(Format.STRING);
+				case GTA_ST_TA.ST_R
+					prop_settings = Format.getFormatSettings(Format.STRING);
+				case GTA_ST_TA.ST_Q
+					prop_settings = Format.getFormatSettings(Format.STRING);
+				case GTA_ST_TA.ST_E
+					prop_settings = Format.getFormatSettings(Format.STRING);
+				case GTA_ST_TA.ST_F
+					prop_settings = Format.getFormatSettings(Format.STRING);
+				case GTA_ST_TA.ST_G
+					prop_settings = Format.getFormatSettings(Format.STRING);
 				otherwise
 					prop_settings = getPropSettings@ConcreteElement(prop);
 			end
@@ -614,24 +663,24 @@ classdef GTA_ST_TA < ConcreteElement
 			
 			prop = GTA_ST_TA.getPropProp(pointer);
 			
-			switch prop %CET: Computational Efficiency Trick
-				case 9 % GTA_ST_TA.ST_C
-					prop_default = Format.getFormatDefault(2, GTA_ST_TA.getPropSettings(prop));
-				case 10 % GTA_ST_TA.ST_M
+			switch prop
+				case GTA_ST_TA.ST_C
+					prop_default = Format.getFormatDefault(Format.STRING, GTA_ST_TA.getPropSettings(prop));
+				case GTA_ST_TA.ST_M
 					prop_default = 'M\nM\nM\n';
-				case 11 % GTA_ST_TA.ST_P
+				case GTA_ST_TA.ST_P
 					prop_default = 'P\nP\nP\n';
-				case 12 % GTA_ST_TA.ST_D
+				case GTA_ST_TA.ST_D
 					prop_default = 'D\nD\nD\n';
-				case 13 % GTA_ST_TA.ST_R
+				case GTA_ST_TA.ST_R
 					prop_default = 'result\ndefault\n';
-				case 14 % GTA_ST_TA.ST_Q
+				case GTA_ST_TA.ST_Q
 					prop_default = 'query\ndefault\n';
-				case 15 % GTA_ST_TA.ST_E
+				case GTA_ST_TA.ST_E
 					prop_default = 'evanescent\ndefault\n';
-				case 16 % GTA_ST_TA.ST_F
+				case GTA_ST_TA.ST_F
 					prop_default = 'F\nF\nF\n';
-				case 17 % GTA_ST_TA.ST_G
+				case GTA_ST_TA.ST_G
 					prop_default = 'G\nG\nG\n';
 				otherwise
 					prop_default = getPropDefault@ConcreteElement(prop);
@@ -678,15 +727,15 @@ classdef GTA_ST_TA < ConcreteElement
 			% 
 			% GT.CHECKPROP(POINTER, VALUE) throws an error if VALUE is
 			%  NOT an acceptable value for the format of the property POINTER.
-			%  Error id: BRAPH2:GTA_ST_TA:WrongInput
+			%  Error id: €BRAPH2.STR€:GTA_ST_TA:€BRAPH2.WRONG_INPUT€
 			% 
 			% Alternative forms to call this method are (POINTER = PROP or TAG):
 			%  GT.CHECKPROP(POINTER, VALUE) throws error if VALUE has not a valid format for PROP of GT.
-			%   Error id: BRAPH2:GTA_ST_TA:WrongInput
+			%   Error id: €BRAPH2.STR€:GTA_ST_TA:€BRAPH2.WRONG_INPUT€
 			%  Element.CHECKPROP(GTA_ST_TA, PROP, VALUE) throws error if VALUE has not a valid format for PROP of GTA_ST_TA.
-			%   Error id: BRAPH2:GTA_ST_TA:WrongInput
+			%   Error id: €BRAPH2.STR€:GTA_ST_TA:€BRAPH2.WRONG_INPUT€
 			%  GT.CHECKPROP(GTA_ST_TA, PROP, VALUE) throws error if VALUE has not a valid format for PROP of GTA_ST_TA.
-			%   Error id: BRAPH2:GTA_ST_TA:WrongInput]
+			%   Error id: €BRAPH2.STR€:GTA_ST_TA:€BRAPH2.WRONG_INPUT€]
 			% 
 			% Note that the Element.CHECKPROP(GT) and Element.CHECKPROP('GTA_ST_TA')
 			%  are less computationally efficient.
@@ -697,41 +746,41 @@ classdef GTA_ST_TA < ConcreteElement
 			prop = GTA_ST_TA.getPropProp(pointer);
 			
 			switch prop
-				case 9 % GTA_ST_TA.ST_C
-					check = Format.checkFormat(2, value, GTA_ST_TA.getPropSettings(prop));
-				case 10 % GTA_ST_TA.ST_M
-					check = Format.checkFormat(2, value, GTA_ST_TA.getPropSettings(prop));
+				case GTA_ST_TA.ST_C % __GTA_ST_TA.ST_C__
+					check = Format.checkFormat(Format.STRING, value, GTA_ST_TA.getPropSettings(prop));
+				case GTA_ST_TA.ST_M % __GTA_ST_TA.ST_M__
+					check = Format.checkFormat(Format.STRING, value, GTA_ST_TA.getPropSettings(prop));
 					if check
 						check = true;
 					end
-				case 11 % GTA_ST_TA.ST_P
-					check = Format.checkFormat(2, value, GTA_ST_TA.getPropSettings(prop));
+				case GTA_ST_TA.ST_P % __GTA_ST_TA.ST_P__
+					check = Format.checkFormat(Format.STRING, value, GTA_ST_TA.getPropSettings(prop));
 					if check
 						check = true;
 					end
-				case 12 % GTA_ST_TA.ST_D
-					check = Format.checkFormat(2, value, GTA_ST_TA.getPropSettings(prop));
+				case GTA_ST_TA.ST_D % __GTA_ST_TA.ST_D__
+					check = Format.checkFormat(Format.STRING, value, GTA_ST_TA.getPropSettings(prop));
 					if check
 						check = true;
 					end
-				case 13 % GTA_ST_TA.ST_R
-					check = Format.checkFormat(2, value, GTA_ST_TA.getPropSettings(prop));
-				case 14 % GTA_ST_TA.ST_Q
-					check = Format.checkFormat(2, value, GTA_ST_TA.getPropSettings(prop));
-				case 15 % GTA_ST_TA.ST_E
-					check = Format.checkFormat(2, value, GTA_ST_TA.getPropSettings(prop));
-				case 16 % GTA_ST_TA.ST_F
-					check = Format.checkFormat(2, value, GTA_ST_TA.getPropSettings(prop));
+				case GTA_ST_TA.ST_R % __GTA_ST_TA.ST_R__
+					check = Format.checkFormat(Format.STRING, value, GTA_ST_TA.getPropSettings(prop));
+				case GTA_ST_TA.ST_Q % __GTA_ST_TA.ST_Q__
+					check = Format.checkFormat(Format.STRING, value, GTA_ST_TA.getPropSettings(prop));
+				case GTA_ST_TA.ST_E % __GTA_ST_TA.ST_E__
+					check = Format.checkFormat(Format.STRING, value, GTA_ST_TA.getPropSettings(prop));
+				case GTA_ST_TA.ST_F % __GTA_ST_TA.ST_F__
+					check = Format.checkFormat(Format.STRING, value, GTA_ST_TA.getPropSettings(prop));
 					if check
 						check = true;
 					end
-				case 17 % GTA_ST_TA.ST_G
-					check = Format.checkFormat(2, value, GTA_ST_TA.getPropSettings(prop));
+				case GTA_ST_TA.ST_G % __GTA_ST_TA.ST_G__
+					check = Format.checkFormat(Format.STRING, value, GTA_ST_TA.getPropSettings(prop));
 					if check
 						check = true;
 					end
 				otherwise
-					if prop <= 8
+					if prop <= ConcreteElement.getPropNumber()
 						check = checkProp@ConcreteElement(prop, value);
 					end
 			end
@@ -740,8 +789,8 @@ classdef GTA_ST_TA < ConcreteElement
 				prop_check = check;
 			elseif ~check
 				error( ...
-					['BRAPH2' ':GTA_ST_TA:' 'WrongInput'], ...
-					['BRAPH2' ':GTA_ST_TA:' 'WrongInput' '\n' ...
+					[BRAPH2.STR ':GTA_ST_TA:' BRAPH2.WRONG_INPUT], ...
+					[BRAPH2.STR ':GTA_ST_TA:' BRAPH2.WRONG_INPUT '\n' ...
 					'The value ' tostring(value, 100, ' ...') ' is not a valid property ' GTA_ST_TA.getPropTag(prop) ' (' GTA_ST_TA.getFormatTag(GTA_ST_TA.getPropFormat(prop)) ').'] ...
 					)
 			end
@@ -752,33 +801,33 @@ classdef GTA_ST_TA < ConcreteElement
 			%CALCULATEVALUE calculates the value of a property.
 			%
 			% VALUE = CALCULATEVALUE(EL, PROP) calculates the value of the property
-			%  PROP. It works only with properties with 5,
-			%  6, and 7. By default this function
+			%  PROP. It works only with properties with Category.RESULT,
+			%  Category.QUERY, and Category.EVANESCENT. By default this function
 			%  returns the default value for the prop and should be implemented in the
 			%  subclasses of Element when needed.
 			%
 			% VALUE = CALCULATEVALUE(EL, PROP, VARARGIN) works with properties with
-			%  6.
+			%  Category.QUERY.
 			%
 			% See also getPropDefaultConditioned, conditioning, preset, checkProp,
 			%  postset, postprocessing, checkValue.
 			
 			switch prop
-				case 13 % GTA_ST_TA.ST_R
-					rng_settings_ = rng(); rng(gt.getPropSeed(13), 'twister')
+				case GTA_ST_TA.ST_R % __GTA_ST_TA.ST_R__
+					rng_settings_ = rng(); rng(gt.getPropSeed(GTA_ST_TA.ST_R), 'twister')
 					
 					value = 'result\ncalculated\n';
 					
 					rng(rng_settings_)
 					
-				case 14 % GTA_ST_TA.ST_Q
+				case GTA_ST_TA.ST_Q % __GTA_ST_TA.ST_Q__
 					value = 'query\ncalculated\n';
 					
-				case 15 % GTA_ST_TA.ST_E
+				case GTA_ST_TA.ST_E % __GTA_ST_TA.ST_E__
 					value = 'evanescent\ncalculated\n';
 					
 				otherwise
-					if prop <= 8
+					if prop <= ConcreteElement.getPropNumber()
 						value = calculateValue@ConcreteElement(gt, prop, varargin{:});
 					else
 						value = calculateValue@Element(gt, prop, varargin{:});
@@ -804,32 +853,32 @@ classdef GTA_ST_TA < ConcreteElement
 			%  PanelPropString, PanelPropStringList.
 			
 			switch prop
-				case 9 % GTA_ST_TA.ST_C
-					pr = PanelPropStringTextArea('EL', gt, 'PROP', 9, varargin{:});
+				case GTA_ST_TA.ST_C % __GTA_ST_TA.ST_C__
+					pr = PanelPropStringTextArea('EL', gt, 'PROP', GTA_ST_TA.ST_C, varargin{:});
 					
-				case 10 % GTA_ST_TA.ST_M
-					pr = PanelPropStringTextArea('EL', gt, 'PROP', 10, varargin{:});
+				case GTA_ST_TA.ST_M % __GTA_ST_TA.ST_M__
+					pr = PanelPropStringTextArea('EL', gt, 'PROP', GTA_ST_TA.ST_M, varargin{:});
 					
-				case 11 % GTA_ST_TA.ST_P
-					pr = PanelPropStringTextArea('EL', gt, 'PROP', 11, varargin{:});
+				case GTA_ST_TA.ST_P % __GTA_ST_TA.ST_P__
+					pr = PanelPropStringTextArea('EL', gt, 'PROP', GTA_ST_TA.ST_P, varargin{:});
 					
-				case 12 % GTA_ST_TA.ST_D
-					pr = PanelPropStringTextArea('EL', gt, 'PROP', 12, varargin{:});
+				case GTA_ST_TA.ST_D % __GTA_ST_TA.ST_D__
+					pr = PanelPropStringTextArea('EL', gt, 'PROP', GTA_ST_TA.ST_D, varargin{:});
 					
-				case 13 % GTA_ST_TA.ST_R
-					pr = PanelPropStringTextArea('EL', gt, 'PROP', 13, varargin{:});
+				case GTA_ST_TA.ST_R % __GTA_ST_TA.ST_R__
+					pr = PanelPropStringTextArea('EL', gt, 'PROP', GTA_ST_TA.ST_R, varargin{:});
 					
-				case 14 % GTA_ST_TA.ST_Q
-					pr = PanelPropStringTextArea('EL', gt, 'PROP', 14, varargin{:});
+				case GTA_ST_TA.ST_Q % __GTA_ST_TA.ST_Q__
+					pr = PanelPropStringTextArea('EL', gt, 'PROP', GTA_ST_TA.ST_Q, varargin{:});
 					
-				case 15 % GTA_ST_TA.ST_E
-					pr = PanelPropStringTextArea('EL', gt, 'PROP', 15, varargin{:});
+				case GTA_ST_TA.ST_E % __GTA_ST_TA.ST_E__
+					pr = PanelPropStringTextArea('EL', gt, 'PROP', GTA_ST_TA.ST_E, varargin{:});
 					
-				case 16 % GTA_ST_TA.ST_F
-					pr = PanelPropStringTextArea('EL', gt, 'PROP', 16, varargin{:});
+				case GTA_ST_TA.ST_F % __GTA_ST_TA.ST_F__
+					pr = PanelPropStringTextArea('EL', gt, 'PROP', GTA_ST_TA.ST_F, varargin{:});
 					
-				case 17 % GTA_ST_TA.ST_G
-					pr = PanelPropStringTextArea('EL', gt, 'PROP', 17, varargin{:});
+				case GTA_ST_TA.ST_G % __GTA_ST_TA.ST_G__
+					pr = PanelPropStringTextArea('EL', gt, 'PROP', GTA_ST_TA.ST_G, varargin{:});
 					
 				otherwise
 					pr = getPanelProp@ConcreteElement(gt, prop, varargin{:});

@@ -4,25 +4,6 @@ classdef GTA_CA < ConcreteElement
 	%
 	% GTA_CA tests PanelPropClass.
 	%
-	% The list of GTA_CA properties is:
-	%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the concrete element (ConcreteElement).
-	%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the concrete element.
-	%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the concrete element.
-	%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the concrete element.
-	%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the concrete element.
-	%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the concrete element.
-	%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the concrete element.
-	%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
-	%  <strong>9</strong> <strong>CA_C</strong> 	CA_C (constant, class) is a prop constant class.
-	%  <strong>10</strong> <strong>CA_M</strong> 	CA_M (metadata, class) is a prop metadata class.
-	%  <strong>11</strong> <strong>CA_P</strong> 	CA_P (parameter, class) is a prop parameter class.
-	%  <strong>12</strong> <strong>CA_D</strong> 	CA_D (data, class) is a prop data class.
-	%  <strong>13</strong> <strong>CA_R</strong> 	CA_R (result, class) is a prop result class.
-	%  <strong>14</strong> <strong>CA_Q</strong> 	CA_Q (query, class) is a prop query class.
-	%  <strong>15</strong> <strong>CA_E</strong> 	CA_E (evanescent, class) is a prop evanescent class.
-	%  <strong>16</strong> <strong>CA_F</strong> 	CA_F (figure, class) is a prop figure class.
-	%  <strong>17</strong> <strong>CA_G</strong> 	CA_G (gui, class) is a prop gui class.
-	%
 	% GTA_CA methods (constructor):
 	%  GTA_CA - constructor
 	%
@@ -111,53 +92,53 @@ classdef GTA_CA < ConcreteElement
 	%
 	% See also PanelPropClass.
 	%
-	% BUILD BRAPH2 7 class_name 1
+	% BUILD BRAPH2 BRAPH2.BUILD class_name 1
 	
 	properties (Constant) % properties
-		CA_C = 9; %CET: Computational Efficiency Trick
+		CA_C = ConcreteElement.getPropNumber() + 1;
 		CA_C_TAG = 'CA_C';
-		CA_C_CATEGORY = 1;
-		CA_C_FORMAT = 6;
+		CA_C_CATEGORY = Category.CONSTANT;
+		CA_C_FORMAT = Format.CLASS;
 		
-		CA_M = 10; %CET: Computational Efficiency Trick
+		CA_M = ConcreteElement.getPropNumber() + 2;
 		CA_M_TAG = 'CA_M';
-		CA_M_CATEGORY = 2;
-		CA_M_FORMAT = 6;
+		CA_M_CATEGORY = Category.METADATA;
+		CA_M_FORMAT = Format.CLASS;
 		
-		CA_P = 11; %CET: Computational Efficiency Trick
+		CA_P = ConcreteElement.getPropNumber() + 3;
 		CA_P_TAG = 'CA_P';
-		CA_P_CATEGORY = 3;
-		CA_P_FORMAT = 6;
+		CA_P_CATEGORY = Category.PARAMETER;
+		CA_P_FORMAT = Format.CLASS;
 		
-		CA_D = 12; %CET: Computational Efficiency Trick
+		CA_D = ConcreteElement.getPropNumber() + 4;
 		CA_D_TAG = 'CA_D';
-		CA_D_CATEGORY = 4;
-		CA_D_FORMAT = 6;
+		CA_D_CATEGORY = Category.DATA;
+		CA_D_FORMAT = Format.CLASS;
 		
-		CA_R = 13; %CET: Computational Efficiency Trick
+		CA_R = ConcreteElement.getPropNumber() + 5;
 		CA_R_TAG = 'CA_R';
-		CA_R_CATEGORY = 5;
-		CA_R_FORMAT = 6;
+		CA_R_CATEGORY = Category.RESULT;
+		CA_R_FORMAT = Format.CLASS;
 		
-		CA_Q = 14; %CET: Computational Efficiency Trick
+		CA_Q = ConcreteElement.getPropNumber() + 6;
 		CA_Q_TAG = 'CA_Q';
-		CA_Q_CATEGORY = 6;
-		CA_Q_FORMAT = 6;
+		CA_Q_CATEGORY = Category.QUERY;
+		CA_Q_FORMAT = Format.CLASS;
 		
-		CA_E = 15; %CET: Computational Efficiency Trick
+		CA_E = ConcreteElement.getPropNumber() + 7;
 		CA_E_TAG = 'CA_E';
-		CA_E_CATEGORY = 7;
-		CA_E_FORMAT = 6;
+		CA_E_CATEGORY = Category.EVANESCENT;
+		CA_E_FORMAT = Format.CLASS;
 		
-		CA_F = 16; %CET: Computational Efficiency Trick
+		CA_F = ConcreteElement.getPropNumber() + 8;
 		CA_F_TAG = 'CA_F';
-		CA_F_CATEGORY = 8;
-		CA_F_FORMAT = 6;
+		CA_F_CATEGORY = Category.FIGURE;
+		CA_F_FORMAT = Format.CLASS;
 		
-		CA_G = 17; %CET: Computational Efficiency Trick
+		CA_G = ConcreteElement.getPropNumber() + 9;
 		CA_G_TAG = 'CA_G';
-		CA_G_CATEGORY = 9;
-		CA_G_FORMAT = 6;
+		CA_G_CATEGORY = Category.GUI;
+		CA_G_FORMAT = Format.CLASS;
 	end
 	methods % constructor
 		function gt = GTA_CA(varargin)
@@ -170,24 +151,6 @@ classdef GTA_CA < ConcreteElement
 			% Multiple properties can be initialized at once identifying
 			%  them with either property numbers (PROP) or tags (TAG).
 			%
-			% The list of GTA_CA properties is:
-			%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the concrete element (ConcreteElement).
-			%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the concrete element.
-			%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the concrete element.
-			%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the concrete element.
-			%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the concrete element.
-			%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the concrete element.
-			%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the concrete element.
-			%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
-			%  <strong>9</strong> <strong>CA_C</strong> 	CA_C (constant, class) is a prop constant class.
-			%  <strong>10</strong> <strong>CA_M</strong> 	CA_M (metadata, class) is a prop metadata class.
-			%  <strong>11</strong> <strong>CA_P</strong> 	CA_P (parameter, class) is a prop parameter class.
-			%  <strong>12</strong> <strong>CA_D</strong> 	CA_D (data, class) is a prop data class.
-			%  <strong>13</strong> <strong>CA_R</strong> 	CA_R (result, class) is a prop result class.
-			%  <strong>14</strong> <strong>CA_Q</strong> 	CA_Q (query, class) is a prop query class.
-			%  <strong>15</strong> <strong>CA_E</strong> 	CA_E (evanescent, class) is a prop evanescent class.
-			%  <strong>16</strong> <strong>CA_F</strong> 	CA_F (figure, class) is a prop figure class.
-			%  <strong>17</strong> <strong>CA_G</strong> 	CA_G (gui, class) is a prop gui class.
 			%
 			% See also Category, Format.
 			
@@ -240,7 +203,7 @@ classdef GTA_CA < ConcreteElement
 			%
 			% See also subclasses.
 			
-			subclass_list = { 'GTA_CA' }; %CET: Computational Efficiency Trick
+			subclass_list = subclasses('GTA_CA', [], [], true);
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of test A PanelPropClass.
@@ -261,34 +224,68 @@ classdef GTA_CA < ConcreteElement
 			%
 			% See also getPropNumber, Category.
 			
-			%CET: Computational Efficiency Trick
-			
 			if nargin == 0
-				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17];
+				prop_list = [ ...
+					ConcreteElement.getProps() ...
+						GTA_CA.CA_C ...
+						GTA_CA.CA_M ...
+						GTA_CA.CA_P ...
+						GTA_CA.CA_D ...
+						GTA_CA.CA_R ...
+						GTA_CA.CA_Q ...
+						GTA_CA.CA_E ...
+						GTA_CA.CA_F ...
+						GTA_CA.CA_G ...
+						];
 				return
 			end
 			
 			switch category
-				case 1 % Category.CONSTANT
-					prop_list = [1 2 3 9];
-				case 2 % Category.METADATA
-					prop_list = [6 7 10];
-				case 3 % Category.PARAMETER
-					prop_list = [4 11];
-				case 4 % Category.DATA
-					prop_list = [5 12];
-				case 5 % Category.RESULT
-					prop_list = 13;
-				case 6 % Category.QUERY
-					prop_list = [8 14];
-				case 7 % Category.EVANESCENT
-					prop_list = 15;
-				case 8 % Category.FIGURE
-					prop_list = 16;
-				case 9 % Category.GUI
-					prop_list = 17;
-				otherwise
-					prop_list = [];
+				case Category.CONSTANT
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.CONSTANT) ...
+						GTA_CA.CA_C ...
+						];
+				case Category.METADATA
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.METADATA) ...
+						GTA_CA.CA_M ...
+						];
+				case Category.PARAMETER
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.PARAMETER) ...
+						GTA_CA.CA_P ...
+						];
+				case Category.DATA
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.DATA) ...
+						GTA_CA.CA_D ...
+						];
+				case Category.RESULT
+					prop_list = [
+						ConcreteElement.getProps(Category.RESULT) ...
+						GTA_CA.CA_R ...
+						];
+				case Category.QUERY
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.QUERY) ...
+						GTA_CA.CA_Q ...
+						];
+				case Category.EVANESCENT
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.EVANESCENT) ...
+						GTA_CA.CA_E ...
+						];
+				case Category.FIGURE
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.FIGURE) ...
+						GTA_CA.CA_F ...
+						];
+				case Category.GUI
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.GUI) ...
+						GTA_CA.CA_G ...
+						];
 			end
 		end
 		function prop_number = getPropNumber(varargin)
@@ -309,35 +306,7 @@ classdef GTA_CA < ConcreteElement
 			%
 			% See also getProps, Category.
 			
-			%CET: Computational Efficiency Trick
-			
-			if nargin == 0
-				prop_number = 17;
-				return
-			end
-			
-			switch varargin{1} % category = varargin{1}
-				case 1 % Category.CONSTANT
-					prop_number = 4;
-				case 2 % Category.METADATA
-					prop_number = 3;
-				case 3 % Category.PARAMETER
-					prop_number = 2;
-				case 4 % Category.DATA
-					prop_number = 2;
-				case 5 % Category.RESULT
-					prop_number = 1;
-				case 6 % Category.QUERY
-					prop_number = 2;
-				case 7 % Category.EVANESCENT
-					prop_number = 1;
-				case 8 % Category.FIGURE
-					prop_number = 1;
-				case 9 % Category.GUI
-					prop_number = 1;
-				otherwise
-					prop_number = 0;
-			end
+			prop_number = numel(GTA_CA.getProps(varargin{:}));
 		end
 		function check_out = existsProp(prop)
 			%EXISTSPROP checks whether property exists in test A PanelPropClass/error.
@@ -365,14 +334,14 @@ classdef GTA_CA < ConcreteElement
 			%
 			% See also getProps, existsTag.
 			
-			check = prop >= 1 && prop <= 17 && round(prop) == prop; %CET: Computational Efficiency Trick
+			check = any(prop == GTA_CA.getProps());
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					['BRAPH2' ':GTA_CA:' 'WrongInput'], ...
-					['BRAPH2' ':GTA_CA:' 'WrongInput' '\n' ...
+					[BRAPH2.STR ':GTA_CA:' BRAPH2.WRONG_INPUT], ...
+					[BRAPH2.STR ':GTA_CA:' BRAPH2.WRONG_INPUT '\n' ...
 					'The value ' tostring(prop, 100, ' ...') ' is not a valid prop for GTA_CA.'] ...
 					)
 			end
@@ -403,14 +372,15 @@ classdef GTA_CA < ConcreteElement
 			%
 			% See also getProps, existsTag.
 			
-			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'CA_C'  'CA_M'  'CA_P'  'CA_D'  'CA_R'  'CA_Q'  'CA_E'  'CA_F'  'CA_G' })); %CET: Computational Efficiency Trick
+			gta_ca_tag_list = cellfun(@(x) GTA_CA.getPropTag(x), num2cell(GTA_CA.getProps()), 'UniformOutput', false);
+			check = any(strcmp(tag, gta_ca_tag_list));
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					['BRAPH2' ':GTA_CA:' 'WrongInput'], ...
-					['BRAPH2' ':GTA_CA:' 'WrongInput' '\n' ...
+					[BRAPH2.STR ':GTA_CA:' BRAPH2.WRONG_INPUT], ...
+					[BRAPH2.STR ':GTA_CA:' BRAPH2.WRONG_INPUT '\n' ...
 					'The value ' tag ' is not a valid tag for GTA_CA.'] ...
 					)
 			end
@@ -436,7 +406,8 @@ classdef GTA_CA < ConcreteElement
 			%  getPropSettings, getPropDefault, checkProp.
 			
 			if ischar(pointer)
-				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'CA_C'  'CA_M'  'CA_P'  'CA_D'  'CA_R'  'CA_Q'  'CA_E'  'CA_F'  'CA_G' })); % tag = pointer %CET: Computational Efficiency Trick
+				gta_ca_tag_list = cellfun(@(x) GTA_CA.getPropTag(x), num2cell(GTA_CA.getProps()), 'UniformOutput', false);
+				prop = find(strcmp(pointer, gta_ca_tag_list)); % tag = pointer
 			else % numeric
 				prop = pointer;
 			end
@@ -464,9 +435,30 @@ classdef GTA_CA < ConcreteElement
 			if ischar(pointer)
 				tag = pointer;
 			else % numeric
-				%CET: Computational Efficiency Trick
-				gta_ca_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'CA_C'  'CA_M'  'CA_P'  'CA_D'  'CA_R'  'CA_Q'  'CA_E'  'CA_F'  'CA_G' };
-				tag = gta_ca_tag_list{pointer}; % prop = pointer
+				prop = pointer;
+				
+				switch prop
+					case GTA_CA.CA_C
+						tag = GTA_CA.CA_C_TAG;
+					case GTA_CA.CA_M
+						tag = GTA_CA.CA_M_TAG;
+					case GTA_CA.CA_P
+						tag = GTA_CA.CA_P_TAG;
+					case GTA_CA.CA_D
+						tag = GTA_CA.CA_D_TAG;
+					case GTA_CA.CA_R
+						tag = GTA_CA.CA_R_TAG;
+					case GTA_CA.CA_Q
+						tag = GTA_CA.CA_Q_TAG;
+					case GTA_CA.CA_E
+						tag = GTA_CA.CA_E_TAG;
+					case GTA_CA.CA_F
+						tag = GTA_CA.CA_F_TAG;
+					case GTA_CA.CA_G
+						tag = GTA_CA.CA_G_TAG;
+					otherwise
+						tag = getPropTag@ConcreteElement(prop);
+				end
 			end
 		end
 		function prop_category = getPropCategory(pointer)
@@ -491,9 +483,28 @@ classdef GTA_CA < ConcreteElement
 			
 			prop = GTA_CA.getPropProp(pointer);
 			
-			%CET: Computational Efficiency Trick
-			gta_ca_category_list = { 1  1  1  3  4  2  2  6  1  2  3  4  5  6  7  8  9 };
-			prop_category = gta_ca_category_list{prop};
+			switch prop
+				case GTA_CA.CA_C
+					prop_category = GTA_CA.CA_C_CATEGORY;
+				case GTA_CA.CA_M
+					prop_category = GTA_CA.CA_M_CATEGORY;
+				case GTA_CA.CA_P
+					prop_category = GTA_CA.CA_P_CATEGORY;
+				case GTA_CA.CA_D
+					prop_category = GTA_CA.CA_D_CATEGORY;
+				case GTA_CA.CA_R
+					prop_category = GTA_CA.CA_R_CATEGORY;
+				case GTA_CA.CA_Q
+					prop_category = GTA_CA.CA_Q_CATEGORY;
+				case GTA_CA.CA_E
+					prop_category = GTA_CA.CA_E_CATEGORY;
+				case GTA_CA.CA_F
+					prop_category = GTA_CA.CA_F_CATEGORY;
+				case GTA_CA.CA_G
+					prop_category = GTA_CA.CA_G_CATEGORY;
+				otherwise
+					prop_category = getPropCategory@ConcreteElement(prop);
+			end
 		end
 		function prop_format = getPropFormat(pointer)
 			%GETPROPFORMAT returns the format of a property.
@@ -517,9 +528,28 @@ classdef GTA_CA < ConcreteElement
 			
 			prop = GTA_CA.getPropProp(pointer);
 			
-			%CET: Computational Efficiency Trick
-			gta_ca_format_list = { 2  2  2  8  2  2  2  2  6  6  6  6  6  6  6  6  6 };
-			prop_format = gta_ca_format_list{prop};
+			switch prop
+				case GTA_CA.CA_C
+					prop_format = GTA_CA.CA_C_FORMAT;
+				case GTA_CA.CA_M
+					prop_format = GTA_CA.CA_M_FORMAT;
+				case GTA_CA.CA_P
+					prop_format = GTA_CA.CA_P_FORMAT;
+				case GTA_CA.CA_D
+					prop_format = GTA_CA.CA_D_FORMAT;
+				case GTA_CA.CA_R
+					prop_format = GTA_CA.CA_R_FORMAT;
+				case GTA_CA.CA_Q
+					prop_format = GTA_CA.CA_Q_FORMAT;
+				case GTA_CA.CA_E
+					prop_format = GTA_CA.CA_E_FORMAT;
+				case GTA_CA.CA_F
+					prop_format = GTA_CA.CA_F_FORMAT;
+				case GTA_CA.CA_G
+					prop_format = GTA_CA.CA_G_FORMAT;
+				otherwise
+					prop_format = getPropFormat@ConcreteElement(prop);
+			end
 		end
 		function prop_description = getPropDescription(pointer)
 			%GETPROPDESCRIPTION returns the description of a property.
@@ -543,9 +573,28 @@ classdef GTA_CA < ConcreteElement
 			
 			prop = GTA_CA.getPropProp(pointer);
 			
-			%CET: Computational Efficiency Trick
-			gta_ca_description_list = { 'ELCLASS (constant, string) is the class of the concrete element (ConcreteElement).'  'NAME (constant, string) is the name of the concrete element.'  'DESCRIPTION (constant, string) is the description of the concrete element.'  'TEMPLATE (parameter, item) is the template of the concrete element.'  'ID (data, string) is a few-letter code for the concrete element.'  'LABEL (metadata, string) is an extended label of the concrete element.'  'NOTES (metadata, string) are some specific notes about the concrete element.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'CA_C (constant, class) is a prop constant class.'  'CA_M (metadata, class) is a prop metadata class.'  'CA_P (parameter, class) is a prop parameter class.'  'CA_D (data, class) is a prop data class.'  'CA_R (result, class) is a prop result class.'  'CA_Q (query, class) is a prop query class.'  'CA_E (evanescent, class) is a prop evanescent class.'  'CA_F (figure, class) is a prop figure class.'  'CA_G (gui, class) is a prop gui class.' };
-			prop_description = gta_ca_description_list{prop};
+			switch prop
+				case GTA_CA.CA_C
+					prop_description = 'CA_C (constant, class) is a prop constant class.';
+				case GTA_CA.CA_M
+					prop_description = 'CA_M (metadata, class) is a prop metadata class.';
+				case GTA_CA.CA_P
+					prop_description = 'CA_P (parameter, class) is a prop parameter class.';
+				case GTA_CA.CA_D
+					prop_description = 'CA_D (data, class) is a prop data class.';
+				case GTA_CA.CA_R
+					prop_description = 'CA_R (result, class) is a prop result class.';
+				case GTA_CA.CA_Q
+					prop_description = 'CA_Q (query, class) is a prop query class.';
+				case GTA_CA.CA_E
+					prop_description = 'CA_E (evanescent, class) is a prop evanescent class.';
+				case GTA_CA.CA_F
+					prop_description = 'CA_F (figure, class) is a prop figure class.';
+				case GTA_CA.CA_G
+					prop_description = 'CA_G (gui, class) is a prop gui class.';
+				otherwise
+					prop_description = getPropDescription@ConcreteElement(prop);
+			end
 		end
 		function prop_settings = getPropSettings(pointer)
 			%GETPROPSETTINGS returns the settings of a property.
@@ -569,25 +618,25 @@ classdef GTA_CA < ConcreteElement
 			
 			prop = GTA_CA.getPropProp(pointer);
 			
-			switch prop %CET: Computational Efficiency Trick
-				case 9 % GTA_CA.CA_C
-					prop_settings = Format.getFormatSettings(6);
-				case 10 % GTA_CA.CA_M
-					prop_settings = Format.getFormatSettings(6);
-				case 11 % GTA_CA.CA_P
-					prop_settings = Format.getFormatSettings(6);
-				case 12 % GTA_CA.CA_D
-					prop_settings = Format.getFormatSettings(6);
-				case 13 % GTA_CA.CA_R
-					prop_settings = Format.getFormatSettings(6);
-				case 14 % GTA_CA.CA_Q
-					prop_settings = Format.getFormatSettings(6);
-				case 15 % GTA_CA.CA_E
-					prop_settings = Format.getFormatSettings(6);
-				case 16 % GTA_CA.CA_F
-					prop_settings = Format.getFormatSettings(6);
-				case 17 % GTA_CA.CA_G
-					prop_settings = Format.getFormatSettings(6);
+			switch prop
+				case GTA_CA.CA_C
+					prop_settings = Format.getFormatSettings(Format.CLASS);
+				case GTA_CA.CA_M
+					prop_settings = Format.getFormatSettings(Format.CLASS);
+				case GTA_CA.CA_P
+					prop_settings = Format.getFormatSettings(Format.CLASS);
+				case GTA_CA.CA_D
+					prop_settings = Format.getFormatSettings(Format.CLASS);
+				case GTA_CA.CA_R
+					prop_settings = Format.getFormatSettings(Format.CLASS);
+				case GTA_CA.CA_Q
+					prop_settings = Format.getFormatSettings(Format.CLASS);
+				case GTA_CA.CA_E
+					prop_settings = Format.getFormatSettings(Format.CLASS);
+				case GTA_CA.CA_F
+					prop_settings = Format.getFormatSettings(Format.CLASS);
+				case GTA_CA.CA_G
+					prop_settings = Format.getFormatSettings(Format.CLASS);
 				otherwise
 					prop_settings = getPropSettings@ConcreteElement(prop);
 			end
@@ -614,25 +663,25 @@ classdef GTA_CA < ConcreteElement
 			
 			prop = GTA_CA.getPropProp(pointer);
 			
-			switch prop %CET: Computational Efficiency Trick
-				case 9 % GTA_CA.CA_C
-					prop_default = Format.getFormatDefault(6, GTA_CA.getPropSettings(prop));
-				case 10 % GTA_CA.CA_M
-					prop_default = Format.getFormatDefault(6, GTA_CA.getPropSettings(prop));
-				case 11 % GTA_CA.CA_P
-					prop_default = Format.getFormatDefault(6, GTA_CA.getPropSettings(prop));
-				case 12 % GTA_CA.CA_D
-					prop_default = Format.getFormatDefault(6, GTA_CA.getPropSettings(prop));
-				case 13 % GTA_CA.CA_R
-					prop_default = Format.getFormatDefault(6, GTA_CA.getPropSettings(prop));
-				case 14 % GTA_CA.CA_Q
-					prop_default = Format.getFormatDefault(6, GTA_CA.getPropSettings(prop));
-				case 15 % GTA_CA.CA_E
-					prop_default = Format.getFormatDefault(6, GTA_CA.getPropSettings(prop));
-				case 16 % GTA_CA.CA_F
-					prop_default = Format.getFormatDefault(6, GTA_CA.getPropSettings(prop));
-				case 17 % GTA_CA.CA_G
-					prop_default = Format.getFormatDefault(6, GTA_CA.getPropSettings(prop));
+			switch prop
+				case GTA_CA.CA_C
+					prop_default = Format.getFormatDefault(Format.CLASS, GTA_CA.getPropSettings(prop));
+				case GTA_CA.CA_M
+					prop_default = Format.getFormatDefault(Format.CLASS, GTA_CA.getPropSettings(prop));
+				case GTA_CA.CA_P
+					prop_default = Format.getFormatDefault(Format.CLASS, GTA_CA.getPropSettings(prop));
+				case GTA_CA.CA_D
+					prop_default = Format.getFormatDefault(Format.CLASS, GTA_CA.getPropSettings(prop));
+				case GTA_CA.CA_R
+					prop_default = Format.getFormatDefault(Format.CLASS, GTA_CA.getPropSettings(prop));
+				case GTA_CA.CA_Q
+					prop_default = Format.getFormatDefault(Format.CLASS, GTA_CA.getPropSettings(prop));
+				case GTA_CA.CA_E
+					prop_default = Format.getFormatDefault(Format.CLASS, GTA_CA.getPropSettings(prop));
+				case GTA_CA.CA_F
+					prop_default = Format.getFormatDefault(Format.CLASS, GTA_CA.getPropSettings(prop));
+				case GTA_CA.CA_G
+					prop_default = Format.getFormatDefault(Format.CLASS, GTA_CA.getPropSettings(prop));
 				otherwise
 					prop_default = getPropDefault@ConcreteElement(prop);
 			end
@@ -678,15 +727,15 @@ classdef GTA_CA < ConcreteElement
 			% 
 			% GT.CHECKPROP(POINTER, VALUE) throws an error if VALUE is
 			%  NOT an acceptable value for the format of the property POINTER.
-			%  Error id: BRAPH2:GTA_CA:WrongInput
+			%  Error id: €BRAPH2.STR€:GTA_CA:€BRAPH2.WRONG_INPUT€
 			% 
 			% Alternative forms to call this method are (POINTER = PROP or TAG):
 			%  GT.CHECKPROP(POINTER, VALUE) throws error if VALUE has not a valid format for PROP of GT.
-			%   Error id: BRAPH2:GTA_CA:WrongInput
+			%   Error id: €BRAPH2.STR€:GTA_CA:€BRAPH2.WRONG_INPUT€
 			%  Element.CHECKPROP(GTA_CA, PROP, VALUE) throws error if VALUE has not a valid format for PROP of GTA_CA.
-			%   Error id: BRAPH2:GTA_CA:WrongInput
+			%   Error id: €BRAPH2.STR€:GTA_CA:€BRAPH2.WRONG_INPUT€
 			%  GT.CHECKPROP(GTA_CA, PROP, VALUE) throws error if VALUE has not a valid format for PROP of GTA_CA.
-			%   Error id: BRAPH2:GTA_CA:WrongInput]
+			%   Error id: €BRAPH2.STR€:GTA_CA:€BRAPH2.WRONG_INPUT€]
 			% 
 			% Note that the Element.CHECKPROP(GT) and Element.CHECKPROP('GTA_CA')
 			%  are less computationally efficient.
@@ -697,26 +746,26 @@ classdef GTA_CA < ConcreteElement
 			prop = GTA_CA.getPropProp(pointer);
 			
 			switch prop
-				case 9 % GTA_CA.CA_C
-					check = Format.checkFormat(6, value, GTA_CA.getPropSettings(prop));
-				case 10 % GTA_CA.CA_M
-					check = Format.checkFormat(6, value, GTA_CA.getPropSettings(prop));
-				case 11 % GTA_CA.CA_P
-					check = Format.checkFormat(6, value, GTA_CA.getPropSettings(prop));
-				case 12 % GTA_CA.CA_D
-					check = Format.checkFormat(6, value, GTA_CA.getPropSettings(prop));
-				case 13 % GTA_CA.CA_R
-					check = Format.checkFormat(6, value, GTA_CA.getPropSettings(prop));
-				case 14 % GTA_CA.CA_Q
-					check = Format.checkFormat(6, value, GTA_CA.getPropSettings(prop));
-				case 15 % GTA_CA.CA_E
-					check = Format.checkFormat(6, value, GTA_CA.getPropSettings(prop));
-				case 16 % GTA_CA.CA_F
-					check = Format.checkFormat(6, value, GTA_CA.getPropSettings(prop));
-				case 17 % GTA_CA.CA_G
-					check = Format.checkFormat(6, value, GTA_CA.getPropSettings(prop));
+				case GTA_CA.CA_C % __GTA_CA.CA_C__
+					check = Format.checkFormat(Format.CLASS, value, GTA_CA.getPropSettings(prop));
+				case GTA_CA.CA_M % __GTA_CA.CA_M__
+					check = Format.checkFormat(Format.CLASS, value, GTA_CA.getPropSettings(prop));
+				case GTA_CA.CA_P % __GTA_CA.CA_P__
+					check = Format.checkFormat(Format.CLASS, value, GTA_CA.getPropSettings(prop));
+				case GTA_CA.CA_D % __GTA_CA.CA_D__
+					check = Format.checkFormat(Format.CLASS, value, GTA_CA.getPropSettings(prop));
+				case GTA_CA.CA_R % __GTA_CA.CA_R__
+					check = Format.checkFormat(Format.CLASS, value, GTA_CA.getPropSettings(prop));
+				case GTA_CA.CA_Q % __GTA_CA.CA_Q__
+					check = Format.checkFormat(Format.CLASS, value, GTA_CA.getPropSettings(prop));
+				case GTA_CA.CA_E % __GTA_CA.CA_E__
+					check = Format.checkFormat(Format.CLASS, value, GTA_CA.getPropSettings(prop));
+				case GTA_CA.CA_F % __GTA_CA.CA_F__
+					check = Format.checkFormat(Format.CLASS, value, GTA_CA.getPropSettings(prop));
+				case GTA_CA.CA_G % __GTA_CA.CA_G__
+					check = Format.checkFormat(Format.CLASS, value, GTA_CA.getPropSettings(prop));
 				otherwise
-					if prop <= 8
+					if prop <= ConcreteElement.getPropNumber()
 						check = checkProp@ConcreteElement(prop, value);
 					end
 			end
@@ -725,8 +774,8 @@ classdef GTA_CA < ConcreteElement
 				prop_check = check;
 			elseif ~check
 				error( ...
-					['BRAPH2' ':GTA_CA:' 'WrongInput'], ...
-					['BRAPH2' ':GTA_CA:' 'WrongInput' '\n' ...
+					[BRAPH2.STR ':GTA_CA:' BRAPH2.WRONG_INPUT], ...
+					[BRAPH2.STR ':GTA_CA:' BRAPH2.WRONG_INPUT '\n' ...
 					'The value ' tostring(value, 100, ' ...') ' is not a valid property ' GTA_CA.getPropTag(prop) ' (' GTA_CA.getFormatTag(GTA_CA.getPropFormat(prop)) ').'] ...
 					)
 			end

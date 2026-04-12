@@ -8,33 +8,6 @@ classdef NNxMLP_FeatureImportanceBrainSurface_CV < NNxMLP_FeatureImportance_CV
 	%  (for visualizng the importance of connections between nodes), measures (for visualizing the importance of nodal measures),
 	%  and the subject data (connectivity data or structural data).
 	%
-	% The list of NNxMLP_FeatureImportanceBrainSurface_CV properties is:
-	%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the element to manage the visuazation of the neural network feature importance on the brain surface.
-	%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the element to manage the visuazation of the neural network feature importance on the brain surface.
-	%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the element to manage the visuazation of the neural network feature importance on the brain surface.
-	%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the element to manage the visuazation of the neural network feature importance on the brain surface.
-	%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code of the element to manage the visuazation of the neural network feature importance on the brain surface.
-	%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the element to manage the visuazation of the neural network feature importance on the brain surface.
-	%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about managing the visuazation of the neural network feature importance on the brain surface.
-	%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
-	%  <strong>9</strong> <strong>NNCV</strong> 	NNCV (data, item) is the neural network cross validation to be tested on feature importance.
-	%  <strong>10</strong> <strong>FI_TEMPLATE</strong> 	FI_TEMPLATE (parameter, item) is the feature importance template to set all feature importance analysis and visualization parameters.
-	%  <strong>11</strong> <strong>FI_LIST</strong> 	FI_LIST (result, itemlist) contains a list of feature importance analysis for all folds.
-	%  <strong>12</strong> <strong>P</strong> 	P (parameter, scalar) is the permutation number that determines the statistical significance of the features. 
-	%  <strong>13</strong> <strong>PERM_SEEDS</strong> 	PERM_SEEDS (result, rvector) is the list of seeds for the random permutations.
-	%  <strong>14</strong> <strong>APPLY_BONFERRONI</strong> 	APPLY_BONFERRONI (parameter, logical) determines whether to apply bonferroni correction.
-	%  <strong>15</strong> <strong>APPLY_CONFIDENCE_INTERVALS</strong> 	APPLY_CONFIDENCE_INTERVALS (parameter, logical) determines whether to apply user-defined percent confidence interval.
-	%  <strong>16</strong> <strong>VERBOSE</strong> 	VERBOSE (metadata, logical) is an indicator to display permutation progress information.
-	%  <strong>17</strong> <strong>SIG_LEVEL</strong> 	SIG_LEVEL (parameter, scalar) determines the significant level.
-	%  <strong>18</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) determines whether to show the waitbar.
-	%  <strong>19</strong> <strong>INTERRUPTIBLE</strong> 	INTERRUPTIBLE (gui, scalar) sets whether the permutation computation is interruptible for multitasking.
-	%  <strong>20</strong> <strong>AV_FEATURE_IMPORTANCE</strong> 	AV_FEATURE_IMPORTANCE (result, cell) is determined by obtaining the average value from the feature importance element list.
-	%  <strong>21</strong> <strong>RESHAPED_AV_FEATURE_IMPORTANCE</strong> 	RESHAPED_AV_FEATURE_IMPORTANCE (result, cell) reshapes the cell of feature importances with the input data.
-	%  <strong>22</strong> <strong>MAP_TO_CELL</strong> 	MAP_TO_CELL (query, empty) maps a single vector back to the original cell array structure.
-	%  <strong>23</strong> <strong>COUNT_ELEMENTS</strong> 	COUNT_ELEMENTS (query, empty) counts the total number of elements within a nested cell array.
-	%  <strong>24</strong> <strong>FLATTEN_CELL</strong> 	FLATTEN_CELL (query, empty) flattens a cell array into to a single vector.
-	%  <strong>25</strong> <strong>BA</strong> 	BA (parameter, item) is the brain atlas.
-	%
 	% NNxMLP_FeatureImportanceBrainSurface_CV methods (constructor):
 	%  NNxMLP_FeatureImportanceBrainSurface_CV - constructor
 	%
@@ -123,13 +96,13 @@ classdef NNxMLP_FeatureImportanceBrainSurface_CV < NNxMLP_FeatureImportance_CV
 	%
 	% See also NNEvaluator, NNDataPoint_Graph_CLA, NNDataPoint_Measure_REG, NNDataPoint_CON_CLA, NNDataPoint_ST_CLA.
 	%
-	% BUILD BRAPH2 7 class_name 1
+	% BUILD BRAPH2 BRAPH2.BUILD class_name 1
 	
 	properties (Constant) % properties
-		BA = 25; %CET: Computational Efficiency Trick
+		BA = NNxMLP_FeatureImportance_CV.getPropNumber() + 1;
 		BA_TAG = 'BA';
-		BA_CATEGORY = 3;
-		BA_FORMAT = 8;
+		BA_CATEGORY = Category.PARAMETER;
+		BA_FORMAT = Format.ITEM;
 	end
 	methods % constructor
 		function nnficv = NNxMLP_FeatureImportanceBrainSurface_CV(varargin)
@@ -142,32 +115,6 @@ classdef NNxMLP_FeatureImportanceBrainSurface_CV < NNxMLP_FeatureImportance_CV
 			% Multiple properties can be initialized at once identifying
 			%  them with either property numbers (PROP) or tags (TAG).
 			%
-			% The list of NNxMLP_FeatureImportanceBrainSurface_CV properties is:
-			%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the element to manage the visuazation of the neural network feature importance on the brain surface.
-			%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the element to manage the visuazation of the neural network feature importance on the brain surface.
-			%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the element to manage the visuazation of the neural network feature importance on the brain surface.
-			%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the element to manage the visuazation of the neural network feature importance on the brain surface.
-			%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code of the element to manage the visuazation of the neural network feature importance on the brain surface.
-			%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the element to manage the visuazation of the neural network feature importance on the brain surface.
-			%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about managing the visuazation of the neural network feature importance on the brain surface.
-			%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
-			%  <strong>9</strong> <strong>NNCV</strong> 	NNCV (data, item) is the neural network cross validation to be tested on feature importance.
-			%  <strong>10</strong> <strong>FI_TEMPLATE</strong> 	FI_TEMPLATE (parameter, item) is the feature importance template to set all feature importance analysis and visualization parameters.
-			%  <strong>11</strong> <strong>FI_LIST</strong> 	FI_LIST (result, itemlist) contains a list of feature importance analysis for all folds.
-			%  <strong>12</strong> <strong>P</strong> 	P (parameter, scalar) is the permutation number that determines the statistical significance of the features. 
-			%  <strong>13</strong> <strong>PERM_SEEDS</strong> 	PERM_SEEDS (result, rvector) is the list of seeds for the random permutations.
-			%  <strong>14</strong> <strong>APPLY_BONFERRONI</strong> 	APPLY_BONFERRONI (parameter, logical) determines whether to apply bonferroni correction.
-			%  <strong>15</strong> <strong>APPLY_CONFIDENCE_INTERVALS</strong> 	APPLY_CONFIDENCE_INTERVALS (parameter, logical) determines whether to apply user-defined percent confidence interval.
-			%  <strong>16</strong> <strong>VERBOSE</strong> 	VERBOSE (metadata, logical) is an indicator to display permutation progress information.
-			%  <strong>17</strong> <strong>SIG_LEVEL</strong> 	SIG_LEVEL (parameter, scalar) determines the significant level.
-			%  <strong>18</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) determines whether to show the waitbar.
-			%  <strong>19</strong> <strong>INTERRUPTIBLE</strong> 	INTERRUPTIBLE (gui, scalar) sets whether the permutation computation is interruptible for multitasking.
-			%  <strong>20</strong> <strong>AV_FEATURE_IMPORTANCE</strong> 	AV_FEATURE_IMPORTANCE (result, cell) is determined by obtaining the average value from the feature importance element list.
-			%  <strong>21</strong> <strong>RESHAPED_AV_FEATURE_IMPORTANCE</strong> 	RESHAPED_AV_FEATURE_IMPORTANCE (result, cell) reshapes the cell of feature importances with the input data.
-			%  <strong>22</strong> <strong>MAP_TO_CELL</strong> 	MAP_TO_CELL (query, empty) maps a single vector back to the original cell array structure.
-			%  <strong>23</strong> <strong>COUNT_ELEMENTS</strong> 	COUNT_ELEMENTS (query, empty) counts the total number of elements within a nested cell array.
-			%  <strong>24</strong> <strong>FLATTEN_CELL</strong> 	FLATTEN_CELL (query, empty) flattens a cell array into to a single vector.
-			%  <strong>25</strong> <strong>BA</strong> 	BA (parameter, item) is the brain atlas.
 			%
 			% See also Category, Format.
 			
@@ -220,7 +167,7 @@ classdef NNxMLP_FeatureImportanceBrainSurface_CV < NNxMLP_FeatureImportance_CV
 			%
 			% See also subclasses.
 			
-			subclass_list = { 'NNxMLP_FeatureImportanceBrainSurface_CV' }; %CET: Computational Efficiency Trick
+			subclass_list = subclasses('NNxMLP_FeatureImportanceBrainSurface_CV', [], [], true);
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of neural network feature importace for multi-layer perceptron.
@@ -241,30 +188,52 @@ classdef NNxMLP_FeatureImportanceBrainSurface_CV < NNxMLP_FeatureImportance_CV
 			%
 			% See also getPropNumber, Category.
 			
-			%CET: Computational Efficiency Trick
-			
 			if nargin == 0
-				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25];
+				prop_list = [ ...
+					NNxMLP_FeatureImportance_CV.getProps() ...
+						NNxMLP_FeatureImportanceBrainSurface_CV.BA ...
+						];
 				return
 			end
 			
 			switch category
-				case 1 % Category.CONSTANT
-					prop_list = [1 2 3];
-				case 2 % Category.METADATA
-					prop_list = [6 7 16];
-				case 3 % Category.PARAMETER
-					prop_list = [4 10 12 14 15 17 25];
-				case 4 % Category.DATA
-					prop_list = [5 9];
-				case 5 % Category.RESULT
-					prop_list = [11 13 20 21];
-				case 6 % Category.QUERY
-					prop_list = [8 22 23 24];
-				case 9 % Category.GUI
-					prop_list = [18 19];
-				otherwise
-					prop_list = [];
+				case Category.CONSTANT
+					prop_list = [ ...
+						NNxMLP_FeatureImportance_CV.getProps(Category.CONSTANT) ...
+						];
+				case Category.METADATA
+					prop_list = [ ...
+						NNxMLP_FeatureImportance_CV.getProps(Category.METADATA) ...
+						];
+				case Category.PARAMETER
+					prop_list = [ ...
+						NNxMLP_FeatureImportance_CV.getProps(Category.PARAMETER) ...
+						NNxMLP_FeatureImportanceBrainSurface_CV.BA ...
+						];
+				case Category.DATA
+					prop_list = [ ...
+						NNxMLP_FeatureImportance_CV.getProps(Category.DATA) ...
+						];
+				case Category.RESULT
+					prop_list = [
+						NNxMLP_FeatureImportance_CV.getProps(Category.RESULT) ...
+						];
+				case Category.QUERY
+					prop_list = [ ...
+						NNxMLP_FeatureImportance_CV.getProps(Category.QUERY) ...
+						];
+				case Category.EVANESCENT
+					prop_list = [ ...
+						NNxMLP_FeatureImportance_CV.getProps(Category.EVANESCENT) ...
+						];
+				case Category.FIGURE
+					prop_list = [ ...
+						NNxMLP_FeatureImportance_CV.getProps(Category.FIGURE) ...
+						];
+				case Category.GUI
+					prop_list = [ ...
+						NNxMLP_FeatureImportance_CV.getProps(Category.GUI) ...
+						];
 			end
 		end
 		function prop_number = getPropNumber(varargin)
@@ -285,31 +254,7 @@ classdef NNxMLP_FeatureImportanceBrainSurface_CV < NNxMLP_FeatureImportance_CV
 			%
 			% See also getProps, Category.
 			
-			%CET: Computational Efficiency Trick
-			
-			if nargin == 0
-				prop_number = 25;
-				return
-			end
-			
-			switch varargin{1} % category = varargin{1}
-				case 1 % Category.CONSTANT
-					prop_number = 3;
-				case 2 % Category.METADATA
-					prop_number = 3;
-				case 3 % Category.PARAMETER
-					prop_number = 7;
-				case 4 % Category.DATA
-					prop_number = 2;
-				case 5 % Category.RESULT
-					prop_number = 4;
-				case 6 % Category.QUERY
-					prop_number = 4;
-				case 9 % Category.GUI
-					prop_number = 2;
-				otherwise
-					prop_number = 0;
-			end
+			prop_number = numel(NNxMLP_FeatureImportanceBrainSurface_CV.getProps(varargin{:}));
 		end
 		function check_out = existsProp(prop)
 			%EXISTSPROP checks whether property exists in neural network feature importace for multi-layer perceptron/error.
@@ -337,14 +282,14 @@ classdef NNxMLP_FeatureImportanceBrainSurface_CV < NNxMLP_FeatureImportance_CV
 			%
 			% See also getProps, existsTag.
 			
-			check = prop >= 1 && prop <= 25 && round(prop) == prop; %CET: Computational Efficiency Trick
+			check = any(prop == NNxMLP_FeatureImportanceBrainSurface_CV.getProps());
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					['BRAPH2' ':NNxMLP_FeatureImportanceBrainSurface_CV:' 'WrongInput'], ...
-					['BRAPH2' ':NNxMLP_FeatureImportanceBrainSurface_CV:' 'WrongInput' '\n' ...
+					[BRAPH2.STR ':NNxMLP_FeatureImportanceBrainSurface_CV:' BRAPH2.WRONG_INPUT], ...
+					[BRAPH2.STR ':NNxMLP_FeatureImportanceBrainSurface_CV:' BRAPH2.WRONG_INPUT '\n' ...
 					'The value ' tostring(prop, 100, ' ...') ' is not a valid prop for NNxMLP_FeatureImportanceBrainSurface_CV.'] ...
 					)
 			end
@@ -375,14 +320,15 @@ classdef NNxMLP_FeatureImportanceBrainSurface_CV < NNxMLP_FeatureImportance_CV
 			%
 			% See also getProps, existsTag.
 			
-			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'NNCV'  'FI_TEMPLATE'  'FI_LIST'  'P'  'PERM_SEEDS'  'APPLY_BONFERRONI'  'APPLY_CONFIDENCE_INTERVALS'  'VERBOSE'  'SIG_LEVEL'  'WAITBAR'  'INTERRUPTIBLE'  'AV_FEATURE_IMPORTANCE'  'RESHAPED_AV_FEATURE_IMPORTANCE'  'MAP_TO_CELL'  'COUNT_ELEMENTS'  'FLATTEN_CELL'  'BA' })); %CET: Computational Efficiency Trick
+			nnxmlp_featureimportancebrainsurface_cv_tag_list = cellfun(@(x) NNxMLP_FeatureImportanceBrainSurface_CV.getPropTag(x), num2cell(NNxMLP_FeatureImportanceBrainSurface_CV.getProps()), 'UniformOutput', false);
+			check = any(strcmp(tag, nnxmlp_featureimportancebrainsurface_cv_tag_list));
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					['BRAPH2' ':NNxMLP_FeatureImportanceBrainSurface_CV:' 'WrongInput'], ...
-					['BRAPH2' ':NNxMLP_FeatureImportanceBrainSurface_CV:' 'WrongInput' '\n' ...
+					[BRAPH2.STR ':NNxMLP_FeatureImportanceBrainSurface_CV:' BRAPH2.WRONG_INPUT], ...
+					[BRAPH2.STR ':NNxMLP_FeatureImportanceBrainSurface_CV:' BRAPH2.WRONG_INPUT '\n' ...
 					'The value ' tag ' is not a valid tag for NNxMLP_FeatureImportanceBrainSurface_CV.'] ...
 					)
 			end
@@ -408,7 +354,8 @@ classdef NNxMLP_FeatureImportanceBrainSurface_CV < NNxMLP_FeatureImportance_CV
 			%  getPropSettings, getPropDefault, checkProp.
 			
 			if ischar(pointer)
-				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'NNCV'  'FI_TEMPLATE'  'FI_LIST'  'P'  'PERM_SEEDS'  'APPLY_BONFERRONI'  'APPLY_CONFIDENCE_INTERVALS'  'VERBOSE'  'SIG_LEVEL'  'WAITBAR'  'INTERRUPTIBLE'  'AV_FEATURE_IMPORTANCE'  'RESHAPED_AV_FEATURE_IMPORTANCE'  'MAP_TO_CELL'  'COUNT_ELEMENTS'  'FLATTEN_CELL'  'BA' })); % tag = pointer %CET: Computational Efficiency Trick
+				nnxmlp_featureimportancebrainsurface_cv_tag_list = cellfun(@(x) NNxMLP_FeatureImportanceBrainSurface_CV.getPropTag(x), num2cell(NNxMLP_FeatureImportanceBrainSurface_CV.getProps()), 'UniformOutput', false);
+				prop = find(strcmp(pointer, nnxmlp_featureimportancebrainsurface_cv_tag_list)); % tag = pointer
 			else % numeric
 				prop = pointer;
 			end
@@ -436,9 +383,14 @@ classdef NNxMLP_FeatureImportanceBrainSurface_CV < NNxMLP_FeatureImportance_CV
 			if ischar(pointer)
 				tag = pointer;
 			else % numeric
-				%CET: Computational Efficiency Trick
-				nnxmlp_featureimportancebrainsurface_cv_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'NNCV'  'FI_TEMPLATE'  'FI_LIST'  'P'  'PERM_SEEDS'  'APPLY_BONFERRONI'  'APPLY_CONFIDENCE_INTERVALS'  'VERBOSE'  'SIG_LEVEL'  'WAITBAR'  'INTERRUPTIBLE'  'AV_FEATURE_IMPORTANCE'  'RESHAPED_AV_FEATURE_IMPORTANCE'  'MAP_TO_CELL'  'COUNT_ELEMENTS'  'FLATTEN_CELL'  'BA' };
-				tag = nnxmlp_featureimportancebrainsurface_cv_tag_list{pointer}; % prop = pointer
+				prop = pointer;
+				
+				switch prop
+					case NNxMLP_FeatureImportanceBrainSurface_CV.BA
+						tag = NNxMLP_FeatureImportanceBrainSurface_CV.BA_TAG;
+					otherwise
+						tag = getPropTag@NNxMLP_FeatureImportance_CV(prop);
+				end
 			end
 		end
 		function prop_category = getPropCategory(pointer)
@@ -463,9 +415,12 @@ classdef NNxMLP_FeatureImportanceBrainSurface_CV < NNxMLP_FeatureImportance_CV
 			
 			prop = NNxMLP_FeatureImportanceBrainSurface_CV.getPropProp(pointer);
 			
-			%CET: Computational Efficiency Trick
-			nnxmlp_featureimportancebrainsurface_cv_category_list = { 1  1  1  3  4  2  2  6  4  3  5  3  5  3  3  2  3  9  9  5  5  6  6  6  3 };
-			prop_category = nnxmlp_featureimportancebrainsurface_cv_category_list{prop};
+			switch prop
+				case NNxMLP_FeatureImportanceBrainSurface_CV.BA
+					prop_category = NNxMLP_FeatureImportanceBrainSurface_CV.BA_CATEGORY;
+				otherwise
+					prop_category = getPropCategory@NNxMLP_FeatureImportance_CV(prop);
+			end
 		end
 		function prop_format = getPropFormat(pointer)
 			%GETPROPFORMAT returns the format of a property.
@@ -489,9 +444,12 @@ classdef NNxMLP_FeatureImportanceBrainSurface_CV < NNxMLP_FeatureImportance_CV
 			
 			prop = NNxMLP_FeatureImportanceBrainSurface_CV.getPropProp(pointer);
 			
-			%CET: Computational Efficiency Trick
-			nnxmlp_featureimportancebrainsurface_cv_format_list = { 2  2  2  8  2  2  2  2  8  8  9  11  12  4  4  4  11  4  11  16  16  1  1  1  8 };
-			prop_format = nnxmlp_featureimportancebrainsurface_cv_format_list{prop};
+			switch prop
+				case NNxMLP_FeatureImportanceBrainSurface_CV.BA
+					prop_format = NNxMLP_FeatureImportanceBrainSurface_CV.BA_FORMAT;
+				otherwise
+					prop_format = getPropFormat@NNxMLP_FeatureImportance_CV(prop);
+			end
 		end
 		function prop_description = getPropDescription(pointer)
 			%GETPROPDESCRIPTION returns the description of a property.
@@ -515,9 +473,30 @@ classdef NNxMLP_FeatureImportanceBrainSurface_CV < NNxMLP_FeatureImportance_CV
 			
 			prop = NNxMLP_FeatureImportanceBrainSurface_CV.getPropProp(pointer);
 			
-			%CET: Computational Efficiency Trick
-			nnxmlp_featureimportancebrainsurface_cv_description_list = { 'ELCLASS (constant, string) is the class of the element to manage the visuazation of the neural network feature importance on the brain surface.'  'NAME (constant, string) is the name of the element to manage the visuazation of the neural network feature importance on the brain surface.'  'DESCRIPTION (constant, string) is the description of the element to manage the visuazation of the neural network feature importance on the brain surface.'  'TEMPLATE (parameter, item) is the template of the element to manage the visuazation of the neural network feature importance on the brain surface.'  'ID (data, string) is a few-letter code of the element to manage the visuazation of the neural network feature importance on the brain surface.'  'LABEL (metadata, string) is an extended label of the element to manage the visuazation of the neural network feature importance on the brain surface.'  'NOTES (metadata, string) are some specific notes about managing the visuazation of the neural network feature importance on the brain surface.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'NNCV (data, item) is the neural network cross validation to be tested on feature importance.'  'FI_TEMPLATE (parameter, item) is the feature importance template to set all feature importance analysis and visualization parameters.'  'FI_LIST (result, itemlist) contains a list of feature importance analysis for all folds.'  'P (parameter, scalar) is the permutation number that determines the statistical significance of the features. '  'PERM_SEEDS (result, rvector) is the list of seeds for the random permutations.'  'APPLY_BONFERRONI (parameter, logical) determines whether to apply bonferroni correction.'  'APPLY_CONFIDENCE_INTERVALS (parameter, logical) determines whether to apply user-defined percent confidence interval.'  'VERBOSE (metadata, logical) is an indicator to display permutation progress information.'  'SIG_LEVEL (parameter, scalar) determines the significant level.'  'WAITBAR (gui, logical) determines whether to show the waitbar.'  'INTERRUPTIBLE (gui, scalar) sets whether the permutation computation is interruptible for multitasking.'  'AV_FEATURE_IMPORTANCE (result, cell) is determined by obtaining the average value from the feature importance element list.'  'RESHAPED_AV_FEATURE_IMPORTANCE (result, cell) reshapes the cell of feature importances with the input data.'  'MAP_TO_CELL (query, empty) maps a single vector back to the original cell array structure.'  'COUNT_ELEMENTS (query, empty) counts the total number of elements within a nested cell array.'  'FLATTEN_CELL (query, empty) flattens a cell array into to a single vector.'  'BA (parameter, item) is the brain atlas.' };
-			prop_description = nnxmlp_featureimportancebrainsurface_cv_description_list{prop};
+			switch prop
+				case NNxMLP_FeatureImportanceBrainSurface_CV.BA
+					prop_description = 'BA (parameter, item) is the brain atlas.';
+				case NNxMLP_FeatureImportanceBrainSurface_CV.ELCLASS
+					prop_description = 'ELCLASS (constant, string) is the class of the element to manage the visuazation of the neural network feature importance on the brain surface.';
+				case NNxMLP_FeatureImportanceBrainSurface_CV.NAME
+					prop_description = 'NAME (constant, string) is the name of the element to manage the visuazation of the neural network feature importance on the brain surface.';
+				case NNxMLP_FeatureImportanceBrainSurface_CV.DESCRIPTION
+					prop_description = 'DESCRIPTION (constant, string) is the description of the element to manage the visuazation of the neural network feature importance on the brain surface.';
+				case NNxMLP_FeatureImportanceBrainSurface_CV.TEMPLATE
+					prop_description = 'TEMPLATE (parameter, item) is the template of the element to manage the visuazation of the neural network feature importance on the brain surface.';
+				case NNxMLP_FeatureImportanceBrainSurface_CV.ID
+					prop_description = 'ID (data, string) is a few-letter code of the element to manage the visuazation of the neural network feature importance on the brain surface.';
+				case NNxMLP_FeatureImportanceBrainSurface_CV.LABEL
+					prop_description = 'LABEL (metadata, string) is an extended label of the element to manage the visuazation of the neural network feature importance on the brain surface.';
+				case NNxMLP_FeatureImportanceBrainSurface_CV.NOTES
+					prop_description = 'NOTES (metadata, string) are some specific notes about managing the visuazation of the neural network feature importance on the brain surface.';
+				case NNxMLP_FeatureImportanceBrainSurface_CV.FI_TEMPLATE
+					prop_description = 'FI_TEMPLATE (parameter, item) is the feature importance template to set all feature importance analysis and visualization parameters.';
+				case NNxMLP_FeatureImportanceBrainSurface_CV.AV_FEATURE_IMPORTANCE
+					prop_description = 'AV_FEATURE_IMPORTANCE (result, cell) is determined by obtaining the average value from the feature importance element list.';
+				otherwise
+					prop_description = getPropDescription@NNxMLP_FeatureImportance_CV(prop);
+			end
 		end
 		function prop_settings = getPropSettings(pointer)
 			%GETPROPSETTINGS returns the settings of a property.
@@ -541,12 +520,12 @@ classdef NNxMLP_FeatureImportanceBrainSurface_CV < NNxMLP_FeatureImportance_CV
 			
 			prop = NNxMLP_FeatureImportanceBrainSurface_CV.getPropProp(pointer);
 			
-			switch prop %CET: Computational Efficiency Trick
-				case 25 % NNxMLP_FeatureImportanceBrainSurface_CV.BA
+			switch prop
+				case NNxMLP_FeatureImportanceBrainSurface_CV.BA
 					prop_settings = 'BrainAtlas';
-				case 4 % NNxMLP_FeatureImportanceBrainSurface_CV.TEMPLATE
+				case NNxMLP_FeatureImportanceBrainSurface_CV.TEMPLATE
 					prop_settings = 'NNxMLP_FeatureImportanceBrainSurface_CV';
-				case 10 % NNxMLP_FeatureImportanceBrainSurface_CV.FI_TEMPLATE
+				case NNxMLP_FeatureImportanceBrainSurface_CV.FI_TEMPLATE
 					prop_settings = 'NNxMLP_FeatureImportanceBrainSurface';
 				otherwise
 					prop_settings = getPropSettings@NNxMLP_FeatureImportance_CV(prop);
@@ -574,25 +553,25 @@ classdef NNxMLP_FeatureImportanceBrainSurface_CV < NNxMLP_FeatureImportance_CV
 			
 			prop = NNxMLP_FeatureImportanceBrainSurface_CV.getPropProp(pointer);
 			
-			switch prop %CET: Computational Efficiency Trick
-				case 25 % NNxMLP_FeatureImportanceBrainSurface_CV.BA
-					prop_default = Format.getFormatDefault(8, NNxMLP_FeatureImportanceBrainSurface_CV.getPropSettings(prop));
-				case 1 % NNxMLP_FeatureImportanceBrainSurface_CV.ELCLASS
+			switch prop
+				case NNxMLP_FeatureImportanceBrainSurface_CV.BA
+					prop_default = Format.getFormatDefault(Format.ITEM, NNxMLP_FeatureImportanceBrainSurface_CV.getPropSettings(prop));
+				case NNxMLP_FeatureImportanceBrainSurface_CV.ELCLASS
 					prop_default = 'NNxMLP_FeatureImportanceBrainSurface_CV';
-				case 2 % NNxMLP_FeatureImportanceBrainSurface_CV.NAME
+				case NNxMLP_FeatureImportanceBrainSurface_CV.NAME
 					prop_default = 'Feature Importace for Multi-layer Perceptron';
-				case 3 % NNxMLP_FeatureImportanceBrainSurface_CV.DESCRIPTION
+				case NNxMLP_FeatureImportanceBrainSurface_CV.DESCRIPTION
 					prop_default = 'A neural network feature importace on brain surface (NNFeatureImportanceBrainSurface) manages the visualization of feature importance within neural network evaluators, particularly on the brain surface. It handles different types of neural network inputs, including graph data (for visualizng the importance of connections between nodes), measures (for visualizing the importance of nodal measures), and the subject data (connectivity data or structural data).';
-				case 4 % NNxMLP_FeatureImportanceBrainSurface_CV.TEMPLATE
-					prop_default = Format.getFormatDefault(8, NNxMLP_FeatureImportanceBrainSurface_CV.getPropSettings(prop));
-				case 5 % NNxMLP_FeatureImportanceBrainSurface_CV.ID
+				case NNxMLP_FeatureImportanceBrainSurface_CV.TEMPLATE
+					prop_default = Format.getFormatDefault(Format.ITEM, NNxMLP_FeatureImportanceBrainSurface_CV.getPropSettings(prop));
+				case NNxMLP_FeatureImportanceBrainSurface_CV.ID
 					prop_default = 'NNxMLP_FeatureImportanceBrainSurface_CV ID';
-				case 6 % NNxMLP_FeatureImportanceBrainSurface_CV.LABEL
+				case NNxMLP_FeatureImportanceBrainSurface_CV.LABEL
 					prop_default = 'NNxMLP_FeatureImportanceBrainSurface_CV label';
-				case 7 % NNxMLP_FeatureImportanceBrainSurface_CV.NOTES
+				case NNxMLP_FeatureImportanceBrainSurface_CV.NOTES
 					prop_default = 'NNxMLP_FeatureImportanceBrainSurface_CV notes';
-				case 10 % NNxMLP_FeatureImportanceBrainSurface_CV.FI_TEMPLATE
-					prop_default = Format.getFormatDefault(8, NNxMLP_FeatureImportanceBrainSurface_CV.getPropSettings(prop));
+				case NNxMLP_FeatureImportanceBrainSurface_CV.FI_TEMPLATE
+					prop_default = Format.getFormatDefault(Format.ITEM, NNxMLP_FeatureImportanceBrainSurface_CV.getPropSettings(prop));
 				otherwise
 					prop_default = getPropDefault@NNxMLP_FeatureImportance_CV(prop);
 			end
@@ -638,15 +617,15 @@ classdef NNxMLP_FeatureImportanceBrainSurface_CV < NNxMLP_FeatureImportance_CV
 			% 
 			% NNFICV.CHECKPROP(POINTER, VALUE) throws an error if VALUE is
 			%  NOT an acceptable value for the format of the property POINTER.
-			%  Error id: BRAPH2:NNxMLP_FeatureImportanceBrainSurface_CV:WrongInput
+			%  Error id: €BRAPH2.STR€:NNxMLP_FeatureImportanceBrainSurface_CV:€BRAPH2.WRONG_INPUT€
 			% 
 			% Alternative forms to call this method are (POINTER = PROP or TAG):
 			%  NNFICV.CHECKPROP(POINTER, VALUE) throws error if VALUE has not a valid format for PROP of NNFICV.
-			%   Error id: BRAPH2:NNxMLP_FeatureImportanceBrainSurface_CV:WrongInput
+			%   Error id: €BRAPH2.STR€:NNxMLP_FeatureImportanceBrainSurface_CV:€BRAPH2.WRONG_INPUT€
 			%  Element.CHECKPROP(NNxMLP_FeatureImportanceBrainSurface_CV, PROP, VALUE) throws error if VALUE has not a valid format for PROP of NNxMLP_FeatureImportanceBrainSurface_CV.
-			%   Error id: BRAPH2:NNxMLP_FeatureImportanceBrainSurface_CV:WrongInput
+			%   Error id: €BRAPH2.STR€:NNxMLP_FeatureImportanceBrainSurface_CV:€BRAPH2.WRONG_INPUT€
 			%  NNFICV.CHECKPROP(NNxMLP_FeatureImportanceBrainSurface_CV, PROP, VALUE) throws error if VALUE has not a valid format for PROP of NNxMLP_FeatureImportanceBrainSurface_CV.
-			%   Error id: BRAPH2:NNxMLP_FeatureImportanceBrainSurface_CV:WrongInput]
+			%   Error id: €BRAPH2.STR€:NNxMLP_FeatureImportanceBrainSurface_CV:€BRAPH2.WRONG_INPUT€]
 			% 
 			% Note that the Element.CHECKPROP(NNFICV) and Element.CHECKPROP('NNxMLP_FeatureImportanceBrainSurface_CV')
 			%  are less computationally efficient.
@@ -657,14 +636,14 @@ classdef NNxMLP_FeatureImportanceBrainSurface_CV < NNxMLP_FeatureImportance_CV
 			prop = NNxMLP_FeatureImportanceBrainSurface_CV.getPropProp(pointer);
 			
 			switch prop
-				case 25 % NNxMLP_FeatureImportanceBrainSurface_CV.BA
-					check = Format.checkFormat(8, value, NNxMLP_FeatureImportanceBrainSurface_CV.getPropSettings(prop));
-				case 4 % NNxMLP_FeatureImportanceBrainSurface_CV.TEMPLATE
-					check = Format.checkFormat(8, value, NNxMLP_FeatureImportanceBrainSurface_CV.getPropSettings(prop));
-				case 10 % NNxMLP_FeatureImportanceBrainSurface_CV.FI_TEMPLATE
-					check = Format.checkFormat(8, value, NNxMLP_FeatureImportanceBrainSurface_CV.getPropSettings(prop));
+				case NNxMLP_FeatureImportanceBrainSurface_CV.BA % __NNxMLP_FeatureImportanceBrainSurface_CV.BA__
+					check = Format.checkFormat(Format.ITEM, value, NNxMLP_FeatureImportanceBrainSurface_CV.getPropSettings(prop));
+				case NNxMLP_FeatureImportanceBrainSurface_CV.TEMPLATE % __NNxMLP_FeatureImportanceBrainSurface_CV.TEMPLATE__
+					check = Format.checkFormat(Format.ITEM, value, NNxMLP_FeatureImportanceBrainSurface_CV.getPropSettings(prop));
+				case NNxMLP_FeatureImportanceBrainSurface_CV.FI_TEMPLATE % __NNxMLP_FeatureImportanceBrainSurface_CV.FI_TEMPLATE__
+					check = Format.checkFormat(Format.ITEM, value, NNxMLP_FeatureImportanceBrainSurface_CV.getPropSettings(prop));
 				otherwise
-					if prop <= 24
+					if prop <= NNxMLP_FeatureImportance_CV.getPropNumber()
 						check = checkProp@NNxMLP_FeatureImportance_CV(prop, value);
 					end
 			end
@@ -673,8 +652,8 @@ classdef NNxMLP_FeatureImportanceBrainSurface_CV < NNxMLP_FeatureImportance_CV
 				prop_check = check;
 			elseif ~check
 				error( ...
-					['BRAPH2' ':NNxMLP_FeatureImportanceBrainSurface_CV:' 'WrongInput'], ...
-					['BRAPH2' ':NNxMLP_FeatureImportanceBrainSurface_CV:' 'WrongInput' '\n' ...
+					[BRAPH2.STR ':NNxMLP_FeatureImportanceBrainSurface_CV:' BRAPH2.WRONG_INPUT], ...
+					[BRAPH2.STR ':NNxMLP_FeatureImportanceBrainSurface_CV:' BRAPH2.WRONG_INPUT '\n' ...
 					'The value ' tostring(value, 100, ' ...') ' is not a valid property ' NNxMLP_FeatureImportanceBrainSurface_CV.getPropTag(prop) ' (' NNxMLP_FeatureImportanceBrainSurface_CV.getFormatTag(NNxMLP_FeatureImportanceBrainSurface_CV.getPropFormat(prop)) ').'] ...
 					)
 			end
@@ -697,7 +676,7 @@ classdef NNxMLP_FeatureImportanceBrainSurface_CV < NNxMLP_FeatureImportance_CV
 			%  PanelPropString, PanelPropStringList.
 			
 			switch prop
-				case 20 % NNxMLP_FeatureImportanceBrainSurface_CV.AV_FEATURE_IMPORTANCE
+				case NNxMLP_FeatureImportanceBrainSurface_CV.AV_FEATURE_IMPORTANCE % __NNxMLP_FeatureImportanceBrainSurface_CV.AV_FEATURE_IMPORTANCE__
 					if isempty(nnficv.get('NNCV').get('D_LIST'))
 					    input_dataset = NNDataset();
 					else
@@ -708,11 +687,11 @@ classdef NNxMLP_FeatureImportanceBrainSurface_CV < NNxMLP_FeatureImportance_CV
 					measure_dp_classes = {NNDataPoint_Measure_CLA().get('ELCLASS'), NNDataPoint_Measure_REG().get('ELCLASS')};
 					
 					if any(strcmp(dp_class, graph_dp_classes)) % GRAPH input
-					    pr = NNxMLP_FeatureImportanceBrainSurfacePP_Graph('EL', nnficv, 'BA', nnficv.get('BA'), 'D', input_dataset, 'PROP', 20, 'RESHAPED_PROP', 21, varargin{:});
+					    pr = NNxMLP_FeatureImportanceBrainSurfacePP_Graph('EL', nnficv, 'BA', nnficv.get('BA'), 'D', input_dataset, 'PROP', NNxMLP_FeatureImportanceBrainSurface_CV.AV_FEATURE_IMPORTANCE, 'RESHAPED_PROP', NNxMLP_FeatureImportanceBrainSurface_CV.RESHAPED_AV_FEATURE_IMPORTANCE, varargin{:});
 					elseif any(strcmp(dp_class, measure_dp_classes))% MEASURE input
-					    pr = NNxMLP_FeatureImportanceBrainSurfacePP_Measure('EL', nnficv, 'BA', nnficv.get('BA'), 'D', input_dataset, 'PROP', 20, 'RESHAPED_PROP', 21, varargin{:});
+					    pr = NNxMLP_FeatureImportanceBrainSurfacePP_Measure('EL', nnficv, 'BA', nnficv.get('BA'), 'D', input_dataset, 'PROP', NNxMLP_FeatureImportanceBrainSurface_CV.AV_FEATURE_IMPORTANCE, 'RESHAPED_PROP', NNxMLP_FeatureImportanceBrainSurface_CV.RESHAPED_AV_FEATURE_IMPORTANCE, varargin{:});
 					else % DATA input
-					    pr = NNxMLP_FeatureImportanceBrainSurfacePP_Data('EL', nnficv, 'BA', nnficv.get('BA'), 'D', input_dataset, 'PROP', 20, 'RESHAPED_PROP', 21, varargin{:});
+					    pr = NNxMLP_FeatureImportanceBrainSurfacePP_Data('EL', nnficv, 'BA', nnficv.get('BA'), 'D', input_dataset, 'PROP', NNxMLP_FeatureImportanceBrainSurface_CV.AV_FEATURE_IMPORTANCE, 'RESHAPED_PROP', NNxMLP_FeatureImportanceBrainSurface_CV.RESHAPED_AV_FEATURE_IMPORTANCE, varargin{:});
 					end
 					
 				otherwise

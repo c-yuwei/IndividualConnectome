@@ -4,25 +4,6 @@ classdef GTA_MR < ConcreteElement
 	%
 	% GTA_MR tests PanelPropMarker.
 	%
-	% The list of GTA_MR properties is:
-	%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the concrete element (ConcreteElement).
-	%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the concrete element.
-	%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the concrete element.
-	%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the concrete element.
-	%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the concrete element.
-	%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the concrete element.
-	%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the concrete element.
-	%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
-	%  <strong>9</strong> <strong>MR_C</strong> 	MR_C (constant, marker) is a prop constant marker.
-	%  <strong>10</strong> <strong>MR_M</strong> 	MR_M (metadata, marker) is a prop metadata marker.
-	%  <strong>11</strong> <strong>MR_P</strong> 	MR_P (parameter, marker) is a prop parameter marker.
-	%  <strong>12</strong> <strong>MR_D</strong> 	MR_D (data, marker) is a prop data marker.
-	%  <strong>13</strong> <strong>MR_R</strong> 	MR_R (result, marker) is a prop result marker.
-	%  <strong>14</strong> <strong>MR_Q</strong> 	MR_Q (query, marker) is a prop query marker.
-	%  <strong>15</strong> <strong>MR_E</strong> 	MR_E (evanescent, marker) is a prop evanescent marker.
-	%  <strong>16</strong> <strong>MR_F</strong> 	MR_F (figure, marker) is a prop figure marker.
-	%  <strong>17</strong> <strong>MR_G</strong> 	MR_G (gui, marker) is a prop gui marker.
-	%
 	% GTA_MR methods (constructor):
 	%  GTA_MR - constructor
 	%
@@ -111,53 +92,53 @@ classdef GTA_MR < ConcreteElement
 	%
 	% See also PanelPropMarker.
 	%
-	% BUILD BRAPH2 7 class_name 1
+	% BUILD BRAPH2 BRAPH2.BUILD class_name 1
 	
 	properties (Constant) % properties
-		MR_C = 9; %CET: Computational Efficiency Trick
+		MR_C = ConcreteElement.getPropNumber() + 1;
 		MR_C_TAG = 'MR_C';
-		MR_C_CATEGORY = 1;
-		MR_C_FORMAT = 23;
+		MR_C_CATEGORY = Category.CONSTANT;
+		MR_C_FORMAT = Format.MARKER;
 		
-		MR_M = 10; %CET: Computational Efficiency Trick
+		MR_M = ConcreteElement.getPropNumber() + 2;
 		MR_M_TAG = 'MR_M';
-		MR_M_CATEGORY = 2;
-		MR_M_FORMAT = 23;
+		MR_M_CATEGORY = Category.METADATA;
+		MR_M_FORMAT = Format.MARKER;
 		
-		MR_P = 11; %CET: Computational Efficiency Trick
+		MR_P = ConcreteElement.getPropNumber() + 3;
 		MR_P_TAG = 'MR_P';
-		MR_P_CATEGORY = 3;
-		MR_P_FORMAT = 23;
+		MR_P_CATEGORY = Category.PARAMETER;
+		MR_P_FORMAT = Format.MARKER;
 		
-		MR_D = 12; %CET: Computational Efficiency Trick
+		MR_D = ConcreteElement.getPropNumber() + 4;
 		MR_D_TAG = 'MR_D';
-		MR_D_CATEGORY = 4;
-		MR_D_FORMAT = 23;
+		MR_D_CATEGORY = Category.DATA;
+		MR_D_FORMAT = Format.MARKER;
 		
-		MR_R = 13; %CET: Computational Efficiency Trick
+		MR_R = ConcreteElement.getPropNumber() + 5;
 		MR_R_TAG = 'MR_R';
-		MR_R_CATEGORY = 5;
-		MR_R_FORMAT = 23;
+		MR_R_CATEGORY = Category.RESULT;
+		MR_R_FORMAT = Format.MARKER;
 		
-		MR_Q = 14; %CET: Computational Efficiency Trick
+		MR_Q = ConcreteElement.getPropNumber() + 6;
 		MR_Q_TAG = 'MR_Q';
-		MR_Q_CATEGORY = 6;
-		MR_Q_FORMAT = 23;
+		MR_Q_CATEGORY = Category.QUERY;
+		MR_Q_FORMAT = Format.MARKER;
 		
-		MR_E = 15; %CET: Computational Efficiency Trick
+		MR_E = ConcreteElement.getPropNumber() + 7;
 		MR_E_TAG = 'MR_E';
-		MR_E_CATEGORY = 7;
-		MR_E_FORMAT = 23;
+		MR_E_CATEGORY = Category.EVANESCENT;
+		MR_E_FORMAT = Format.MARKER;
 		
-		MR_F = 16; %CET: Computational Efficiency Trick
+		MR_F = ConcreteElement.getPropNumber() + 8;
 		MR_F_TAG = 'MR_F';
-		MR_F_CATEGORY = 8;
-		MR_F_FORMAT = 23;
+		MR_F_CATEGORY = Category.FIGURE;
+		MR_F_FORMAT = Format.MARKER;
 		
-		MR_G = 17; %CET: Computational Efficiency Trick
+		MR_G = ConcreteElement.getPropNumber() + 9;
 		MR_G_TAG = 'MR_G';
-		MR_G_CATEGORY = 9;
-		MR_G_FORMAT = 23;
+		MR_G_CATEGORY = Category.GUI;
+		MR_G_FORMAT = Format.MARKER;
 	end
 	methods % constructor
 		function gt = GTA_MR(varargin)
@@ -170,24 +151,6 @@ classdef GTA_MR < ConcreteElement
 			% Multiple properties can be initialized at once identifying
 			%  them with either property numbers (PROP) or tags (TAG).
 			%
-			% The list of GTA_MR properties is:
-			%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the concrete element (ConcreteElement).
-			%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the concrete element.
-			%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the concrete element.
-			%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the concrete element.
-			%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the concrete element.
-			%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the concrete element.
-			%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the concrete element.
-			%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
-			%  <strong>9</strong> <strong>MR_C</strong> 	MR_C (constant, marker) is a prop constant marker.
-			%  <strong>10</strong> <strong>MR_M</strong> 	MR_M (metadata, marker) is a prop metadata marker.
-			%  <strong>11</strong> <strong>MR_P</strong> 	MR_P (parameter, marker) is a prop parameter marker.
-			%  <strong>12</strong> <strong>MR_D</strong> 	MR_D (data, marker) is a prop data marker.
-			%  <strong>13</strong> <strong>MR_R</strong> 	MR_R (result, marker) is a prop result marker.
-			%  <strong>14</strong> <strong>MR_Q</strong> 	MR_Q (query, marker) is a prop query marker.
-			%  <strong>15</strong> <strong>MR_E</strong> 	MR_E (evanescent, marker) is a prop evanescent marker.
-			%  <strong>16</strong> <strong>MR_F</strong> 	MR_F (figure, marker) is a prop figure marker.
-			%  <strong>17</strong> <strong>MR_G</strong> 	MR_G (gui, marker) is a prop gui marker.
 			%
 			% See also Category, Format.
 			
@@ -240,7 +203,7 @@ classdef GTA_MR < ConcreteElement
 			%
 			% See also subclasses.
 			
-			subclass_list = { 'GTA_MR' }; %CET: Computational Efficiency Trick
+			subclass_list = subclasses('GTA_MR', [], [], true);
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of test A PanelPropMarker.
@@ -261,34 +224,68 @@ classdef GTA_MR < ConcreteElement
 			%
 			% See also getPropNumber, Category.
 			
-			%CET: Computational Efficiency Trick
-			
 			if nargin == 0
-				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17];
+				prop_list = [ ...
+					ConcreteElement.getProps() ...
+						GTA_MR.MR_C ...
+						GTA_MR.MR_M ...
+						GTA_MR.MR_P ...
+						GTA_MR.MR_D ...
+						GTA_MR.MR_R ...
+						GTA_MR.MR_Q ...
+						GTA_MR.MR_E ...
+						GTA_MR.MR_F ...
+						GTA_MR.MR_G ...
+						];
 				return
 			end
 			
 			switch category
-				case 1 % Category.CONSTANT
-					prop_list = [1 2 3 9];
-				case 2 % Category.METADATA
-					prop_list = [6 7 10];
-				case 3 % Category.PARAMETER
-					prop_list = [4 11];
-				case 4 % Category.DATA
-					prop_list = [5 12];
-				case 5 % Category.RESULT
-					prop_list = 13;
-				case 6 % Category.QUERY
-					prop_list = [8 14];
-				case 7 % Category.EVANESCENT
-					prop_list = 15;
-				case 8 % Category.FIGURE
-					prop_list = 16;
-				case 9 % Category.GUI
-					prop_list = 17;
-				otherwise
-					prop_list = [];
+				case Category.CONSTANT
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.CONSTANT) ...
+						GTA_MR.MR_C ...
+						];
+				case Category.METADATA
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.METADATA) ...
+						GTA_MR.MR_M ...
+						];
+				case Category.PARAMETER
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.PARAMETER) ...
+						GTA_MR.MR_P ...
+						];
+				case Category.DATA
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.DATA) ...
+						GTA_MR.MR_D ...
+						];
+				case Category.RESULT
+					prop_list = [
+						ConcreteElement.getProps(Category.RESULT) ...
+						GTA_MR.MR_R ...
+						];
+				case Category.QUERY
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.QUERY) ...
+						GTA_MR.MR_Q ...
+						];
+				case Category.EVANESCENT
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.EVANESCENT) ...
+						GTA_MR.MR_E ...
+						];
+				case Category.FIGURE
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.FIGURE) ...
+						GTA_MR.MR_F ...
+						];
+				case Category.GUI
+					prop_list = [ ...
+						ConcreteElement.getProps(Category.GUI) ...
+						GTA_MR.MR_G ...
+						];
 			end
 		end
 		function prop_number = getPropNumber(varargin)
@@ -309,35 +306,7 @@ classdef GTA_MR < ConcreteElement
 			%
 			% See also getProps, Category.
 			
-			%CET: Computational Efficiency Trick
-			
-			if nargin == 0
-				prop_number = 17;
-				return
-			end
-			
-			switch varargin{1} % category = varargin{1}
-				case 1 % Category.CONSTANT
-					prop_number = 4;
-				case 2 % Category.METADATA
-					prop_number = 3;
-				case 3 % Category.PARAMETER
-					prop_number = 2;
-				case 4 % Category.DATA
-					prop_number = 2;
-				case 5 % Category.RESULT
-					prop_number = 1;
-				case 6 % Category.QUERY
-					prop_number = 2;
-				case 7 % Category.EVANESCENT
-					prop_number = 1;
-				case 8 % Category.FIGURE
-					prop_number = 1;
-				case 9 % Category.GUI
-					prop_number = 1;
-				otherwise
-					prop_number = 0;
-			end
+			prop_number = numel(GTA_MR.getProps(varargin{:}));
 		end
 		function check_out = existsProp(prop)
 			%EXISTSPROP checks whether property exists in test A PanelPropMarker/error.
@@ -365,14 +334,14 @@ classdef GTA_MR < ConcreteElement
 			%
 			% See also getProps, existsTag.
 			
-			check = prop >= 1 && prop <= 17 && round(prop) == prop; %CET: Computational Efficiency Trick
+			check = any(prop == GTA_MR.getProps());
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					['BRAPH2' ':GTA_MR:' 'WrongInput'], ...
-					['BRAPH2' ':GTA_MR:' 'WrongInput' '\n' ...
+					[BRAPH2.STR ':GTA_MR:' BRAPH2.WRONG_INPUT], ...
+					[BRAPH2.STR ':GTA_MR:' BRAPH2.WRONG_INPUT '\n' ...
 					'The value ' tostring(prop, 100, ' ...') ' is not a valid prop for GTA_MR.'] ...
 					)
 			end
@@ -403,14 +372,15 @@ classdef GTA_MR < ConcreteElement
 			%
 			% See also getProps, existsTag.
 			
-			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'MR_C'  'MR_M'  'MR_P'  'MR_D'  'MR_R'  'MR_Q'  'MR_E'  'MR_F'  'MR_G' })); %CET: Computational Efficiency Trick
+			gta_mr_tag_list = cellfun(@(x) GTA_MR.getPropTag(x), num2cell(GTA_MR.getProps()), 'UniformOutput', false);
+			check = any(strcmp(tag, gta_mr_tag_list));
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					['BRAPH2' ':GTA_MR:' 'WrongInput'], ...
-					['BRAPH2' ':GTA_MR:' 'WrongInput' '\n' ...
+					[BRAPH2.STR ':GTA_MR:' BRAPH2.WRONG_INPUT], ...
+					[BRAPH2.STR ':GTA_MR:' BRAPH2.WRONG_INPUT '\n' ...
 					'The value ' tag ' is not a valid tag for GTA_MR.'] ...
 					)
 			end
@@ -436,7 +406,8 @@ classdef GTA_MR < ConcreteElement
 			%  getPropSettings, getPropDefault, checkProp.
 			
 			if ischar(pointer)
-				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'MR_C'  'MR_M'  'MR_P'  'MR_D'  'MR_R'  'MR_Q'  'MR_E'  'MR_F'  'MR_G' })); % tag = pointer %CET: Computational Efficiency Trick
+				gta_mr_tag_list = cellfun(@(x) GTA_MR.getPropTag(x), num2cell(GTA_MR.getProps()), 'UniformOutput', false);
+				prop = find(strcmp(pointer, gta_mr_tag_list)); % tag = pointer
 			else % numeric
 				prop = pointer;
 			end
@@ -464,9 +435,30 @@ classdef GTA_MR < ConcreteElement
 			if ischar(pointer)
 				tag = pointer;
 			else % numeric
-				%CET: Computational Efficiency Trick
-				gta_mr_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'MR_C'  'MR_M'  'MR_P'  'MR_D'  'MR_R'  'MR_Q'  'MR_E'  'MR_F'  'MR_G' };
-				tag = gta_mr_tag_list{pointer}; % prop = pointer
+				prop = pointer;
+				
+				switch prop
+					case GTA_MR.MR_C
+						tag = GTA_MR.MR_C_TAG;
+					case GTA_MR.MR_M
+						tag = GTA_MR.MR_M_TAG;
+					case GTA_MR.MR_P
+						tag = GTA_MR.MR_P_TAG;
+					case GTA_MR.MR_D
+						tag = GTA_MR.MR_D_TAG;
+					case GTA_MR.MR_R
+						tag = GTA_MR.MR_R_TAG;
+					case GTA_MR.MR_Q
+						tag = GTA_MR.MR_Q_TAG;
+					case GTA_MR.MR_E
+						tag = GTA_MR.MR_E_TAG;
+					case GTA_MR.MR_F
+						tag = GTA_MR.MR_F_TAG;
+					case GTA_MR.MR_G
+						tag = GTA_MR.MR_G_TAG;
+					otherwise
+						tag = getPropTag@ConcreteElement(prop);
+				end
 			end
 		end
 		function prop_category = getPropCategory(pointer)
@@ -491,9 +483,28 @@ classdef GTA_MR < ConcreteElement
 			
 			prop = GTA_MR.getPropProp(pointer);
 			
-			%CET: Computational Efficiency Trick
-			gta_mr_category_list = { 1  1  1  3  4  2  2  6  1  2  3  4  5  6  7  8  9 };
-			prop_category = gta_mr_category_list{prop};
+			switch prop
+				case GTA_MR.MR_C
+					prop_category = GTA_MR.MR_C_CATEGORY;
+				case GTA_MR.MR_M
+					prop_category = GTA_MR.MR_M_CATEGORY;
+				case GTA_MR.MR_P
+					prop_category = GTA_MR.MR_P_CATEGORY;
+				case GTA_MR.MR_D
+					prop_category = GTA_MR.MR_D_CATEGORY;
+				case GTA_MR.MR_R
+					prop_category = GTA_MR.MR_R_CATEGORY;
+				case GTA_MR.MR_Q
+					prop_category = GTA_MR.MR_Q_CATEGORY;
+				case GTA_MR.MR_E
+					prop_category = GTA_MR.MR_E_CATEGORY;
+				case GTA_MR.MR_F
+					prop_category = GTA_MR.MR_F_CATEGORY;
+				case GTA_MR.MR_G
+					prop_category = GTA_MR.MR_G_CATEGORY;
+				otherwise
+					prop_category = getPropCategory@ConcreteElement(prop);
+			end
 		end
 		function prop_format = getPropFormat(pointer)
 			%GETPROPFORMAT returns the format of a property.
@@ -517,9 +528,28 @@ classdef GTA_MR < ConcreteElement
 			
 			prop = GTA_MR.getPropProp(pointer);
 			
-			%CET: Computational Efficiency Trick
-			gta_mr_format_list = { 2  2  2  8  2  2  2  2  23  23  23  23  23  23  23  23  23 };
-			prop_format = gta_mr_format_list{prop};
+			switch prop
+				case GTA_MR.MR_C
+					prop_format = GTA_MR.MR_C_FORMAT;
+				case GTA_MR.MR_M
+					prop_format = GTA_MR.MR_M_FORMAT;
+				case GTA_MR.MR_P
+					prop_format = GTA_MR.MR_P_FORMAT;
+				case GTA_MR.MR_D
+					prop_format = GTA_MR.MR_D_FORMAT;
+				case GTA_MR.MR_R
+					prop_format = GTA_MR.MR_R_FORMAT;
+				case GTA_MR.MR_Q
+					prop_format = GTA_MR.MR_Q_FORMAT;
+				case GTA_MR.MR_E
+					prop_format = GTA_MR.MR_E_FORMAT;
+				case GTA_MR.MR_F
+					prop_format = GTA_MR.MR_F_FORMAT;
+				case GTA_MR.MR_G
+					prop_format = GTA_MR.MR_G_FORMAT;
+				otherwise
+					prop_format = getPropFormat@ConcreteElement(prop);
+			end
 		end
 		function prop_description = getPropDescription(pointer)
 			%GETPROPDESCRIPTION returns the description of a property.
@@ -543,9 +573,28 @@ classdef GTA_MR < ConcreteElement
 			
 			prop = GTA_MR.getPropProp(pointer);
 			
-			%CET: Computational Efficiency Trick
-			gta_mr_description_list = { 'ELCLASS (constant, string) is the class of the concrete element (ConcreteElement).'  'NAME (constant, string) is the name of the concrete element.'  'DESCRIPTION (constant, string) is the description of the concrete element.'  'TEMPLATE (parameter, item) is the template of the concrete element.'  'ID (data, string) is a few-letter code for the concrete element.'  'LABEL (metadata, string) is an extended label of the concrete element.'  'NOTES (metadata, string) are some specific notes about the concrete element.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'MR_C (constant, marker) is a prop constant marker.'  'MR_M (metadata, marker) is a prop metadata marker.'  'MR_P (parameter, marker) is a prop parameter marker.'  'MR_D (data, marker) is a prop data marker.'  'MR_R (result, marker) is a prop result marker.'  'MR_Q (query, marker) is a prop query marker.'  'MR_E (evanescent, marker) is a prop evanescent marker.'  'MR_F (figure, marker) is a prop figure marker.'  'MR_G (gui, marker) is a prop gui marker.' };
-			prop_description = gta_mr_description_list{prop};
+			switch prop
+				case GTA_MR.MR_C
+					prop_description = 'MR_C (constant, marker) is a prop constant marker.';
+				case GTA_MR.MR_M
+					prop_description = 'MR_M (metadata, marker) is a prop metadata marker.';
+				case GTA_MR.MR_P
+					prop_description = 'MR_P (parameter, marker) is a prop parameter marker.';
+				case GTA_MR.MR_D
+					prop_description = 'MR_D (data, marker) is a prop data marker.';
+				case GTA_MR.MR_R
+					prop_description = 'MR_R (result, marker) is a prop result marker.';
+				case GTA_MR.MR_Q
+					prop_description = 'MR_Q (query, marker) is a prop query marker.';
+				case GTA_MR.MR_E
+					prop_description = 'MR_E (evanescent, marker) is a prop evanescent marker.';
+				case GTA_MR.MR_F
+					prop_description = 'MR_F (figure, marker) is a prop figure marker.';
+				case GTA_MR.MR_G
+					prop_description = 'MR_G (gui, marker) is a prop gui marker.';
+				otherwise
+					prop_description = getPropDescription@ConcreteElement(prop);
+			end
 		end
 		function prop_settings = getPropSettings(pointer)
 			%GETPROPSETTINGS returns the settings of a property.
@@ -569,25 +618,25 @@ classdef GTA_MR < ConcreteElement
 			
 			prop = GTA_MR.getPropProp(pointer);
 			
-			switch prop %CET: Computational Efficiency Trick
-				case 9 % GTA_MR.MR_C
-					prop_settings = Format.getFormatSettings(23);
-				case 10 % GTA_MR.MR_M
-					prop_settings = Format.getFormatSettings(23);
-				case 11 % GTA_MR.MR_P
-					prop_settings = Format.getFormatSettings(23);
-				case 12 % GTA_MR.MR_D
-					prop_settings = Format.getFormatSettings(23);
-				case 13 % GTA_MR.MR_R
-					prop_settings = Format.getFormatSettings(23);
-				case 14 % GTA_MR.MR_Q
-					prop_settings = Format.getFormatSettings(23);
-				case 15 % GTA_MR.MR_E
-					prop_settings = Format.getFormatSettings(23);
-				case 16 % GTA_MR.MR_F
-					prop_settings = Format.getFormatSettings(23);
-				case 17 % GTA_MR.MR_G
-					prop_settings = Format.getFormatSettings(23);
+			switch prop
+				case GTA_MR.MR_C
+					prop_settings = Format.getFormatSettings(Format.MARKER);
+				case GTA_MR.MR_M
+					prop_settings = Format.getFormatSettings(Format.MARKER);
+				case GTA_MR.MR_P
+					prop_settings = Format.getFormatSettings(Format.MARKER);
+				case GTA_MR.MR_D
+					prop_settings = Format.getFormatSettings(Format.MARKER);
+				case GTA_MR.MR_R
+					prop_settings = Format.getFormatSettings(Format.MARKER);
+				case GTA_MR.MR_Q
+					prop_settings = Format.getFormatSettings(Format.MARKER);
+				case GTA_MR.MR_E
+					prop_settings = Format.getFormatSettings(Format.MARKER);
+				case GTA_MR.MR_F
+					prop_settings = Format.getFormatSettings(Format.MARKER);
+				case GTA_MR.MR_G
+					prop_settings = Format.getFormatSettings(Format.MARKER);
 				otherwise
 					prop_settings = getPropSettings@ConcreteElement(prop);
 			end
@@ -614,25 +663,25 @@ classdef GTA_MR < ConcreteElement
 			
 			prop = GTA_MR.getPropProp(pointer);
 			
-			switch prop %CET: Computational Efficiency Trick
-				case 9 % GTA_MR.MR_C
-					prop_default = Format.getFormatDefault(23, GTA_MR.getPropSettings(prop));
-				case 10 % GTA_MR.MR_M
-					prop_default = Format.getFormatDefault(23, GTA_MR.getPropSettings(prop));
-				case 11 % GTA_MR.MR_P
-					prop_default = Format.getFormatDefault(23, GTA_MR.getPropSettings(prop));
-				case 12 % GTA_MR.MR_D
-					prop_default = Format.getFormatDefault(23, GTA_MR.getPropSettings(prop));
-				case 13 % GTA_MR.MR_R
-					prop_default = Format.getFormatDefault(23, GTA_MR.getPropSettings(prop));
-				case 14 % GTA_MR.MR_Q
-					prop_default = Format.getFormatDefault(23, GTA_MR.getPropSettings(prop));
-				case 15 % GTA_MR.MR_E
-					prop_default = Format.getFormatDefault(23, GTA_MR.getPropSettings(prop));
-				case 16 % GTA_MR.MR_F
-					prop_default = Format.getFormatDefault(23, GTA_MR.getPropSettings(prop));
-				case 17 % GTA_MR.MR_G
-					prop_default = Format.getFormatDefault(23, GTA_MR.getPropSettings(prop));
+			switch prop
+				case GTA_MR.MR_C
+					prop_default = Format.getFormatDefault(Format.MARKER, GTA_MR.getPropSettings(prop));
+				case GTA_MR.MR_M
+					prop_default = Format.getFormatDefault(Format.MARKER, GTA_MR.getPropSettings(prop));
+				case GTA_MR.MR_P
+					prop_default = Format.getFormatDefault(Format.MARKER, GTA_MR.getPropSettings(prop));
+				case GTA_MR.MR_D
+					prop_default = Format.getFormatDefault(Format.MARKER, GTA_MR.getPropSettings(prop));
+				case GTA_MR.MR_R
+					prop_default = Format.getFormatDefault(Format.MARKER, GTA_MR.getPropSettings(prop));
+				case GTA_MR.MR_Q
+					prop_default = Format.getFormatDefault(Format.MARKER, GTA_MR.getPropSettings(prop));
+				case GTA_MR.MR_E
+					prop_default = Format.getFormatDefault(Format.MARKER, GTA_MR.getPropSettings(prop));
+				case GTA_MR.MR_F
+					prop_default = Format.getFormatDefault(Format.MARKER, GTA_MR.getPropSettings(prop));
+				case GTA_MR.MR_G
+					prop_default = Format.getFormatDefault(Format.MARKER, GTA_MR.getPropSettings(prop));
 				otherwise
 					prop_default = getPropDefault@ConcreteElement(prop);
 			end
@@ -678,15 +727,15 @@ classdef GTA_MR < ConcreteElement
 			% 
 			% GT.CHECKPROP(POINTER, VALUE) throws an error if VALUE is
 			%  NOT an acceptable value for the format of the property POINTER.
-			%  Error id: BRAPH2:GTA_MR:WrongInput
+			%  Error id: €BRAPH2.STR€:GTA_MR:€BRAPH2.WRONG_INPUT€
 			% 
 			% Alternative forms to call this method are (POINTER = PROP or TAG):
 			%  GT.CHECKPROP(POINTER, VALUE) throws error if VALUE has not a valid format for PROP of GT.
-			%   Error id: BRAPH2:GTA_MR:WrongInput
+			%   Error id: €BRAPH2.STR€:GTA_MR:€BRAPH2.WRONG_INPUT€
 			%  Element.CHECKPROP(GTA_MR, PROP, VALUE) throws error if VALUE has not a valid format for PROP of GTA_MR.
-			%   Error id: BRAPH2:GTA_MR:WrongInput
+			%   Error id: €BRAPH2.STR€:GTA_MR:€BRAPH2.WRONG_INPUT€
 			%  GT.CHECKPROP(GTA_MR, PROP, VALUE) throws error if VALUE has not a valid format for PROP of GTA_MR.
-			%   Error id: BRAPH2:GTA_MR:WrongInput]
+			%   Error id: €BRAPH2.STR€:GTA_MR:€BRAPH2.WRONG_INPUT€]
 			% 
 			% Note that the Element.CHECKPROP(GT) and Element.CHECKPROP('GTA_MR')
 			%  are less computationally efficient.
@@ -697,26 +746,26 @@ classdef GTA_MR < ConcreteElement
 			prop = GTA_MR.getPropProp(pointer);
 			
 			switch prop
-				case 9 % GTA_MR.MR_C
-					check = Format.checkFormat(23, value, GTA_MR.getPropSettings(prop));
-				case 10 % GTA_MR.MR_M
-					check = Format.checkFormat(23, value, GTA_MR.getPropSettings(prop));
-				case 11 % GTA_MR.MR_P
-					check = Format.checkFormat(23, value, GTA_MR.getPropSettings(prop));
-				case 12 % GTA_MR.MR_D
-					check = Format.checkFormat(23, value, GTA_MR.getPropSettings(prop));
-				case 13 % GTA_MR.MR_R
-					check = Format.checkFormat(23, value, GTA_MR.getPropSettings(prop));
-				case 14 % GTA_MR.MR_Q
-					check = Format.checkFormat(23, value, GTA_MR.getPropSettings(prop));
-				case 15 % GTA_MR.MR_E
-					check = Format.checkFormat(23, value, GTA_MR.getPropSettings(prop));
-				case 16 % GTA_MR.MR_F
-					check = Format.checkFormat(23, value, GTA_MR.getPropSettings(prop));
-				case 17 % GTA_MR.MR_G
-					check = Format.checkFormat(23, value, GTA_MR.getPropSettings(prop));
+				case GTA_MR.MR_C % __GTA_MR.MR_C__
+					check = Format.checkFormat(Format.MARKER, value, GTA_MR.getPropSettings(prop));
+				case GTA_MR.MR_M % __GTA_MR.MR_M__
+					check = Format.checkFormat(Format.MARKER, value, GTA_MR.getPropSettings(prop));
+				case GTA_MR.MR_P % __GTA_MR.MR_P__
+					check = Format.checkFormat(Format.MARKER, value, GTA_MR.getPropSettings(prop));
+				case GTA_MR.MR_D % __GTA_MR.MR_D__
+					check = Format.checkFormat(Format.MARKER, value, GTA_MR.getPropSettings(prop));
+				case GTA_MR.MR_R % __GTA_MR.MR_R__
+					check = Format.checkFormat(Format.MARKER, value, GTA_MR.getPropSettings(prop));
+				case GTA_MR.MR_Q % __GTA_MR.MR_Q__
+					check = Format.checkFormat(Format.MARKER, value, GTA_MR.getPropSettings(prop));
+				case GTA_MR.MR_E % __GTA_MR.MR_E__
+					check = Format.checkFormat(Format.MARKER, value, GTA_MR.getPropSettings(prop));
+				case GTA_MR.MR_F % __GTA_MR.MR_F__
+					check = Format.checkFormat(Format.MARKER, value, GTA_MR.getPropSettings(prop));
+				case GTA_MR.MR_G % __GTA_MR.MR_G__
+					check = Format.checkFormat(Format.MARKER, value, GTA_MR.getPropSettings(prop));
 				otherwise
-					if prop <= 8
+					if prop <= ConcreteElement.getPropNumber()
 						check = checkProp@ConcreteElement(prop, value);
 					end
 			end
@@ -725,8 +774,8 @@ classdef GTA_MR < ConcreteElement
 				prop_check = check;
 			elseif ~check
 				error( ...
-					['BRAPH2' ':GTA_MR:' 'WrongInput'], ...
-					['BRAPH2' ':GTA_MR:' 'WrongInput' '\n' ...
+					[BRAPH2.STR ':GTA_MR:' BRAPH2.WRONG_INPUT], ...
+					[BRAPH2.STR ':GTA_MR:' BRAPH2.WRONG_INPUT '\n' ...
 					'The value ' tostring(value, 100, ' ...') ' is not a valid property ' GTA_MR.getPropTag(prop) ' (' GTA_MR.getFormatTag(GTA_MR.getPropFormat(prop)) ').'] ...
 					)
 			end
