@@ -50,33 +50,40 @@ It is intended for workflows where each subject is represented not only by a reg
 - **Example script:** `braph2individualconnectome/pipelines/Structural mahalanobis connectivity/example_ST_MAHALANOBIS_CON.m`
 
 This pipeline constructs an **individual similarity connectome** from ROI values using a Mahalanobis-distance-based strategy. It aims to capture subject-level inter-regional similarity structure beyond simple univariate summaries.
+This implementation is informed by the following study and adapted here within the BRAPH 2 Individual Connectome workflow.
 
-- Mahalanobis, P.C. *Reprint of: Mahalanobis, P.C. (1936) "On the Generalised Distance in Statistics."* Sankhya A 80 (Suppl 1), 1–7 (2018). https://doi.org/10.1007/s13171-019-00164-5
-- Dean III, D.C., et al. “Multivariate characterization of white matter heterogeneity in autism spectrum disorder.” *NeuroImage: Clinical*, 14 (2017), 54–66. https://doi.org/10.1016/j.nicl.2017.01.002
+> Dean III et al., *Multivariate characterization of white matter heterogeneity in autism spectrum disorder*.
+> [NeuroImage: Clinical 14 (2017), 54–66](https://doi.org/10.1016/j.nicl.2017.01.002)
 
 ### 4. ROI-value conversion to connectivity with perturbation
 - **Pipeline folder:** `braph2individualconnectome/pipelines/Structural perturbation connectivity/`
 - **Example script:** `braph2individualconnectome/pipelines/Structural perturbation connectivity/example_ST_PERTURBATION_CON.m`
 
 This pipeline constructs an **individual similarity connectome** from ROI values using a perturbation-based strategy. It is designed to quantify subject-level inter-regional similarity through controlled perturbation of the regional feature representation.
+This implementation is informed by the following study and adapted here within the BRAPH 2 Individual Connectome workflow.
 
-- Severino, M., Schubert, J. J., Nordio, G., Giacomel, A., Easmin, R., Lao-Kaim, N. P., Selvaggi, P., Xu, Z., Pereira, J. B., Jauhar, S., Piccini, P., Howes, O., Turkheimer, F., Veronese, M., & FDOPA PET Imaging Working Group Consortium. “Single-Subject Network Analysis of FDOPA PET in Parkinson's Disease and Psychosis Spectrum.” *Human Brain Mapping*, 46(8), e70253 (2025). https://doi.org/10.1002/hbm.70253
+> Severino et al., *Single-Subject Network Analysis of FDOPA PET in Parkinson's Disease and Psychosis Spectrum*.
+> [Human Brain Mapping 46(8), e70253 (2025)](https://doi.org/10.1002/hbm.70253)
 
 ### 5. PDFs conversion to connectivity with correlation
 - **Pipeline folder:** `braph2individualconnectome/pipelines/PDFs correlation connectivity/`
 - **Example script:** `braph2individualconnectome/pipelines/PDFs correlation connectivity/example_PDFs_CORR_CON.m`
 
 This pipeline constructs an **individual similarity connectome** from regional PDFs using correlation. It captures similarity between brain regions by comparing the shapes of their within-region voxel-value distributions.
+This implementation is informed by the following study and adapted here within the BRAPH 2 Individual Connectome workflow.
 
-- Zhao, K., Zheng, Q., Che, T., Dyrba, M., Li, Q., Ding, Y., Zheng, Y., Liu, Y., & Li, S. “Regional radiomics similarity networks (R2SNs) in the human brain: Reproducibility, small-world properties and a biological basis.” *Network Neuroscience*, 5(3), 783–800 (2021). https://doi.org/10.1162/netn_a_00200
+> Zhao et al., *Regional radiomics similarity networks (R2SNs) in the human brain: Reproducibility, small-world properties and a biological basis*.
+> [Network Neuroscience 5(3), 783–800 (2021)](https://doi.org/10.1162/netn_a_00200)
 
 ### 6. PDFs conversion to connectivity with divergence
 - **Pipeline folder:** `braph2individualconnectome/pipelines/PDFs divergence connectivity/`
 - **Example script:** `braph2individualconnectome/pipelines/PDFs divergence connectivity/example_PDFs_DIV_CON.m`
 
 This pipeline constructs an **individual similarity connectome** from regional PDFs using divergence. It captures differences or similarity between regional voxel-value distributions in a way that is sensitive to distributional shape.
+This implementation is informed by the following study and adapted here within the BRAPH 2 Individual Connectome workflow.
 
-- Li, Y.-L., Wu, J.-J., Ma, J., Li, S.-S., Xue, X., Wei, D., Shan, C.-L., Hua, X.-Y., Zheng, M.-X., & Xu, J.-G. “Alteration of the Individual Metabolic Network of the Brain Based on Jensen-Shannon Divergence Similarity Estimation in Elderly Patients With Type 2 Diabetes Mellitus.” *Diabetes*, 71(5), 894–905 (2022). https://doi.org/10.2337/db21-0600
+> Li et al., *Alteration of the Individual Metabolic Network of the Brain Based on Jensen-Shannon Divergence Similarity Estimation in Elderly Patients With Type 2 Diabetes Mellitus*.
+> [Diabetes 71(5), 894–905 (2022)](https://doi.org/10.2337/db21-0600)
 
 ### 7. Variable-of-interest NN
 This pipeline provides neural-network classification that incorporates both imaging-derived features and **variables of interest** such as age, sex, and education.
