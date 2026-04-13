@@ -51,8 +51,9 @@ It is intended for workflows where each subject is represented not only by a reg
 
 This pipeline constructs an **individual similarity connectome** from ROI values using a Mahalanobis-distance-based strategy. It aims to capture subject-level inter-regional similarity structure beyond simple univariate summaries.
 
-> Reference to be added.
-
+- Mahalanobis, P.C. *Reprint of: Mahalanobis, P.C. (1936) "On the Generalised Distance in Statistics."* Sankhya A 80 (Suppl 1), 1–7 (2018). https://doi.org/10.1007/s13171-019-00164-5
+- Dean III, D.C., et al. “Multivariate characterization of white matter heterogeneity in autism spectrum disorder.” *NeuroImage: Clinical*, 14 (2017), 54–66. https://doi.org/10.1016/j.nicl.2017.01.002
+- 
 ### 4. ROI-value conversion to connectivity with perturbation
 - **Pipeline folder:** `braph2individualconnectome/pipelines/Structural perturbation connectivity/`
 - **Example script:** `braph2individualconnectome/pipelines/Structural perturbation connectivity/example_ST_PERTURBATION_CON.m`
