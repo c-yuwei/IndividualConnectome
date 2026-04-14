@@ -1013,3 +1013,4 @@ braph2genesis/test/BRAPH2TEST.m
 braph2genesis/test/DummyCopiableObject.m
 braph2genesis/test/DummyObject.m
 braph2genesis/test/test_braph2.m
+tester.m
