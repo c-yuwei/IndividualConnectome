@@ -4,6 +4,22 @@ classdef ConstructorIndividualConPerturbation < ConstructorIndividualConBase
 	%
 	% IndividualPerturbationConConstructor constructs individual connectomes by perturbation using partial correlation with selected VOIs, adjusting for mean-centered age and education if selected.
 	%
+	% The list of ConstructorIndividualConPerturbation properties is:
+	%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the perturbation-based connectome constructor.
+	%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the perturbation-based connectome constructor.
+	%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the perturbation-based connectome constructor.
+	%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the perturbation-based connectome constructor.
+	%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the perturbation-based connectome constructor.
+	%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the perturbation-based connectome constructor.
+	%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the perturbation-based connectome constructor.
+	%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
+	%  <strong>9</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) detemines whether to show the waitbar.
+	%  <strong>10</strong> <strong>GR_SUVR</strong> 	GR_SUVR (data, item) is a group of subjects with mean SUVR data.
+	%  <strong>11</strong> <strong>GR_SUVR_REF</strong> 	GR_SUVR_REF (data, item) is a group of subjects with mean SUVR data for deviation reference.
+	%  <strong>12</strong> <strong>CONNECTOME_CONSTRUCT_METHOD</strong> 	CONNECTOME_CONSTRUCT_METHOD (query, cell) defines the method for constructing individual connectomes using perturbation with partial correlation using selected VOIs.
+	%  <strong>13</strong> <strong>GR</strong> 	GR (result, item) is a group of subjects with connectivity data.
+	%  <strong>14</strong> <strong>VOI_SELECTION</strong> 	VOI_SELECTION (parameter, stringlist) defines which VOIs should be included in the analysis.
+	%
 	% ConstructorIndividualConPerturbation methods (constructor):
 	%  ConstructorIndividualConPerturbation - constructor
 	%
@@ -92,13 +108,13 @@ classdef ConstructorIndividualConPerturbation < ConstructorIndividualConBase
 	%
 	% See also Group, SubjectST, ExporterGroupSubjectCON_XLS.
 	%
-	% BUILD BRAPH2 BRAPH2.BUILD class_name 1
+	% BUILD BRAPH2 7 class_name 1
 	
 	properties (Constant) % properties
-		VOI_SELECTION = ConstructorIndividualConBase.getPropNumber() + 1;
+		VOI_SELECTION = 14; %CET: Computational Efficiency Trick
 		VOI_SELECTION_TAG = 'VOI_SELECTION';
-		VOI_SELECTION_CATEGORY = Category.PARAMETER;
-		VOI_SELECTION_FORMAT = Format.STRINGLIST;
+		VOI_SELECTION_CATEGORY = 3;
+		VOI_SELECTION_FORMAT = 3;
 	end
 	methods % constructor
 		function ipc = ConstructorIndividualConPerturbation(varargin)
@@ -111,6 +127,21 @@ classdef ConstructorIndividualConPerturbation < ConstructorIndividualConBase
 			% Multiple properties can be initialized at once identifying
 			%  them with either property numbers (PROP) or tags (TAG).
 			%
+			% The list of ConstructorIndividualConPerturbation properties is:
+			%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the perturbation-based connectome constructor.
+			%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the perturbation-based connectome constructor.
+			%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the perturbation-based connectome constructor.
+			%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the perturbation-based connectome constructor.
+			%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the perturbation-based connectome constructor.
+			%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the perturbation-based connectome constructor.
+			%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the perturbation-based connectome constructor.
+			%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
+			%  <strong>9</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) detemines whether to show the waitbar.
+			%  <strong>10</strong> <strong>GR_SUVR</strong> 	GR_SUVR (data, item) is a group of subjects with mean SUVR data.
+			%  <strong>11</strong> <strong>GR_SUVR_REF</strong> 	GR_SUVR_REF (data, item) is a group of subjects with mean SUVR data for deviation reference.
+			%  <strong>12</strong> <strong>CONNECTOME_CONSTRUCT_METHOD</strong> 	CONNECTOME_CONSTRUCT_METHOD (query, cell) defines the method for constructing individual connectomes using perturbation with partial correlation using selected VOIs.
+			%  <strong>13</strong> <strong>GR</strong> 	GR (result, item) is a group of subjects with connectivity data.
+			%  <strong>14</strong> <strong>VOI_SELECTION</strong> 	VOI_SELECTION (parameter, stringlist) defines which VOIs should be included in the analysis.
 			%
 			% See also Category, Format.
 			
@@ -163,7 +194,7 @@ classdef ConstructorIndividualConPerturbation < ConstructorIndividualConBase
 			%
 			% See also subclasses.
 			
-			subclass_list = subclasses('ConstructorIndividualConPerturbation', [], [], true);
+			subclass_list = { 'ConstructorIndividualConPerturbation' }; %CET: Computational Efficiency Trick
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of perturbation-based subject individual brain connectome Constructor.
@@ -184,52 +215,30 @@ classdef ConstructorIndividualConPerturbation < ConstructorIndividualConBase
 			%
 			% See also getPropNumber, Category.
 			
+			%CET: Computational Efficiency Trick
+			
 			if nargin == 0
-				prop_list = [ ...
-					ConstructorIndividualConBase.getProps() ...
-						ConstructorIndividualConPerturbation.VOI_SELECTION ...
-						];
+				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12 13 14];
 				return
 			end
 			
 			switch category
-				case Category.CONSTANT
-					prop_list = [ ...
-						ConstructorIndividualConBase.getProps(Category.CONSTANT) ...
-						];
-				case Category.METADATA
-					prop_list = [ ...
-						ConstructorIndividualConBase.getProps(Category.METADATA) ...
-						];
-				case Category.PARAMETER
-					prop_list = [ ...
-						ConstructorIndividualConBase.getProps(Category.PARAMETER) ...
-						ConstructorIndividualConPerturbation.VOI_SELECTION ...
-						];
-				case Category.DATA
-					prop_list = [ ...
-						ConstructorIndividualConBase.getProps(Category.DATA) ...
-						];
-				case Category.RESULT
-					prop_list = [
-						ConstructorIndividualConBase.getProps(Category.RESULT) ...
-						];
-				case Category.QUERY
-					prop_list = [ ...
-						ConstructorIndividualConBase.getProps(Category.QUERY) ...
-						];
-				case Category.EVANESCENT
-					prop_list = [ ...
-						ConstructorIndividualConBase.getProps(Category.EVANESCENT) ...
-						];
-				case Category.FIGURE
-					prop_list = [ ...
-						ConstructorIndividualConBase.getProps(Category.FIGURE) ...
-						];
-				case Category.GUI
-					prop_list = [ ...
-						ConstructorIndividualConBase.getProps(Category.GUI) ...
-						];
+				case 1 % Category.CONSTANT
+					prop_list = [1 2 3];
+				case 2 % Category.METADATA
+					prop_list = [6 7];
+				case 3 % Category.PARAMETER
+					prop_list = [4 14];
+				case 4 % Category.DATA
+					prop_list = [5 10 11];
+				case 5 % Category.RESULT
+					prop_list = 13;
+				case 6 % Category.QUERY
+					prop_list = [8 12];
+				case 9 % Category.GUI
+					prop_list = 9;
+				otherwise
+					prop_list = [];
 			end
 		end
 		function prop_number = getPropNumber(varargin)
@@ -250,7 +259,31 @@ classdef ConstructorIndividualConPerturbation < ConstructorIndividualConBase
 			%
 			% See also getProps, Category.
 			
-			prop_number = numel(ConstructorIndividualConPerturbation.getProps(varargin{:}));
+			%CET: Computational Efficiency Trick
+			
+			if nargin == 0
+				prop_number = 14;
+				return
+			end
+			
+			switch varargin{1} % category = varargin{1}
+				case 1 % Category.CONSTANT
+					prop_number = 3;
+				case 2 % Category.METADATA
+					prop_number = 2;
+				case 3 % Category.PARAMETER
+					prop_number = 2;
+				case 4 % Category.DATA
+					prop_number = 3;
+				case 5 % Category.RESULT
+					prop_number = 1;
+				case 6 % Category.QUERY
+					prop_number = 2;
+				case 9 % Category.GUI
+					prop_number = 1;
+				otherwise
+					prop_number = 0;
+			end
 		end
 		function check_out = existsProp(prop)
 			%EXISTSPROP checks whether property exists in perturbation-based subject individual brain connectome Constructor/error.
@@ -278,14 +311,14 @@ classdef ConstructorIndividualConPerturbation < ConstructorIndividualConBase
 			%
 			% See also getProps, existsTag.
 			
-			check = any(prop == ConstructorIndividualConPerturbation.getProps());
+			check = prop >= 1 && prop <= 14 && round(prop) == prop; %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':ConstructorIndividualConPerturbation:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':ConstructorIndividualConPerturbation:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':ConstructorIndividualConPerturbation:' 'WrongInput'], ...
+					['BRAPH2' ':ConstructorIndividualConPerturbation:' 'WrongInput' '\n' ...
 					'The value ' tostring(prop, 100, ' ...') ' is not a valid prop for ConstructorIndividualConPerturbation.'] ...
 					)
 			end
@@ -316,15 +349,14 @@ classdef ConstructorIndividualConPerturbation < ConstructorIndividualConBase
 			%
 			% See also getProps, existsTag.
 			
-			constructorindividualconperturbation_tag_list = cellfun(@(x) ConstructorIndividualConPerturbation.getPropTag(x), num2cell(ConstructorIndividualConPerturbation.getProps()), 'UniformOutput', false);
-			check = any(strcmp(tag, constructorindividualconperturbation_tag_list));
+			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'GR_SUVR'  'GR_SUVR_REF'  'CONNECTOME_CONSTRUCT_METHOD'  'GR'  'VOI_SELECTION' })); %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':ConstructorIndividualConPerturbation:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':ConstructorIndividualConPerturbation:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':ConstructorIndividualConPerturbation:' 'WrongInput'], ...
+					['BRAPH2' ':ConstructorIndividualConPerturbation:' 'WrongInput' '\n' ...
 					'The value ' tag ' is not a valid tag for ConstructorIndividualConPerturbation.'] ...
 					)
 			end
@@ -350,8 +382,7 @@ classdef ConstructorIndividualConPerturbation < ConstructorIndividualConBase
 			%  getPropSettings, getPropDefault, checkProp.
 			
 			if ischar(pointer)
-				constructorindividualconperturbation_tag_list = cellfun(@(x) ConstructorIndividualConPerturbation.getPropTag(x), num2cell(ConstructorIndividualConPerturbation.getProps()), 'UniformOutput', false);
-				prop = find(strcmp(pointer, constructorindividualconperturbation_tag_list)); % tag = pointer
+				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'GR_SUVR'  'GR_SUVR_REF'  'CONNECTOME_CONSTRUCT_METHOD'  'GR'  'VOI_SELECTION' })); % tag = pointer %CET: Computational Efficiency Trick
 			else % numeric
 				prop = pointer;
 			end
@@ -379,14 +410,9 @@ classdef ConstructorIndividualConPerturbation < ConstructorIndividualConBase
 			if ischar(pointer)
 				tag = pointer;
 			else % numeric
-				prop = pointer;
-				
-				switch prop
-					case ConstructorIndividualConPerturbation.VOI_SELECTION
-						tag = ConstructorIndividualConPerturbation.VOI_SELECTION_TAG;
-					otherwise
-						tag = getPropTag@ConstructorIndividualConBase(prop);
-				end
+				%CET: Computational Efficiency Trick
+				constructorindividualconperturbation_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'GR_SUVR'  'GR_SUVR_REF'  'CONNECTOME_CONSTRUCT_METHOD'  'GR'  'VOI_SELECTION' };
+				tag = constructorindividualconperturbation_tag_list{pointer}; % prop = pointer
 			end
 		end
 		function prop_category = getPropCategory(pointer)
@@ -411,12 +437,9 @@ classdef ConstructorIndividualConPerturbation < ConstructorIndividualConBase
 			
 			prop = ConstructorIndividualConPerturbation.getPropProp(pointer);
 			
-			switch prop
-				case ConstructorIndividualConPerturbation.VOI_SELECTION
-					prop_category = ConstructorIndividualConPerturbation.VOI_SELECTION_CATEGORY;
-				otherwise
-					prop_category = getPropCategory@ConstructorIndividualConBase(prop);
-			end
+			%CET: Computational Efficiency Trick
+			constructorindividualconperturbation_category_list = { 1  1  1  3  4  2  2  6  9  4  4  6  5  3 };
+			prop_category = constructorindividualconperturbation_category_list{prop};
 		end
 		function prop_format = getPropFormat(pointer)
 			%GETPROPFORMAT returns the format of a property.
@@ -440,12 +463,9 @@ classdef ConstructorIndividualConPerturbation < ConstructorIndividualConBase
 			
 			prop = ConstructorIndividualConPerturbation.getPropProp(pointer);
 			
-			switch prop
-				case ConstructorIndividualConPerturbation.VOI_SELECTION
-					prop_format = ConstructorIndividualConPerturbation.VOI_SELECTION_FORMAT;
-				otherwise
-					prop_format = getPropFormat@ConstructorIndividualConBase(prop);
-			end
+			%CET: Computational Efficiency Trick
+			constructorindividualconperturbation_format_list = { 2  2  2  8  2  2  2  2  4  8  8  16  8  3 };
+			prop_format = constructorindividualconperturbation_format_list{prop};
 		end
 		function prop_description = getPropDescription(pointer)
 			%GETPROPDESCRIPTION returns the description of a property.
@@ -469,28 +489,9 @@ classdef ConstructorIndividualConPerturbation < ConstructorIndividualConBase
 			
 			prop = ConstructorIndividualConPerturbation.getPropProp(pointer);
 			
-			switch prop
-				case ConstructorIndividualConPerturbation.VOI_SELECTION
-					prop_description = 'VOI_SELECTION (parameter, stringlist) defines which VOIs should be included in the analysis.';
-				case ConstructorIndividualConPerturbation.ELCLASS
-					prop_description = 'ELCLASS (constant, string) is the class of the perturbation-based connectome constructor.';
-				case ConstructorIndividualConPerturbation.NAME
-					prop_description = 'NAME (constant, string) is the name of the perturbation-based connectome constructor.';
-				case ConstructorIndividualConPerturbation.DESCRIPTION
-					prop_description = 'DESCRIPTION (constant, string) is the description of the perturbation-based connectome constructor.';
-				case ConstructorIndividualConPerturbation.TEMPLATE
-					prop_description = 'TEMPLATE (parameter, item) is the template of the perturbation-based connectome constructor.';
-				case ConstructorIndividualConPerturbation.ID
-					prop_description = 'ID (data, string) is a few-letter code for the perturbation-based connectome constructor.';
-				case ConstructorIndividualConPerturbation.LABEL
-					prop_description = 'LABEL (metadata, string) is an extended label of the perturbation-based connectome constructor.';
-				case ConstructorIndividualConPerturbation.NOTES
-					prop_description = 'NOTES (metadata, string) are some specific notes about the perturbation-based connectome constructor.';
-				case ConstructorIndividualConPerturbation.CONNECTOME_CONSTRUCT_METHOD
-					prop_description = 'CONNECTOME_CONSTRUCT_METHOD (query, cell) defines the method for constructing individual connectomes using perturbation with partial correlation using selected VOIs.';
-				otherwise
-					prop_description = getPropDescription@ConstructorIndividualConBase(prop);
-			end
+			%CET: Computational Efficiency Trick
+			constructorindividualconperturbation_description_list = { 'ELCLASS (constant, string) is the class of the perturbation-based connectome constructor.'  'NAME (constant, string) is the name of the perturbation-based connectome constructor.'  'DESCRIPTION (constant, string) is the description of the perturbation-based connectome constructor.'  'TEMPLATE (parameter, item) is the template of the perturbation-based connectome constructor.'  'ID (data, string) is a few-letter code for the perturbation-based connectome constructor.'  'LABEL (metadata, string) is an extended label of the perturbation-based connectome constructor.'  'NOTES (metadata, string) are some specific notes about the perturbation-based connectome constructor.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'WAITBAR (gui, logical) detemines whether to show the waitbar.'  'GR_SUVR (data, item) is a group of subjects with mean SUVR data.'  'GR_SUVR_REF (data, item) is a group of subjects with mean SUVR data for deviation reference.'  'CONNECTOME_CONSTRUCT_METHOD (query, cell) defines the method for constructing individual connectomes using perturbation with partial correlation using selected VOIs.'  'GR (result, item) is a group of subjects with connectivity data.'  'VOI_SELECTION (parameter, stringlist) defines which VOIs should be included in the analysis.' };
+			prop_description = constructorindividualconperturbation_description_list{prop};
 		end
 		function prop_settings = getPropSettings(pointer)
 			%GETPROPSETTINGS returns the settings of a property.
@@ -514,10 +515,10 @@ classdef ConstructorIndividualConPerturbation < ConstructorIndividualConBase
 			
 			prop = ConstructorIndividualConPerturbation.getPropProp(pointer);
 			
-			switch prop
-				case ConstructorIndividualConPerturbation.VOI_SELECTION
-					prop_settings = Format.getFormatSettings(Format.STRINGLIST);
-				case ConstructorIndividualConPerturbation.TEMPLATE
+			switch prop %CET: Computational Efficiency Trick
+				case 14 % ConstructorIndividualConPerturbation.VOI_SELECTION
+					prop_settings = Format.getFormatSettings(3);
+				case 4 % ConstructorIndividualConPerturbation.TEMPLATE
 					prop_settings = 'IndividualPerturbationConConstructor';
 				otherwise
 					prop_settings = getPropSettings@ConstructorIndividualConBase(prop);
@@ -545,22 +546,22 @@ classdef ConstructorIndividualConPerturbation < ConstructorIndividualConBase
 			
 			prop = ConstructorIndividualConPerturbation.getPropProp(pointer);
 			
-			switch prop
-				case ConstructorIndividualConPerturbation.VOI_SELECTION
+			switch prop %CET: Computational Efficiency Trick
+				case 14 % ConstructorIndividualConPerturbation.VOI_SELECTION
 					prop_default = {'Age', 'Sex', 'Education'}; % Example: Default selected VOIs;
-				case ConstructorIndividualConPerturbation.ELCLASS
+				case 1 % ConstructorIndividualConPerturbation.ELCLASS
 					prop_default = 'ConstructorIndividualConPerturbation';
-				case ConstructorIndividualConPerturbation.NAME
+				case 2 % ConstructorIndividualConPerturbation.NAME
 					prop_default = 'Individual Perturbation Connectome Constructor';
-				case ConstructorIndividualConPerturbation.DESCRIPTION
+				case 3 % ConstructorIndividualConPerturbation.DESCRIPTION
 					prop_default = 'IndividualPerturbationConConstructor constructs individual connectomes using perturbation method with partial correlation using selected VOIs';
-				case ConstructorIndividualConPerturbation.TEMPLATE
-					prop_default = Format.getFormatDefault(Format.ITEM, ConstructorIndividualConPerturbation.getPropSettings(prop));
-				case ConstructorIndividualConPerturbation.ID
+				case 4 % ConstructorIndividualConPerturbation.TEMPLATE
+					prop_default = Format.getFormatDefault(8, ConstructorIndividualConPerturbation.getPropSettings(prop));
+				case 5 % ConstructorIndividualConPerturbation.ID
 					prop_default = 'IndividualPerturbationConConstructor ID';
-				case ConstructorIndividualConPerturbation.LABEL
+				case 6 % ConstructorIndividualConPerturbation.LABEL
 					prop_default = 'IndividualPerturbationConConstructor label';
-				case ConstructorIndividualConPerturbation.NOTES
+				case 7 % ConstructorIndividualConPerturbation.NOTES
 					prop_default = 'IndividualPerturbationConConstructor notes';
 				otherwise
 					prop_default = getPropDefault@ConstructorIndividualConBase(prop);
@@ -607,15 +608,15 @@ classdef ConstructorIndividualConPerturbation < ConstructorIndividualConBase
 			% 
 			% IPC.CHECKPROP(POINTER, VALUE) throws an error if VALUE is
 			%  NOT an acceptable value for the format of the property POINTER.
-			%  Error id: €BRAPH2.STR€:ConstructorIndividualConPerturbation:€BRAPH2.WRONG_INPUT€
+			%  Error id: BRAPH2:ConstructorIndividualConPerturbation:WrongInput
 			% 
 			% Alternative forms to call this method are (POINTER = PROP or TAG):
 			%  IPC.CHECKPROP(POINTER, VALUE) throws error if VALUE has not a valid format for PROP of IPC.
-			%   Error id: €BRAPH2.STR€:ConstructorIndividualConPerturbation:€BRAPH2.WRONG_INPUT€
+			%   Error id: BRAPH2:ConstructorIndividualConPerturbation:WrongInput
 			%  Element.CHECKPROP(ConstructorIndividualConPerturbation, PROP, VALUE) throws error if VALUE has not a valid format for PROP of ConstructorIndividualConPerturbation.
-			%   Error id: €BRAPH2.STR€:ConstructorIndividualConPerturbation:€BRAPH2.WRONG_INPUT€
+			%   Error id: BRAPH2:ConstructorIndividualConPerturbation:WrongInput
 			%  IPC.CHECKPROP(ConstructorIndividualConPerturbation, PROP, VALUE) throws error if VALUE has not a valid format for PROP of ConstructorIndividualConPerturbation.
-			%   Error id: €BRAPH2.STR€:ConstructorIndividualConPerturbation:€BRAPH2.WRONG_INPUT€]
+			%   Error id: BRAPH2:ConstructorIndividualConPerturbation:WrongInput]
 			% 
 			% Note that the Element.CHECKPROP(IPC) and Element.CHECKPROP('ConstructorIndividualConPerturbation')
 			%  are less computationally efficient.
@@ -626,12 +627,12 @@ classdef ConstructorIndividualConPerturbation < ConstructorIndividualConBase
 			prop = ConstructorIndividualConPerturbation.getPropProp(pointer);
 			
 			switch prop
-				case ConstructorIndividualConPerturbation.VOI_SELECTION % __ConstructorIndividualConPerturbation.VOI_SELECTION__
-					check = Format.checkFormat(Format.STRINGLIST, value, ConstructorIndividualConPerturbation.getPropSettings(prop));
-				case ConstructorIndividualConPerturbation.TEMPLATE % __ConstructorIndividualConPerturbation.TEMPLATE__
-					check = Format.checkFormat(Format.ITEM, value, ConstructorIndividualConPerturbation.getPropSettings(prop));
+				case 14 % ConstructorIndividualConPerturbation.VOI_SELECTION
+					check = Format.checkFormat(3, value, ConstructorIndividualConPerturbation.getPropSettings(prop));
+				case 4 % ConstructorIndividualConPerturbation.TEMPLATE
+					check = Format.checkFormat(8, value, ConstructorIndividualConPerturbation.getPropSettings(prop));
 				otherwise
-					if prop <= ConstructorIndividualConBase.getPropNumber()
+					if prop <= 13
 						check = checkProp@ConstructorIndividualConBase(prop, value);
 					end
 			end
@@ -640,8 +641,8 @@ classdef ConstructorIndividualConPerturbation < ConstructorIndividualConBase
 				prop_check = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':ConstructorIndividualConPerturbation:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':ConstructorIndividualConPerturbation:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':ConstructorIndividualConPerturbation:' 'WrongInput'], ...
+					['BRAPH2' ':ConstructorIndividualConPerturbation:' 'WrongInput' '\n' ...
 					'The value ' tostring(value, 100, ' ...') ' is not a valid property ' ConstructorIndividualConPerturbation.getPropTag(prop) ' (' ConstructorIndividualConPerturbation.getFormatTag(ConstructorIndividualConPerturbation.getPropFormat(prop)) ').'] ...
 					)
 			end
@@ -652,19 +653,19 @@ classdef ConstructorIndividualConPerturbation < ConstructorIndividualConBase
 			%CALCULATEVALUE calculates the value of a property.
 			%
 			% VALUE = CALCULATEVALUE(EL, PROP) calculates the value of the property
-			%  PROP. It works only with properties with Category.RESULT,
-			%  Category.QUERY, and Category.EVANESCENT. By default this function
+			%  PROP. It works only with properties with 5,
+			%  6, and 7. By default this function
 			%  returns the default value for the prop and should be implemented in the
 			%  subclasses of Element when needed.
 			%
 			% VALUE = CALCULATEVALUE(EL, PROP, VARARGIN) works with properties with
-			%  Category.QUERY.
+			%  6.
 			%
 			% See also getPropDefaultConditioned, conditioning, preset, checkProp,
 			%  postset, postprocessing, checkValue.
 			
 			switch prop
-				case ConstructorIndividualConPerturbation.CONNECTOME_CONSTRUCT_METHOD % __ConstructorIndividualConPerturbation.CONNECTOME_CONSTRUCT_METHOD__
+				case 12 % ConstructorIndividualConPerturbation.CONNECTOME_CONSTRUCT_METHOD
 					if isempty(varargin) && isempty(ipc.get('GR_SUVR').get('SUB_DICT').get('IT_LIST'))
 					    value = {};
 					    return
@@ -758,7 +759,7 @@ classdef ConstructorIndividualConPerturbation < ConstructorIndividualConBase
 					value = connectome_matrices;
 					
 				otherwise
-					if prop <= ConstructorIndividualConBase.getPropNumber()
+					if prop <= 13
 						value = calculateValue@ConstructorIndividualConBase(ipc, prop, varargin{:});
 					else
 						value = calculateValue@Element(ipc, prop, varargin{:});

@@ -1,8 +1,8 @@
 %% ¡header!
-ImporterGroupSubjectNeuroimaging_NIfTI < Importer (im, importer of neuroimaging subject group from NIfTI) imports a group of subjects with image data from a series of Nifti files.
+ImporterGroupSubjectNeuroimaging_NIfTI < Importer (im, importer of neuroimaging subject group from NIfTI) imports a group of subjects with image data from a series of NIfTI files.
 
 %%% ¡description!
-ImporterGroupSubjNIfTI imports the directory to a group of subjects Nifti files 
+ImporterGroupSubjectNeuroimaging_NIfTI imports the directory to a group of subjects NIfTI files 
  in a folder. All these files must be in the same folder; also, no other files 
  should be in the folder. Each file contains a 3D brain volume matrix.
 The variables of interest are from another XLS/XLSX file named "SUVR_GROUP_MAT.vois.xlsx" 
@@ -20,51 +20,66 @@ Group, SubjectCON, ExporterGroupSubjectCON_XLS
 %% ¡props_update!
 
 %%% ¡prop!
-ELCLASS (constant, string) is the class of the subject image group importer for Nifti.
+ELCLASS (constant, string) is the class of the subject image group importer for NIfTI.
 %%%% ¡default!
 'ImporterGroupSubjectNeuroimaging_NIfTI'
 
 %%% ¡prop!
-NAME (constant, string) is the name of the subject image group importer for Nifti.
+NAME (constant, string) is the name of the subject image group importer for NIfTI.
 %%%% ¡default!
-'Subject Nifti Image Importer'
+'Subject Neuroimaging Importer for NIfTI file'
 
 %%% ¡prop!
-DESCRIPTION (constant, string) is the description of the subject image importer for Nifti.
+DESCRIPTION (constant, string) is the description of the subject image importer for NIfTI.
 %%%% ¡default!
-'ImporterGroupSubjNIfTI imports a group of subjects with image data from a series of Nifti file.'
+'ImporterGroupSubjectNeuroimaging_NIfTI imports a group of subjects with image data from a series of NIfTI file.'
 
 %%% ¡prop!
-TEMPLATE (parameter, item) is the template of the subject image importer for Nifti.
+TEMPLATE (parameter, item) is the template of the subject image importer for NIfTI.
 %%%% ¡settings!
-'ImporterGroupSubjNIfTI'
+'ImporterGroupSubjectNeuroimaging_NIfTI'
 
 %%% ¡prop!
-ID (data, string) is a few-letter code for the subject image importer for Nifti.
+ID (data, string) is a few-letter code for the subject image importer for NIfTI.
 %%%% ¡default!
-'ImporterGroupSubjNIfTI ID'
+'ImporterGroupSubjectNeuroimaging_NIfTI ID'
 
 %%% ¡prop!
-LABEL (metadata, string) is an extended label of subject image importer for Nifti.
+LABEL (metadata, string) is an extended label of subject image importer for NIfTI.
 %%%% ¡default!
-'ImporterGroupSubjNIfTI label'
+'ImporterGroupSubjectNeuroimaging_NIfTI label'
 
 %%% ¡prop!
-NOTES (metadata, string) are some specific notes about subject image importer for Nifti.
+NOTES (metadata, string) are some specific notes about subject image importer for NIfTI.
 %%%% ¡default!
-'ImporterGroupSubjNIfTI notes'
+'ImporterGroupSubjectNeuroimaging_NIfTI notes'
 
 %% ¡props!
 
 %%% ¡prop!
-DIRECTORY (data, string) is the directory containing the Nifti subject group files from which to load the subject group.
+DIRECTORY (data, string) is the directory containing the NIfTI subject group files from which to load the subject group.
 %%%% ¡default!
 fileparts(which('test_braph2'))
 
 %%% ¡prop!
-GET_DIR (query, item) opens a dialog box to set the directory from where to load the Nifti files of the subject group.
+SESSION (data, string) is the session contained in the BIDS folder.
+%%%% ¡default!
+'ses-01'
+
+%%% ¡prop!
+MODALITY (data, string) is the modality contained in the BIDS folder.
+%%%% ¡default!
+'anat'
+
+%%% ¡prop!
+TARGET (data, string) is the target contained in the BIDS folder.
+%%%% ¡default!
+'FDG'
+
+%%% ¡prop!
+GET_DIR (query, item) opens a dialog box to set the directory from where to load the NIfTI files of the subject group.
 %%%% ¡settings!
-'ImporterGroupSubjNIfTI'
+'ImporterGroupSubjectNeuroimaging_NIfTI'
 %%%% ¡calculate!
 directory = uigetdir('Select directory');
 if ischar(directory) && isfolder(directory)
@@ -73,26 +88,30 @@ end
 value = im;
 
 %%% ¡prop!
-GR (result, item) is a group of subjects with Nifti image data.
+GR (result, item) is a group of subjects with NIfTI image data.
 %%%% ¡settings!
 'Group'
 %%%% ¡check_value!
-check = any(strcmp(value.get(Group.SUB_CLASS_TAG), subclasses('SubjectNIfTI', [], [], true))); % Format.checkFormat(Format.ITEM, value, 'Group') already checked
+check = any(strcmp(value.get(Group.SUB_CLASS_TAG), subclasses('SubjectNeuroimaging', [], [], true))); % Format.checkFormat(Format.ITEM, value, 'Group') already checked
 %%%% ¡default!
-Group('SUB_CLASS', 'SubjectNIfTI', 'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectNIfTI'))
+Group('SUB_CLASS', 'SubjectNeuroimaging', 'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectNeuroimaging'))
 %%%% ¡calculate!
 % creates empty Group
 gr = Group( ...
-    'SUB_CLASS', 'SubjectNIfTI', ...
-    'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectNIfTI') ...
+    'SUB_CLASS', 'SubjectNeuroimaging', ...
+    'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectNeuroimaging') ...
     );
 
 gr.lock('SUB_CLASS');
 
 directory = im.get('DIRECTORY');
-Niftitype = im.get('NIFTI_TYPE');
+session = im.get('SESSION');      % e.g. 'ses-01', can be empty
+modality = im.get('MODALITY');    % e.g. 'pet' or 'anat'
+target = im.get('TARGET');        % e.g. 'FDG', mainly for pet
+
 if isfolder(directory)
     wb = braph2waitbar(im.get('WAITBAR'), 0, 'Reading directory ...');
+
     [~, gr_name] = fileparts(directory);
     gr.set( ...
         'ID', gr_name, ...
@@ -101,129 +120,181 @@ if isfolder(directory)
         );
 
     try
-        braph2waitbar(wb, .15, 'Loading subject group ...') % making a waitbar for VOIs
-        
-        % analyzes file
-        files = [dir(fullfile(directory))];
-        files = files(~(ismember({files.name},'.') | ismember({files.name},'..')));
-        files = files([files.isdir]);
-        if ~isempty(files)
-            % adds subjects
-            sub_dict = gr.memorize('SUB_DICT');
-            for i = 1:1:length(files)
-                braph2waitbar(wb, .15 + .85 * i / length(files), ['Loading subject directory' num2str(i) ' of ' num2str(length(files)) ' ...'])
-                sub_id = files(i).name;
-                subject_nifty_folder = [files(i).folder filesep files(i).name];
-                subject_nifty_file = dir(fullfile(subject_nifty_folder, '*.nii'));
-                subject_nifty_full_path = strcat(subject_nifty_file(1).folder, filesep,{subject_nifty_file.name});
-                sub = SubjectNIfTI( ...
-                    'ID', sub_id);
-                hasMatch  = false;
-                for f = 1:length(subject_nifty_full_path)
-                    % Initialize an empty logical array to store matching results
-                    isMatch = false(1, length(Niftitype));
+        braph2waitbar(wb, 0.05, 'Scanning subject folders ...')
 
-                    % Loop through each element of the Niftitype array to check for substring match
-                    for i = 1:length(Niftitype)
-                        if contains(subject_nifty_full_path{f}, Niftitype{i}) % Check if current path contains any of Niftitype elements
-                            isMatch(i) = true;
-                        end
-                    end
+        % Find subject folders: sub-*
+        sub_folders = dir(fullfile(directory, 'sub-*'));
+        sub_folders = sub_folders([sub_folders.isdir]);
 
-                    % Get the index of the matching element(s)
-                    matchingIndex = find(isMatch);
-
-                    if ~isempty(matchingIndex) % If there's at least one match
-                        % Use the first match found in Niftitype
-                        file_id = convertStringsToChars(Niftitype{matchingIndex(1)});
-
-                        % Add the file path to the subject's nifty dictionary
-                        sub.memorize('NIFTI_PATH_DICT').get('ADD', FILE_PATH('ID', file_id, 'PATH', convertStringsToChars(subject_nifty_full_path{f})));
-
-                        % Mark that at least one match was found for this subject
-                        hasMatch = true;
-                    end
-                end
-
-                % After looping through all file paths, check if no matches were found
-                if ~hasMatch
-                    % Raise a warning if no NIFTI type was found for the subject
-                    warning(sprintf([sub_id, ' does not have the required type of data, skip']));
-                    return;
-                end
-                sub_dict.get('ADD', sub);
-            end
+        if isempty(sub_folders)
+            warning('No sub-* folders found in %s.', directory);
         end
 
-        % variables of interest
+        sub_dict = gr.memorize('SUB_DICT');
+
+        for s = 1:numel(sub_folders)
+            braph2waitbar(wb, .05 + .55 * s / max(numel(sub_folders), 1), ['Loading subject folder ' num2str(s) ' of ' num2str(numel(sub_folders)) ' ...'])
+
+            sub_id = sub_folders(s).name;
+            sub_root = fullfile(sub_folders(s).folder, sub_folders(s).name);
+
+            % Resolve session folder
+            if ~isempty(session)
+                ses_dir = fullfile(sub_root, session);
+                if ~isfolder(ses_dir)
+                    warning('%s does not contain session folder %s. Skipping.', sub_id, session);
+                    continue;
+                end
+            else
+                ses_candidates = dir(fullfile(sub_root, 'ses-*'));
+                ses_candidates = ses_candidates([ses_candidates.isdir]);
+
+                if isempty(ses_candidates)
+                    % allow no-session layout
+                    ses_dir = sub_root;
+                else
+                    % default: first session found
+                    ses_dir = fullfile(ses_candidates(1).folder, ses_candidates(1).name);
+                end
+            end
+
+            % Resolve modality folder
+            modality_dir = fullfile(ses_dir, modality);
+            if ~isfolder(modality_dir)
+                warning('%s does not contain modality folder %s. Skipping.', sub_id, modality);
+                continue;
+            end
+
+            % Find NIfTI files
+            nii_files = [ ...
+                dir(fullfile(modality_dir, '*.nii')); ...
+                dir(fullfile(modality_dir, '*.nii.gz')) ...
+                ];
+
+            if isempty(nii_files)
+                warning('%s does not contain any NIfTI files in %s. Skipping.', sub_id, modality_dir);
+                continue;
+            end
+
+            % PET-specific target selection
+            chosen_file = [];
+            if strcmpi(modality, 'pet') && ~isempty(target)
+                match_idx = find(contains(upper({nii_files.name}), upper(target)), 1, 'first');
+                if ~isempty(match_idx)
+                    chosen_file = nii_files(match_idx);
+                else
+                    warning('%s: no PET file matched tracer %s in %s. Using first NIfTI found.', ...
+                        sub_id, target, modality_dir);
+                end
+            end
+
+            % Fallback: first NIfTI found
+            if isempty(chosen_file)
+                chosen_file = nii_files(1);
+            end
+
+            chosen_path = fullfile(chosen_file.folder, chosen_file.name);
+
+            % Build subject
+            sub = SubjectNeuroimaging();
+
+            % Save chosen file into NIfTI_PATH_DICT
+            % Use modality or modality+tracer as file ID
+            if strcmpi(modality, 'pet') && ~isempty(target)
+                file_id = [upper(modality) '_' upper(target)];
+            else
+                file_id = upper(modality);
+            end
+
+            % % % % sub.memorize('NIfTI_PATH_DICT').get('ADD', ...
+            % % % %     FILE_PATH( ...
+            % % % %         'ID', file_id, ...
+            % % % %         'PATH', chosen_path ...
+            % % % %         ) ...
+            % % % %     );
+
+            % Optional notes on subject
+            sub.set('LABEL', sub_id);
+            sub.set('NOTES', ['Loaded from ' modality_dir]);
+
+            sub_dict.get('ADD', sub);
+        end
+
+        % Load variables of interest
         vois = [];
-        if isfile([directory '.vois.xls'])
+        if isfile(fullfile(directory, 'reference_data', ['group_' modality '.vois.xls']))
+            [~, ~, vois] = xlsread(fullfile(directory, 'reference_data', ['group_' modality '.vois.xls']));
+        elseif isfile(fullfile(directory, 'reference_data', ['group_' modality '.vois.xlsx']))
+            [~, ~, vois] = xlsread(fullfile(directory, 'reference_data', ['group_' modality '.vois.xlsx']));
+        elseif isfile([directory '.vois.xls'])
             [~, ~, vois] = xlsread([directory '.vois.xls']);
         elseif isfile([directory '.vois.xlsx'])
             [~, ~, vois] = xlsread([directory '.vois.xlsx']);
         end
+
         if ~isempty(vois)
-            for i = 3:1:size(vois, 1)
-                braph2waitbar(wb, .15 + .85 * (i-2) / (size(vois, 1)-2), ['Loading VOIs of subject ' num2str(i-2) ' of ' num2str(size(vois, 1)-2) ' ...'])
-                % Extract the subject ID string from the 'vois' data
+            for i = 2:size(vois, 1)
+                braph2waitbar(wb, .6 + .35 * (i-1) / max(size(vois, 1)-1, 1), ['Loading VOIs of subject ' num2str(i-1) ' of ' num2str(size(vois, 1)-1) ' ...'])
+
                 target_id = vois{i, 1};
 
-                % Get the IT_LIST from sub_dict
                 IT_LIST = sub_dict.get('IT_LIST');
+                sub_idx = [];
 
-                % Initialize sub_id as empty
-                sub_id = [];
-
-                % Iterate over IT_LIST to find the matching ID
                 for j = 1:length(IT_LIST)
-                    subject_nifti = IT_LIST{j}; % Get the SubjectNifti object
-                    current_id = subject_nifti.get('ID'); % Extract the 'ID' property
+                    current_id = IT_LIST{j}.get('ID');
                     if strcmp(current_id, target_id)
-                        sub_id = j; % Store the index if IDs match
-                        break; % Exit the loop as we found the subject
+                        sub_idx = j;
+                        break;
                     end
                 end
 
-                % Check if sub_id was found
-                if isempty(sub_id)
-                    error('BRAPH2:MyElement:SubjectNotFound', 'Subject ID %s not found in sub_dict.', target_id);
+                if isempty(sub_idx)
+                    warning('Subject ID %s from VOIs not found in loaded subjects. Skipping VOIs for this row.', target_id);
+                    continue;
                 end
 
-                % Retrieve the subject from sub_dict using the matched index
-                sub = sub_dict.get('IT', sub_id);
+                sub = sub_dict.get('IT', sub_idx);
 
-                % Iterate over VOIs for this subject
-                for v = 2:1:size(vois, 2)
+                for v = 2:size(vois, 2)
                     voi_id = vois{1, v};
-                    if isnumeric(vois{2, v}) % VOINumeric
+
+                    if isnumeric(vois{i, v})
                         sub.memorize('VOI_DICT').get('ADD', ...
                             VOINumeric( ...
-                            'ID', voi_id, ...
-                            'V', vois{i, v} ...
-                            ) ...
+                                'ID', voi_id, ...
+                                'V', vois{i, v} ...
+                                ) ...
                             );
-                    elseif ischar(vois{2, v}) % VOICategoric
-                        sub.memorize('VOI_DICT').get('ADD', ...
-                            VOICategoric( ...
-                            'ID', voi_id, ...
-                            'CATEGORIES', str2cell(vois{2, v}), ...
-                            'V', find(strcmp(vois{i, v}, str2cell(vois{2, v}))) ...
-                            ) ...
-                            );
+                    elseif ischar(vois{i, v}) || isstring(vois{i, v})
+                        categories = {};
+                        if ischar(vois{2, v}) || isstring(vois{2, v})
+                            categories = str2cell(char(vois{2, v}));
+                        end
+
+                        if ~isempty(categories)
+                            sub.memorize('VOI_DICT').get('ADD', ...
+                                VOICategoric( ...
+                                    'ID', voi_id, ...
+                                    'CATEGORIES', categories, ...
+                                    'V', find(strcmp(char(vois{i, v}), categories), 1, 'first') ...
+                                    ) ...
+                                );
+                        end
                     end
                 end
             end
         end
+
     catch e
         braph2waitbar(wb, 'close')
-
         rethrow(e)
     end
 
     braph2waitbar(wb, 'close')
 else
-    error([BRAPH2.STR ':ImporterGroupSubjectCON_XLS:' BRAPH2.ERR_IO], ...
-        [BRAPH2.STR ':ImporterGroupSubjectCON_XLS:' BRAPH2.ERR_IO '\\n' ...
+    error([BRAPH2.STR ':ImporterGroupSubjectNIfTI:' BRAPH2.ERR_IO], ...
+        [BRAPH2.STR ':ImporterGroupSubjectNIfTI:' BRAPH2.ERR_IO '\\n' ...
         'The prop DIRECTORY must be an existing directory, but it is ''' directory '''.'] ...
         );
 end
@@ -244,9 +315,9 @@ GUI
 %%%% ¡probability!
 .01
 %%%% ¡code!
-example_data_dir = fullfile(fileparts(which('SUVRConstructor')), 'Example data Nifti');
-im_gr1 = ImporterGroupSubjNIfTI('DIRECTORY',[example_data_dir filesep 'Group1'], ...
-    'NIFTI_TYPE', {'T1'},...
+example_data_dir = fullfile(fileparts(which('SUVRConstructor')), 'Example data NIfTI');
+im_gr1 = ImporterGroupSubjectNeuroimaging_NIfTI('DIRECTORY',[example_data_dir filesep 'Group1'], ...
+    'NIfTI_TYPE', {'T1'},...
     'WAITBAR', true);
 gr = im_gr1.get('GR');
 gui = GUIElement('PE', gr, 'CLOSEREQ', false);

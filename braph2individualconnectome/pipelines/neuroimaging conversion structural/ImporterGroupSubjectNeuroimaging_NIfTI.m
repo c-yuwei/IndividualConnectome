@@ -1,8 +1,8 @@
 classdef ImporterGroupSubjectNeuroimaging_NIfTI < Importer
-	%ImporterGroupSubjectNeuroimaging_NIfTI imports a group of subjects with image data from a series of Nifti files.
+	%ImporterGroupSubjectNeuroimaging_NIfTI imports a group of subjects with image data from a series of NIfTI files.
 	% It is a subclass of <a href="matlab:help Importer">Importer</a>.
 	%
-	% ImporterGroupSubjNIfTI imports the directory to a group of subjects Nifti files 
+	% ImporterGroupSubjectNeuroimaging_NIfTI imports the directory to a group of subjects NIfTI files 
 	%  in a folder. All these files must be in the same folder; also, no other files 
 	%  should be in the folder. Each file contains a 3D brain volume matrix.
 	% The variables of interest are from another XLS/XLSX file named "SUVR_GROUP_MAT.vois.xlsx" 
@@ -10,6 +10,23 @@ classdef ImporterGroupSubjectNeuroimaging_NIfTI < Importer
 	%  Subject ID (column 1), covariates (subsequent columns). 
 	%  The 1st row contains the headers, the 2nd row a string with the categorical
 	%  variables of interest, and each subsequent row the values for each subject.
+	%
+	% The list of ImporterGroupSubjectNeuroimaging_NIfTI properties is:
+	%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the subject image group importer for NIfTI.
+	%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the subject image group importer for NIfTI.
+	%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the subject image importer for NIfTI.
+	%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the subject image importer for NIfTI.
+	%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the subject image importer for NIfTI.
+	%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of subject image importer for NIfTI.
+	%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about subject image importer for NIfTI.
+	%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
+	%  <strong>9</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) detemines whether to show the waitbar.
+	%  <strong>10</strong> <strong>DIRECTORY</strong> 	DIRECTORY (data, string) is the directory containing the NIfTI subject group files from which to load the subject group.
+	%  <strong>11</strong> <strong>SESSION</strong> 	SESSION (data, string) is the session contained in the BIDS folder.
+	%  <strong>12</strong> <strong>MODALITY</strong> 	MODALITY (data, string) is the modality contained in the BIDS folder.
+	%  <strong>13</strong> <strong>TARGET</strong> 	TARGET (data, string) is the target contained in the BIDS folder.
+	%  <strong>14</strong> <strong>GET_DIR</strong> 	GET_DIR (query, item) opens a dialog box to set the directory from where to load the NIfTI files of the subject group.
+	%  <strong>15</strong> <strong>GR</strong> 	GR (result, item) is a group of subjects with NIfTI image data.
 	%
 	% ImporterGroupSubjectNeuroimaging_NIfTI methods (constructor):
 	%  ImporterGroupSubjectNeuroimaging_NIfTI - constructor
@@ -99,23 +116,38 @@ classdef ImporterGroupSubjectNeuroimaging_NIfTI < Importer
 	%
 	% See also Group, SubjectCON, ExporterGroupSubjectCON_XLS.
 	%
-	% BUILD BRAPH2 BRAPH2.BUILD class_name 1
+	% BUILD BRAPH2 7 class_name 1
 	
 	properties (Constant) % properties
-		DIRECTORY = Importer.getPropNumber() + 1;
+		DIRECTORY = 10; %CET: Computational Efficiency Trick
 		DIRECTORY_TAG = 'DIRECTORY';
-		DIRECTORY_CATEGORY = Category.DATA;
-		DIRECTORY_FORMAT = Format.STRING;
+		DIRECTORY_CATEGORY = 4;
+		DIRECTORY_FORMAT = 2;
 		
-		GET_DIR = Importer.getPropNumber() + 2;
+		SESSION = 11; %CET: Computational Efficiency Trick
+		SESSION_TAG = 'SESSION';
+		SESSION_CATEGORY = 4;
+		SESSION_FORMAT = 2;
+		
+		MODALITY = 12; %CET: Computational Efficiency Trick
+		MODALITY_TAG = 'MODALITY';
+		MODALITY_CATEGORY = 4;
+		MODALITY_FORMAT = 2;
+		
+		TARGET = 13; %CET: Computational Efficiency Trick
+		TARGET_TAG = 'TARGET';
+		TARGET_CATEGORY = 4;
+		TARGET_FORMAT = 2;
+		
+		GET_DIR = 14; %CET: Computational Efficiency Trick
 		GET_DIR_TAG = 'GET_DIR';
-		GET_DIR_CATEGORY = Category.QUERY;
-		GET_DIR_FORMAT = Format.ITEM;
+		GET_DIR_CATEGORY = 6;
+		GET_DIR_FORMAT = 8;
 		
-		GR = Importer.getPropNumber() + 3;
+		GR = 15; %CET: Computational Efficiency Trick
 		GR_TAG = 'GR';
-		GR_CATEGORY = Category.RESULT;
-		GR_FORMAT = Format.ITEM;
+		GR_CATEGORY = 5;
+		GR_FORMAT = 8;
 	end
 	methods % constructor
 		function im = ImporterGroupSubjectNeuroimaging_NIfTI(varargin)
@@ -128,6 +160,22 @@ classdef ImporterGroupSubjectNeuroimaging_NIfTI < Importer
 			% Multiple properties can be initialized at once identifying
 			%  them with either property numbers (PROP) or tags (TAG).
 			%
+			% The list of ImporterGroupSubjectNeuroimaging_NIfTI properties is:
+			%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the subject image group importer for NIfTI.
+			%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the subject image group importer for NIfTI.
+			%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the subject image importer for NIfTI.
+			%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the subject image importer for NIfTI.
+			%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the subject image importer for NIfTI.
+			%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of subject image importer for NIfTI.
+			%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about subject image importer for NIfTI.
+			%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
+			%  <strong>9</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) detemines whether to show the waitbar.
+			%  <strong>10</strong> <strong>DIRECTORY</strong> 	DIRECTORY (data, string) is the directory containing the NIfTI subject group files from which to load the subject group.
+			%  <strong>11</strong> <strong>SESSION</strong> 	SESSION (data, string) is the session contained in the BIDS folder.
+			%  <strong>12</strong> <strong>MODALITY</strong> 	MODALITY (data, string) is the modality contained in the BIDS folder.
+			%  <strong>13</strong> <strong>TARGET</strong> 	TARGET (data, string) is the target contained in the BIDS folder.
+			%  <strong>14</strong> <strong>GET_DIR</strong> 	GET_DIR (query, item) opens a dialog box to set the directory from where to load the NIfTI files of the subject group.
+			%  <strong>15</strong> <strong>GR</strong> 	GR (result, item) is a group of subjects with NIfTI image data.
 			%
 			% See also Category, Format.
 			
@@ -180,7 +228,7 @@ classdef ImporterGroupSubjectNeuroimaging_NIfTI < Importer
 			%
 			% See also subclasses.
 			
-			subclass_list = subclasses('ImporterGroupSubjectNeuroimaging_NIfTI', [], [], true);
+			subclass_list = { 'ImporterGroupSubjectNeuroimaging_NIfTI' }; %CET: Computational Efficiency Trick
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of importer of neuroimaging subject group from NIfTI.
@@ -201,56 +249,30 @@ classdef ImporterGroupSubjectNeuroimaging_NIfTI < Importer
 			%
 			% See also getPropNumber, Category.
 			
+			%CET: Computational Efficiency Trick
+			
 			if nargin == 0
-				prop_list = [ ...
-					Importer.getProps() ...
-						ImporterGroupSubjectNeuroimaging_NIfTI.DIRECTORY ...
-						ImporterGroupSubjectNeuroimaging_NIfTI.GET_DIR ...
-						ImporterGroupSubjectNeuroimaging_NIfTI.GR ...
-						];
+				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15];
 				return
 			end
 			
 			switch category
-				case Category.CONSTANT
-					prop_list = [ ...
-						Importer.getProps(Category.CONSTANT) ...
-						];
-				case Category.METADATA
-					prop_list = [ ...
-						Importer.getProps(Category.METADATA) ...
-						];
-				case Category.PARAMETER
-					prop_list = [ ...
-						Importer.getProps(Category.PARAMETER) ...
-						];
-				case Category.DATA
-					prop_list = [ ...
-						Importer.getProps(Category.DATA) ...
-						ImporterGroupSubjectNeuroimaging_NIfTI.DIRECTORY ...
-						];
-				case Category.RESULT
-					prop_list = [
-						Importer.getProps(Category.RESULT) ...
-						ImporterGroupSubjectNeuroimaging_NIfTI.GR ...
-						];
-				case Category.QUERY
-					prop_list = [ ...
-						Importer.getProps(Category.QUERY) ...
-						ImporterGroupSubjectNeuroimaging_NIfTI.GET_DIR ...
-						];
-				case Category.EVANESCENT
-					prop_list = [ ...
-						Importer.getProps(Category.EVANESCENT) ...
-						];
-				case Category.FIGURE
-					prop_list = [ ...
-						Importer.getProps(Category.FIGURE) ...
-						];
-				case Category.GUI
-					prop_list = [ ...
-						Importer.getProps(Category.GUI) ...
-						];
+				case 1 % Category.CONSTANT
+					prop_list = [1 2 3];
+				case 2 % Category.METADATA
+					prop_list = [6 7];
+				case 3 % Category.PARAMETER
+					prop_list = 4;
+				case 4 % Category.DATA
+					prop_list = [5 10 11 12 13];
+				case 5 % Category.RESULT
+					prop_list = 15;
+				case 6 % Category.QUERY
+					prop_list = [8 14];
+				case 9 % Category.GUI
+					prop_list = 9;
+				otherwise
+					prop_list = [];
 			end
 		end
 		function prop_number = getPropNumber(varargin)
@@ -271,7 +293,31 @@ classdef ImporterGroupSubjectNeuroimaging_NIfTI < Importer
 			%
 			% See also getProps, Category.
 			
-			prop_number = numel(ImporterGroupSubjectNeuroimaging_NIfTI.getProps(varargin{:}));
+			%CET: Computational Efficiency Trick
+			
+			if nargin == 0
+				prop_number = 15;
+				return
+			end
+			
+			switch varargin{1} % category = varargin{1}
+				case 1 % Category.CONSTANT
+					prop_number = 3;
+				case 2 % Category.METADATA
+					prop_number = 2;
+				case 3 % Category.PARAMETER
+					prop_number = 1;
+				case 4 % Category.DATA
+					prop_number = 5;
+				case 5 % Category.RESULT
+					prop_number = 1;
+				case 6 % Category.QUERY
+					prop_number = 2;
+				case 9 % Category.GUI
+					prop_number = 1;
+				otherwise
+					prop_number = 0;
+			end
 		end
 		function check_out = existsProp(prop)
 			%EXISTSPROP checks whether property exists in importer of neuroimaging subject group from NIfTI/error.
@@ -299,14 +345,14 @@ classdef ImporterGroupSubjectNeuroimaging_NIfTI < Importer
 			%
 			% See also getProps, existsTag.
 			
-			check = any(prop == ImporterGroupSubjectNeuroimaging_NIfTI.getProps());
+			check = prop >= 1 && prop <= 15 && round(prop) == prop; %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':ImporterGroupSubjectNeuroimaging_NIfTI:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':ImporterGroupSubjectNeuroimaging_NIfTI:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':ImporterGroupSubjectNeuroimaging_NIfTI:' 'WrongInput'], ...
+					['BRAPH2' ':ImporterGroupSubjectNeuroimaging_NIfTI:' 'WrongInput' '\n' ...
 					'The value ' tostring(prop, 100, ' ...') ' is not a valid prop for ImporterGroupSubjectNeuroimaging_NIfTI.'] ...
 					)
 			end
@@ -337,15 +383,14 @@ classdef ImporterGroupSubjectNeuroimaging_NIfTI < Importer
 			%
 			% See also getProps, existsTag.
 			
-			importergroupsubjectneuroimaging_nifti_tag_list = cellfun(@(x) ImporterGroupSubjectNeuroimaging_NIfTI.getPropTag(x), num2cell(ImporterGroupSubjectNeuroimaging_NIfTI.getProps()), 'UniformOutput', false);
-			check = any(strcmp(tag, importergroupsubjectneuroimaging_nifti_tag_list));
+			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'DIRECTORY'  'SESSION'  'MODALITY'  'TARGET'  'GET_DIR'  'GR' })); %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':ImporterGroupSubjectNeuroimaging_NIfTI:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':ImporterGroupSubjectNeuroimaging_NIfTI:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':ImporterGroupSubjectNeuroimaging_NIfTI:' 'WrongInput'], ...
+					['BRAPH2' ':ImporterGroupSubjectNeuroimaging_NIfTI:' 'WrongInput' '\n' ...
 					'The value ' tag ' is not a valid tag for ImporterGroupSubjectNeuroimaging_NIfTI.'] ...
 					)
 			end
@@ -371,8 +416,7 @@ classdef ImporterGroupSubjectNeuroimaging_NIfTI < Importer
 			%  getPropSettings, getPropDefault, checkProp.
 			
 			if ischar(pointer)
-				importergroupsubjectneuroimaging_nifti_tag_list = cellfun(@(x) ImporterGroupSubjectNeuroimaging_NIfTI.getPropTag(x), num2cell(ImporterGroupSubjectNeuroimaging_NIfTI.getProps()), 'UniformOutput', false);
-				prop = find(strcmp(pointer, importergroupsubjectneuroimaging_nifti_tag_list)); % tag = pointer
+				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'DIRECTORY'  'SESSION'  'MODALITY'  'TARGET'  'GET_DIR'  'GR' })); % tag = pointer %CET: Computational Efficiency Trick
 			else % numeric
 				prop = pointer;
 			end
@@ -400,18 +444,9 @@ classdef ImporterGroupSubjectNeuroimaging_NIfTI < Importer
 			if ischar(pointer)
 				tag = pointer;
 			else % numeric
-				prop = pointer;
-				
-				switch prop
-					case ImporterGroupSubjectNeuroimaging_NIfTI.DIRECTORY
-						tag = ImporterGroupSubjectNeuroimaging_NIfTI.DIRECTORY_TAG;
-					case ImporterGroupSubjectNeuroimaging_NIfTI.GET_DIR
-						tag = ImporterGroupSubjectNeuroimaging_NIfTI.GET_DIR_TAG;
-					case ImporterGroupSubjectNeuroimaging_NIfTI.GR
-						tag = ImporterGroupSubjectNeuroimaging_NIfTI.GR_TAG;
-					otherwise
-						tag = getPropTag@Importer(prop);
-				end
+				%CET: Computational Efficiency Trick
+				importergroupsubjectneuroimaging_nifti_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'DIRECTORY'  'SESSION'  'MODALITY'  'TARGET'  'GET_DIR'  'GR' };
+				tag = importergroupsubjectneuroimaging_nifti_tag_list{pointer}; % prop = pointer
 			end
 		end
 		function prop_category = getPropCategory(pointer)
@@ -436,16 +471,9 @@ classdef ImporterGroupSubjectNeuroimaging_NIfTI < Importer
 			
 			prop = ImporterGroupSubjectNeuroimaging_NIfTI.getPropProp(pointer);
 			
-			switch prop
-				case ImporterGroupSubjectNeuroimaging_NIfTI.DIRECTORY
-					prop_category = ImporterGroupSubjectNeuroimaging_NIfTI.DIRECTORY_CATEGORY;
-				case ImporterGroupSubjectNeuroimaging_NIfTI.GET_DIR
-					prop_category = ImporterGroupSubjectNeuroimaging_NIfTI.GET_DIR_CATEGORY;
-				case ImporterGroupSubjectNeuroimaging_NIfTI.GR
-					prop_category = ImporterGroupSubjectNeuroimaging_NIfTI.GR_CATEGORY;
-				otherwise
-					prop_category = getPropCategory@Importer(prop);
-			end
+			%CET: Computational Efficiency Trick
+			importergroupsubjectneuroimaging_nifti_category_list = { 1  1  1  3  4  2  2  6  9  4  4  4  4  6  5 };
+			prop_category = importergroupsubjectneuroimaging_nifti_category_list{prop};
 		end
 		function prop_format = getPropFormat(pointer)
 			%GETPROPFORMAT returns the format of a property.
@@ -469,16 +497,9 @@ classdef ImporterGroupSubjectNeuroimaging_NIfTI < Importer
 			
 			prop = ImporterGroupSubjectNeuroimaging_NIfTI.getPropProp(pointer);
 			
-			switch prop
-				case ImporterGroupSubjectNeuroimaging_NIfTI.DIRECTORY
-					prop_format = ImporterGroupSubjectNeuroimaging_NIfTI.DIRECTORY_FORMAT;
-				case ImporterGroupSubjectNeuroimaging_NIfTI.GET_DIR
-					prop_format = ImporterGroupSubjectNeuroimaging_NIfTI.GET_DIR_FORMAT;
-				case ImporterGroupSubjectNeuroimaging_NIfTI.GR
-					prop_format = ImporterGroupSubjectNeuroimaging_NIfTI.GR_FORMAT;
-				otherwise
-					prop_format = getPropFormat@Importer(prop);
-			end
+			%CET: Computational Efficiency Trick
+			importergroupsubjectneuroimaging_nifti_format_list = { 2  2  2  8  2  2  2  2  4  2  2  2  2  8  8 };
+			prop_format = importergroupsubjectneuroimaging_nifti_format_list{prop};
 		end
 		function prop_description = getPropDescription(pointer)
 			%GETPROPDESCRIPTION returns the description of a property.
@@ -502,30 +523,9 @@ classdef ImporterGroupSubjectNeuroimaging_NIfTI < Importer
 			
 			prop = ImporterGroupSubjectNeuroimaging_NIfTI.getPropProp(pointer);
 			
-			switch prop
-				case ImporterGroupSubjectNeuroimaging_NIfTI.DIRECTORY
-					prop_description = 'DIRECTORY (data, string) is the directory containing the Nifti subject group files from which to load the subject group.';
-				case ImporterGroupSubjectNeuroimaging_NIfTI.GET_DIR
-					prop_description = 'GET_DIR (query, item) opens a dialog box to set the directory from where to load the Nifti files of the subject group.';
-				case ImporterGroupSubjectNeuroimaging_NIfTI.GR
-					prop_description = 'GR (result, item) is a group of subjects with Nifti image data.';
-				case ImporterGroupSubjectNeuroimaging_NIfTI.ELCLASS
-					prop_description = 'ELCLASS (constant, string) is the class of the subject image group importer for Nifti.';
-				case ImporterGroupSubjectNeuroimaging_NIfTI.NAME
-					prop_description = 'NAME (constant, string) is the name of the subject image group importer for Nifti.';
-				case ImporterGroupSubjectNeuroimaging_NIfTI.DESCRIPTION
-					prop_description = 'DESCRIPTION (constant, string) is the description of the subject image importer for Nifti.';
-				case ImporterGroupSubjectNeuroimaging_NIfTI.TEMPLATE
-					prop_description = 'TEMPLATE (parameter, item) is the template of the subject image importer for Nifti.';
-				case ImporterGroupSubjectNeuroimaging_NIfTI.ID
-					prop_description = 'ID (data, string) is a few-letter code for the subject image importer for Nifti.';
-				case ImporterGroupSubjectNeuroimaging_NIfTI.LABEL
-					prop_description = 'LABEL (metadata, string) is an extended label of subject image importer for Nifti.';
-				case ImporterGroupSubjectNeuroimaging_NIfTI.NOTES
-					prop_description = 'NOTES (metadata, string) are some specific notes about subject image importer for Nifti.';
-				otherwise
-					prop_description = getPropDescription@Importer(prop);
-			end
+			%CET: Computational Efficiency Trick
+			importergroupsubjectneuroimaging_nifti_description_list = { 'ELCLASS (constant, string) is the class of the subject image group importer for NIfTI.'  'NAME (constant, string) is the name of the subject image group importer for NIfTI.'  'DESCRIPTION (constant, string) is the description of the subject image importer for NIfTI.'  'TEMPLATE (parameter, item) is the template of the subject image importer for NIfTI.'  'ID (data, string) is a few-letter code for the subject image importer for NIfTI.'  'LABEL (metadata, string) is an extended label of subject image importer for NIfTI.'  'NOTES (metadata, string) are some specific notes about subject image importer for NIfTI.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'WAITBAR (gui, logical) detemines whether to show the waitbar.'  'DIRECTORY (data, string) is the directory containing the NIfTI subject group files from which to load the subject group.'  'SESSION (data, string) is the session contained in the BIDS folder.'  'MODALITY (data, string) is the modality contained in the BIDS folder.'  'TARGET (data, string) is the target contained in the BIDS folder.'  'GET_DIR (query, item) opens a dialog box to set the directory from where to load the NIfTI files of the subject group.'  'GR (result, item) is a group of subjects with NIfTI image data.' };
+			prop_description = importergroupsubjectneuroimaging_nifti_description_list{prop};
 		end
 		function prop_settings = getPropSettings(pointer)
 			%GETPROPSETTINGS returns the settings of a property.
@@ -549,15 +549,21 @@ classdef ImporterGroupSubjectNeuroimaging_NIfTI < Importer
 			
 			prop = ImporterGroupSubjectNeuroimaging_NIfTI.getPropProp(pointer);
 			
-			switch prop
-				case ImporterGroupSubjectNeuroimaging_NIfTI.DIRECTORY
-					prop_settings = Format.getFormatSettings(Format.STRING);
-				case ImporterGroupSubjectNeuroimaging_NIfTI.GET_DIR
-					prop_settings = 'ImporterGroupSubjNIfTI';
-				case ImporterGroupSubjectNeuroimaging_NIfTI.GR
+			switch prop %CET: Computational Efficiency Trick
+				case 10 % ImporterGroupSubjectNeuroimaging_NIfTI.DIRECTORY
+					prop_settings = Format.getFormatSettings(2);
+				case 11 % ImporterGroupSubjectNeuroimaging_NIfTI.SESSION
+					prop_settings = Format.getFormatSettings(2);
+				case 12 % ImporterGroupSubjectNeuroimaging_NIfTI.MODALITY
+					prop_settings = Format.getFormatSettings(2);
+				case 13 % ImporterGroupSubjectNeuroimaging_NIfTI.TARGET
+					prop_settings = Format.getFormatSettings(2);
+				case 14 % ImporterGroupSubjectNeuroimaging_NIfTI.GET_DIR
+					prop_settings = 'ImporterGroupSubjectNeuroimaging_NIfTI';
+				case 15 % ImporterGroupSubjectNeuroimaging_NIfTI.GR
 					prop_settings = 'Group';
-				case ImporterGroupSubjectNeuroimaging_NIfTI.TEMPLATE
-					prop_settings = 'ImporterGroupSubjNIfTI';
+				case 4 % ImporterGroupSubjectNeuroimaging_NIfTI.TEMPLATE
+					prop_settings = 'ImporterGroupSubjectNeuroimaging_NIfTI';
 				otherwise
 					prop_settings = getPropSettings@Importer(prop);
 			end
@@ -584,27 +590,33 @@ classdef ImporterGroupSubjectNeuroimaging_NIfTI < Importer
 			
 			prop = ImporterGroupSubjectNeuroimaging_NIfTI.getPropProp(pointer);
 			
-			switch prop
-				case ImporterGroupSubjectNeuroimaging_NIfTI.DIRECTORY
+			switch prop %CET: Computational Efficiency Trick
+				case 10 % ImporterGroupSubjectNeuroimaging_NIfTI.DIRECTORY
 					prop_default = fileparts(which('test_braph2'));
-				case ImporterGroupSubjectNeuroimaging_NIfTI.GET_DIR
-					prop_default = Format.getFormatDefault(Format.ITEM, ImporterGroupSubjectNeuroimaging_NIfTI.getPropSettings(prop));
-				case ImporterGroupSubjectNeuroimaging_NIfTI.GR
-					prop_default = Group('SUB_CLASS', 'SubjectNIfTI', 'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectNIfTI'));
-				case ImporterGroupSubjectNeuroimaging_NIfTI.ELCLASS
+				case 11 % ImporterGroupSubjectNeuroimaging_NIfTI.SESSION
+					prop_default = 'ses-01';
+				case 12 % ImporterGroupSubjectNeuroimaging_NIfTI.MODALITY
+					prop_default = 'anat';
+				case 13 % ImporterGroupSubjectNeuroimaging_NIfTI.TARGET
+					prop_default = 'FDG';
+				case 14 % ImporterGroupSubjectNeuroimaging_NIfTI.GET_DIR
+					prop_default = Format.getFormatDefault(8, ImporterGroupSubjectNeuroimaging_NIfTI.getPropSettings(prop));
+				case 15 % ImporterGroupSubjectNeuroimaging_NIfTI.GR
+					prop_default = Group('SUB_CLASS', 'SubjectNeuroimaging', 'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectNeuroimaging'));
+				case 1 % ImporterGroupSubjectNeuroimaging_NIfTI.ELCLASS
 					prop_default = 'ImporterGroupSubjectNeuroimaging_NIfTI';
-				case ImporterGroupSubjectNeuroimaging_NIfTI.NAME
-					prop_default = 'Subject Nifti Image Importer';
-				case ImporterGroupSubjectNeuroimaging_NIfTI.DESCRIPTION
-					prop_default = 'ImporterGroupSubjNIfTI imports a group of subjects with image data from a series of Nifti file.';
-				case ImporterGroupSubjectNeuroimaging_NIfTI.TEMPLATE
-					prop_default = Format.getFormatDefault(Format.ITEM, ImporterGroupSubjectNeuroimaging_NIfTI.getPropSettings(prop));
-				case ImporterGroupSubjectNeuroimaging_NIfTI.ID
-					prop_default = 'ImporterGroupSubjNIfTI ID';
-				case ImporterGroupSubjectNeuroimaging_NIfTI.LABEL
-					prop_default = 'ImporterGroupSubjNIfTI label';
-				case ImporterGroupSubjectNeuroimaging_NIfTI.NOTES
-					prop_default = 'ImporterGroupSubjNIfTI notes';
+				case 2 % ImporterGroupSubjectNeuroimaging_NIfTI.NAME
+					prop_default = 'Subject Neuroimaging Importer for NIfTI file';
+				case 3 % ImporterGroupSubjectNeuroimaging_NIfTI.DESCRIPTION
+					prop_default = 'ImporterGroupSubjectNeuroimaging_NIfTI imports a group of subjects with image data from a series of NIfTI file.';
+				case 4 % ImporterGroupSubjectNeuroimaging_NIfTI.TEMPLATE
+					prop_default = Format.getFormatDefault(8, ImporterGroupSubjectNeuroimaging_NIfTI.getPropSettings(prop));
+				case 5 % ImporterGroupSubjectNeuroimaging_NIfTI.ID
+					prop_default = 'ImporterGroupSubjectNeuroimaging_NIfTI ID';
+				case 6 % ImporterGroupSubjectNeuroimaging_NIfTI.LABEL
+					prop_default = 'ImporterGroupSubjectNeuroimaging_NIfTI label';
+				case 7 % ImporterGroupSubjectNeuroimaging_NIfTI.NOTES
+					prop_default = 'ImporterGroupSubjectNeuroimaging_NIfTI notes';
 				otherwise
 					prop_default = getPropDefault@Importer(prop);
 			end
@@ -650,15 +662,15 @@ classdef ImporterGroupSubjectNeuroimaging_NIfTI < Importer
 			% 
 			% IM.CHECKPROP(POINTER, VALUE) throws an error if VALUE is
 			%  NOT an acceptable value for the format of the property POINTER.
-			%  Error id: €BRAPH2.STR€:ImporterGroupSubjectNeuroimaging_NIfTI:€BRAPH2.WRONG_INPUT€
+			%  Error id: BRAPH2:ImporterGroupSubjectNeuroimaging_NIfTI:WrongInput
 			% 
 			% Alternative forms to call this method are (POINTER = PROP or TAG):
 			%  IM.CHECKPROP(POINTER, VALUE) throws error if VALUE has not a valid format for PROP of IM.
-			%   Error id: €BRAPH2.STR€:ImporterGroupSubjectNeuroimaging_NIfTI:€BRAPH2.WRONG_INPUT€
+			%   Error id: BRAPH2:ImporterGroupSubjectNeuroimaging_NIfTI:WrongInput
 			%  Element.CHECKPROP(ImporterGroupSubjectNeuroimaging_NIfTI, PROP, VALUE) throws error if VALUE has not a valid format for PROP of ImporterGroupSubjectNeuroimaging_NIfTI.
-			%   Error id: €BRAPH2.STR€:ImporterGroupSubjectNeuroimaging_NIfTI:€BRAPH2.WRONG_INPUT€
+			%   Error id: BRAPH2:ImporterGroupSubjectNeuroimaging_NIfTI:WrongInput
 			%  IM.CHECKPROP(ImporterGroupSubjectNeuroimaging_NIfTI, PROP, VALUE) throws error if VALUE has not a valid format for PROP of ImporterGroupSubjectNeuroimaging_NIfTI.
-			%   Error id: €BRAPH2.STR€:ImporterGroupSubjectNeuroimaging_NIfTI:€BRAPH2.WRONG_INPUT€]
+			%   Error id: BRAPH2:ImporterGroupSubjectNeuroimaging_NIfTI:WrongInput]
 			% 
 			% Note that the Element.CHECKPROP(IM) and Element.CHECKPROP('ImporterGroupSubjectNeuroimaging_NIfTI')
 			%  are less computationally efficient.
@@ -669,16 +681,22 @@ classdef ImporterGroupSubjectNeuroimaging_NIfTI < Importer
 			prop = ImporterGroupSubjectNeuroimaging_NIfTI.getPropProp(pointer);
 			
 			switch prop
-				case ImporterGroupSubjectNeuroimaging_NIfTI.DIRECTORY % __ImporterGroupSubjectNeuroimaging_NIfTI.DIRECTORY__
-					check = Format.checkFormat(Format.STRING, value, ImporterGroupSubjectNeuroimaging_NIfTI.getPropSettings(prop));
-				case ImporterGroupSubjectNeuroimaging_NIfTI.GET_DIR % __ImporterGroupSubjectNeuroimaging_NIfTI.GET_DIR__
-					check = Format.checkFormat(Format.ITEM, value, ImporterGroupSubjectNeuroimaging_NIfTI.getPropSettings(prop));
-				case ImporterGroupSubjectNeuroimaging_NIfTI.GR % __ImporterGroupSubjectNeuroimaging_NIfTI.GR__
-					check = Format.checkFormat(Format.ITEM, value, ImporterGroupSubjectNeuroimaging_NIfTI.getPropSettings(prop));
-				case ImporterGroupSubjectNeuroimaging_NIfTI.TEMPLATE % __ImporterGroupSubjectNeuroimaging_NIfTI.TEMPLATE__
-					check = Format.checkFormat(Format.ITEM, value, ImporterGroupSubjectNeuroimaging_NIfTI.getPropSettings(prop));
+				case 10 % ImporterGroupSubjectNeuroimaging_NIfTI.DIRECTORY
+					check = Format.checkFormat(2, value, ImporterGroupSubjectNeuroimaging_NIfTI.getPropSettings(prop));
+				case 11 % ImporterGroupSubjectNeuroimaging_NIfTI.SESSION
+					check = Format.checkFormat(2, value, ImporterGroupSubjectNeuroimaging_NIfTI.getPropSettings(prop));
+				case 12 % ImporterGroupSubjectNeuroimaging_NIfTI.MODALITY
+					check = Format.checkFormat(2, value, ImporterGroupSubjectNeuroimaging_NIfTI.getPropSettings(prop));
+				case 13 % ImporterGroupSubjectNeuroimaging_NIfTI.TARGET
+					check = Format.checkFormat(2, value, ImporterGroupSubjectNeuroimaging_NIfTI.getPropSettings(prop));
+				case 14 % ImporterGroupSubjectNeuroimaging_NIfTI.GET_DIR
+					check = Format.checkFormat(8, value, ImporterGroupSubjectNeuroimaging_NIfTI.getPropSettings(prop));
+				case 15 % ImporterGroupSubjectNeuroimaging_NIfTI.GR
+					check = Format.checkFormat(8, value, ImporterGroupSubjectNeuroimaging_NIfTI.getPropSettings(prop));
+				case 4 % ImporterGroupSubjectNeuroimaging_NIfTI.TEMPLATE
+					check = Format.checkFormat(8, value, ImporterGroupSubjectNeuroimaging_NIfTI.getPropSettings(prop));
 				otherwise
-					if prop <= Importer.getPropNumber()
+					if prop <= 9
 						check = checkProp@Importer(prop, value);
 					end
 			end
@@ -687,8 +705,8 @@ classdef ImporterGroupSubjectNeuroimaging_NIfTI < Importer
 				prop_check = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':ImporterGroupSubjectNeuroimaging_NIfTI:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':ImporterGroupSubjectNeuroimaging_NIfTI:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':ImporterGroupSubjectNeuroimaging_NIfTI:' 'WrongInput'], ...
+					['BRAPH2' ':ImporterGroupSubjectNeuroimaging_NIfTI:' 'WrongInput' '\n' ...
 					'The value ' tostring(value, 100, ' ...') ' is not a valid property ' ImporterGroupSubjectNeuroimaging_NIfTI.getPropTag(prop) ' (' ImporterGroupSubjectNeuroimaging_NIfTI.getFormatTag(ImporterGroupSubjectNeuroimaging_NIfTI.getPropFormat(prop)) ').'] ...
 					)
 			end
@@ -699,40 +717,44 @@ classdef ImporterGroupSubjectNeuroimaging_NIfTI < Importer
 			%CALCULATEVALUE calculates the value of a property.
 			%
 			% VALUE = CALCULATEVALUE(EL, PROP) calculates the value of the property
-			%  PROP. It works only with properties with Category.RESULT,
-			%  Category.QUERY, and Category.EVANESCENT. By default this function
+			%  PROP. It works only with properties with 5,
+			%  6, and 7. By default this function
 			%  returns the default value for the prop and should be implemented in the
 			%  subclasses of Element when needed.
 			%
 			% VALUE = CALCULATEVALUE(EL, PROP, VARARGIN) works with properties with
-			%  Category.QUERY.
+			%  6.
 			%
 			% See also getPropDefaultConditioned, conditioning, preset, checkProp,
 			%  postset, postprocessing, checkValue.
 			
 			switch prop
-				case ImporterGroupSubjectNeuroimaging_NIfTI.GET_DIR % __ImporterGroupSubjectNeuroimaging_NIfTI.GET_DIR__
+				case 14 % ImporterGroupSubjectNeuroimaging_NIfTI.GET_DIR
 					directory = uigetdir('Select directory');
 					if ischar(directory) && isfolder(directory)
 					    im.set('DIRECTORY', directory);
 					end
 					value = im;
 					
-				case ImporterGroupSubjectNeuroimaging_NIfTI.GR % __ImporterGroupSubjectNeuroimaging_NIfTI.GR__
-					rng_settings_ = rng(); rng(im.getPropSeed(ImporterGroupSubjectNeuroimaging_NIfTI.GR), 'twister')
+				case 15 % ImporterGroupSubjectNeuroimaging_NIfTI.GR
+					rng_settings_ = rng(); rng(im.getPropSeed(15), 'twister')
 					
 					% creates empty Group
 					gr = Group( ...
-					    'SUB_CLASS', 'SubjectNIfTI', ...
-					    'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectNIfTI') ...
+					    'SUB_CLASS', 'SubjectNeuroimaging', ...
+					    'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectNeuroimaging') ...
 					    );
 					
 					gr.lock('SUB_CLASS');
 					
 					directory = im.get('DIRECTORY');
-					Niftitype = im.get('NIFTI_TYPE');
+					session = im.get('SESSION');      % e.g. 'ses-01', can be empty
+					modality = im.get('MODALITY');    % e.g. 'pet' or 'anat'
+					target = im.get('TARGET');        % e.g. 'FDG', mainly for pet
+					
 					if isfolder(directory)
 					    wb = braph2waitbar(im.get('WAITBAR'), 0, 'Reading directory ...');
+					
 					    [~, gr_name] = fileparts(directory);
 					    gr.set( ...
 					        'ID', gr_name, ...
@@ -741,129 +763,181 @@ classdef ImporterGroupSubjectNeuroimaging_NIfTI < Importer
 					        );
 					
 					    try
-					        braph2waitbar(wb, .15, 'Loading subject group ...') % making a waitbar for VOIs
-					        
-					        % analyzes file
-					        files = [dir(fullfile(directory))];
-					        files = files(~(ismember({files.name},'.') | ismember({files.name},'..')));
-					        files = files([files.isdir]);
-					        if ~isempty(files)
-					            % adds subjects
-					            sub_dict = gr.memorize('SUB_DICT');
-					            for i = 1:1:length(files)
-					                braph2waitbar(wb, .15 + .85 * i / length(files), ['Loading subject directory' num2str(i) ' of ' num2str(length(files)) ' ...'])
-					                sub_id = files(i).name;
-					                subject_nifty_folder = [files(i).folder filesep files(i).name];
-					                subject_nifty_file = dir(fullfile(subject_nifty_folder, '*.nii'));
-					                subject_nifty_full_path = strcat(subject_nifty_file(1).folder, filesep,{subject_nifty_file.name});
-					                sub = SubjectNIfTI( ...
-					                    'ID', sub_id);
-					                hasMatch  = false;
-					                for f = 1:length(subject_nifty_full_path)
-					                    % Initialize an empty logical array to store matching results
-					                    isMatch = false(1, length(Niftitype));
+					        braph2waitbar(wb, 0.05, 'Scanning subject folders ...')
 					
-					                    % Loop through each element of the Niftitype array to check for substring match
-					                    for i = 1:length(Niftitype)
-					                        if contains(subject_nifty_full_path{f}, Niftitype{i}) % Check if current path contains any of Niftitype elements
-					                            isMatch(i) = true;
-					                        end
-					                    end
+					        % Find subject folders: sub-*
+					        sub_folders = dir(fullfile(directory, 'sub-*'));
+					        sub_folders = sub_folders([sub_folders.isdir]);
 					
-					                    % Get the index of the matching element(s)
-					                    matchingIndex = find(isMatch);
-					
-					                    if ~isempty(matchingIndex) % If there's at least one match
-					                        % Use the first match found in Niftitype
-					                        file_id = convertStringsToChars(Niftitype{matchingIndex(1)});
-					
-					                        % Add the file path to the subject's nifty dictionary
-					                        sub.memorize('NIFTI_PATH_DICT').get('ADD', FILE_PATH('ID', file_id, 'PATH', convertStringsToChars(subject_nifty_full_path{f})));
-					
-					                        % Mark that at least one match was found for this subject
-					                        hasMatch = true;
-					                    end
-					                end
-					
-					                % After looping through all file paths, check if no matches were found
-					                if ~hasMatch
-					                    % Raise a warning if no NIFTI type was found for the subject
-					                    warning(sprintf([sub_id, ' does not have the required type of data, skip']));
-					                    return;
-					                end
-					                sub_dict.get('ADD', sub);
-					            end
+					        if isempty(sub_folders)
+					            warning('No sub-* folders found in %s.', directory);
 					        end
 					
-					        % variables of interest
+					        sub_dict = gr.memorize('SUB_DICT');
+					
+					        for s = 1:numel(sub_folders)
+					            braph2waitbar(wb, .05 + .55 * s / max(numel(sub_folders), 1), ['Loading subject folder ' num2str(s) ' of ' num2str(numel(sub_folders)) ' ...'])
+					
+					            sub_id = sub_folders(s).name;
+					            sub_root = fullfile(sub_folders(s).folder, sub_folders(s).name);
+					
+					            % Resolve session folder
+					            if ~isempty(session)
+					                ses_dir = fullfile(sub_root, session);
+					                if ~isfolder(ses_dir)
+					                    warning('%s does not contain session folder %s. Skipping.', sub_id, session);
+					                    continue;
+					                end
+					            else
+					                ses_candidates = dir(fullfile(sub_root, 'ses-*'));
+					                ses_candidates = ses_candidates([ses_candidates.isdir]);
+					
+					                if isempty(ses_candidates)
+					                    % allow no-session layout
+					                    ses_dir = sub_root;
+					                else
+					                    % default: first session found
+					                    ses_dir = fullfile(ses_candidates(1).folder, ses_candidates(1).name);
+					                end
+					            end
+					
+					            % Resolve modality folder
+					            modality_dir = fullfile(ses_dir, modality);
+					            if ~isfolder(modality_dir)
+					                warning('%s does not contain modality folder %s. Skipping.', sub_id, modality);
+					                continue;
+					            end
+					
+					            % Find NIfTI files
+					            nii_files = [ ...
+					                dir(fullfile(modality_dir, '*.nii')); ...
+					                dir(fullfile(modality_dir, '*.nii.gz')) ...
+					                ];
+					
+					            if isempty(nii_files)
+					                warning('%s does not contain any NIfTI files in %s. Skipping.', sub_id, modality_dir);
+					                continue;
+					            end
+					
+					            % PET-specific target selection
+					            chosen_file = [];
+					            if strcmpi(modality, 'pet') && ~isempty(target)
+					                match_idx = find(contains(upper({nii_files.name}), upper(target)), 1, 'first');
+					                if ~isempty(match_idx)
+					                    chosen_file = nii_files(match_idx);
+					                else
+					                    warning('%s: no PET file matched tracer %s in %s. Using first NIfTI found.', ...
+					                        sub_id, target, modality_dir);
+					                end
+					            end
+					
+					            % Fallback: first NIfTI found
+					            if isempty(chosen_file)
+					                chosen_file = nii_files(1);
+					            end
+					
+					            chosen_path = fullfile(chosen_file.folder, chosen_file.name);
+					
+					            % Build subject
+					            sub = SubjectNeuroimaging();
+					
+					            % Save chosen file into NIfTI_PATH_DICT
+					            % Use modality or modality+tracer as file ID
+					            if strcmpi(modality, 'pet') && ~isempty(target)
+					                file_id = [upper(modality) '_' upper(target)];
+					            else
+					                file_id = upper(modality);
+					            end
+					
+					            % % % % sub.memorize('NIfTI_PATH_DICT').get('ADD', ...
+					            % % % %     FILE_PATH( ...
+					            % % % %         'ID', file_id, ...
+					            % % % %         'PATH', chosen_path ...
+					            % % % %         ) ...
+					            % % % %     );
+					
+					            % Optional notes on subject
+					            sub.set('LABEL', sub_id);
+					            sub.set('NOTES', ['Loaded from ' modality_dir]);
+					
+					            sub_dict.get('ADD', sub);
+					        end
+					
+					        % Load variables of interest
 					        vois = [];
-					        if isfile([directory '.vois.xls'])
+					        if isfile(fullfile(directory, 'reference_data', ['group_' modality '.vois.xls']))
+					            [~, ~, vois] = xlsread(fullfile(directory, 'reference_data', ['group_' modality '.vois.xls']));
+					        elseif isfile(fullfile(directory, 'reference_data', ['group_' modality '.vois.xlsx']))
+					            [~, ~, vois] = xlsread(fullfile(directory, 'reference_data', ['group_' modality '.vois.xlsx']));
+					        elseif isfile([directory '.vois.xls'])
 					            [~, ~, vois] = xlsread([directory '.vois.xls']);
 					        elseif isfile([directory '.vois.xlsx'])
 					            [~, ~, vois] = xlsread([directory '.vois.xlsx']);
 					        end
+					
 					        if ~isempty(vois)
-					            for i = 3:1:size(vois, 1)
-					                braph2waitbar(wb, .15 + .85 * (i-2) / (size(vois, 1)-2), ['Loading VOIs of subject ' num2str(i-2) ' of ' num2str(size(vois, 1)-2) ' ...'])
-					                % Extract the subject ID string from the 'vois' data
+					            for i = 2:size(vois, 1)
+					                braph2waitbar(wb, .6 + .35 * (i-1) / max(size(vois, 1)-1, 1), ['Loading VOIs of subject ' num2str(i-1) ' of ' num2str(size(vois, 1)-1) ' ...'])
+					
 					                target_id = vois{i, 1};
 					
-					                % Get the IT_LIST from sub_dict
 					                IT_LIST = sub_dict.get('IT_LIST');
+					                sub_idx = [];
 					
-					                % Initialize sub_id as empty
-					                sub_id = [];
-					
-					                % Iterate over IT_LIST to find the matching ID
 					                for j = 1:length(IT_LIST)
-					                    subject_nifti = IT_LIST{j}; % Get the SubjectNifti object
-					                    current_id = subject_nifti.get('ID'); % Extract the 'ID' property
+					                    current_id = IT_LIST{j}.get('ID');
 					                    if strcmp(current_id, target_id)
-					                        sub_id = j; % Store the index if IDs match
-					                        break; % Exit the loop as we found the subject
+					                        sub_idx = j;
+					                        break;
 					                    end
 					                end
 					
-					                % Check if sub_id was found
-					                if isempty(sub_id)
-					                    error('BRAPH2:MyElement:SubjectNotFound', 'Subject ID %s not found in sub_dict.', target_id);
+					                if isempty(sub_idx)
+					                    warning('Subject ID %s from VOIs not found in loaded subjects. Skipping VOIs for this row.', target_id);
+					                    continue;
 					                end
 					
-					                % Retrieve the subject from sub_dict using the matched index
-					                sub = sub_dict.get('IT', sub_id);
+					                sub = sub_dict.get('IT', sub_idx);
 					
-					                % Iterate over VOIs for this subject
-					                for v = 2:1:size(vois, 2)
+					                for v = 2:size(vois, 2)
 					                    voi_id = vois{1, v};
-					                    if isnumeric(vois{2, v}) % VOINumeric
+					
+					                    if isnumeric(vois{i, v})
 					                        sub.memorize('VOI_DICT').get('ADD', ...
 					                            VOINumeric( ...
-					                            'ID', voi_id, ...
-					                            'V', vois{i, v} ...
-					                            ) ...
+					                                'ID', voi_id, ...
+					                                'V', vois{i, v} ...
+					                                ) ...
 					                            );
-					                    elseif ischar(vois{2, v}) % VOICategoric
-					                        sub.memorize('VOI_DICT').get('ADD', ...
-					                            VOICategoric( ...
-					                            'ID', voi_id, ...
-					                            'CATEGORIES', str2cell(vois{2, v}), ...
-					                            'V', find(strcmp(vois{i, v}, str2cell(vois{2, v}))) ...
-					                            ) ...
-					                            );
+					                    elseif ischar(vois{i, v}) || isstring(vois{i, v})
+					                        categories = {};
+					                        if ischar(vois{2, v}) || isstring(vois{2, v})
+					                            categories = str2cell(char(vois{2, v}));
+					                        end
+					
+					                        if ~isempty(categories)
+					                            sub.memorize('VOI_DICT').get('ADD', ...
+					                                VOICategoric( ...
+					                                    'ID', voi_id, ...
+					                                    'CATEGORIES', categories, ...
+					                                    'V', find(strcmp(char(vois{i, v}), categories), 1, 'first') ...
+					                                    ) ...
+					                                );
+					                        end
 					                    end
 					                end
 					            end
 					        end
+					
 					    catch e
 					        braph2waitbar(wb, 'close')
-					
 					        rethrow(e)
 					    end
 					
 					    braph2waitbar(wb, 'close')
 					else
-					    error([BRAPH2.STR ':ImporterGroupSubjectCON_XLS:' BRAPH2.ERR_IO], ...
-					        [BRAPH2.STR ':ImporterGroupSubjectCON_XLS:' BRAPH2.ERR_IO '\n' ...
+					    error(['BRAPH2' ':ImporterGroupSubjectNIfTI:' 'ErrorIO'], ...
+					        ['BRAPH2' ':ImporterGroupSubjectNIfTI:' 'ErrorIO' '\n' ...
 					        'The prop DIRECTORY must be an existing directory, but it is ''' directory '''.'] ...
 					        );
 					end
@@ -873,7 +947,7 @@ classdef ImporterGroupSubjectNeuroimaging_NIfTI < Importer
 					rng(rng_settings_)
 					
 				otherwise
-					if prop <= Importer.getPropNumber()
+					if prop <= 9
 						value = calculateValue@Importer(im, prop, varargin{:});
 					else
 						value = calculateValue@Element(im, prop, varargin{:});
@@ -898,11 +972,11 @@ classdef ImporterGroupSubjectNeuroimaging_NIfTI < Importer
 			msg = ['Error while checking ' tostring(im) ' ' im.getPropTag(prop) '.'];
 			
 			switch prop
-				case ImporterGroupSubjectNeuroimaging_NIfTI.GR % __ImporterGroupSubjectNeuroimaging_NIfTI.GR__
-					check = any(strcmp(value.get(Group.SUB_CLASS_TAG), subclasses('SubjectNIfTI', [], [], true))); % Format.checkFormat(Format.ITEM, value, 'Group') already checked
+				case 15 % ImporterGroupSubjectNeuroimaging_NIfTI.GR
+					check = any(strcmp(value.get('SUB_CLASS'), subclasses('SubjectNeuroimaging', [], [], true))); % Format.checkFormat(8, value, 'Group') already checked
 					
 				otherwise
-					if prop <= Importer.getPropNumber()
+					if prop <= 9
 						[check, msg] = checkValue@Importer(im, prop, value);
 					end
 			end

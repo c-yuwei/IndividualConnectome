@@ -4,6 +4,25 @@ classdef GTA_NS < ConcreteElement
 	%
 	% GTA_NS tests PanelPropSMatrix.
 	%
+	% The list of GTA_NS properties is:
+	%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the concrete element (ConcreteElement).
+	%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the concrete element.
+	%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the concrete element.
+	%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the concrete element.
+	%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the concrete element.
+	%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the concrete element.
+	%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the concrete element.
+	%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
+	%  <strong>9</strong> <strong>NS_C</strong> 	NS_C (constant, smatrix) is a prop constant smatrix.
+	%  <strong>10</strong> <strong>NS_M</strong> 	NS_M (metadata, smatrix) is a prop metadata smatrix.
+	%  <strong>11</strong> <strong>NS_P</strong> 	NS_P (parameter, smatrix) is a prop parameter smatrix.
+	%  <strong>12</strong> <strong>NS_D</strong> 	NS_D (data, smatrix) is a prop data smatrix.
+	%  <strong>13</strong> <strong>NS_R</strong> 	NS_R (result, smatrix) is a prop result smatrix.
+	%  <strong>14</strong> <strong>NS_Q</strong> 	NS_Q (query, smatrix) is a prop query smatrix.
+	%  <strong>15</strong> <strong>NS_E</strong> 	NS_E (evanescent, smatrix) is a prop evanescent smatrix.
+	%  <strong>16</strong> <strong>NS_F</strong> 	NS_F (figure, smatrix) is a prop figure smatrix.
+	%  <strong>17</strong> <strong>NS_G</strong> 	NS_G (gui, smatrix) is a prop gui smatrix.
+	%
 	% GTA_NS methods (constructor):
 	%  GTA_NS - constructor
 	%
@@ -92,53 +111,53 @@ classdef GTA_NS < ConcreteElement
 	%
 	% See also PanelPropSMatrix.
 	%
-	% BUILD BRAPH2 BRAPH2.BUILD class_name 1
+	% BUILD BRAPH2 7 class_name 1
 	
 	properties (Constant) % properties
-		NS_C = ConcreteElement.getPropNumber() + 1;
+		NS_C = 9; %CET: Computational Efficiency Trick
 		NS_C_TAG = 'NS_C';
-		NS_C_CATEGORY = Category.CONSTANT;
-		NS_C_FORMAT = Format.SMATRIX;
+		NS_C_CATEGORY = 1;
+		NS_C_FORMAT = 15;
 		
-		NS_M = ConcreteElement.getPropNumber() + 2;
+		NS_M = 10; %CET: Computational Efficiency Trick
 		NS_M_TAG = 'NS_M';
-		NS_M_CATEGORY = Category.METADATA;
-		NS_M_FORMAT = Format.SMATRIX;
+		NS_M_CATEGORY = 2;
+		NS_M_FORMAT = 15;
 		
-		NS_P = ConcreteElement.getPropNumber() + 3;
+		NS_P = 11; %CET: Computational Efficiency Trick
 		NS_P_TAG = 'NS_P';
-		NS_P_CATEGORY = Category.PARAMETER;
-		NS_P_FORMAT = Format.SMATRIX;
+		NS_P_CATEGORY = 3;
+		NS_P_FORMAT = 15;
 		
-		NS_D = ConcreteElement.getPropNumber() + 4;
+		NS_D = 12; %CET: Computational Efficiency Trick
 		NS_D_TAG = 'NS_D';
-		NS_D_CATEGORY = Category.DATA;
-		NS_D_FORMAT = Format.SMATRIX;
+		NS_D_CATEGORY = 4;
+		NS_D_FORMAT = 15;
 		
-		NS_R = ConcreteElement.getPropNumber() + 5;
+		NS_R = 13; %CET: Computational Efficiency Trick
 		NS_R_TAG = 'NS_R';
-		NS_R_CATEGORY = Category.RESULT;
-		NS_R_FORMAT = Format.SMATRIX;
+		NS_R_CATEGORY = 5;
+		NS_R_FORMAT = 15;
 		
-		NS_Q = ConcreteElement.getPropNumber() + 6;
+		NS_Q = 14; %CET: Computational Efficiency Trick
 		NS_Q_TAG = 'NS_Q';
-		NS_Q_CATEGORY = Category.QUERY;
-		NS_Q_FORMAT = Format.SMATRIX;
+		NS_Q_CATEGORY = 6;
+		NS_Q_FORMAT = 15;
 		
-		NS_E = ConcreteElement.getPropNumber() + 7;
+		NS_E = 15; %CET: Computational Efficiency Trick
 		NS_E_TAG = 'NS_E';
-		NS_E_CATEGORY = Category.EVANESCENT;
-		NS_E_FORMAT = Format.SMATRIX;
+		NS_E_CATEGORY = 7;
+		NS_E_FORMAT = 15;
 		
-		NS_F = ConcreteElement.getPropNumber() + 8;
+		NS_F = 16; %CET: Computational Efficiency Trick
 		NS_F_TAG = 'NS_F';
-		NS_F_CATEGORY = Category.FIGURE;
-		NS_F_FORMAT = Format.SMATRIX;
+		NS_F_CATEGORY = 8;
+		NS_F_FORMAT = 15;
 		
-		NS_G = ConcreteElement.getPropNumber() + 9;
+		NS_G = 17; %CET: Computational Efficiency Trick
 		NS_G_TAG = 'NS_G';
-		NS_G_CATEGORY = Category.GUI;
-		NS_G_FORMAT = Format.SMATRIX;
+		NS_G_CATEGORY = 9;
+		NS_G_FORMAT = 15;
 	end
 	methods % constructor
 		function gt = GTA_NS(varargin)
@@ -151,6 +170,24 @@ classdef GTA_NS < ConcreteElement
 			% Multiple properties can be initialized at once identifying
 			%  them with either property numbers (PROP) or tags (TAG).
 			%
+			% The list of GTA_NS properties is:
+			%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the concrete element (ConcreteElement).
+			%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the concrete element.
+			%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the concrete element.
+			%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the concrete element.
+			%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the concrete element.
+			%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the concrete element.
+			%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the concrete element.
+			%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
+			%  <strong>9</strong> <strong>NS_C</strong> 	NS_C (constant, smatrix) is a prop constant smatrix.
+			%  <strong>10</strong> <strong>NS_M</strong> 	NS_M (metadata, smatrix) is a prop metadata smatrix.
+			%  <strong>11</strong> <strong>NS_P</strong> 	NS_P (parameter, smatrix) is a prop parameter smatrix.
+			%  <strong>12</strong> <strong>NS_D</strong> 	NS_D (data, smatrix) is a prop data smatrix.
+			%  <strong>13</strong> <strong>NS_R</strong> 	NS_R (result, smatrix) is a prop result smatrix.
+			%  <strong>14</strong> <strong>NS_Q</strong> 	NS_Q (query, smatrix) is a prop query smatrix.
+			%  <strong>15</strong> <strong>NS_E</strong> 	NS_E (evanescent, smatrix) is a prop evanescent smatrix.
+			%  <strong>16</strong> <strong>NS_F</strong> 	NS_F (figure, smatrix) is a prop figure smatrix.
+			%  <strong>17</strong> <strong>NS_G</strong> 	NS_G (gui, smatrix) is a prop gui smatrix.
 			%
 			% See also Category, Format.
 			
@@ -203,7 +240,7 @@ classdef GTA_NS < ConcreteElement
 			%
 			% See also subclasses.
 			
-			subclass_list = subclasses('GTA_NS', [], [], true);
+			subclass_list = { 'GTA_NS' }; %CET: Computational Efficiency Trick
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of test A PanelPropSMatrix.
@@ -224,68 +261,34 @@ classdef GTA_NS < ConcreteElement
 			%
 			% See also getPropNumber, Category.
 			
+			%CET: Computational Efficiency Trick
+			
 			if nargin == 0
-				prop_list = [ ...
-					ConcreteElement.getProps() ...
-						GTA_NS.NS_C ...
-						GTA_NS.NS_M ...
-						GTA_NS.NS_P ...
-						GTA_NS.NS_D ...
-						GTA_NS.NS_R ...
-						GTA_NS.NS_Q ...
-						GTA_NS.NS_E ...
-						GTA_NS.NS_F ...
-						GTA_NS.NS_G ...
-						];
+				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17];
 				return
 			end
 			
 			switch category
-				case Category.CONSTANT
-					prop_list = [ ...
-						ConcreteElement.getProps(Category.CONSTANT) ...
-						GTA_NS.NS_C ...
-						];
-				case Category.METADATA
-					prop_list = [ ...
-						ConcreteElement.getProps(Category.METADATA) ...
-						GTA_NS.NS_M ...
-						];
-				case Category.PARAMETER
-					prop_list = [ ...
-						ConcreteElement.getProps(Category.PARAMETER) ...
-						GTA_NS.NS_P ...
-						];
-				case Category.DATA
-					prop_list = [ ...
-						ConcreteElement.getProps(Category.DATA) ...
-						GTA_NS.NS_D ...
-						];
-				case Category.RESULT
-					prop_list = [
-						ConcreteElement.getProps(Category.RESULT) ...
-						GTA_NS.NS_R ...
-						];
-				case Category.QUERY
-					prop_list = [ ...
-						ConcreteElement.getProps(Category.QUERY) ...
-						GTA_NS.NS_Q ...
-						];
-				case Category.EVANESCENT
-					prop_list = [ ...
-						ConcreteElement.getProps(Category.EVANESCENT) ...
-						GTA_NS.NS_E ...
-						];
-				case Category.FIGURE
-					prop_list = [ ...
-						ConcreteElement.getProps(Category.FIGURE) ...
-						GTA_NS.NS_F ...
-						];
-				case Category.GUI
-					prop_list = [ ...
-						ConcreteElement.getProps(Category.GUI) ...
-						GTA_NS.NS_G ...
-						];
+				case 1 % Category.CONSTANT
+					prop_list = [1 2 3 9];
+				case 2 % Category.METADATA
+					prop_list = [6 7 10];
+				case 3 % Category.PARAMETER
+					prop_list = [4 11];
+				case 4 % Category.DATA
+					prop_list = [5 12];
+				case 5 % Category.RESULT
+					prop_list = 13;
+				case 6 % Category.QUERY
+					prop_list = [8 14];
+				case 7 % Category.EVANESCENT
+					prop_list = 15;
+				case 8 % Category.FIGURE
+					prop_list = 16;
+				case 9 % Category.GUI
+					prop_list = 17;
+				otherwise
+					prop_list = [];
 			end
 		end
 		function prop_number = getPropNumber(varargin)
@@ -306,7 +309,35 @@ classdef GTA_NS < ConcreteElement
 			%
 			% See also getProps, Category.
 			
-			prop_number = numel(GTA_NS.getProps(varargin{:}));
+			%CET: Computational Efficiency Trick
+			
+			if nargin == 0
+				prop_number = 17;
+				return
+			end
+			
+			switch varargin{1} % category = varargin{1}
+				case 1 % Category.CONSTANT
+					prop_number = 4;
+				case 2 % Category.METADATA
+					prop_number = 3;
+				case 3 % Category.PARAMETER
+					prop_number = 2;
+				case 4 % Category.DATA
+					prop_number = 2;
+				case 5 % Category.RESULT
+					prop_number = 1;
+				case 6 % Category.QUERY
+					prop_number = 2;
+				case 7 % Category.EVANESCENT
+					prop_number = 1;
+				case 8 % Category.FIGURE
+					prop_number = 1;
+				case 9 % Category.GUI
+					prop_number = 1;
+				otherwise
+					prop_number = 0;
+			end
 		end
 		function check_out = existsProp(prop)
 			%EXISTSPROP checks whether property exists in test A PanelPropSMatrix/error.
@@ -334,14 +365,14 @@ classdef GTA_NS < ConcreteElement
 			%
 			% See also getProps, existsTag.
 			
-			check = any(prop == GTA_NS.getProps());
+			check = prop >= 1 && prop <= 17 && round(prop) == prop; %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':GTA_NS:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':GTA_NS:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':GTA_NS:' 'WrongInput'], ...
+					['BRAPH2' ':GTA_NS:' 'WrongInput' '\n' ...
 					'The value ' tostring(prop, 100, ' ...') ' is not a valid prop for GTA_NS.'] ...
 					)
 			end
@@ -372,15 +403,14 @@ classdef GTA_NS < ConcreteElement
 			%
 			% See also getProps, existsTag.
 			
-			gta_ns_tag_list = cellfun(@(x) GTA_NS.getPropTag(x), num2cell(GTA_NS.getProps()), 'UniformOutput', false);
-			check = any(strcmp(tag, gta_ns_tag_list));
+			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'NS_C'  'NS_M'  'NS_P'  'NS_D'  'NS_R'  'NS_Q'  'NS_E'  'NS_F'  'NS_G' })); %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':GTA_NS:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':GTA_NS:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':GTA_NS:' 'WrongInput'], ...
+					['BRAPH2' ':GTA_NS:' 'WrongInput' '\n' ...
 					'The value ' tag ' is not a valid tag for GTA_NS.'] ...
 					)
 			end
@@ -406,8 +436,7 @@ classdef GTA_NS < ConcreteElement
 			%  getPropSettings, getPropDefault, checkProp.
 			
 			if ischar(pointer)
-				gta_ns_tag_list = cellfun(@(x) GTA_NS.getPropTag(x), num2cell(GTA_NS.getProps()), 'UniformOutput', false);
-				prop = find(strcmp(pointer, gta_ns_tag_list)); % tag = pointer
+				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'NS_C'  'NS_M'  'NS_P'  'NS_D'  'NS_R'  'NS_Q'  'NS_E'  'NS_F'  'NS_G' })); % tag = pointer %CET: Computational Efficiency Trick
 			else % numeric
 				prop = pointer;
 			end
@@ -435,30 +464,9 @@ classdef GTA_NS < ConcreteElement
 			if ischar(pointer)
 				tag = pointer;
 			else % numeric
-				prop = pointer;
-				
-				switch prop
-					case GTA_NS.NS_C
-						tag = GTA_NS.NS_C_TAG;
-					case GTA_NS.NS_M
-						tag = GTA_NS.NS_M_TAG;
-					case GTA_NS.NS_P
-						tag = GTA_NS.NS_P_TAG;
-					case GTA_NS.NS_D
-						tag = GTA_NS.NS_D_TAG;
-					case GTA_NS.NS_R
-						tag = GTA_NS.NS_R_TAG;
-					case GTA_NS.NS_Q
-						tag = GTA_NS.NS_Q_TAG;
-					case GTA_NS.NS_E
-						tag = GTA_NS.NS_E_TAG;
-					case GTA_NS.NS_F
-						tag = GTA_NS.NS_F_TAG;
-					case GTA_NS.NS_G
-						tag = GTA_NS.NS_G_TAG;
-					otherwise
-						tag = getPropTag@ConcreteElement(prop);
-				end
+				%CET: Computational Efficiency Trick
+				gta_ns_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'NS_C'  'NS_M'  'NS_P'  'NS_D'  'NS_R'  'NS_Q'  'NS_E'  'NS_F'  'NS_G' };
+				tag = gta_ns_tag_list{pointer}; % prop = pointer
 			end
 		end
 		function prop_category = getPropCategory(pointer)
@@ -483,28 +491,9 @@ classdef GTA_NS < ConcreteElement
 			
 			prop = GTA_NS.getPropProp(pointer);
 			
-			switch prop
-				case GTA_NS.NS_C
-					prop_category = GTA_NS.NS_C_CATEGORY;
-				case GTA_NS.NS_M
-					prop_category = GTA_NS.NS_M_CATEGORY;
-				case GTA_NS.NS_P
-					prop_category = GTA_NS.NS_P_CATEGORY;
-				case GTA_NS.NS_D
-					prop_category = GTA_NS.NS_D_CATEGORY;
-				case GTA_NS.NS_R
-					prop_category = GTA_NS.NS_R_CATEGORY;
-				case GTA_NS.NS_Q
-					prop_category = GTA_NS.NS_Q_CATEGORY;
-				case GTA_NS.NS_E
-					prop_category = GTA_NS.NS_E_CATEGORY;
-				case GTA_NS.NS_F
-					prop_category = GTA_NS.NS_F_CATEGORY;
-				case GTA_NS.NS_G
-					prop_category = GTA_NS.NS_G_CATEGORY;
-				otherwise
-					prop_category = getPropCategory@ConcreteElement(prop);
-			end
+			%CET: Computational Efficiency Trick
+			gta_ns_category_list = { 1  1  1  3  4  2  2  6  1  2  3  4  5  6  7  8  9 };
+			prop_category = gta_ns_category_list{prop};
 		end
 		function prop_format = getPropFormat(pointer)
 			%GETPROPFORMAT returns the format of a property.
@@ -528,28 +517,9 @@ classdef GTA_NS < ConcreteElement
 			
 			prop = GTA_NS.getPropProp(pointer);
 			
-			switch prop
-				case GTA_NS.NS_C
-					prop_format = GTA_NS.NS_C_FORMAT;
-				case GTA_NS.NS_M
-					prop_format = GTA_NS.NS_M_FORMAT;
-				case GTA_NS.NS_P
-					prop_format = GTA_NS.NS_P_FORMAT;
-				case GTA_NS.NS_D
-					prop_format = GTA_NS.NS_D_FORMAT;
-				case GTA_NS.NS_R
-					prop_format = GTA_NS.NS_R_FORMAT;
-				case GTA_NS.NS_Q
-					prop_format = GTA_NS.NS_Q_FORMAT;
-				case GTA_NS.NS_E
-					prop_format = GTA_NS.NS_E_FORMAT;
-				case GTA_NS.NS_F
-					prop_format = GTA_NS.NS_F_FORMAT;
-				case GTA_NS.NS_G
-					prop_format = GTA_NS.NS_G_FORMAT;
-				otherwise
-					prop_format = getPropFormat@ConcreteElement(prop);
-			end
+			%CET: Computational Efficiency Trick
+			gta_ns_format_list = { 2  2  2  8  2  2  2  2  15  15  15  15  15  15  15  15  15 };
+			prop_format = gta_ns_format_list{prop};
 		end
 		function prop_description = getPropDescription(pointer)
 			%GETPROPDESCRIPTION returns the description of a property.
@@ -573,28 +543,9 @@ classdef GTA_NS < ConcreteElement
 			
 			prop = GTA_NS.getPropProp(pointer);
 			
-			switch prop
-				case GTA_NS.NS_C
-					prop_description = 'NS_C (constant, smatrix) is a prop constant smatrix.';
-				case GTA_NS.NS_M
-					prop_description = 'NS_M (metadata, smatrix) is a prop metadata smatrix.';
-				case GTA_NS.NS_P
-					prop_description = 'NS_P (parameter, smatrix) is a prop parameter smatrix.';
-				case GTA_NS.NS_D
-					prop_description = 'NS_D (data, smatrix) is a prop data smatrix.';
-				case GTA_NS.NS_R
-					prop_description = 'NS_R (result, smatrix) is a prop result smatrix.';
-				case GTA_NS.NS_Q
-					prop_description = 'NS_Q (query, smatrix) is a prop query smatrix.';
-				case GTA_NS.NS_E
-					prop_description = 'NS_E (evanescent, smatrix) is a prop evanescent smatrix.';
-				case GTA_NS.NS_F
-					prop_description = 'NS_F (figure, smatrix) is a prop figure smatrix.';
-				case GTA_NS.NS_G
-					prop_description = 'NS_G (gui, smatrix) is a prop gui smatrix.';
-				otherwise
-					prop_description = getPropDescription@ConcreteElement(prop);
-			end
+			%CET: Computational Efficiency Trick
+			gta_ns_description_list = { 'ELCLASS (constant, string) is the class of the concrete element (ConcreteElement).'  'NAME (constant, string) is the name of the concrete element.'  'DESCRIPTION (constant, string) is the description of the concrete element.'  'TEMPLATE (parameter, item) is the template of the concrete element.'  'ID (data, string) is a few-letter code for the concrete element.'  'LABEL (metadata, string) is an extended label of the concrete element.'  'NOTES (metadata, string) are some specific notes about the concrete element.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'NS_C (constant, smatrix) is a prop constant smatrix.'  'NS_M (metadata, smatrix) is a prop metadata smatrix.'  'NS_P (parameter, smatrix) is a prop parameter smatrix.'  'NS_D (data, smatrix) is a prop data smatrix.'  'NS_R (result, smatrix) is a prop result smatrix.'  'NS_Q (query, smatrix) is a prop query smatrix.'  'NS_E (evanescent, smatrix) is a prop evanescent smatrix.'  'NS_F (figure, smatrix) is a prop figure smatrix.'  'NS_G (gui, smatrix) is a prop gui smatrix.' };
+			prop_description = gta_ns_description_list{prop};
 		end
 		function prop_settings = getPropSettings(pointer)
 			%GETPROPSETTINGS returns the settings of a property.
@@ -618,25 +569,25 @@ classdef GTA_NS < ConcreteElement
 			
 			prop = GTA_NS.getPropProp(pointer);
 			
-			switch prop
-				case GTA_NS.NS_C
-					prop_settings = Format.getFormatSettings(Format.SMATRIX);
-				case GTA_NS.NS_M
-					prop_settings = Format.getFormatSettings(Format.SMATRIX);
-				case GTA_NS.NS_P
-					prop_settings = Format.getFormatSettings(Format.SMATRIX);
-				case GTA_NS.NS_D
-					prop_settings = Format.getFormatSettings(Format.SMATRIX);
-				case GTA_NS.NS_R
-					prop_settings = Format.getFormatSettings(Format.SMATRIX);
-				case GTA_NS.NS_Q
-					prop_settings = Format.getFormatSettings(Format.SMATRIX);
-				case GTA_NS.NS_E
-					prop_settings = Format.getFormatSettings(Format.SMATRIX);
-				case GTA_NS.NS_F
-					prop_settings = Format.getFormatSettings(Format.SMATRIX);
-				case GTA_NS.NS_G
-					prop_settings = Format.getFormatSettings(Format.SMATRIX);
+			switch prop %CET: Computational Efficiency Trick
+				case 9 % GTA_NS.NS_C
+					prop_settings = Format.getFormatSettings(15);
+				case 10 % GTA_NS.NS_M
+					prop_settings = Format.getFormatSettings(15);
+				case 11 % GTA_NS.NS_P
+					prop_settings = Format.getFormatSettings(15);
+				case 12 % GTA_NS.NS_D
+					prop_settings = Format.getFormatSettings(15);
+				case 13 % GTA_NS.NS_R
+					prop_settings = Format.getFormatSettings(15);
+				case 14 % GTA_NS.NS_Q
+					prop_settings = Format.getFormatSettings(15);
+				case 15 % GTA_NS.NS_E
+					prop_settings = Format.getFormatSettings(15);
+				case 16 % GTA_NS.NS_F
+					prop_settings = Format.getFormatSettings(15);
+				case 17 % GTA_NS.NS_G
+					prop_settings = Format.getFormatSettings(15);
 				otherwise
 					prop_settings = getPropSettings@ConcreteElement(prop);
 			end
@@ -663,24 +614,24 @@ classdef GTA_NS < ConcreteElement
 			
 			prop = GTA_NS.getPropProp(pointer);
 			
-			switch prop
-				case GTA_NS.NS_C
+			switch prop %CET: Computational Efficiency Trick
+				case 9 % GTA_NS.NS_C
 					prop_default = ones(3);
-				case GTA_NS.NS_M
+				case 10 % GTA_NS.NS_M
 					prop_default = ones(3);
-				case GTA_NS.NS_P
+				case 11 % GTA_NS.NS_P
 					prop_default = ones(3);
-				case GTA_NS.NS_D
+				case 12 % GTA_NS.NS_D
 					prop_default = ones(3);
-				case GTA_NS.NS_R
-					prop_default = Format.getFormatDefault(Format.SMATRIX, GTA_NS.getPropSettings(prop));
-				case GTA_NS.NS_Q
-					prop_default = Format.getFormatDefault(Format.SMATRIX, GTA_NS.getPropSettings(prop));
-				case GTA_NS.NS_E
-					prop_default = Format.getFormatDefault(Format.SMATRIX, GTA_NS.getPropSettings(prop));
-				case GTA_NS.NS_F
+				case 13 % GTA_NS.NS_R
+					prop_default = Format.getFormatDefault(15, GTA_NS.getPropSettings(prop));
+				case 14 % GTA_NS.NS_Q
+					prop_default = Format.getFormatDefault(15, GTA_NS.getPropSettings(prop));
+				case 15 % GTA_NS.NS_E
+					prop_default = Format.getFormatDefault(15, GTA_NS.getPropSettings(prop));
+				case 16 % GTA_NS.NS_F
 					prop_default = ones(3);
-				case GTA_NS.NS_G
+				case 17 % GTA_NS.NS_G
 					prop_default = ones(3);
 				otherwise
 					prop_default = getPropDefault@ConcreteElement(prop);
@@ -727,15 +678,15 @@ classdef GTA_NS < ConcreteElement
 			% 
 			% GT.CHECKPROP(POINTER, VALUE) throws an error if VALUE is
 			%  NOT an acceptable value for the format of the property POINTER.
-			%  Error id: €BRAPH2.STR€:GTA_NS:€BRAPH2.WRONG_INPUT€
+			%  Error id: BRAPH2:GTA_NS:WrongInput
 			% 
 			% Alternative forms to call this method are (POINTER = PROP or TAG):
 			%  GT.CHECKPROP(POINTER, VALUE) throws error if VALUE has not a valid format for PROP of GT.
-			%   Error id: €BRAPH2.STR€:GTA_NS:€BRAPH2.WRONG_INPUT€
+			%   Error id: BRAPH2:GTA_NS:WrongInput
 			%  Element.CHECKPROP(GTA_NS, PROP, VALUE) throws error if VALUE has not a valid format for PROP of GTA_NS.
-			%   Error id: €BRAPH2.STR€:GTA_NS:€BRAPH2.WRONG_INPUT€
+			%   Error id: BRAPH2:GTA_NS:WrongInput
 			%  GT.CHECKPROP(GTA_NS, PROP, VALUE) throws error if VALUE has not a valid format for PROP of GTA_NS.
-			%   Error id: €BRAPH2.STR€:GTA_NS:€BRAPH2.WRONG_INPUT€]
+			%   Error id: BRAPH2:GTA_NS:WrongInput]
 			% 
 			% Note that the Element.CHECKPROP(GT) and Element.CHECKPROP('GTA_NS')
 			%  are less computationally efficient.
@@ -746,26 +697,26 @@ classdef GTA_NS < ConcreteElement
 			prop = GTA_NS.getPropProp(pointer);
 			
 			switch prop
-				case GTA_NS.NS_C % __GTA_NS.NS_C__
-					check = Format.checkFormat(Format.SMATRIX, value, GTA_NS.getPropSettings(prop));
-				case GTA_NS.NS_M % __GTA_NS.NS_M__
-					check = Format.checkFormat(Format.SMATRIX, value, GTA_NS.getPropSettings(prop));
-				case GTA_NS.NS_P % __GTA_NS.NS_P__
-					check = Format.checkFormat(Format.SMATRIX, value, GTA_NS.getPropSettings(prop));
-				case GTA_NS.NS_D % __GTA_NS.NS_D__
-					check = Format.checkFormat(Format.SMATRIX, value, GTA_NS.getPropSettings(prop));
-				case GTA_NS.NS_R % __GTA_NS.NS_R__
-					check = Format.checkFormat(Format.SMATRIX, value, GTA_NS.getPropSettings(prop));
-				case GTA_NS.NS_Q % __GTA_NS.NS_Q__
-					check = Format.checkFormat(Format.SMATRIX, value, GTA_NS.getPropSettings(prop));
-				case GTA_NS.NS_E % __GTA_NS.NS_E__
-					check = Format.checkFormat(Format.SMATRIX, value, GTA_NS.getPropSettings(prop));
-				case GTA_NS.NS_F % __GTA_NS.NS_F__
-					check = Format.checkFormat(Format.SMATRIX, value, GTA_NS.getPropSettings(prop));
-				case GTA_NS.NS_G % __GTA_NS.NS_G__
-					check = Format.checkFormat(Format.SMATRIX, value, GTA_NS.getPropSettings(prop));
+				case 9 % GTA_NS.NS_C
+					check = Format.checkFormat(15, value, GTA_NS.getPropSettings(prop));
+				case 10 % GTA_NS.NS_M
+					check = Format.checkFormat(15, value, GTA_NS.getPropSettings(prop));
+				case 11 % GTA_NS.NS_P
+					check = Format.checkFormat(15, value, GTA_NS.getPropSettings(prop));
+				case 12 % GTA_NS.NS_D
+					check = Format.checkFormat(15, value, GTA_NS.getPropSettings(prop));
+				case 13 % GTA_NS.NS_R
+					check = Format.checkFormat(15, value, GTA_NS.getPropSettings(prop));
+				case 14 % GTA_NS.NS_Q
+					check = Format.checkFormat(15, value, GTA_NS.getPropSettings(prop));
+				case 15 % GTA_NS.NS_E
+					check = Format.checkFormat(15, value, GTA_NS.getPropSettings(prop));
+				case 16 % GTA_NS.NS_F
+					check = Format.checkFormat(15, value, GTA_NS.getPropSettings(prop));
+				case 17 % GTA_NS.NS_G
+					check = Format.checkFormat(15, value, GTA_NS.getPropSettings(prop));
 				otherwise
-					if prop <= ConcreteElement.getPropNumber()
+					if prop <= 8
 						check = checkProp@ConcreteElement(prop, value);
 					end
 			end
@@ -774,8 +725,8 @@ classdef GTA_NS < ConcreteElement
 				prop_check = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':GTA_NS:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':GTA_NS:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':GTA_NS:' 'WrongInput'], ...
+					['BRAPH2' ':GTA_NS:' 'WrongInput' '\n' ...
 					'The value ' tostring(value, 100, ' ...') ' is not a valid property ' GTA_NS.getPropTag(prop) ' (' GTA_NS.getFormatTag(GTA_NS.getPropFormat(prop)) ').'] ...
 					)
 			end
@@ -786,33 +737,33 @@ classdef GTA_NS < ConcreteElement
 			%CALCULATEVALUE calculates the value of a property.
 			%
 			% VALUE = CALCULATEVALUE(EL, PROP) calculates the value of the property
-			%  PROP. It works only with properties with Category.RESULT,
-			%  Category.QUERY, and Category.EVANESCENT. By default this function
+			%  PROP. It works only with properties with 5,
+			%  6, and 7. By default this function
 			%  returns the default value for the prop and should be implemented in the
 			%  subclasses of Element when needed.
 			%
 			% VALUE = CALCULATEVALUE(EL, PROP, VARARGIN) works with properties with
-			%  Category.QUERY.
+			%  6.
 			%
 			% See also getPropDefaultConditioned, conditioning, preset, checkProp,
 			%  postset, postprocessing, checkValue.
 			
 			switch prop
-				case GTA_NS.NS_R % __GTA_NS.NS_R__
-					rng_settings_ = rng(); rng(gt.getPropSeed(GTA_NS.NS_R), 'twister')
+				case 13 % GTA_NS.NS_R
+					rng_settings_ = rng(); rng(gt.getPropSeed(13), 'twister')
 					
 					value = rand(3);
 					
 					rng(rng_settings_)
 					
-				case GTA_NS.NS_Q % __GTA_NS.NS_Q__
+				case 14 % GTA_NS.NS_Q
 					value = rand(3);
 					
-				case GTA_NS.NS_E % __GTA_NS.NS_E__
+				case 15 % GTA_NS.NS_E
 					value = rand(3);
 					
 				otherwise
-					if prop <= ConcreteElement.getPropNumber()
+					if prop <= 8
 						value = calculateValue@ConcreteElement(gt, prop, varargin{:});
 					else
 						value = calculateValue@Element(gt, prop, varargin{:});

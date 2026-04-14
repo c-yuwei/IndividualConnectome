@@ -4,6 +4,30 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 	%
 	% SUVRConstructor calculates mean value of brain ROIs. It loads brain atlases for ROI identification and calculates mean SUVR values per subject, supporting multiple atlases with region-index mappings loaded from CSV files.
 	%
+	% The list of ConverterNeuroimaging2RegionalValues properties is:
+	%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the subject ROI constructor for NIfTI.
+	%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the subject ROI constructor for NIfTI.
+	%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the subject ROI constructor for NIfTI.
+	%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the subject ROI constructor for NIfTI.
+	%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the subject ROI constructor for NIfTI.
+	%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of subject ROI constructor for NIfTI.
+	%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about subject ROI constructor for NIfTI.
+	%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
+	%  <strong>9</strong> <strong>BA</strong> 	BA (data, itemlist) is a list of brain atlases.
+	%  <strong>10</strong> <strong>ATLAS_REGION_IDS</strong> 	ATLAS_REGION_IDS (data, stringlist) is the list of region IDs for multiple atlases.
+	%  <strong>11</strong> <strong>ATLAS_LABELS</strong> 	ATLAS_LABELS (data, cell) is the list of string labels for multiple atlases.
+	%  <strong>12</strong> <strong>MAPPING_PATH_DICT</strong> 	MAPPING_PATH_DICT (data, idict) is the dictionary of paths to CSV files for region-index mappings.
+	%  <strong>13</strong> <strong>REF_REGION_LIST</strong> 	REF_REGION_LIST (data, cell) is the list containing the indices of reference regions for each atlas.
+	%  <strong>14</strong> <strong>REF_BR_DICT</strong> 	REF_BR_DICT (data, idict) contains the effective brain regions of the simulated network.
+	%  <strong>15</strong> <strong>ATLAS_INDEX</strong> 	ATLAS_INDEX (parameter, scalar) is the index of the atlas defined by the user for SUVR ROI list.
+	%  <strong>16</strong> <strong>ATLAS_PATH_DICT</strong> 	ATLAS_PATH_DICT (parameter, idict) is the dictionary containing the paths to atlas NIfTI files.
+	%  <strong>17</strong> <strong>GR_PET</strong> 	GR_PET (data, item) is the subject group, which also defines the subject class SubjectNIfTI.
+	%  <strong>18</strong> <strong>GR_T1</strong> 	GR_T1 (data, item) is the subject group, which also defines the subject class SubjectNIfTI.
+	%  <strong>19</strong> <strong>SUVR_REGION_SELECTION</strong> 	SUVR_REGION_SELECTION (parameter, idict) is the list of selected brain regions.
+	%  <strong>20</strong> <strong>CALC_SUBJ_SUVR</strong> 	CALC_SUBJ_SUVR (query, cell) generates SUVR vectors per subject using subject PET and T1 data.
+	%  <strong>21</strong> <strong>GR</strong> 	GR (result, item) is a group of subjects with SUVR analysis data.
+	%  <strong>22</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) determines whether to show the waitbar.
+	%
 	% ConverterNeuroimaging2RegionalValues methods (constructor):
 	%  ConverterNeuroimaging2RegionalValues - constructor
 	%
@@ -92,78 +116,78 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 	%
 	% See also Group, SubjectNIfTI, ExporterGroupSubjectCON_XLS, SubjectST, NNDatasetSplit.
 	%
-	% BUILD BRAPH2 BRAPH2.BUILD class_name 1
+	% BUILD BRAPH2 7 class_name 1
 	
 	properties (Constant) % properties
-		BA = ConcreteElement.getPropNumber() + 1;
+		BA = 9; %CET: Computational Efficiency Trick
 		BA_TAG = 'BA';
-		BA_CATEGORY = Category.DATA;
-		BA_FORMAT = Format.ITEMLIST;
+		BA_CATEGORY = 4;
+		BA_FORMAT = 9;
 		
-		ATLAS_REGION_IDS = ConcreteElement.getPropNumber() + 2;
+		ATLAS_REGION_IDS = 10; %CET: Computational Efficiency Trick
 		ATLAS_REGION_IDS_TAG = 'ATLAS_REGION_IDS';
-		ATLAS_REGION_IDS_CATEGORY = Category.DATA;
-		ATLAS_REGION_IDS_FORMAT = Format.STRINGLIST;
+		ATLAS_REGION_IDS_CATEGORY = 4;
+		ATLAS_REGION_IDS_FORMAT = 3;
 		
-		ATLAS_LABELS = ConcreteElement.getPropNumber() + 3;
+		ATLAS_LABELS = 11; %CET: Computational Efficiency Trick
 		ATLAS_LABELS_TAG = 'ATLAS_LABELS';
-		ATLAS_LABELS_CATEGORY = Category.DATA;
-		ATLAS_LABELS_FORMAT = Format.CELL;
+		ATLAS_LABELS_CATEGORY = 4;
+		ATLAS_LABELS_FORMAT = 16;
 		
-		MAPPING_PATH_DICT = ConcreteElement.getPropNumber() + 4;
+		MAPPING_PATH_DICT = 12; %CET: Computational Efficiency Trick
 		MAPPING_PATH_DICT_TAG = 'MAPPING_PATH_DICT';
-		MAPPING_PATH_DICT_CATEGORY = Category.DATA;
-		MAPPING_PATH_DICT_FORMAT = Format.IDICT;
+		MAPPING_PATH_DICT_CATEGORY = 4;
+		MAPPING_PATH_DICT_FORMAT = 10;
 		
-		REF_REGION_LIST = ConcreteElement.getPropNumber() + 5;
+		REF_REGION_LIST = 13; %CET: Computational Efficiency Trick
 		REF_REGION_LIST_TAG = 'REF_REGION_LIST';
-		REF_REGION_LIST_CATEGORY = Category.DATA;
-		REF_REGION_LIST_FORMAT = Format.CELL;
+		REF_REGION_LIST_CATEGORY = 4;
+		REF_REGION_LIST_FORMAT = 16;
 		
-		REF_BR_DICT = ConcreteElement.getPropNumber() + 6;
+		REF_BR_DICT = 14; %CET: Computational Efficiency Trick
 		REF_BR_DICT_TAG = 'REF_BR_DICT';
-		REF_BR_DICT_CATEGORY = Category.DATA;
-		REF_BR_DICT_FORMAT = Format.IDICT;
+		REF_BR_DICT_CATEGORY = 4;
+		REF_BR_DICT_FORMAT = 10;
 		
-		ATLAS_INDEX = ConcreteElement.getPropNumber() + 7;
+		ATLAS_INDEX = 15; %CET: Computational Efficiency Trick
 		ATLAS_INDEX_TAG = 'ATLAS_INDEX';
-		ATLAS_INDEX_CATEGORY = Category.PARAMETER;
-		ATLAS_INDEX_FORMAT = Format.SCALAR;
+		ATLAS_INDEX_CATEGORY = 3;
+		ATLAS_INDEX_FORMAT = 11;
 		
-		ATLAS_PATH_DICT = ConcreteElement.getPropNumber() + 8;
+		ATLAS_PATH_DICT = 16; %CET: Computational Efficiency Trick
 		ATLAS_PATH_DICT_TAG = 'ATLAS_PATH_DICT';
-		ATLAS_PATH_DICT_CATEGORY = Category.PARAMETER;
-		ATLAS_PATH_DICT_FORMAT = Format.IDICT;
+		ATLAS_PATH_DICT_CATEGORY = 3;
+		ATLAS_PATH_DICT_FORMAT = 10;
 		
-		GR_PET = ConcreteElement.getPropNumber() + 9;
+		GR_PET = 17; %CET: Computational Efficiency Trick
 		GR_PET_TAG = 'GR_PET';
-		GR_PET_CATEGORY = Category.DATA;
-		GR_PET_FORMAT = Format.ITEM;
+		GR_PET_CATEGORY = 4;
+		GR_PET_FORMAT = 8;
 		
-		GR_T1 = ConcreteElement.getPropNumber() + 10;
+		GR_T1 = 18; %CET: Computational Efficiency Trick
 		GR_T1_TAG = 'GR_T1';
-		GR_T1_CATEGORY = Category.DATA;
-		GR_T1_FORMAT = Format.ITEM;
+		GR_T1_CATEGORY = 4;
+		GR_T1_FORMAT = 8;
 		
-		SUVR_REGION_SELECTION = ConcreteElement.getPropNumber() + 11;
+		SUVR_REGION_SELECTION = 19; %CET: Computational Efficiency Trick
 		SUVR_REGION_SELECTION_TAG = 'SUVR_REGION_SELECTION';
-		SUVR_REGION_SELECTION_CATEGORY = Category.PARAMETER;
-		SUVR_REGION_SELECTION_FORMAT = Format.IDICT;
+		SUVR_REGION_SELECTION_CATEGORY = 3;
+		SUVR_REGION_SELECTION_FORMAT = 10;
 		
-		CALC_SUBJ_SUVR = ConcreteElement.getPropNumber() + 12;
+		CALC_SUBJ_SUVR = 20; %CET: Computational Efficiency Trick
 		CALC_SUBJ_SUVR_TAG = 'CALC_SUBJ_SUVR';
-		CALC_SUBJ_SUVR_CATEGORY = Category.QUERY;
-		CALC_SUBJ_SUVR_FORMAT = Format.CELL;
+		CALC_SUBJ_SUVR_CATEGORY = 6;
+		CALC_SUBJ_SUVR_FORMAT = 16;
 		
-		GR = ConcreteElement.getPropNumber() + 13;
+		GR = 21; %CET: Computational Efficiency Trick
 		GR_TAG = 'GR';
-		GR_CATEGORY = Category.RESULT;
-		GR_FORMAT = Format.ITEM;
+		GR_CATEGORY = 5;
+		GR_FORMAT = 8;
 		
-		WAITBAR = ConcreteElement.getPropNumber() + 14;
+		WAITBAR = 22; %CET: Computational Efficiency Trick
 		WAITBAR_TAG = 'WAITBAR';
-		WAITBAR_CATEGORY = Category.GUI;
-		WAITBAR_FORMAT = Format.LOGICAL;
+		WAITBAR_CATEGORY = 9;
+		WAITBAR_FORMAT = 4;
 	end
 	methods % constructor
 		function cn = ConverterNeuroimaging2RegionalValues(varargin)
@@ -176,6 +200,29 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 			% Multiple properties can be initialized at once identifying
 			%  them with either property numbers (PROP) or tags (TAG).
 			%
+			% The list of ConverterNeuroimaging2RegionalValues properties is:
+			%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the subject ROI constructor for NIfTI.
+			%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the subject ROI constructor for NIfTI.
+			%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the subject ROI constructor for NIfTI.
+			%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the subject ROI constructor for NIfTI.
+			%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the subject ROI constructor for NIfTI.
+			%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of subject ROI constructor for NIfTI.
+			%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about subject ROI constructor for NIfTI.
+			%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
+			%  <strong>9</strong> <strong>BA</strong> 	BA (data, itemlist) is a list of brain atlases.
+			%  <strong>10</strong> <strong>ATLAS_REGION_IDS</strong> 	ATLAS_REGION_IDS (data, stringlist) is the list of region IDs for multiple atlases.
+			%  <strong>11</strong> <strong>ATLAS_LABELS</strong> 	ATLAS_LABELS (data, cell) is the list of string labels for multiple atlases.
+			%  <strong>12</strong> <strong>MAPPING_PATH_DICT</strong> 	MAPPING_PATH_DICT (data, idict) is the dictionary of paths to CSV files for region-index mappings.
+			%  <strong>13</strong> <strong>REF_REGION_LIST</strong> 	REF_REGION_LIST (data, cell) is the list containing the indices of reference regions for each atlas.
+			%  <strong>14</strong> <strong>REF_BR_DICT</strong> 	REF_BR_DICT (data, idict) contains the effective brain regions of the simulated network.
+			%  <strong>15</strong> <strong>ATLAS_INDEX</strong> 	ATLAS_INDEX (parameter, scalar) is the index of the atlas defined by the user for SUVR ROI list.
+			%  <strong>16</strong> <strong>ATLAS_PATH_DICT</strong> 	ATLAS_PATH_DICT (parameter, idict) is the dictionary containing the paths to atlas NIfTI files.
+			%  <strong>17</strong> <strong>GR_PET</strong> 	GR_PET (data, item) is the subject group, which also defines the subject class SubjectNIfTI.
+			%  <strong>18</strong> <strong>GR_T1</strong> 	GR_T1 (data, item) is the subject group, which also defines the subject class SubjectNIfTI.
+			%  <strong>19</strong> <strong>SUVR_REGION_SELECTION</strong> 	SUVR_REGION_SELECTION (parameter, idict) is the list of selected brain regions.
+			%  <strong>20</strong> <strong>CALC_SUBJ_SUVR</strong> 	CALC_SUBJ_SUVR (query, cell) generates SUVR vectors per subject using subject PET and T1 data.
+			%  <strong>21</strong> <strong>GR</strong> 	GR (result, item) is a group of subjects with SUVR analysis data.
+			%  <strong>22</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) determines whether to show the waitbar.
 			%
 			% See also Category, Format.
 			
@@ -228,7 +275,7 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 			%
 			% See also subclasses.
 			
-			subclass_list = subclasses('ConverterNeuroimaging2RegionalValues', [], [], true);
+			subclass_list = { 'ConverterNeuroimaging2RegionalValues' }; %CET: Computational Efficiency Trick
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of converter of neuroimaging subject.
@@ -249,78 +296,30 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 			%
 			% See also getPropNumber, Category.
 			
+			%CET: Computational Efficiency Trick
+			
 			if nargin == 0
-				prop_list = [ ...
-					ConcreteElement.getProps() ...
-						ConverterNeuroimaging2RegionalValues.BA ...
-						ConverterNeuroimaging2RegionalValues.ATLAS_REGION_IDS ...
-						ConverterNeuroimaging2RegionalValues.ATLAS_LABELS ...
-						ConverterNeuroimaging2RegionalValues.MAPPING_PATH_DICT ...
-						ConverterNeuroimaging2RegionalValues.REF_REGION_LIST ...
-						ConverterNeuroimaging2RegionalValues.REF_BR_DICT ...
-						ConverterNeuroimaging2RegionalValues.ATLAS_INDEX ...
-						ConverterNeuroimaging2RegionalValues.ATLAS_PATH_DICT ...
-						ConverterNeuroimaging2RegionalValues.GR_PET ...
-						ConverterNeuroimaging2RegionalValues.GR_T1 ...
-						ConverterNeuroimaging2RegionalValues.SUVR_REGION_SELECTION ...
-						ConverterNeuroimaging2RegionalValues.CALC_SUBJ_SUVR ...
-						ConverterNeuroimaging2RegionalValues.GR ...
-						ConverterNeuroimaging2RegionalValues.WAITBAR ...
-						];
+				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22];
 				return
 			end
 			
 			switch category
-				case Category.CONSTANT
-					prop_list = [ ...
-						ConcreteElement.getProps(Category.CONSTANT) ...
-						];
-				case Category.METADATA
-					prop_list = [ ...
-						ConcreteElement.getProps(Category.METADATA) ...
-						];
-				case Category.PARAMETER
-					prop_list = [ ...
-						ConcreteElement.getProps(Category.PARAMETER) ...
-						ConverterNeuroimaging2RegionalValues.ATLAS_INDEX ...
-						ConverterNeuroimaging2RegionalValues.ATLAS_PATH_DICT ...
-						ConverterNeuroimaging2RegionalValues.SUVR_REGION_SELECTION ...
-						];
-				case Category.DATA
-					prop_list = [ ...
-						ConcreteElement.getProps(Category.DATA) ...
-						ConverterNeuroimaging2RegionalValues.BA ...
-						ConverterNeuroimaging2RegionalValues.ATLAS_REGION_IDS ...
-						ConverterNeuroimaging2RegionalValues.ATLAS_LABELS ...
-						ConverterNeuroimaging2RegionalValues.MAPPING_PATH_DICT ...
-						ConverterNeuroimaging2RegionalValues.REF_REGION_LIST ...
-						ConverterNeuroimaging2RegionalValues.REF_BR_DICT ...
-						ConverterNeuroimaging2RegionalValues.GR_PET ...
-						ConverterNeuroimaging2RegionalValues.GR_T1 ...
-						];
-				case Category.RESULT
-					prop_list = [
-						ConcreteElement.getProps(Category.RESULT) ...
-						ConverterNeuroimaging2RegionalValues.GR ...
-						];
-				case Category.QUERY
-					prop_list = [ ...
-						ConcreteElement.getProps(Category.QUERY) ...
-						ConverterNeuroimaging2RegionalValues.CALC_SUBJ_SUVR ...
-						];
-				case Category.EVANESCENT
-					prop_list = [ ...
-						ConcreteElement.getProps(Category.EVANESCENT) ...
-						];
-				case Category.FIGURE
-					prop_list = [ ...
-						ConcreteElement.getProps(Category.FIGURE) ...
-						];
-				case Category.GUI
-					prop_list = [ ...
-						ConcreteElement.getProps(Category.GUI) ...
-						ConverterNeuroimaging2RegionalValues.WAITBAR ...
-						];
+				case 1 % Category.CONSTANT
+					prop_list = [1 2 3];
+				case 2 % Category.METADATA
+					prop_list = [6 7];
+				case 3 % Category.PARAMETER
+					prop_list = [4 15 16 19];
+				case 4 % Category.DATA
+					prop_list = [5 9 10 11 12 13 14 17 18];
+				case 5 % Category.RESULT
+					prop_list = 21;
+				case 6 % Category.QUERY
+					prop_list = [8 20];
+				case 9 % Category.GUI
+					prop_list = 22;
+				otherwise
+					prop_list = [];
 			end
 		end
 		function prop_number = getPropNumber(varargin)
@@ -341,7 +340,31 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 			%
 			% See also getProps, Category.
 			
-			prop_number = numel(ConverterNeuroimaging2RegionalValues.getProps(varargin{:}));
+			%CET: Computational Efficiency Trick
+			
+			if nargin == 0
+				prop_number = 22;
+				return
+			end
+			
+			switch varargin{1} % category = varargin{1}
+				case 1 % Category.CONSTANT
+					prop_number = 3;
+				case 2 % Category.METADATA
+					prop_number = 2;
+				case 3 % Category.PARAMETER
+					prop_number = 4;
+				case 4 % Category.DATA
+					prop_number = 9;
+				case 5 % Category.RESULT
+					prop_number = 1;
+				case 6 % Category.QUERY
+					prop_number = 2;
+				case 9 % Category.GUI
+					prop_number = 1;
+				otherwise
+					prop_number = 0;
+			end
 		end
 		function check_out = existsProp(prop)
 			%EXISTSPROP checks whether property exists in converter of neuroimaging subject/error.
@@ -369,14 +392,14 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 			%
 			% See also getProps, existsTag.
 			
-			check = any(prop == ConverterNeuroimaging2RegionalValues.getProps());
+			check = prop >= 1 && prop <= 22 && round(prop) == prop; %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':ConverterNeuroimaging2RegionalValues:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':ConverterNeuroimaging2RegionalValues:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':ConverterNeuroimaging2RegionalValues:' 'WrongInput'], ...
+					['BRAPH2' ':ConverterNeuroimaging2RegionalValues:' 'WrongInput' '\n' ...
 					'The value ' tostring(prop, 100, ' ...') ' is not a valid prop for ConverterNeuroimaging2RegionalValues.'] ...
 					)
 			end
@@ -407,15 +430,14 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 			%
 			% See also getProps, existsTag.
 			
-			converterneuroimaging2regionalvalues_tag_list = cellfun(@(x) ConverterNeuroimaging2RegionalValues.getPropTag(x), num2cell(ConverterNeuroimaging2RegionalValues.getProps()), 'UniformOutput', false);
-			check = any(strcmp(tag, converterneuroimaging2regionalvalues_tag_list));
+			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'BA'  'ATLAS_REGION_IDS'  'ATLAS_LABELS'  'MAPPING_PATH_DICT'  'REF_REGION_LIST'  'REF_BR_DICT'  'ATLAS_INDEX'  'ATLAS_PATH_DICT'  'GR_PET'  'GR_T1'  'SUVR_REGION_SELECTION'  'CALC_SUBJ_SUVR'  'GR'  'WAITBAR' })); %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':ConverterNeuroimaging2RegionalValues:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':ConverterNeuroimaging2RegionalValues:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':ConverterNeuroimaging2RegionalValues:' 'WrongInput'], ...
+					['BRAPH2' ':ConverterNeuroimaging2RegionalValues:' 'WrongInput' '\n' ...
 					'The value ' tag ' is not a valid tag for ConverterNeuroimaging2RegionalValues.'] ...
 					)
 			end
@@ -441,8 +463,7 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 			%  getPropSettings, getPropDefault, checkProp.
 			
 			if ischar(pointer)
-				converterneuroimaging2regionalvalues_tag_list = cellfun(@(x) ConverterNeuroimaging2RegionalValues.getPropTag(x), num2cell(ConverterNeuroimaging2RegionalValues.getProps()), 'UniformOutput', false);
-				prop = find(strcmp(pointer, converterneuroimaging2regionalvalues_tag_list)); % tag = pointer
+				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'BA'  'ATLAS_REGION_IDS'  'ATLAS_LABELS'  'MAPPING_PATH_DICT'  'REF_REGION_LIST'  'REF_BR_DICT'  'ATLAS_INDEX'  'ATLAS_PATH_DICT'  'GR_PET'  'GR_T1'  'SUVR_REGION_SELECTION'  'CALC_SUBJ_SUVR'  'GR'  'WAITBAR' })); % tag = pointer %CET: Computational Efficiency Trick
 			else % numeric
 				prop = pointer;
 			end
@@ -470,40 +491,9 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 			if ischar(pointer)
 				tag = pointer;
 			else % numeric
-				prop = pointer;
-				
-				switch prop
-					case ConverterNeuroimaging2RegionalValues.BA
-						tag = ConverterNeuroimaging2RegionalValues.BA_TAG;
-					case ConverterNeuroimaging2RegionalValues.ATLAS_REGION_IDS
-						tag = ConverterNeuroimaging2RegionalValues.ATLAS_REGION_IDS_TAG;
-					case ConverterNeuroimaging2RegionalValues.ATLAS_LABELS
-						tag = ConverterNeuroimaging2RegionalValues.ATLAS_LABELS_TAG;
-					case ConverterNeuroimaging2RegionalValues.MAPPING_PATH_DICT
-						tag = ConverterNeuroimaging2RegionalValues.MAPPING_PATH_DICT_TAG;
-					case ConverterNeuroimaging2RegionalValues.REF_REGION_LIST
-						tag = ConverterNeuroimaging2RegionalValues.REF_REGION_LIST_TAG;
-					case ConverterNeuroimaging2RegionalValues.REF_BR_DICT
-						tag = ConverterNeuroimaging2RegionalValues.REF_BR_DICT_TAG;
-					case ConverterNeuroimaging2RegionalValues.ATLAS_INDEX
-						tag = ConverterNeuroimaging2RegionalValues.ATLAS_INDEX_TAG;
-					case ConverterNeuroimaging2RegionalValues.ATLAS_PATH_DICT
-						tag = ConverterNeuroimaging2RegionalValues.ATLAS_PATH_DICT_TAG;
-					case ConverterNeuroimaging2RegionalValues.GR_PET
-						tag = ConverterNeuroimaging2RegionalValues.GR_PET_TAG;
-					case ConverterNeuroimaging2RegionalValues.GR_T1
-						tag = ConverterNeuroimaging2RegionalValues.GR_T1_TAG;
-					case ConverterNeuroimaging2RegionalValues.SUVR_REGION_SELECTION
-						tag = ConverterNeuroimaging2RegionalValues.SUVR_REGION_SELECTION_TAG;
-					case ConverterNeuroimaging2RegionalValues.CALC_SUBJ_SUVR
-						tag = ConverterNeuroimaging2RegionalValues.CALC_SUBJ_SUVR_TAG;
-					case ConverterNeuroimaging2RegionalValues.GR
-						tag = ConverterNeuroimaging2RegionalValues.GR_TAG;
-					case ConverterNeuroimaging2RegionalValues.WAITBAR
-						tag = ConverterNeuroimaging2RegionalValues.WAITBAR_TAG;
-					otherwise
-						tag = getPropTag@ConcreteElement(prop);
-				end
+				%CET: Computational Efficiency Trick
+				converterneuroimaging2regionalvalues_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'BA'  'ATLAS_REGION_IDS'  'ATLAS_LABELS'  'MAPPING_PATH_DICT'  'REF_REGION_LIST'  'REF_BR_DICT'  'ATLAS_INDEX'  'ATLAS_PATH_DICT'  'GR_PET'  'GR_T1'  'SUVR_REGION_SELECTION'  'CALC_SUBJ_SUVR'  'GR'  'WAITBAR' };
+				tag = converterneuroimaging2regionalvalues_tag_list{pointer}; % prop = pointer
 			end
 		end
 		function prop_category = getPropCategory(pointer)
@@ -528,38 +518,9 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 			
 			prop = ConverterNeuroimaging2RegionalValues.getPropProp(pointer);
 			
-			switch prop
-				case ConverterNeuroimaging2RegionalValues.BA
-					prop_category = ConverterNeuroimaging2RegionalValues.BA_CATEGORY;
-				case ConverterNeuroimaging2RegionalValues.ATLAS_REGION_IDS
-					prop_category = ConverterNeuroimaging2RegionalValues.ATLAS_REGION_IDS_CATEGORY;
-				case ConverterNeuroimaging2RegionalValues.ATLAS_LABELS
-					prop_category = ConverterNeuroimaging2RegionalValues.ATLAS_LABELS_CATEGORY;
-				case ConverterNeuroimaging2RegionalValues.MAPPING_PATH_DICT
-					prop_category = ConverterNeuroimaging2RegionalValues.MAPPING_PATH_DICT_CATEGORY;
-				case ConverterNeuroimaging2RegionalValues.REF_REGION_LIST
-					prop_category = ConverterNeuroimaging2RegionalValues.REF_REGION_LIST_CATEGORY;
-				case ConverterNeuroimaging2RegionalValues.REF_BR_DICT
-					prop_category = ConverterNeuroimaging2RegionalValues.REF_BR_DICT_CATEGORY;
-				case ConverterNeuroimaging2RegionalValues.ATLAS_INDEX
-					prop_category = ConverterNeuroimaging2RegionalValues.ATLAS_INDEX_CATEGORY;
-				case ConverterNeuroimaging2RegionalValues.ATLAS_PATH_DICT
-					prop_category = ConverterNeuroimaging2RegionalValues.ATLAS_PATH_DICT_CATEGORY;
-				case ConverterNeuroimaging2RegionalValues.GR_PET
-					prop_category = ConverterNeuroimaging2RegionalValues.GR_PET_CATEGORY;
-				case ConverterNeuroimaging2RegionalValues.GR_T1
-					prop_category = ConverterNeuroimaging2RegionalValues.GR_T1_CATEGORY;
-				case ConverterNeuroimaging2RegionalValues.SUVR_REGION_SELECTION
-					prop_category = ConverterNeuroimaging2RegionalValues.SUVR_REGION_SELECTION_CATEGORY;
-				case ConverterNeuroimaging2RegionalValues.CALC_SUBJ_SUVR
-					prop_category = ConverterNeuroimaging2RegionalValues.CALC_SUBJ_SUVR_CATEGORY;
-				case ConverterNeuroimaging2RegionalValues.GR
-					prop_category = ConverterNeuroimaging2RegionalValues.GR_CATEGORY;
-				case ConverterNeuroimaging2RegionalValues.WAITBAR
-					prop_category = ConverterNeuroimaging2RegionalValues.WAITBAR_CATEGORY;
-				otherwise
-					prop_category = getPropCategory@ConcreteElement(prop);
-			end
+			%CET: Computational Efficiency Trick
+			converterneuroimaging2regionalvalues_category_list = { 1  1  1  3  4  2  2  6  4  4  4  4  4  4  3  3  4  4  3  6  5  9 };
+			prop_category = converterneuroimaging2regionalvalues_category_list{prop};
 		end
 		function prop_format = getPropFormat(pointer)
 			%GETPROPFORMAT returns the format of a property.
@@ -583,38 +544,9 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 			
 			prop = ConverterNeuroimaging2RegionalValues.getPropProp(pointer);
 			
-			switch prop
-				case ConverterNeuroimaging2RegionalValues.BA
-					prop_format = ConverterNeuroimaging2RegionalValues.BA_FORMAT;
-				case ConverterNeuroimaging2RegionalValues.ATLAS_REGION_IDS
-					prop_format = ConverterNeuroimaging2RegionalValues.ATLAS_REGION_IDS_FORMAT;
-				case ConverterNeuroimaging2RegionalValues.ATLAS_LABELS
-					prop_format = ConverterNeuroimaging2RegionalValues.ATLAS_LABELS_FORMAT;
-				case ConverterNeuroimaging2RegionalValues.MAPPING_PATH_DICT
-					prop_format = ConverterNeuroimaging2RegionalValues.MAPPING_PATH_DICT_FORMAT;
-				case ConverterNeuroimaging2RegionalValues.REF_REGION_LIST
-					prop_format = ConverterNeuroimaging2RegionalValues.REF_REGION_LIST_FORMAT;
-				case ConverterNeuroimaging2RegionalValues.REF_BR_DICT
-					prop_format = ConverterNeuroimaging2RegionalValues.REF_BR_DICT_FORMAT;
-				case ConverterNeuroimaging2RegionalValues.ATLAS_INDEX
-					prop_format = ConverterNeuroimaging2RegionalValues.ATLAS_INDEX_FORMAT;
-				case ConverterNeuroimaging2RegionalValues.ATLAS_PATH_DICT
-					prop_format = ConverterNeuroimaging2RegionalValues.ATLAS_PATH_DICT_FORMAT;
-				case ConverterNeuroimaging2RegionalValues.GR_PET
-					prop_format = ConverterNeuroimaging2RegionalValues.GR_PET_FORMAT;
-				case ConverterNeuroimaging2RegionalValues.GR_T1
-					prop_format = ConverterNeuroimaging2RegionalValues.GR_T1_FORMAT;
-				case ConverterNeuroimaging2RegionalValues.SUVR_REGION_SELECTION
-					prop_format = ConverterNeuroimaging2RegionalValues.SUVR_REGION_SELECTION_FORMAT;
-				case ConverterNeuroimaging2RegionalValues.CALC_SUBJ_SUVR
-					prop_format = ConverterNeuroimaging2RegionalValues.CALC_SUBJ_SUVR_FORMAT;
-				case ConverterNeuroimaging2RegionalValues.GR
-					prop_format = ConverterNeuroimaging2RegionalValues.GR_FORMAT;
-				case ConverterNeuroimaging2RegionalValues.WAITBAR
-					prop_format = ConverterNeuroimaging2RegionalValues.WAITBAR_FORMAT;
-				otherwise
-					prop_format = getPropFormat@ConcreteElement(prop);
-			end
+			%CET: Computational Efficiency Trick
+			converterneuroimaging2regionalvalues_format_list = { 2  2  2  8  2  2  2  2  9  3  16  10  16  10  11  10  8  8  10  16  8  4 };
+			prop_format = converterneuroimaging2regionalvalues_format_list{prop};
 		end
 		function prop_description = getPropDescription(pointer)
 			%GETPROPDESCRIPTION returns the description of a property.
@@ -638,52 +570,9 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 			
 			prop = ConverterNeuroimaging2RegionalValues.getPropProp(pointer);
 			
-			switch prop
-				case ConverterNeuroimaging2RegionalValues.BA
-					prop_description = 'BA (data, itemlist) is a list of brain atlases.';
-				case ConverterNeuroimaging2RegionalValues.ATLAS_REGION_IDS
-					prop_description = 'ATLAS_REGION_IDS (data, stringlist) is the list of region IDs for multiple atlases.';
-				case ConverterNeuroimaging2RegionalValues.ATLAS_LABELS
-					prop_description = 'ATLAS_LABELS (data, cell) is the list of string labels for multiple atlases.';
-				case ConverterNeuroimaging2RegionalValues.MAPPING_PATH_DICT
-					prop_description = 'MAPPING_PATH_DICT (data, idict) is the dictionary of paths to CSV files for region-index mappings.';
-				case ConverterNeuroimaging2RegionalValues.REF_REGION_LIST
-					prop_description = 'REF_REGION_LIST (data, cell) is the list containing the indices of reference regions for each atlas.';
-				case ConverterNeuroimaging2RegionalValues.REF_BR_DICT
-					prop_description = 'REF_BR_DICT (data, idict) contains the effective brain regions of the simulated network.';
-				case ConverterNeuroimaging2RegionalValues.ATLAS_INDEX
-					prop_description = 'ATLAS_INDEX (parameter, scalar) is the index of the atlas defined by the user for SUVR ROI list.';
-				case ConverterNeuroimaging2RegionalValues.ATLAS_PATH_DICT
-					prop_description = 'ATLAS_PATH_DICT (parameter, idict) is the dictionary containing the paths to atlas NIfTI files.';
-				case ConverterNeuroimaging2RegionalValues.GR_PET
-					prop_description = 'GR_PET (data, item) is the subject group, which also defines the subject class SubjectNIfTI.';
-				case ConverterNeuroimaging2RegionalValues.GR_T1
-					prop_description = 'GR_T1 (data, item) is the subject group, which also defines the subject class SubjectNIfTI.';
-				case ConverterNeuroimaging2RegionalValues.SUVR_REGION_SELECTION
-					prop_description = 'SUVR_REGION_SELECTION (parameter, idict) is the list of selected brain regions.';
-				case ConverterNeuroimaging2RegionalValues.CALC_SUBJ_SUVR
-					prop_description = 'CALC_SUBJ_SUVR (query, cell) generates SUVR vectors per subject using subject PET and T1 data.';
-				case ConverterNeuroimaging2RegionalValues.GR
-					prop_description = 'GR (result, item) is a group of subjects with SUVR analysis data.';
-				case ConverterNeuroimaging2RegionalValues.WAITBAR
-					prop_description = 'WAITBAR (gui, logical) determines whether to show the waitbar.';
-				case ConverterNeuroimaging2RegionalValues.ELCLASS
-					prop_description = 'ELCLASS (constant, string) is the class of the subject ROI constructor for NIfTI.';
-				case ConverterNeuroimaging2RegionalValues.NAME
-					prop_description = 'NAME (constant, string) is the name of the subject ROI constructor for NIfTI.';
-				case ConverterNeuroimaging2RegionalValues.DESCRIPTION
-					prop_description = 'DESCRIPTION (constant, string) is the description of the subject ROI constructor for NIfTI.';
-				case ConverterNeuroimaging2RegionalValues.TEMPLATE
-					prop_description = 'TEMPLATE (parameter, item) is the template of the subject ROI constructor for NIfTI.';
-				case ConverterNeuroimaging2RegionalValues.ID
-					prop_description = 'ID (data, string) is a few-letter code for the subject ROI constructor for NIfTI.';
-				case ConverterNeuroimaging2RegionalValues.LABEL
-					prop_description = 'LABEL (metadata, string) is an extended label of subject ROI constructor for NIfTI.';
-				case ConverterNeuroimaging2RegionalValues.NOTES
-					prop_description = 'NOTES (metadata, string) are some specific notes about subject ROI constructor for NIfTI.';
-				otherwise
-					prop_description = getPropDescription@ConcreteElement(prop);
-			end
+			%CET: Computational Efficiency Trick
+			converterneuroimaging2regionalvalues_description_list = { 'ELCLASS (constant, string) is the class of the subject ROI constructor for NIfTI.'  'NAME (constant, string) is the name of the subject ROI constructor for NIfTI.'  'DESCRIPTION (constant, string) is the description of the subject ROI constructor for NIfTI.'  'TEMPLATE (parameter, item) is the template of the subject ROI constructor for NIfTI.'  'ID (data, string) is a few-letter code for the subject ROI constructor for NIfTI.'  'LABEL (metadata, string) is an extended label of subject ROI constructor for NIfTI.'  'NOTES (metadata, string) are some specific notes about subject ROI constructor for NIfTI.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'BA (data, itemlist) is a list of brain atlases.'  'ATLAS_REGION_IDS (data, stringlist) is the list of region IDs for multiple atlases.'  'ATLAS_LABELS (data, cell) is the list of string labels for multiple atlases.'  'MAPPING_PATH_DICT (data, idict) is the dictionary of paths to CSV files for region-index mappings.'  'REF_REGION_LIST (data, cell) is the list containing the indices of reference regions for each atlas.'  'REF_BR_DICT (data, idict) contains the effective brain regions of the simulated network.'  'ATLAS_INDEX (parameter, scalar) is the index of the atlas defined by the user for SUVR ROI list.'  'ATLAS_PATH_DICT (parameter, idict) is the dictionary containing the paths to atlas NIfTI files.'  'GR_PET (data, item) is the subject group, which also defines the subject class SubjectNIfTI.'  'GR_T1 (data, item) is the subject group, which also defines the subject class SubjectNIfTI.'  'SUVR_REGION_SELECTION (parameter, idict) is the list of selected brain regions.'  'CALC_SUBJ_SUVR (query, cell) generates SUVR vectors per subject using subject PET and T1 data.'  'GR (result, item) is a group of subjects with SUVR analysis data.'  'WAITBAR (gui, logical) determines whether to show the waitbar.' };
+			prop_description = converterneuroimaging2regionalvalues_description_list{prop};
 		end
 		function prop_settings = getPropSettings(pointer)
 			%GETPROPSETTINGS returns the settings of a property.
@@ -707,36 +596,36 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 			
 			prop = ConverterNeuroimaging2RegionalValues.getPropProp(pointer);
 			
-			switch prop
-				case ConverterNeuroimaging2RegionalValues.BA
+			switch prop %CET: Computational Efficiency Trick
+				case 9 % ConverterNeuroimaging2RegionalValues.BA
 					prop_settings = 'BrainAtlas';
-				case ConverterNeuroimaging2RegionalValues.ATLAS_REGION_IDS
-					prop_settings = Format.getFormatSettings(Format.STRINGLIST);
-				case ConverterNeuroimaging2RegionalValues.ATLAS_LABELS
-					prop_settings = Format.getFormatSettings(Format.CELL);
-				case ConverterNeuroimaging2RegionalValues.MAPPING_PATH_DICT
+				case 10 % ConverterNeuroimaging2RegionalValues.ATLAS_REGION_IDS
+					prop_settings = Format.getFormatSettings(3);
+				case 11 % ConverterNeuroimaging2RegionalValues.ATLAS_LABELS
+					prop_settings = Format.getFormatSettings(16);
+				case 12 % ConverterNeuroimaging2RegionalValues.MAPPING_PATH_DICT
 					prop_settings = 'FILE_PATH';
-				case ConverterNeuroimaging2RegionalValues.REF_REGION_LIST
-					prop_settings = Format.getFormatSettings(Format.CELL);
-				case ConverterNeuroimaging2RegionalValues.REF_BR_DICT
+				case 13 % ConverterNeuroimaging2RegionalValues.REF_REGION_LIST
+					prop_settings = Format.getFormatSettings(16);
+				case 14 % ConverterNeuroimaging2RegionalValues.REF_BR_DICT
 					prop_settings = 'BrainRegion';
-				case ConverterNeuroimaging2RegionalValues.ATLAS_INDEX
-					prop_settings = Format.getFormatSettings(Format.SCALAR);
-				case ConverterNeuroimaging2RegionalValues.ATLAS_PATH_DICT
+				case 15 % ConverterNeuroimaging2RegionalValues.ATLAS_INDEX
+					prop_settings = Format.getFormatSettings(11);
+				case 16 % ConverterNeuroimaging2RegionalValues.ATLAS_PATH_DICT
 					prop_settings = 'FILE_PATH';
-				case ConverterNeuroimaging2RegionalValues.GR_PET
-					prop_settings = Format.getFormatSettings(Format.ITEM);
-				case ConverterNeuroimaging2RegionalValues.GR_T1
-					prop_settings = Format.getFormatSettings(Format.ITEM);
-				case ConverterNeuroimaging2RegionalValues.SUVR_REGION_SELECTION
+				case 17 % ConverterNeuroimaging2RegionalValues.GR_PET
+					prop_settings = Format.getFormatSettings(8);
+				case 18 % ConverterNeuroimaging2RegionalValues.GR_T1
+					prop_settings = Format.getFormatSettings(8);
+				case 19 % ConverterNeuroimaging2RegionalValues.SUVR_REGION_SELECTION
 					prop_settings = 'BrainRegion';
-				case ConverterNeuroimaging2RegionalValues.CALC_SUBJ_SUVR
-					prop_settings = Format.getFormatSettings(Format.CELL);
-				case ConverterNeuroimaging2RegionalValues.GR
-					prop_settings = Format.getFormatSettings(Format.ITEM);
-				case ConverterNeuroimaging2RegionalValues.WAITBAR
-					prop_settings = Format.getFormatSettings(Format.LOGICAL);
-				case ConverterNeuroimaging2RegionalValues.TEMPLATE
+				case 20 % ConverterNeuroimaging2RegionalValues.CALC_SUBJ_SUVR
+					prop_settings = Format.getFormatSettings(16);
+				case 21 % ConverterNeuroimaging2RegionalValues.GR
+					prop_settings = Format.getFormatSettings(8);
+				case 22 % ConverterNeuroimaging2RegionalValues.WAITBAR
+					prop_settings = Format.getFormatSettings(4);
+				case 4 % ConverterNeuroimaging2RegionalValues.TEMPLATE
 					prop_settings = 'SUVRConstructor';
 				otherwise
 					prop_settings = getPropSettings@ConcreteElement(prop);
@@ -764,48 +653,48 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 			
 			prop = ConverterNeuroimaging2RegionalValues.getPropProp(pointer);
 			
-			switch prop
-				case ConverterNeuroimaging2RegionalValues.BA
-					prop_default = Format.getFormatDefault(Format.ITEMLIST, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
-				case ConverterNeuroimaging2RegionalValues.ATLAS_REGION_IDS
+			switch prop %CET: Computational Efficiency Trick
+				case 9 % ConverterNeuroimaging2RegionalValues.BA
+					prop_default = Format.getFormatDefault(9, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
+				case 10 % ConverterNeuroimaging2RegionalValues.ATLAS_REGION_IDS
 					prop_default = {} % Default to an empty cell array;
-				case ConverterNeuroimaging2RegionalValues.ATLAS_LABELS
+				case 11 % ConverterNeuroimaging2RegionalValues.ATLAS_LABELS
 					prop_default = {} % Default to an empty cell array;
-				case ConverterNeuroimaging2RegionalValues.MAPPING_PATH_DICT
+				case 12 % ConverterNeuroimaging2RegionalValues.MAPPING_PATH_DICT
 					prop_default = IndexedDictionary('IT_CLASS', 'FILE_PATH');
-				case ConverterNeuroimaging2RegionalValues.REF_REGION_LIST
+				case 13 % ConverterNeuroimaging2RegionalValues.REF_REGION_LIST
 					prop_default = {};
-				case ConverterNeuroimaging2RegionalValues.REF_BR_DICT
-					prop_default = Format.getFormatDefault(Format.IDICT, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
-				case ConverterNeuroimaging2RegionalValues.ATLAS_INDEX
+				case 14 % ConverterNeuroimaging2RegionalValues.REF_BR_DICT
+					prop_default = Format.getFormatDefault(10, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
+				case 15 % ConverterNeuroimaging2RegionalValues.ATLAS_INDEX
 					prop_default = 1;;
-				case ConverterNeuroimaging2RegionalValues.ATLAS_PATH_DICT
+				case 16 % ConverterNeuroimaging2RegionalValues.ATLAS_PATH_DICT
 					prop_default = IndexedDictionary('IT_CLASS', 'FILE_PATH');
-				case ConverterNeuroimaging2RegionalValues.GR_PET
+				case 17 % ConverterNeuroimaging2RegionalValues.GR_PET
 					prop_default = Group('SUB_CLASS', 'SubjectNIfTI');
-				case ConverterNeuroimaging2RegionalValues.GR_T1
+				case 18 % ConverterNeuroimaging2RegionalValues.GR_T1
 					prop_default = Group('SUB_CLASS', 'SubjectNIfTI');
-				case ConverterNeuroimaging2RegionalValues.SUVR_REGION_SELECTION
-					prop_default = Format.getFormatDefault(Format.IDICT, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
-				case ConverterNeuroimaging2RegionalValues.CALC_SUBJ_SUVR
-					prop_default = Format.getFormatDefault(Format.CELL, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
-				case ConverterNeuroimaging2RegionalValues.GR
+				case 19 % ConverterNeuroimaging2RegionalValues.SUVR_REGION_SELECTION
+					prop_default = Format.getFormatDefault(10, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
+				case 20 % ConverterNeuroimaging2RegionalValues.CALC_SUBJ_SUVR
+					prop_default = Format.getFormatDefault(16, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
+				case 21 % ConverterNeuroimaging2RegionalValues.GR
 					prop_default = Group('SUB_CLASS', 'SubjectST', 'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectST'));
-				case ConverterNeuroimaging2RegionalValues.WAITBAR
+				case 22 % ConverterNeuroimaging2RegionalValues.WAITBAR
 					prop_default = true;
-				case ConverterNeuroimaging2RegionalValues.ELCLASS
+				case 1 % ConverterNeuroimaging2RegionalValues.ELCLASS
 					prop_default = 'ConverterNeuroimaging2RegionalValues';
-				case ConverterNeuroimaging2RegionalValues.NAME
+				case 2 % ConverterNeuroimaging2RegionalValues.NAME
 					prop_default = 'SUVR Constructor';
-				case ConverterNeuroimaging2RegionalValues.DESCRIPTION
+				case 3 % ConverterNeuroimaging2RegionalValues.DESCRIPTION
 					prop_default = 'SUVRConstructor calculates a group of subjects mean value of ROI from imaging data from a series of NIfTI files.';
-				case ConverterNeuroimaging2RegionalValues.TEMPLATE
-					prop_default = Format.getFormatDefault(Format.ITEM, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
-				case ConverterNeuroimaging2RegionalValues.ID
+				case 4 % ConverterNeuroimaging2RegionalValues.TEMPLATE
+					prop_default = Format.getFormatDefault(8, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
+				case 5 % ConverterNeuroimaging2RegionalValues.ID
 					prop_default = 'SUVRConstructor ID';
-				case ConverterNeuroimaging2RegionalValues.LABEL
+				case 6 % ConverterNeuroimaging2RegionalValues.LABEL
 					prop_default = 'SUVRConstructor label';
-				case ConverterNeuroimaging2RegionalValues.NOTES
+				case 7 % ConverterNeuroimaging2RegionalValues.NOTES
 					prop_default = 'SUVRConstructor notes';
 				otherwise
 					prop_default = getPropDefault@ConcreteElement(prop);
@@ -852,15 +741,15 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 			% 
 			% CN.CHECKPROP(POINTER, VALUE) throws an error if VALUE is
 			%  NOT an acceptable value for the format of the property POINTER.
-			%  Error id: €BRAPH2.STR€:ConverterNeuroimaging2RegionalValues:€BRAPH2.WRONG_INPUT€
+			%  Error id: BRAPH2:ConverterNeuroimaging2RegionalValues:WrongInput
 			% 
 			% Alternative forms to call this method are (POINTER = PROP or TAG):
 			%  CN.CHECKPROP(POINTER, VALUE) throws error if VALUE has not a valid format for PROP of CN.
-			%   Error id: €BRAPH2.STR€:ConverterNeuroimaging2RegionalValues:€BRAPH2.WRONG_INPUT€
+			%   Error id: BRAPH2:ConverterNeuroimaging2RegionalValues:WrongInput
 			%  Element.CHECKPROP(ConverterNeuroimaging2RegionalValues, PROP, VALUE) throws error if VALUE has not a valid format for PROP of ConverterNeuroimaging2RegionalValues.
-			%   Error id: €BRAPH2.STR€:ConverterNeuroimaging2RegionalValues:€BRAPH2.WRONG_INPUT€
+			%   Error id: BRAPH2:ConverterNeuroimaging2RegionalValues:WrongInput
 			%  CN.CHECKPROP(ConverterNeuroimaging2RegionalValues, PROP, VALUE) throws error if VALUE has not a valid format for PROP of ConverterNeuroimaging2RegionalValues.
-			%   Error id: €BRAPH2.STR€:ConverterNeuroimaging2RegionalValues:€BRAPH2.WRONG_INPUT€]
+			%   Error id: BRAPH2:ConverterNeuroimaging2RegionalValues:WrongInput]
 			% 
 			% Note that the Element.CHECKPROP(CN) and Element.CHECKPROP('ConverterNeuroimaging2RegionalValues')
 			%  are less computationally efficient.
@@ -871,38 +760,38 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 			prop = ConverterNeuroimaging2RegionalValues.getPropProp(pointer);
 			
 			switch prop
-				case ConverterNeuroimaging2RegionalValues.BA % __ConverterNeuroimaging2RegionalValues.BA__
-					check = Format.checkFormat(Format.ITEMLIST, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
-				case ConverterNeuroimaging2RegionalValues.ATLAS_REGION_IDS % __ConverterNeuroimaging2RegionalValues.ATLAS_REGION_IDS__
-					check = Format.checkFormat(Format.STRINGLIST, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
-				case ConverterNeuroimaging2RegionalValues.ATLAS_LABELS % __ConverterNeuroimaging2RegionalValues.ATLAS_LABELS__
-					check = Format.checkFormat(Format.CELL, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
-				case ConverterNeuroimaging2RegionalValues.MAPPING_PATH_DICT % __ConverterNeuroimaging2RegionalValues.MAPPING_PATH_DICT__
-					check = Format.checkFormat(Format.IDICT, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
-				case ConverterNeuroimaging2RegionalValues.REF_REGION_LIST % __ConverterNeuroimaging2RegionalValues.REF_REGION_LIST__
-					check = Format.checkFormat(Format.CELL, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
-				case ConverterNeuroimaging2RegionalValues.REF_BR_DICT % __ConverterNeuroimaging2RegionalValues.REF_BR_DICT__
-					check = Format.checkFormat(Format.IDICT, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
-				case ConverterNeuroimaging2RegionalValues.ATLAS_INDEX % __ConverterNeuroimaging2RegionalValues.ATLAS_INDEX__
-					check = Format.checkFormat(Format.SCALAR, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
-				case ConverterNeuroimaging2RegionalValues.ATLAS_PATH_DICT % __ConverterNeuroimaging2RegionalValues.ATLAS_PATH_DICT__
-					check = Format.checkFormat(Format.IDICT, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
-				case ConverterNeuroimaging2RegionalValues.GR_PET % __ConverterNeuroimaging2RegionalValues.GR_PET__
-					check = Format.checkFormat(Format.ITEM, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
-				case ConverterNeuroimaging2RegionalValues.GR_T1 % __ConverterNeuroimaging2RegionalValues.GR_T1__
-					check = Format.checkFormat(Format.ITEM, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
-				case ConverterNeuroimaging2RegionalValues.SUVR_REGION_SELECTION % __ConverterNeuroimaging2RegionalValues.SUVR_REGION_SELECTION__
-					check = Format.checkFormat(Format.IDICT, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
-				case ConverterNeuroimaging2RegionalValues.CALC_SUBJ_SUVR % __ConverterNeuroimaging2RegionalValues.CALC_SUBJ_SUVR__
-					check = Format.checkFormat(Format.CELL, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
-				case ConverterNeuroimaging2RegionalValues.GR % __ConverterNeuroimaging2RegionalValues.GR__
-					check = Format.checkFormat(Format.ITEM, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
-				case ConverterNeuroimaging2RegionalValues.WAITBAR % __ConverterNeuroimaging2RegionalValues.WAITBAR__
-					check = Format.checkFormat(Format.LOGICAL, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
-				case ConverterNeuroimaging2RegionalValues.TEMPLATE % __ConverterNeuroimaging2RegionalValues.TEMPLATE__
-					check = Format.checkFormat(Format.ITEM, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
+				case 9 % ConverterNeuroimaging2RegionalValues.BA
+					check = Format.checkFormat(9, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
+				case 10 % ConverterNeuroimaging2RegionalValues.ATLAS_REGION_IDS
+					check = Format.checkFormat(3, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
+				case 11 % ConverterNeuroimaging2RegionalValues.ATLAS_LABELS
+					check = Format.checkFormat(16, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
+				case 12 % ConverterNeuroimaging2RegionalValues.MAPPING_PATH_DICT
+					check = Format.checkFormat(10, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
+				case 13 % ConverterNeuroimaging2RegionalValues.REF_REGION_LIST
+					check = Format.checkFormat(16, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
+				case 14 % ConverterNeuroimaging2RegionalValues.REF_BR_DICT
+					check = Format.checkFormat(10, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
+				case 15 % ConverterNeuroimaging2RegionalValues.ATLAS_INDEX
+					check = Format.checkFormat(11, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
+				case 16 % ConverterNeuroimaging2RegionalValues.ATLAS_PATH_DICT
+					check = Format.checkFormat(10, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
+				case 17 % ConverterNeuroimaging2RegionalValues.GR_PET
+					check = Format.checkFormat(8, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
+				case 18 % ConverterNeuroimaging2RegionalValues.GR_T1
+					check = Format.checkFormat(8, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
+				case 19 % ConverterNeuroimaging2RegionalValues.SUVR_REGION_SELECTION
+					check = Format.checkFormat(10, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
+				case 20 % ConverterNeuroimaging2RegionalValues.CALC_SUBJ_SUVR
+					check = Format.checkFormat(16, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
+				case 21 % ConverterNeuroimaging2RegionalValues.GR
+					check = Format.checkFormat(8, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
+				case 22 % ConverterNeuroimaging2RegionalValues.WAITBAR
+					check = Format.checkFormat(4, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
+				case 4 % ConverterNeuroimaging2RegionalValues.TEMPLATE
+					check = Format.checkFormat(8, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
 				otherwise
-					if prop <= ConcreteElement.getPropNumber()
+					if prop <= 8
 						check = checkProp@ConcreteElement(prop, value);
 					end
 			end
@@ -911,8 +800,8 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 				prop_check = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':ConverterNeuroimaging2RegionalValues:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':ConverterNeuroimaging2RegionalValues:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':ConverterNeuroimaging2RegionalValues:' 'WrongInput'], ...
+					['BRAPH2' ':ConverterNeuroimaging2RegionalValues:' 'WrongInput' '\n' ...
 					'The value ' tostring(value, 100, ' ...') ' is not a valid property ' ConverterNeuroimaging2RegionalValues.getPropTag(prop) ' (' ConverterNeuroimaging2RegionalValues.getFormatTag(ConverterNeuroimaging2RegionalValues.getPropFormat(prop)) ').'] ...
 					)
 			end
@@ -932,7 +821,7 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 			%  checkValue.
 			
 			switch prop
-				case ConverterNeuroimaging2RegionalValues.MAPPING_PATH_DICT % __ConverterNeuroimaging2RegionalValues.MAPPING_PATH_DICT__
+				case 12 % ConverterNeuroimaging2RegionalValues.MAPPING_PATH_DICT
 					if roic.get('MAPPING_PATH_DICT').get('LENGTH') > 0
 					    mapping_files = roic.get('MAPPING_PATH_DICT').get('IT_LIST');
 					    atlas_region_ids = cell(1, length(mapping_files));
@@ -975,7 +864,7 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 					    roic.set('ATLAS_LABELS', all_atlas_labels);
 					end
 					
-				case ConverterNeuroimaging2RegionalValues.REF_REGION_LIST % __ConverterNeuroimaging2RegionalValues.REF_REGION_LIST__
+				case 13 % ConverterNeuroimaging2RegionalValues.REF_REGION_LIST
 					if ~isempty(roic.get('REF_REGION_LIST'))
 					    ba_list = roic.get('BA');
 					    ref_region_list = roic.get('REF_REGION_LIST');
@@ -1011,7 +900,7 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 					%     roic.set('REF_REGION_LIST', {});
 					end
 					
-				case ConverterNeuroimaging2RegionalValues.REF_BR_DICT % __ConverterNeuroimaging2RegionalValues.REF_BR_DICT__
+				case 14 % ConverterNeuroimaging2RegionalValues.REF_BR_DICT
 					Ref_region_list = roic.get('REF_REGION_LIST');
 					selected_br = roic.get('REF_BR_DICT').get('IT_LIST'); % List of selected BrainRegion objects
 					ba_list = roic.get('BA');
@@ -1036,7 +925,7 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 					    roic.set('REF_REGION_LIST', ref_region_list);
 					end
 					
-				case ConverterNeuroimaging2RegionalValues.ATLAS_INDEX % __ConverterNeuroimaging2RegionalValues.ATLAS_INDEX__
+				case 15 % ConverterNeuroimaging2RegionalValues.ATLAS_INDEX
 					ba_list = roic.get('BA'); % Ensure brain atlas is obtained correctly
 					if isempty(ba_list)
 					    br = BrainRegion('ID', 'SingleRegion');
@@ -1050,7 +939,7 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 					end
 					
 				otherwise
-					if prop <= ConcreteElement.getPropNumber()
+					if prop <= 8
 						postset@ConcreteElement(cn, prop);
 					end
 			end
@@ -1061,19 +950,19 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 			%CALCULATEVALUE calculates the value of a property.
 			%
 			% VALUE = CALCULATEVALUE(EL, PROP) calculates the value of the property
-			%  PROP. It works only with properties with Category.RESULT,
-			%  Category.QUERY, and Category.EVANESCENT. By default this function
+			%  PROP. It works only with properties with 5,
+			%  6, and 7. By default this function
 			%  returns the default value for the prop and should be implemented in the
 			%  subclasses of Element when needed.
 			%
 			% VALUE = CALCULATEVALUE(EL, PROP, VARARGIN) works with properties with
-			%  Category.QUERY.
+			%  6.
 			%
 			% See also getPropDefaultConditioned, conditioning, preset, checkProp,
 			%  postset, postprocessing, checkValue.
 			
 			switch prop
-				case ConverterNeuroimaging2RegionalValues.CALC_SUBJ_SUVR % __ConverterNeuroimaging2RegionalValues.CALC_SUBJ_SUVR__
+				case 20 % ConverterNeuroimaging2RegionalValues.CALC_SUBJ_SUVR
 					if isempty(varargin)
 					    value = {};
 					    return
@@ -1129,8 +1018,8 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 					
 					value = roi';
 					
-				case ConverterNeuroimaging2RegionalValues.GR % __ConverterNeuroimaging2RegionalValues.GR__
-					rng_settings_ = rng(); rng(cn.getPropSeed(ConverterNeuroimaging2RegionalValues.GR), 'twister')
+				case 21 % ConverterNeuroimaging2RegionalValues.GR
+					rng_settings_ = rng(); rng(cn.getPropSeed(21), 'twister')
 					
 					% Create empty Group
 					gr_suvr = Group( ...
@@ -1222,7 +1111,7 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 					rng(rng_settings_)
 					
 				otherwise
-					if prop <= ConcreteElement.getPropNumber()
+					if prop <= 8
 						value = calculateValue@ConcreteElement(cn, prop, varargin{:});
 					else
 						value = calculateValue@Element(cn, prop, varargin{:});
@@ -1248,7 +1137,7 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 			%  PanelPropString, PanelPropStringList.
 			
 			switch prop
-				case ConverterNeuroimaging2RegionalValues.REF_BR_DICT % __ConverterNeuroimaging2RegionalValues.REF_BR_DICT__
+				case 14 % ConverterNeuroimaging2RegionalValues.REF_BR_DICT
 					pr = SUVRConstructorPP_BR_DICT('EL', roic, 'PROP', SUVRConstructor.REF_BR_DICT, ...
 					    'WAITBAR', roic.getCallback('WAITBAR'), ...
 					    varargin{:});
@@ -1258,7 +1147,7 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 					% %% ¡default!
 					% {'aal90', 'TD'}
 					
-				case ConverterNeuroimaging2RegionalValues.SUVR_REGION_SELECTION % __ConverterNeuroimaging2RegionalValues.SUVR_REGION_SELECTION__
+				case 19 % ConverterNeuroimaging2RegionalValues.SUVR_REGION_SELECTION
 					pr = SUVRConstructorPP_BR_DICT('EL', roic, 'PROP', SUVRConstructor.SUVR_REGION_SELECTION, ...
 					    'WAITBAR', roic.getCallback('WAITBAR'), ...
 					    varargin{:});

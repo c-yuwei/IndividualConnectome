@@ -14,6 +14,21 @@ classdef ConstructorIndividualConMahalanobis < ConstructorIndividualConBase
 	%  The 1st row contains the headers, the 2nd row a string with the categorical
 	%  variables of interest, and each subsequent row the values for each subject.
 	%
+	% The list of ConstructorIndividualConMahalanobis properties is:
+	%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the subject individual distance based connectivity constructor.
+	%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the subject individual distance based connectivity constructor.
+	%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the subject individual distance based connectivity constructor.
+	%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the subject individual distance based connectivity constructor.
+	%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the subject individual distance based connectivity constructor.
+	%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the subject individual distance based connectivity constructor.
+	%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the subject individual distance based connectivity constructor.
+	%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
+	%  <strong>9</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) detemines whether to show the waitbar.
+	%  <strong>10</strong> <strong>GR_SUVR</strong> 	GR_SUVR (data, item) is a group of subjects with mean SUVR data.
+	%  <strong>11</strong> <strong>GR_SUVR_REF</strong> 	GR_SUVR_REF (data, item) is a group of subjects with mean SUVR data for deviation reference.
+	%  <strong>12</strong> <strong>CONNECTOME_CONSTRUCT_METHOD</strong> 	CONNECTOME_CONSTRUCT_METHOD (query, cell) defines the method for Mahalanobis distance individual connectome construction.
+	%  <strong>13</strong> <strong>GR</strong> 	GR (result, item) is a group of subjects with connectivity data.
+	%
 	% ConstructorIndividualConMahalanobis methods (constructor):
 	%  ConstructorIndividualConMahalanobis - constructor
 	%
@@ -102,7 +117,7 @@ classdef ConstructorIndividualConMahalanobis < ConstructorIndividualConBase
 	%
 	% See also Group, SubjectCON, ExporterGroupSubjectCON_XLS.
 	%
-	% BUILD BRAPH2 BRAPH2.BUILD class_name 1
+	% BUILD BRAPH2 7 class_name 1
 	
 	methods % constructor
 		function icd = ConstructorIndividualConMahalanobis(varargin)
@@ -115,6 +130,20 @@ classdef ConstructorIndividualConMahalanobis < ConstructorIndividualConBase
 			% Multiple properties can be initialized at once identifying
 			%  them with either property numbers (PROP) or tags (TAG).
 			%
+			% The list of ConstructorIndividualConMahalanobis properties is:
+			%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the subject individual distance based connectivity constructor.
+			%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the subject individual distance based connectivity constructor.
+			%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the subject individual distance based connectivity constructor.
+			%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the subject individual distance based connectivity constructor.
+			%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the subject individual distance based connectivity constructor.
+			%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the subject individual distance based connectivity constructor.
+			%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the subject individual distance based connectivity constructor.
+			%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
+			%  <strong>9</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) detemines whether to show the waitbar.
+			%  <strong>10</strong> <strong>GR_SUVR</strong> 	GR_SUVR (data, item) is a group of subjects with mean SUVR data.
+			%  <strong>11</strong> <strong>GR_SUVR_REF</strong> 	GR_SUVR_REF (data, item) is a group of subjects with mean SUVR data for deviation reference.
+			%  <strong>12</strong> <strong>CONNECTOME_CONSTRUCT_METHOD</strong> 	CONNECTOME_CONSTRUCT_METHOD (query, cell) defines the method for Mahalanobis distance individual connectome construction.
+			%  <strong>13</strong> <strong>GR</strong> 	GR (result, item) is a group of subjects with connectivity data.
 			%
 			% See also Category, Format.
 			
@@ -167,7 +196,7 @@ classdef ConstructorIndividualConMahalanobis < ConstructorIndividualConBase
 			%
 			% See also subclasses.
 			
-			subclass_list = subclasses('ConstructorIndividualConMahalanobis', [], [], true);
+			subclass_list = { 'ConstructorIndividualConMahalanobis' }; %CET: Computational Efficiency Trick
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of distance-based subject individual brain connectome Constructor.
@@ -188,50 +217,30 @@ classdef ConstructorIndividualConMahalanobis < ConstructorIndividualConBase
 			%
 			% See also getPropNumber, Category.
 			
+			%CET: Computational Efficiency Trick
+			
 			if nargin == 0
-				prop_list = [ ...
-					ConstructorIndividualConBase.getProps() ...
-						];
+				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12 13];
 				return
 			end
 			
 			switch category
-				case Category.CONSTANT
-					prop_list = [ ...
-						ConstructorIndividualConBase.getProps(Category.CONSTANT) ...
-						];
-				case Category.METADATA
-					prop_list = [ ...
-						ConstructorIndividualConBase.getProps(Category.METADATA) ...
-						];
-				case Category.PARAMETER
-					prop_list = [ ...
-						ConstructorIndividualConBase.getProps(Category.PARAMETER) ...
-						];
-				case Category.DATA
-					prop_list = [ ...
-						ConstructorIndividualConBase.getProps(Category.DATA) ...
-						];
-				case Category.RESULT
-					prop_list = [
-						ConstructorIndividualConBase.getProps(Category.RESULT) ...
-						];
-				case Category.QUERY
-					prop_list = [ ...
-						ConstructorIndividualConBase.getProps(Category.QUERY) ...
-						];
-				case Category.EVANESCENT
-					prop_list = [ ...
-						ConstructorIndividualConBase.getProps(Category.EVANESCENT) ...
-						];
-				case Category.FIGURE
-					prop_list = [ ...
-						ConstructorIndividualConBase.getProps(Category.FIGURE) ...
-						];
-				case Category.GUI
-					prop_list = [ ...
-						ConstructorIndividualConBase.getProps(Category.GUI) ...
-						];
+				case 1 % Category.CONSTANT
+					prop_list = [1 2 3];
+				case 2 % Category.METADATA
+					prop_list = [6 7];
+				case 3 % Category.PARAMETER
+					prop_list = 4;
+				case 4 % Category.DATA
+					prop_list = [5 10 11];
+				case 5 % Category.RESULT
+					prop_list = 13;
+				case 6 % Category.QUERY
+					prop_list = [8 12];
+				case 9 % Category.GUI
+					prop_list = 9;
+				otherwise
+					prop_list = [];
 			end
 		end
 		function prop_number = getPropNumber(varargin)
@@ -252,7 +261,31 @@ classdef ConstructorIndividualConMahalanobis < ConstructorIndividualConBase
 			%
 			% See also getProps, Category.
 			
-			prop_number = numel(ConstructorIndividualConMahalanobis.getProps(varargin{:}));
+			%CET: Computational Efficiency Trick
+			
+			if nargin == 0
+				prop_number = 13;
+				return
+			end
+			
+			switch varargin{1} % category = varargin{1}
+				case 1 % Category.CONSTANT
+					prop_number = 3;
+				case 2 % Category.METADATA
+					prop_number = 2;
+				case 3 % Category.PARAMETER
+					prop_number = 1;
+				case 4 % Category.DATA
+					prop_number = 3;
+				case 5 % Category.RESULT
+					prop_number = 1;
+				case 6 % Category.QUERY
+					prop_number = 2;
+				case 9 % Category.GUI
+					prop_number = 1;
+				otherwise
+					prop_number = 0;
+			end
 		end
 		function check_out = existsProp(prop)
 			%EXISTSPROP checks whether property exists in distance-based subject individual brain connectome Constructor/error.
@@ -280,14 +313,14 @@ classdef ConstructorIndividualConMahalanobis < ConstructorIndividualConBase
 			%
 			% See also getProps, existsTag.
 			
-			check = any(prop == ConstructorIndividualConMahalanobis.getProps());
+			check = prop >= 1 && prop <= 13 && round(prop) == prop; %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':ConstructorIndividualConMahalanobis:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':ConstructorIndividualConMahalanobis:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':ConstructorIndividualConMahalanobis:' 'WrongInput'], ...
+					['BRAPH2' ':ConstructorIndividualConMahalanobis:' 'WrongInput' '\n' ...
 					'The value ' tostring(prop, 100, ' ...') ' is not a valid prop for ConstructorIndividualConMahalanobis.'] ...
 					)
 			end
@@ -318,15 +351,14 @@ classdef ConstructorIndividualConMahalanobis < ConstructorIndividualConBase
 			%
 			% See also getProps, existsTag.
 			
-			constructorindividualconmahalanobis_tag_list = cellfun(@(x) ConstructorIndividualConMahalanobis.getPropTag(x), num2cell(ConstructorIndividualConMahalanobis.getProps()), 'UniformOutput', false);
-			check = any(strcmp(tag, constructorindividualconmahalanobis_tag_list));
+			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'GR_SUVR'  'GR_SUVR_REF'  'CONNECTOME_CONSTRUCT_METHOD'  'GR' })); %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':ConstructorIndividualConMahalanobis:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':ConstructorIndividualConMahalanobis:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':ConstructorIndividualConMahalanobis:' 'WrongInput'], ...
+					['BRAPH2' ':ConstructorIndividualConMahalanobis:' 'WrongInput' '\n' ...
 					'The value ' tag ' is not a valid tag for ConstructorIndividualConMahalanobis.'] ...
 					)
 			end
@@ -352,8 +384,7 @@ classdef ConstructorIndividualConMahalanobis < ConstructorIndividualConBase
 			%  getPropSettings, getPropDefault, checkProp.
 			
 			if ischar(pointer)
-				constructorindividualconmahalanobis_tag_list = cellfun(@(x) ConstructorIndividualConMahalanobis.getPropTag(x), num2cell(ConstructorIndividualConMahalanobis.getProps()), 'UniformOutput', false);
-				prop = find(strcmp(pointer, constructorindividualconmahalanobis_tag_list)); % tag = pointer
+				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'GR_SUVR'  'GR_SUVR_REF'  'CONNECTOME_CONSTRUCT_METHOD'  'GR' })); % tag = pointer %CET: Computational Efficiency Trick
 			else % numeric
 				prop = pointer;
 			end
@@ -381,12 +412,9 @@ classdef ConstructorIndividualConMahalanobis < ConstructorIndividualConBase
 			if ischar(pointer)
 				tag = pointer;
 			else % numeric
-				prop = pointer;
-				
-				switch prop
-					otherwise
-						tag = getPropTag@ConstructorIndividualConBase(prop);
-				end
+				%CET: Computational Efficiency Trick
+				constructorindividualconmahalanobis_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'GR_SUVR'  'GR_SUVR_REF'  'CONNECTOME_CONSTRUCT_METHOD'  'GR' };
+				tag = constructorindividualconmahalanobis_tag_list{pointer}; % prop = pointer
 			end
 		end
 		function prop_category = getPropCategory(pointer)
@@ -411,10 +439,9 @@ classdef ConstructorIndividualConMahalanobis < ConstructorIndividualConBase
 			
 			prop = ConstructorIndividualConMahalanobis.getPropProp(pointer);
 			
-			switch prop
-				otherwise
-					prop_category = getPropCategory@ConstructorIndividualConBase(prop);
-			end
+			%CET: Computational Efficiency Trick
+			constructorindividualconmahalanobis_category_list = { 1  1  1  3  4  2  2  6  9  4  4  6  5 };
+			prop_category = constructorindividualconmahalanobis_category_list{prop};
 		end
 		function prop_format = getPropFormat(pointer)
 			%GETPROPFORMAT returns the format of a property.
@@ -438,10 +465,9 @@ classdef ConstructorIndividualConMahalanobis < ConstructorIndividualConBase
 			
 			prop = ConstructorIndividualConMahalanobis.getPropProp(pointer);
 			
-			switch prop
-				otherwise
-					prop_format = getPropFormat@ConstructorIndividualConBase(prop);
-			end
+			%CET: Computational Efficiency Trick
+			constructorindividualconmahalanobis_format_list = { 2  2  2  8  2  2  2  2  4  8  8  16  8 };
+			prop_format = constructorindividualconmahalanobis_format_list{prop};
 		end
 		function prop_description = getPropDescription(pointer)
 			%GETPROPDESCRIPTION returns the description of a property.
@@ -465,26 +491,9 @@ classdef ConstructorIndividualConMahalanobis < ConstructorIndividualConBase
 			
 			prop = ConstructorIndividualConMahalanobis.getPropProp(pointer);
 			
-			switch prop
-				case ConstructorIndividualConMahalanobis.ELCLASS
-					prop_description = 'ELCLASS (constant, string) is the class of the subject individual distance based connectivity constructor.';
-				case ConstructorIndividualConMahalanobis.NAME
-					prop_description = 'NAME (constant, string) is the name of the subject individual distance based connectivity constructor.';
-				case ConstructorIndividualConMahalanobis.DESCRIPTION
-					prop_description = 'DESCRIPTION (constant, string) is the description of the subject individual distance based connectivity constructor.';
-				case ConstructorIndividualConMahalanobis.TEMPLATE
-					prop_description = 'TEMPLATE (parameter, item) is the template of the subject individual distance based connectivity constructor.';
-				case ConstructorIndividualConMahalanobis.ID
-					prop_description = 'ID (data, string) is a few-letter code for the subject individual distance based connectivity constructor.';
-				case ConstructorIndividualConMahalanobis.LABEL
-					prop_description = 'LABEL (metadata, string) is an extended label of the subject individual distance based connectivity constructor.';
-				case ConstructorIndividualConMahalanobis.NOTES
-					prop_description = 'NOTES (metadata, string) are some specific notes about the subject individual distance based connectivity constructor.';
-				case ConstructorIndividualConMahalanobis.CONNECTOME_CONSTRUCT_METHOD
-					prop_description = 'CONNECTOME_CONSTRUCT_METHOD (query, cell) defines the method for Mahalanobis distance individual connectome construction.';
-				otherwise
-					prop_description = getPropDescription@ConstructorIndividualConBase(prop);
-			end
+			%CET: Computational Efficiency Trick
+			constructorindividualconmahalanobis_description_list = { 'ELCLASS (constant, string) is the class of the subject individual distance based connectivity constructor.'  'NAME (constant, string) is the name of the subject individual distance based connectivity constructor.'  'DESCRIPTION (constant, string) is the description of the subject individual distance based connectivity constructor.'  'TEMPLATE (parameter, item) is the template of the subject individual distance based connectivity constructor.'  'ID (data, string) is a few-letter code for the subject individual distance based connectivity constructor.'  'LABEL (metadata, string) is an extended label of the subject individual distance based connectivity constructor.'  'NOTES (metadata, string) are some specific notes about the subject individual distance based connectivity constructor.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'WAITBAR (gui, logical) detemines whether to show the waitbar.'  'GR_SUVR (data, item) is a group of subjects with mean SUVR data.'  'GR_SUVR_REF (data, item) is a group of subjects with mean SUVR data for deviation reference.'  'CONNECTOME_CONSTRUCT_METHOD (query, cell) defines the method for Mahalanobis distance individual connectome construction.'  'GR (result, item) is a group of subjects with connectivity data.' };
+			prop_description = constructorindividualconmahalanobis_description_list{prop};
 		end
 		function prop_settings = getPropSettings(pointer)
 			%GETPROPSETTINGS returns the settings of a property.
@@ -508,8 +517,8 @@ classdef ConstructorIndividualConMahalanobis < ConstructorIndividualConBase
 			
 			prop = ConstructorIndividualConMahalanobis.getPropProp(pointer);
 			
-			switch prop
-				case ConstructorIndividualConMahalanobis.TEMPLATE
+			switch prop %CET: Computational Efficiency Trick
+				case 4 % ConstructorIndividualConMahalanobis.TEMPLATE
 					prop_settings = 'IndividualDistanceConConstructor';
 				otherwise
 					prop_settings = getPropSettings@ConstructorIndividualConBase(prop);
@@ -537,20 +546,20 @@ classdef ConstructorIndividualConMahalanobis < ConstructorIndividualConBase
 			
 			prop = ConstructorIndividualConMahalanobis.getPropProp(pointer);
 			
-			switch prop
-				case ConstructorIndividualConMahalanobis.ELCLASS
+			switch prop %CET: Computational Efficiency Trick
+				case 1 % ConstructorIndividualConMahalanobis.ELCLASS
 					prop_default = 'ConstructorIndividualConMahalanobis';
-				case ConstructorIndividualConMahalanobis.NAME
+				case 2 % ConstructorIndividualConMahalanobis.NAME
 					prop_default = 'Distance based connectivity constructor';
-				case ConstructorIndividualConMahalanobis.DESCRIPTION
+				case 3 % ConstructorIndividualConMahalanobis.DESCRIPTION
 					prop_default = 'IndividualDistanceConConstructor construct distance based connectome for a group of subjects with nifti file.';
-				case ConstructorIndividualConMahalanobis.TEMPLATE
-					prop_default = Format.getFormatDefault(Format.ITEM, ConstructorIndividualConMahalanobis.getPropSettings(prop));
-				case ConstructorIndividualConMahalanobis.ID
+				case 4 % ConstructorIndividualConMahalanobis.TEMPLATE
+					prop_default = Format.getFormatDefault(8, ConstructorIndividualConMahalanobis.getPropSettings(prop));
+				case 5 % ConstructorIndividualConMahalanobis.ID
 					prop_default = 'IndividualDistanceConConstructor ID';
-				case ConstructorIndividualConMahalanobis.LABEL
+				case 6 % ConstructorIndividualConMahalanobis.LABEL
 					prop_default = 'IndividualDistanceConConstructor label';
-				case ConstructorIndividualConMahalanobis.NOTES
+				case 7 % ConstructorIndividualConMahalanobis.NOTES
 					prop_default = 'IndividualDistanceConConstructor notes';
 				otherwise
 					prop_default = getPropDefault@ConstructorIndividualConBase(prop);
@@ -597,15 +606,15 @@ classdef ConstructorIndividualConMahalanobis < ConstructorIndividualConBase
 			% 
 			% ICD.CHECKPROP(POINTER, VALUE) throws an error if VALUE is
 			%  NOT an acceptable value for the format of the property POINTER.
-			%  Error id: €BRAPH2.STR€:ConstructorIndividualConMahalanobis:€BRAPH2.WRONG_INPUT€
+			%  Error id: BRAPH2:ConstructorIndividualConMahalanobis:WrongInput
 			% 
 			% Alternative forms to call this method are (POINTER = PROP or TAG):
 			%  ICD.CHECKPROP(POINTER, VALUE) throws error if VALUE has not a valid format for PROP of ICD.
-			%   Error id: €BRAPH2.STR€:ConstructorIndividualConMahalanobis:€BRAPH2.WRONG_INPUT€
+			%   Error id: BRAPH2:ConstructorIndividualConMahalanobis:WrongInput
 			%  Element.CHECKPROP(ConstructorIndividualConMahalanobis, PROP, VALUE) throws error if VALUE has not a valid format for PROP of ConstructorIndividualConMahalanobis.
-			%   Error id: €BRAPH2.STR€:ConstructorIndividualConMahalanobis:€BRAPH2.WRONG_INPUT€
+			%   Error id: BRAPH2:ConstructorIndividualConMahalanobis:WrongInput
 			%  ICD.CHECKPROP(ConstructorIndividualConMahalanobis, PROP, VALUE) throws error if VALUE has not a valid format for PROP of ConstructorIndividualConMahalanobis.
-			%   Error id: €BRAPH2.STR€:ConstructorIndividualConMahalanobis:€BRAPH2.WRONG_INPUT€]
+			%   Error id: BRAPH2:ConstructorIndividualConMahalanobis:WrongInput]
 			% 
 			% Note that the Element.CHECKPROP(ICD) and Element.CHECKPROP('ConstructorIndividualConMahalanobis')
 			%  are less computationally efficient.
@@ -616,10 +625,10 @@ classdef ConstructorIndividualConMahalanobis < ConstructorIndividualConBase
 			prop = ConstructorIndividualConMahalanobis.getPropProp(pointer);
 			
 			switch prop
-				case ConstructorIndividualConMahalanobis.TEMPLATE % __ConstructorIndividualConMahalanobis.TEMPLATE__
-					check = Format.checkFormat(Format.ITEM, value, ConstructorIndividualConMahalanobis.getPropSettings(prop));
+				case 4 % ConstructorIndividualConMahalanobis.TEMPLATE
+					check = Format.checkFormat(8, value, ConstructorIndividualConMahalanobis.getPropSettings(prop));
 				otherwise
-					if prop <= ConstructorIndividualConBase.getPropNumber()
+					if prop <= 13
 						check = checkProp@ConstructorIndividualConBase(prop, value);
 					end
 			end
@@ -628,8 +637,8 @@ classdef ConstructorIndividualConMahalanobis < ConstructorIndividualConBase
 				prop_check = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':ConstructorIndividualConMahalanobis:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':ConstructorIndividualConMahalanobis:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':ConstructorIndividualConMahalanobis:' 'WrongInput'], ...
+					['BRAPH2' ':ConstructorIndividualConMahalanobis:' 'WrongInput' '\n' ...
 					'The value ' tostring(value, 100, ' ...') ' is not a valid property ' ConstructorIndividualConMahalanobis.getPropTag(prop) ' (' ConstructorIndividualConMahalanobis.getFormatTag(ConstructorIndividualConMahalanobis.getPropFormat(prop)) ').'] ...
 					)
 			end
@@ -640,19 +649,19 @@ classdef ConstructorIndividualConMahalanobis < ConstructorIndividualConBase
 			%CALCULATEVALUE calculates the value of a property.
 			%
 			% VALUE = CALCULATEVALUE(EL, PROP) calculates the value of the property
-			%  PROP. It works only with properties with Category.RESULT,
-			%  Category.QUERY, and Category.EVANESCENT. By default this function
+			%  PROP. It works only with properties with 5,
+			%  6, and 7. By default this function
 			%  returns the default value for the prop and should be implemented in the
 			%  subclasses of Element when needed.
 			%
 			% VALUE = CALCULATEVALUE(EL, PROP, VARARGIN) works with properties with
-			%  Category.QUERY.
+			%  6.
 			%
 			% See also getPropDefaultConditioned, conditioning, preset, checkProp,
 			%  postset, postprocessing, checkValue.
 			
 			switch prop
-				case ConstructorIndividualConMahalanobis.CONNECTOME_CONSTRUCT_METHOD % __ConstructorIndividualConMahalanobis.CONNECTOME_CONSTRUCT_METHOD__
+				case 12 % ConstructorIndividualConMahalanobis.CONNECTOME_CONSTRUCT_METHOD
 					if isempty(varargin) && isempty(icd.get('GR_SUVR').get('SUB_DICT').get('IT_LIST'))
 					    value = {};
 					    return
@@ -701,7 +710,7 @@ classdef ConstructorIndividualConMahalanobis < ConstructorIndividualConBase
 					value = mahalDistances_cross_subjects;
 					
 				otherwise
-					if prop <= ConstructorIndividualConBase.getPropNumber()
+					if prop <= 13
 						value = calculateValue@ConstructorIndividualConBase(icd, prop, varargin{:});
 					else
 						value = calculateValue@Element(icd, prop, varargin{:});

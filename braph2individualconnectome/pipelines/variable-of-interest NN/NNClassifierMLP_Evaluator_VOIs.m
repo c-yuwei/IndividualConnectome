@@ -4,6 +4,24 @@ classdef NNClassifierMLP_Evaluator_VOIs < NNClassifierMLP_Evaluator
 	%
 	% A neural network evaluator for a multi-layer perceptron classifier with variables of interest (NNClassifierMLP_Evaluator_VOIs) evaluates the performance of an NNClassifierMLP_VOIs classifier using a primary dataset (D) and a VOI dataset (D_VOIs). It computes classification metrics (e.g., confusion matrix, AUC) based on dual-input predictions.
 	%
+	% The list of NNClassifierMLP_Evaluator_VOIs properties is:
+	%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the neural network evaluator for a multi-layer perceptron classifier with VOIs.
+	%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the neural network evaluator for a multi-layer perceptron classifier with VOIs.
+	%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the neural network evaluator for a multi-layer perceptron classifier with VOIs.
+	%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the neural network evaluator for a multi-layer perceptron classifier with VOIs.
+	%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the neural network evaluator.
+	%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the neural network evaluator.
+	%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the neural network evaluator.
+	%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
+	%  <strong>9</strong> <strong>NN</strong> 	NN (data, item) contains a trained neural network multi-layer perceptron classifier with VOIs.
+	%  <strong>10</strong> <strong>D</strong> 	D (data, item) is the dataset to evaluate the neural network model.
+	%  <strong>11</strong> <strong>GROUND_TRUTH</strong> 	GROUND_TRUTH (query, stringlist) returns the matrix of ground truth derived from the targets.
+	%  <strong>12</strong> <strong>AUC</strong> 	AUC (result, rvector) provides the AUC for dual-input predictions from D and D_VOIs.
+	%  <strong>13</strong> <strong>PFROC</strong> 	PFROC (gui, item) contains the panel figure of the ROC plot for classification model.
+	%  <strong>14</strong> <strong>MACRO_AUC</strong> 	MACRO_AUC (result, scalar) provides the average AUC across classes for multi-layer perceptron classifier with VOIs.
+	%  <strong>15</strong> <strong>C_MATRIX</strong> 	C_MATRIX (result, matrix) provides the confusion matrix for dual-input predictions from D and D_VOIs.
+	%  <strong>16</strong> <strong>D_VOIS</strong> 	D_VOIS (data, item) is the voi dataset to train the neural network model, and its data point class DP_CLASS defaults to one of the compatible classes within the set of DP_CLASSES.
+	%
 	% NNClassifierMLP_Evaluator_VOIs methods (constructor):
 	%  NNClassifierMLP_Evaluator_VOIs - constructor
 	%
@@ -92,13 +110,13 @@ classdef NNClassifierMLP_Evaluator_VOIs < NNClassifierMLP_Evaluator
 	%
 	% See also NNDataPoint_CON_CLA, NNDataPoint_VOIs, NNClassifierMLP_VOIs.
 	%
-	% BUILD BRAPH2 BRAPH2.BUILD class_name 1
+	% BUILD BRAPH2 7 class_name 1
 	
 	properties (Constant) % properties
-		D_VOIS = NNClassifierMLP_Evaluator.getPropNumber() + 1;
+		D_VOIS = 16; %CET: Computational Efficiency Trick
 		D_VOIS_TAG = 'D_VOIS';
-		D_VOIS_CATEGORY = Category.DATA;
-		D_VOIS_FORMAT = Format.ITEM;
+		D_VOIS_CATEGORY = 4;
+		D_VOIS_FORMAT = 8;
 	end
 	methods % constructor
 		function nne = NNClassifierMLP_Evaluator_VOIs(varargin)
@@ -111,6 +129,23 @@ classdef NNClassifierMLP_Evaluator_VOIs < NNClassifierMLP_Evaluator
 			% Multiple properties can be initialized at once identifying
 			%  them with either property numbers (PROP) or tags (TAG).
 			%
+			% The list of NNClassifierMLP_Evaluator_VOIs properties is:
+			%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the neural network evaluator for a multi-layer perceptron classifier with VOIs.
+			%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the neural network evaluator for a multi-layer perceptron classifier with VOIs.
+			%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the neural network evaluator for a multi-layer perceptron classifier with VOIs.
+			%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the neural network evaluator for a multi-layer perceptron classifier with VOIs.
+			%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the neural network evaluator.
+			%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the neural network evaluator.
+			%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the neural network evaluator.
+			%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
+			%  <strong>9</strong> <strong>NN</strong> 	NN (data, item) contains a trained neural network multi-layer perceptron classifier with VOIs.
+			%  <strong>10</strong> <strong>D</strong> 	D (data, item) is the dataset to evaluate the neural network model.
+			%  <strong>11</strong> <strong>GROUND_TRUTH</strong> 	GROUND_TRUTH (query, stringlist) returns the matrix of ground truth derived from the targets.
+			%  <strong>12</strong> <strong>AUC</strong> 	AUC (result, rvector) provides the AUC for dual-input predictions from D and D_VOIs.
+			%  <strong>13</strong> <strong>PFROC</strong> 	PFROC (gui, item) contains the panel figure of the ROC plot for classification model.
+			%  <strong>14</strong> <strong>MACRO_AUC</strong> 	MACRO_AUC (result, scalar) provides the average AUC across classes for multi-layer perceptron classifier with VOIs.
+			%  <strong>15</strong> <strong>C_MATRIX</strong> 	C_MATRIX (result, matrix) provides the confusion matrix for dual-input predictions from D and D_VOIs.
+			%  <strong>16</strong> <strong>D_VOIS</strong> 	D_VOIS (data, item) is the voi dataset to train the neural network model, and its data point class DP_CLASS defaults to one of the compatible classes within the set of DP_CLASSES.
 			%
 			% See also Category, Format.
 			
@@ -163,7 +198,7 @@ classdef NNClassifierMLP_Evaluator_VOIs < NNClassifierMLP_Evaluator
 			%
 			% See also subclasses.
 			
-			subclass_list = subclasses('NNClassifierMLP_Evaluator_VOIs', [], [], true);
+			subclass_list = { 'NNClassifierMLP_Evaluator_VOIs' }; %CET: Computational Efficiency Trick
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of neural network evaluator for multi-layer perceptron classifier with VOIs.
@@ -184,52 +219,30 @@ classdef NNClassifierMLP_Evaluator_VOIs < NNClassifierMLP_Evaluator
 			%
 			% See also getPropNumber, Category.
 			
+			%CET: Computational Efficiency Trick
+			
 			if nargin == 0
-				prop_list = [ ...
-					NNClassifierMLP_Evaluator.getProps() ...
-						NNClassifierMLP_Evaluator_VOIs.D_VOIS ...
-						];
+				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16];
 				return
 			end
 			
 			switch category
-				case Category.CONSTANT
-					prop_list = [ ...
-						NNClassifierMLP_Evaluator.getProps(Category.CONSTANT) ...
-						];
-				case Category.METADATA
-					prop_list = [ ...
-						NNClassifierMLP_Evaluator.getProps(Category.METADATA) ...
-						];
-				case Category.PARAMETER
-					prop_list = [ ...
-						NNClassifierMLP_Evaluator.getProps(Category.PARAMETER) ...
-						];
-				case Category.DATA
-					prop_list = [ ...
-						NNClassifierMLP_Evaluator.getProps(Category.DATA) ...
-						NNClassifierMLP_Evaluator_VOIs.D_VOIS ...
-						];
-				case Category.RESULT
-					prop_list = [
-						NNClassifierMLP_Evaluator.getProps(Category.RESULT) ...
-						];
-				case Category.QUERY
-					prop_list = [ ...
-						NNClassifierMLP_Evaluator.getProps(Category.QUERY) ...
-						];
-				case Category.EVANESCENT
-					prop_list = [ ...
-						NNClassifierMLP_Evaluator.getProps(Category.EVANESCENT) ...
-						];
-				case Category.FIGURE
-					prop_list = [ ...
-						NNClassifierMLP_Evaluator.getProps(Category.FIGURE) ...
-						];
-				case Category.GUI
-					prop_list = [ ...
-						NNClassifierMLP_Evaluator.getProps(Category.GUI) ...
-						];
+				case 1 % Category.CONSTANT
+					prop_list = [1 2 3];
+				case 2 % Category.METADATA
+					prop_list = [6 7];
+				case 3 % Category.PARAMETER
+					prop_list = 4;
+				case 4 % Category.DATA
+					prop_list = [5 9 10 16];
+				case 5 % Category.RESULT
+					prop_list = [12 14 15];
+				case 6 % Category.QUERY
+					prop_list = [8 11];
+				case 9 % Category.GUI
+					prop_list = 13;
+				otherwise
+					prop_list = [];
 			end
 		end
 		function prop_number = getPropNumber(varargin)
@@ -250,7 +263,31 @@ classdef NNClassifierMLP_Evaluator_VOIs < NNClassifierMLP_Evaluator
 			%
 			% See also getProps, Category.
 			
-			prop_number = numel(NNClassifierMLP_Evaluator_VOIs.getProps(varargin{:}));
+			%CET: Computational Efficiency Trick
+			
+			if nargin == 0
+				prop_number = 16;
+				return
+			end
+			
+			switch varargin{1} % category = varargin{1}
+				case 1 % Category.CONSTANT
+					prop_number = 3;
+				case 2 % Category.METADATA
+					prop_number = 2;
+				case 3 % Category.PARAMETER
+					prop_number = 1;
+				case 4 % Category.DATA
+					prop_number = 4;
+				case 5 % Category.RESULT
+					prop_number = 3;
+				case 6 % Category.QUERY
+					prop_number = 2;
+				case 9 % Category.GUI
+					prop_number = 1;
+				otherwise
+					prop_number = 0;
+			end
 		end
 		function check_out = existsProp(prop)
 			%EXISTSPROP checks whether property exists in neural network evaluator for multi-layer perceptron classifier with VOIs/error.
@@ -278,14 +315,14 @@ classdef NNClassifierMLP_Evaluator_VOIs < NNClassifierMLP_Evaluator
 			%
 			% See also getProps, existsTag.
 			
-			check = any(prop == NNClassifierMLP_Evaluator_VOIs.getProps());
+			check = prop >= 1 && prop <= 16 && round(prop) == prop; %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':NNClassifierMLP_Evaluator_VOIs:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':NNClassifierMLP_Evaluator_VOIs:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':NNClassifierMLP_Evaluator_VOIs:' 'WrongInput'], ...
+					['BRAPH2' ':NNClassifierMLP_Evaluator_VOIs:' 'WrongInput' '\n' ...
 					'The value ' tostring(prop, 100, ' ...') ' is not a valid prop for NNClassifierMLP_Evaluator_VOIs.'] ...
 					)
 			end
@@ -316,15 +353,14 @@ classdef NNClassifierMLP_Evaluator_VOIs < NNClassifierMLP_Evaluator
 			%
 			% See also getProps, existsTag.
 			
-			nnclassifiermlp_evaluator_vois_tag_list = cellfun(@(x) NNClassifierMLP_Evaluator_VOIs.getPropTag(x), num2cell(NNClassifierMLP_Evaluator_VOIs.getProps()), 'UniformOutput', false);
-			check = any(strcmp(tag, nnclassifiermlp_evaluator_vois_tag_list));
+			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'NN'  'D'  'GROUND_TRUTH'  'AUC'  'PFROC'  'MACRO_AUC'  'C_MATRIX'  'D_VOIS' })); %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':NNClassifierMLP_Evaluator_VOIs:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':NNClassifierMLP_Evaluator_VOIs:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':NNClassifierMLP_Evaluator_VOIs:' 'WrongInput'], ...
+					['BRAPH2' ':NNClassifierMLP_Evaluator_VOIs:' 'WrongInput' '\n' ...
 					'The value ' tag ' is not a valid tag for NNClassifierMLP_Evaluator_VOIs.'] ...
 					)
 			end
@@ -350,8 +386,7 @@ classdef NNClassifierMLP_Evaluator_VOIs < NNClassifierMLP_Evaluator
 			%  getPropSettings, getPropDefault, checkProp.
 			
 			if ischar(pointer)
-				nnclassifiermlp_evaluator_vois_tag_list = cellfun(@(x) NNClassifierMLP_Evaluator_VOIs.getPropTag(x), num2cell(NNClassifierMLP_Evaluator_VOIs.getProps()), 'UniformOutput', false);
-				prop = find(strcmp(pointer, nnclassifiermlp_evaluator_vois_tag_list)); % tag = pointer
+				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'NN'  'D'  'GROUND_TRUTH'  'AUC'  'PFROC'  'MACRO_AUC'  'C_MATRIX'  'D_VOIS' })); % tag = pointer %CET: Computational Efficiency Trick
 			else % numeric
 				prop = pointer;
 			end
@@ -379,14 +414,9 @@ classdef NNClassifierMLP_Evaluator_VOIs < NNClassifierMLP_Evaluator
 			if ischar(pointer)
 				tag = pointer;
 			else % numeric
-				prop = pointer;
-				
-				switch prop
-					case NNClassifierMLP_Evaluator_VOIs.D_VOIS
-						tag = NNClassifierMLP_Evaluator_VOIs.D_VOIS_TAG;
-					otherwise
-						tag = getPropTag@NNClassifierMLP_Evaluator(prop);
-				end
+				%CET: Computational Efficiency Trick
+				nnclassifiermlp_evaluator_vois_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'NN'  'D'  'GROUND_TRUTH'  'AUC'  'PFROC'  'MACRO_AUC'  'C_MATRIX'  'D_VOIS' };
+				tag = nnclassifiermlp_evaluator_vois_tag_list{pointer}; % prop = pointer
 			end
 		end
 		function prop_category = getPropCategory(pointer)
@@ -411,12 +441,9 @@ classdef NNClassifierMLP_Evaluator_VOIs < NNClassifierMLP_Evaluator
 			
 			prop = NNClassifierMLP_Evaluator_VOIs.getPropProp(pointer);
 			
-			switch prop
-				case NNClassifierMLP_Evaluator_VOIs.D_VOIS
-					prop_category = NNClassifierMLP_Evaluator_VOIs.D_VOIS_CATEGORY;
-				otherwise
-					prop_category = getPropCategory@NNClassifierMLP_Evaluator(prop);
-			end
+			%CET: Computational Efficiency Trick
+			nnclassifiermlp_evaluator_vois_category_list = { 1  1  1  3  4  2  2  6  4  4  6  5  9  5  5  4 };
+			prop_category = nnclassifiermlp_evaluator_vois_category_list{prop};
 		end
 		function prop_format = getPropFormat(pointer)
 			%GETPROPFORMAT returns the format of a property.
@@ -440,12 +467,9 @@ classdef NNClassifierMLP_Evaluator_VOIs < NNClassifierMLP_Evaluator
 			
 			prop = NNClassifierMLP_Evaluator_VOIs.getPropProp(pointer);
 			
-			switch prop
-				case NNClassifierMLP_Evaluator_VOIs.D_VOIS
-					prop_format = NNClassifierMLP_Evaluator_VOIs.D_VOIS_FORMAT;
-				otherwise
-					prop_format = getPropFormat@NNClassifierMLP_Evaluator(prop);
-			end
+			%CET: Computational Efficiency Trick
+			nnclassifiermlp_evaluator_vois_format_list = { 2  2  2  8  2  2  2  2  8  8  3  12  8  11  14  8 };
+			prop_format = nnclassifiermlp_evaluator_vois_format_list{prop};
 		end
 		function prop_description = getPropDescription(pointer)
 			%GETPROPDESCRIPTION returns the description of a property.
@@ -469,36 +493,9 @@ classdef NNClassifierMLP_Evaluator_VOIs < NNClassifierMLP_Evaluator
 			
 			prop = NNClassifierMLP_Evaluator_VOIs.getPropProp(pointer);
 			
-			switch prop
-				case NNClassifierMLP_Evaluator_VOIs.D_VOIS
-					prop_description = 'D_VOIS (data, item) is the voi dataset to train the neural network model, and its data point class DP_CLASS defaults to one of the compatible classes within the set of DP_CLASSES.';
-				case NNClassifierMLP_Evaluator_VOIs.ELCLASS
-					prop_description = 'ELCLASS (constant, string) is the class of the neural network evaluator for a multi-layer perceptron classifier with VOIs.';
-				case NNClassifierMLP_Evaluator_VOIs.NAME
-					prop_description = 'NAME (constant, string) is the name of the neural network evaluator for a multi-layer perceptron classifier with VOIs.';
-				case NNClassifierMLP_Evaluator_VOIs.DESCRIPTION
-					prop_description = 'DESCRIPTION (constant, string) is the description of the neural network evaluator for a multi-layer perceptron classifier with VOIs.';
-				case NNClassifierMLP_Evaluator_VOIs.TEMPLATE
-					prop_description = 'TEMPLATE (parameter, item) is the template of the neural network evaluator for a multi-layer perceptron classifier with VOIs.';
-				case NNClassifierMLP_Evaluator_VOIs.ID
-					prop_description = 'ID (data, string) is a few-letter code for the neural network evaluator.';
-				case NNClassifierMLP_Evaluator_VOIs.LABEL
-					prop_description = 'LABEL (metadata, string) is an extended label of the neural network evaluator.';
-				case NNClassifierMLP_Evaluator_VOIs.NOTES
-					prop_description = 'NOTES (metadata, string) are some specific notes about the neural network evaluator.';
-				case NNClassifierMLP_Evaluator_VOIs.NN
-					prop_description = 'NN (data, item) contains a trained neural network multi-layer perceptron classifier with VOIs.';
-				case NNClassifierMLP_Evaluator_VOIs.C_MATRIX
-					prop_description = 'C_MATRIX (result, matrix) provides the confusion matrix for dual-input predictions from D and D_VOIs.';
-				case NNClassifierMLP_Evaluator_VOIs.AUC
-					prop_description = 'AUC (result, rvector) provides the AUC for dual-input predictions from D and D_VOIs.';
-				case NNClassifierMLP_Evaluator_VOIs.MACRO_AUC
-					prop_description = 'MACRO_AUC (result, scalar) provides the average AUC across classes for multi-layer perceptron classifier with VOIs.';
-				case NNClassifierMLP_Evaluator_VOIs.PFROC
-					prop_description = 'PFROC (gui, item) contains the panel figure of the ROC plot for classification model.';
-				otherwise
-					prop_description = getPropDescription@NNClassifierMLP_Evaluator(prop);
-			end
+			%CET: Computational Efficiency Trick
+			nnclassifiermlp_evaluator_vois_description_list = { 'ELCLASS (constant, string) is the class of the neural network evaluator for a multi-layer perceptron classifier with VOIs.'  'NAME (constant, string) is the name of the neural network evaluator for a multi-layer perceptron classifier with VOIs.'  'DESCRIPTION (constant, string) is the description of the neural network evaluator for a multi-layer perceptron classifier with VOIs.'  'TEMPLATE (parameter, item) is the template of the neural network evaluator for a multi-layer perceptron classifier with VOIs.'  'ID (data, string) is a few-letter code for the neural network evaluator.'  'LABEL (metadata, string) is an extended label of the neural network evaluator.'  'NOTES (metadata, string) are some specific notes about the neural network evaluator.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'NN (data, item) contains a trained neural network multi-layer perceptron classifier with VOIs.'  'D (data, item) is the dataset to evaluate the neural network model.'  'GROUND_TRUTH (query, stringlist) returns the matrix of ground truth derived from the targets.'  'AUC (result, rvector) provides the AUC for dual-input predictions from D and D_VOIs.'  'PFROC (gui, item) contains the panel figure of the ROC plot for classification model.'  'MACRO_AUC (result, scalar) provides the average AUC across classes for multi-layer perceptron classifier with VOIs.'  'C_MATRIX (result, matrix) provides the confusion matrix for dual-input predictions from D and D_VOIs.'  'D_VOIS (data, item) is the voi dataset to train the neural network model, and its data point class DP_CLASS defaults to one of the compatible classes within the set of DP_CLASSES.' };
+			prop_description = nnclassifiermlp_evaluator_vois_description_list{prop};
 		end
 		function prop_settings = getPropSettings(pointer)
 			%GETPROPSETTINGS returns the settings of a property.
@@ -522,14 +519,14 @@ classdef NNClassifierMLP_Evaluator_VOIs < NNClassifierMLP_Evaluator
 			
 			prop = NNClassifierMLP_Evaluator_VOIs.getPropProp(pointer);
 			
-			switch prop
-				case NNClassifierMLP_Evaluator_VOIs.D_VOIS
+			switch prop %CET: Computational Efficiency Trick
+				case 16 % NNClassifierMLP_Evaluator_VOIs.D_VOIS
 					prop_settings = 'NNDataset';
-				case NNClassifierMLP_Evaluator_VOIs.TEMPLATE
+				case 4 % NNClassifierMLP_Evaluator_VOIs.TEMPLATE
 					prop_settings = 'NNClassifierMLP_Evaluator_VOIs';
-				case NNClassifierMLP_Evaluator_VOIs.NN
+				case 9 % NNClassifierMLP_Evaluator_VOIs.NN
 					prop_settings = 'NNClassifierMLP_VOIs';
-				case NNClassifierMLP_Evaluator_VOIs.PFROC
+				case 13 % NNClassifierMLP_Evaluator_VOIs.PFROC
 					prop_settings = 'NNClassifierMLP_EvaluatorPF_ROC_VOIs';
 				otherwise
 					prop_settings = getPropSettings@NNClassifierMLP_Evaluator(prop);
@@ -557,27 +554,27 @@ classdef NNClassifierMLP_Evaluator_VOIs < NNClassifierMLP_Evaluator
 			
 			prop = NNClassifierMLP_Evaluator_VOIs.getPropProp(pointer);
 			
-			switch prop
-				case NNClassifierMLP_Evaluator_VOIs.D_VOIS
+			switch prop %CET: Computational Efficiency Trick
+				case 16 % NNClassifierMLP_Evaluator_VOIs.D_VOIS
 					prop_default = NNDataset('DP_CLASS', 'NNDataPoint_CON_CLA');
-				case NNClassifierMLP_Evaluator_VOIs.ELCLASS
+				case 1 % NNClassifierMLP_Evaluator_VOIs.ELCLASS
 					prop_default = 'NNClassifierMLP_Evaluator_VOIs';
-				case NNClassifierMLP_Evaluator_VOIs.NAME
+				case 2 % NNClassifierMLP_Evaluator_VOIs.NAME
 					prop_default = 'Neural Network Evaluator for a Multi-layer Perceptron Classifier with Variables of Interest';
-				case NNClassifierMLP_Evaluator_VOIs.DESCRIPTION
+				case 3 % NNClassifierMLP_Evaluator_VOIs.DESCRIPTION
 					prop_default = 'A neural network evaluator for a multi-layer perceptron classifier with variables of interest (NNClassifierMLP_Evaluator_VOIs) evaluates the performance of an NNClassifierMLP_VOIs classifier using a primary dataset (D) and a VOI dataset (D_VOIs). It computes classification metrics (e.g., confusion matrix, AUC) based on dual-input predictions.';
-				case NNClassifierMLP_Evaluator_VOIs.TEMPLATE
-					prop_default = Format.getFormatDefault(Format.ITEM, NNClassifierMLP_Evaluator_VOIs.getPropSettings(prop));
-				case NNClassifierMLP_Evaluator_VOIs.ID
+				case 4 % NNClassifierMLP_Evaluator_VOIs.TEMPLATE
+					prop_default = Format.getFormatDefault(8, NNClassifierMLP_Evaluator_VOIs.getPropSettings(prop));
+				case 5 % NNClassifierMLP_Evaluator_VOIs.ID
 					prop_default = 'NNClassifierMLP_Evaluator_VOIs ID';
-				case NNClassifierMLP_Evaluator_VOIs.LABEL
+				case 6 % NNClassifierMLP_Evaluator_VOIs.LABEL
 					prop_default = 'NNClassifierMLP_Evaluator_VOIs label';
-				case NNClassifierMLP_Evaluator_VOIs.NOTES
+				case 7 % NNClassifierMLP_Evaluator_VOIs.NOTES
 					prop_default = 'NNClassifierMLP_Evaluator_VOIs notes';
-				case NNClassifierMLP_Evaluator_VOIs.NN
-					prop_default = Format.getFormatDefault(Format.ITEM, NNClassifierMLP_Evaluator_VOIs.getPropSettings(prop));
-				case NNClassifierMLP_Evaluator_VOIs.PFROC
-					prop_default = Format.getFormatDefault(Format.ITEM, NNClassifierMLP_Evaluator_VOIs.getPropSettings(prop));
+				case 9 % NNClassifierMLP_Evaluator_VOIs.NN
+					prop_default = Format.getFormatDefault(8, NNClassifierMLP_Evaluator_VOIs.getPropSettings(prop));
+				case 13 % NNClassifierMLP_Evaluator_VOIs.PFROC
+					prop_default = Format.getFormatDefault(8, NNClassifierMLP_Evaluator_VOIs.getPropSettings(prop));
 				otherwise
 					prop_default = getPropDefault@NNClassifierMLP_Evaluator(prop);
 			end
@@ -623,15 +620,15 @@ classdef NNClassifierMLP_Evaluator_VOIs < NNClassifierMLP_Evaluator
 			% 
 			% NNE.CHECKPROP(POINTER, VALUE) throws an error if VALUE is
 			%  NOT an acceptable value for the format of the property POINTER.
-			%  Error id: €BRAPH2.STR€:NNClassifierMLP_Evaluator_VOIs:€BRAPH2.WRONG_INPUT€
+			%  Error id: BRAPH2:NNClassifierMLP_Evaluator_VOIs:WrongInput
 			% 
 			% Alternative forms to call this method are (POINTER = PROP or TAG):
 			%  NNE.CHECKPROP(POINTER, VALUE) throws error if VALUE has not a valid format for PROP of NNE.
-			%   Error id: €BRAPH2.STR€:NNClassifierMLP_Evaluator_VOIs:€BRAPH2.WRONG_INPUT€
+			%   Error id: BRAPH2:NNClassifierMLP_Evaluator_VOIs:WrongInput
 			%  Element.CHECKPROP(NNClassifierMLP_Evaluator_VOIs, PROP, VALUE) throws error if VALUE has not a valid format for PROP of NNClassifierMLP_Evaluator_VOIs.
-			%   Error id: €BRAPH2.STR€:NNClassifierMLP_Evaluator_VOIs:€BRAPH2.WRONG_INPUT€
+			%   Error id: BRAPH2:NNClassifierMLP_Evaluator_VOIs:WrongInput
 			%  NNE.CHECKPROP(NNClassifierMLP_Evaluator_VOIs, PROP, VALUE) throws error if VALUE has not a valid format for PROP of NNClassifierMLP_Evaluator_VOIs.
-			%   Error id: €BRAPH2.STR€:NNClassifierMLP_Evaluator_VOIs:€BRAPH2.WRONG_INPUT€]
+			%   Error id: BRAPH2:NNClassifierMLP_Evaluator_VOIs:WrongInput]
 			% 
 			% Note that the Element.CHECKPROP(NNE) and Element.CHECKPROP('NNClassifierMLP_Evaluator_VOIs')
 			%  are less computationally efficient.
@@ -642,16 +639,16 @@ classdef NNClassifierMLP_Evaluator_VOIs < NNClassifierMLP_Evaluator
 			prop = NNClassifierMLP_Evaluator_VOIs.getPropProp(pointer);
 			
 			switch prop
-				case NNClassifierMLP_Evaluator_VOIs.D_VOIS % __NNClassifierMLP_Evaluator_VOIs.D_VOIS__
-					check = Format.checkFormat(Format.ITEM, value, NNClassifierMLP_Evaluator_VOIs.getPropSettings(prop));
-				case NNClassifierMLP_Evaluator_VOIs.TEMPLATE % __NNClassifierMLP_Evaluator_VOIs.TEMPLATE__
-					check = Format.checkFormat(Format.ITEM, value, NNClassifierMLP_Evaluator_VOIs.getPropSettings(prop));
-				case NNClassifierMLP_Evaluator_VOIs.NN % __NNClassifierMLP_Evaluator_VOIs.NN__
-					check = Format.checkFormat(Format.ITEM, value, NNClassifierMLP_Evaluator_VOIs.getPropSettings(prop));
-				case NNClassifierMLP_Evaluator_VOIs.PFROC % __NNClassifierMLP_Evaluator_VOIs.PFROC__
-					check = Format.checkFormat(Format.ITEM, value, NNClassifierMLP_Evaluator_VOIs.getPropSettings(prop));
+				case 16 % NNClassifierMLP_Evaluator_VOIs.D_VOIS
+					check = Format.checkFormat(8, value, NNClassifierMLP_Evaluator_VOIs.getPropSettings(prop));
+				case 4 % NNClassifierMLP_Evaluator_VOIs.TEMPLATE
+					check = Format.checkFormat(8, value, NNClassifierMLP_Evaluator_VOIs.getPropSettings(prop));
+				case 9 % NNClassifierMLP_Evaluator_VOIs.NN
+					check = Format.checkFormat(8, value, NNClassifierMLP_Evaluator_VOIs.getPropSettings(prop));
+				case 13 % NNClassifierMLP_Evaluator_VOIs.PFROC
+					check = Format.checkFormat(8, value, NNClassifierMLP_Evaluator_VOIs.getPropSettings(prop));
 				otherwise
-					if prop <= NNClassifierMLP_Evaluator.getPropNumber()
+					if prop <= 15
 						check = checkProp@NNClassifierMLP_Evaluator(prop, value);
 					end
 			end
@@ -660,8 +657,8 @@ classdef NNClassifierMLP_Evaluator_VOIs < NNClassifierMLP_Evaluator
 				prop_check = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':NNClassifierMLP_Evaluator_VOIs:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':NNClassifierMLP_Evaluator_VOIs:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':NNClassifierMLP_Evaluator_VOIs:' 'WrongInput'], ...
+					['BRAPH2' ':NNClassifierMLP_Evaluator_VOIs:' 'WrongInput' '\n' ...
 					'The value ' tostring(value, 100, ' ...') ' is not a valid property ' NNClassifierMLP_Evaluator_VOIs.getPropTag(prop) ' (' NNClassifierMLP_Evaluator_VOIs.getFormatTag(NNClassifierMLP_Evaluator_VOIs.getPropFormat(prop)) ').'] ...
 					)
 			end
@@ -681,13 +678,13 @@ classdef NNClassifierMLP_Evaluator_VOIs < NNClassifierMLP_Evaluator
 			%  checkValue.
 			
 			switch prop
-				case NNClassifierMLP_Evaluator_VOIs.PFROC % __NNClassifierMLP_Evaluator_VOIs.PFROC__
+				case 13 % NNClassifierMLP_Evaluator_VOIs.PFROC
 					if isa(nne.getr('PFROC'), 'NoValue')
 					    nne.set('PFROC', NNClassifierMLP_EvaluatorPF_ROC_VOIs('NNE', nne));
 					end
 					
 				otherwise
-					if prop <= NNClassifierMLP_Evaluator.getPropNumber()
+					if prop <= 15
 						postprocessing@NNClassifierMLP_Evaluator(nne, prop);
 					end
 			end
@@ -698,20 +695,20 @@ classdef NNClassifierMLP_Evaluator_VOIs < NNClassifierMLP_Evaluator
 			%CALCULATEVALUE calculates the value of a property.
 			%
 			% VALUE = CALCULATEVALUE(EL, PROP) calculates the value of the property
-			%  PROP. It works only with properties with Category.RESULT,
-			%  Category.QUERY, and Category.EVANESCENT. By default this function
+			%  PROP. It works only with properties with 5,
+			%  6, and 7. By default this function
 			%  returns the default value for the prop and should be implemented in the
 			%  subclasses of Element when needed.
 			%
 			% VALUE = CALCULATEVALUE(EL, PROP, VARARGIN) works with properties with
-			%  Category.QUERY.
+			%  6.
 			%
 			% See also getPropDefaultConditioned, conditioning, preset, checkProp,
 			%  postset, postprocessing, checkValue.
 			
 			switch prop
-				case NNClassifierMLP_Evaluator_VOIs.C_MATRIX % __NNClassifierMLP_Evaluator_VOIs.C_MATRIX__
-					rng_settings_ = rng(); rng(nne.getPropSeed(NNClassifierMLP_Evaluator_VOIs.C_MATRIX), 'twister')
+				case 15 % NNClassifierMLP_Evaluator_VOIs.C_MATRIX
+					rng_settings_ = rng(); rng(nne.getPropSeed(15), 'twister')
 					
 					d = nne.get('D');
 					d_vois = nne.get('D_VOIS');
@@ -733,8 +730,8 @@ classdef NNClassifierMLP_Evaluator_VOIs < NNClassifierMLP_Evaluator
 					
 					rng(rng_settings_)
 					
-				case NNClassifierMLP_Evaluator_VOIs.AUC % __NNClassifierMLP_Evaluator_VOIs.AUC__
-					rng_settings_ = rng(); rng(nne.getPropSeed(NNClassifierMLP_Evaluator_VOIs.AUC), 'twister')
+				case 12 % NNClassifierMLP_Evaluator_VOIs.AUC
+					rng_settings_ = rng(); rng(nne.getPropSeed(12), 'twister')
 					
 					d = nne.get('D');
 					d_vois = nne.get('D_VOIS');
@@ -751,8 +748,8 @@ classdef NNClassifierMLP_Evaluator_VOIs < NNClassifierMLP_Evaluator
 					
 					rng(rng_settings_)
 					
-				case NNClassifierMLP_Evaluator_VOIs.MACRO_AUC % __NNClassifierMLP_Evaluator_VOIs.MACRO_AUC__
-					rng_settings_ = rng(); rng(nne.getPropSeed(NNClassifierMLP_Evaluator_VOIs.MACRO_AUC), 'twister')
+				case 14 % NNClassifierMLP_Evaluator_VOIs.MACRO_AUC
+					rng_settings_ = rng(); rng(nne.getPropSeed(14), 'twister')
 					
 					auc = nne.get('AUC');
 					if isempty(auc)
@@ -764,7 +761,7 @@ classdef NNClassifierMLP_Evaluator_VOIs < NNClassifierMLP_Evaluator
 					rng(rng_settings_)
 					
 				otherwise
-					if prop <= NNClassifierMLP_Evaluator.getPropNumber()
+					if prop <= 15
 						value = calculateValue@NNClassifierMLP_Evaluator(nne, prop, varargin{:});
 					else
 						value = calculateValue@Element(nne, prop, varargin{:});
@@ -790,7 +787,7 @@ classdef NNClassifierMLP_Evaluator_VOIs < NNClassifierMLP_Evaluator
 			%  PanelPropString, PanelPropStringList.
 			
 			switch prop
-				case NNClassifierMLP_Evaluator_VOIs.PFROC % __NNClassifierMLP_Evaluator_VOIs.PFROC__
+				case 13 % NNClassifierMLP_Evaluator_VOIs.PFROC
 					pr = PanelPropItem('EL', nne, 'PROP', NNClassifierMLP_EvaluatorPF_ROC_VOIs.PFROC, ...
 					    'GUICLASS', 'GUIFig', ...
 						'BUTTON_TEXT', ['ROC Plot'], ...

@@ -7,6 +7,20 @@ classdef NNDataPoint_VOIs < NNDataPoint
 	% The input is the value of variable of interests extracted from vois.file of subject.
 	% The target is obtained from the variables of interest of the subject.
 	%
+	% The list of NNDataPoint_VOIs properties is:
+	%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the data point for variable of interest.
+	%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the data point for variable of interest.
+	%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the data point for variable of interest.
+	%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the data point for variable of interest.
+	%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the data point for variable of interest.
+	%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the data point for variable of interest.
+	%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the data point for variable of interest.
+	%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
+	%  <strong>9</strong> <strong>INPUT</strong> 	INPUT (result, cell) is the input value for this data point, a vector of VOI values.
+	%  <strong>10</strong> <strong>TARGET</strong> 	TARGET (result, cell) is the target values for this data point.
+	%  <strong>11</strong> <strong>VOI_DICT</strong> 	VOI_DICT (data, idict) is a dictionary with variable of interests.
+	%  <strong>12</strong> <strong>TARGET_CLASS</strong> 	TARGET_CLASS (parameter, stringlist) is a list of variable-of-interest IDs to be used as the class targets.
+	%
 	% NNDataPoint_VOIs methods (constructor):
 	%  NNDataPoint_VOIs - constructor
 	%
@@ -94,15 +108,15 @@ classdef NNDataPoint_VOIs < NNDataPoint
 	%
 	
 	properties (Constant) % properties
-		VOI_DICT = NNDataPoint.getPropNumber() + 1;
+		VOI_DICT = 11; %CET: Computational Efficiency Trick
 		VOI_DICT_TAG = 'VOI_DICT';
-		VOI_DICT_CATEGORY = Category.DATA;
-		VOI_DICT_FORMAT = Format.IDICT;
+		VOI_DICT_CATEGORY = 4;
+		VOI_DICT_FORMAT = 10;
 		
-		TARGET_CLASS = NNDataPoint.getPropNumber() + 2;
+		TARGET_CLASS = 12; %CET: Computational Efficiency Trick
 		TARGET_CLASS_TAG = 'TARGET_CLASS';
-		TARGET_CLASS_CATEGORY = Category.PARAMETER;
-		TARGET_CLASS_FORMAT = Format.STRINGLIST;
+		TARGET_CLASS_CATEGORY = 3;
+		TARGET_CLASS_FORMAT = 3;
 	end
 	methods % constructor
 		function dp = NNDataPoint_VOIs(varargin)
@@ -115,6 +129,19 @@ classdef NNDataPoint_VOIs < NNDataPoint
 			% Multiple properties can be initialized at once identifying
 			%  them with either property numbers (PROP) or tags (TAG).
 			%
+			% The list of NNDataPoint_VOIs properties is:
+			%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the data point for variable of interest.
+			%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the data point for variable of interest.
+			%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the data point for variable of interest.
+			%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the data point for variable of interest.
+			%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the data point for variable of interest.
+			%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the data point for variable of interest.
+			%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the data point for variable of interest.
+			%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
+			%  <strong>9</strong> <strong>INPUT</strong> 	INPUT (result, cell) is the input value for this data point, a vector of VOI values.
+			%  <strong>10</strong> <strong>TARGET</strong> 	TARGET (result, cell) is the target values for this data point.
+			%  <strong>11</strong> <strong>VOI_DICT</strong> 	VOI_DICT (data, idict) is a dictionary with variable of interests.
+			%  <strong>12</strong> <strong>TARGET_CLASS</strong> 	TARGET_CLASS (parameter, stringlist) is a list of variable-of-interest IDs to be used as the class targets.
 			%
 			% See also Category, Format.
 			
@@ -167,7 +194,7 @@ classdef NNDataPoint_VOIs < NNDataPoint
 			%
 			% See also subclasses.
 			
-			subclass_list = subclasses('NNDataPoint_VOIs', [], [], true);
+			subclass_list = { 'NNDataPoint_VOIs' }; %CET: Computational Efficiency Trick
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of variable of interests (VOIs.
@@ -188,54 +215,28 @@ classdef NNDataPoint_VOIs < NNDataPoint
 			%
 			% See also getPropNumber, Category.
 			
+			%CET: Computational Efficiency Trick
+			
 			if nargin == 0
-				prop_list = [ ...
-					NNDataPoint.getProps() ...
-						NNDataPoint_VOIs.VOI_DICT ...
-						NNDataPoint_VOIs.TARGET_CLASS ...
-						];
+				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12];
 				return
 			end
 			
 			switch category
-				case Category.CONSTANT
-					prop_list = [ ...
-						NNDataPoint.getProps(Category.CONSTANT) ...
-						];
-				case Category.METADATA
-					prop_list = [ ...
-						NNDataPoint.getProps(Category.METADATA) ...
-						];
-				case Category.PARAMETER
-					prop_list = [ ...
-						NNDataPoint.getProps(Category.PARAMETER) ...
-						NNDataPoint_VOIs.TARGET_CLASS ...
-						];
-				case Category.DATA
-					prop_list = [ ...
-						NNDataPoint.getProps(Category.DATA) ...
-						NNDataPoint_VOIs.VOI_DICT ...
-						];
-				case Category.RESULT
-					prop_list = [
-						NNDataPoint.getProps(Category.RESULT) ...
-						];
-				case Category.QUERY
-					prop_list = [ ...
-						NNDataPoint.getProps(Category.QUERY) ...
-						];
-				case Category.EVANESCENT
-					prop_list = [ ...
-						NNDataPoint.getProps(Category.EVANESCENT) ...
-						];
-				case Category.FIGURE
-					prop_list = [ ...
-						NNDataPoint.getProps(Category.FIGURE) ...
-						];
-				case Category.GUI
-					prop_list = [ ...
-						NNDataPoint.getProps(Category.GUI) ...
-						];
+				case 1 % Category.CONSTANT
+					prop_list = [1 2 3];
+				case 2 % Category.METADATA
+					prop_list = [6 7];
+				case 3 % Category.PARAMETER
+					prop_list = [4 12];
+				case 4 % Category.DATA
+					prop_list = [5 11];
+				case 5 % Category.RESULT
+					prop_list = [9 10];
+				case 6 % Category.QUERY
+					prop_list = 8;
+				otherwise
+					prop_list = [];
 			end
 		end
 		function prop_number = getPropNumber(varargin)
@@ -256,7 +257,29 @@ classdef NNDataPoint_VOIs < NNDataPoint
 			%
 			% See also getProps, Category.
 			
-			prop_number = numel(NNDataPoint_VOIs.getProps(varargin{:}));
+			%CET: Computational Efficiency Trick
+			
+			if nargin == 0
+				prop_number = 12;
+				return
+			end
+			
+			switch varargin{1} % category = varargin{1}
+				case 1 % Category.CONSTANT
+					prop_number = 3;
+				case 2 % Category.METADATA
+					prop_number = 2;
+				case 3 % Category.PARAMETER
+					prop_number = 2;
+				case 4 % Category.DATA
+					prop_number = 2;
+				case 5 % Category.RESULT
+					prop_number = 2;
+				case 6 % Category.QUERY
+					prop_number = 1;
+				otherwise
+					prop_number = 0;
+			end
 		end
 		function check_out = existsProp(prop)
 			%EXISTSPROP checks whether property exists in variable of interests (VOIs/error.
@@ -284,14 +307,14 @@ classdef NNDataPoint_VOIs < NNDataPoint
 			%
 			% See also getProps, existsTag.
 			
-			check = any(prop == NNDataPoint_VOIs.getProps());
+			check = prop >= 1 && prop <= 12 && round(prop) == prop; %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':NNDataPoint_VOIs:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':NNDataPoint_VOIs:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':NNDataPoint_VOIs:' 'WrongInput'], ...
+					['BRAPH2' ':NNDataPoint_VOIs:' 'WrongInput' '\n' ...
 					'The value ' tostring(prop, 100, ' ...') ' is not a valid prop for NNDataPoint_VOIs.'] ...
 					)
 			end
@@ -322,15 +345,14 @@ classdef NNDataPoint_VOIs < NNDataPoint
 			%
 			% See also getProps, existsTag.
 			
-			nndatapoint_vois_tag_list = cellfun(@(x) NNDataPoint_VOIs.getPropTag(x), num2cell(NNDataPoint_VOIs.getProps()), 'UniformOutput', false);
-			check = any(strcmp(tag, nndatapoint_vois_tag_list));
+			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'INPUT'  'TARGET'  'VOI_DICT'  'TARGET_CLASS' })); %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':NNDataPoint_VOIs:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':NNDataPoint_VOIs:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':NNDataPoint_VOIs:' 'WrongInput'], ...
+					['BRAPH2' ':NNDataPoint_VOIs:' 'WrongInput' '\n' ...
 					'The value ' tag ' is not a valid tag for NNDataPoint_VOIs.'] ...
 					)
 			end
@@ -356,8 +378,7 @@ classdef NNDataPoint_VOIs < NNDataPoint
 			%  getPropSettings, getPropDefault, checkProp.
 			
 			if ischar(pointer)
-				nndatapoint_vois_tag_list = cellfun(@(x) NNDataPoint_VOIs.getPropTag(x), num2cell(NNDataPoint_VOIs.getProps()), 'UniformOutput', false);
-				prop = find(strcmp(pointer, nndatapoint_vois_tag_list)); % tag = pointer
+				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'INPUT'  'TARGET'  'VOI_DICT'  'TARGET_CLASS' })); % tag = pointer %CET: Computational Efficiency Trick
 			else % numeric
 				prop = pointer;
 			end
@@ -385,16 +406,9 @@ classdef NNDataPoint_VOIs < NNDataPoint
 			if ischar(pointer)
 				tag = pointer;
 			else % numeric
-				prop = pointer;
-				
-				switch prop
-					case NNDataPoint_VOIs.VOI_DICT
-						tag = NNDataPoint_VOIs.VOI_DICT_TAG;
-					case NNDataPoint_VOIs.TARGET_CLASS
-						tag = NNDataPoint_VOIs.TARGET_CLASS_TAG;
-					otherwise
-						tag = getPropTag@NNDataPoint(prop);
-				end
+				%CET: Computational Efficiency Trick
+				nndatapoint_vois_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'INPUT'  'TARGET'  'VOI_DICT'  'TARGET_CLASS' };
+				tag = nndatapoint_vois_tag_list{pointer}; % prop = pointer
 			end
 		end
 		function prop_category = getPropCategory(pointer)
@@ -419,14 +433,9 @@ classdef NNDataPoint_VOIs < NNDataPoint
 			
 			prop = NNDataPoint_VOIs.getPropProp(pointer);
 			
-			switch prop
-				case NNDataPoint_VOIs.VOI_DICT
-					prop_category = NNDataPoint_VOIs.VOI_DICT_CATEGORY;
-				case NNDataPoint_VOIs.TARGET_CLASS
-					prop_category = NNDataPoint_VOIs.TARGET_CLASS_CATEGORY;
-				otherwise
-					prop_category = getPropCategory@NNDataPoint(prop);
-			end
+			%CET: Computational Efficiency Trick
+			nndatapoint_vois_category_list = { 1  1  1  3  4  2  2  6  5  5  4  3 };
+			prop_category = nndatapoint_vois_category_list{prop};
 		end
 		function prop_format = getPropFormat(pointer)
 			%GETPROPFORMAT returns the format of a property.
@@ -450,14 +459,9 @@ classdef NNDataPoint_VOIs < NNDataPoint
 			
 			prop = NNDataPoint_VOIs.getPropProp(pointer);
 			
-			switch prop
-				case NNDataPoint_VOIs.VOI_DICT
-					prop_format = NNDataPoint_VOIs.VOI_DICT_FORMAT;
-				case NNDataPoint_VOIs.TARGET_CLASS
-					prop_format = NNDataPoint_VOIs.TARGET_CLASS_FORMAT;
-				otherwise
-					prop_format = getPropFormat@NNDataPoint(prop);
-			end
+			%CET: Computational Efficiency Trick
+			nndatapoint_vois_format_list = { 2  2  2  8  2  2  2  2  16  16  10  3 };
+			prop_format = nndatapoint_vois_format_list{prop};
 		end
 		function prop_description = getPropDescription(pointer)
 			%GETPROPDESCRIPTION returns the description of a property.
@@ -481,32 +485,9 @@ classdef NNDataPoint_VOIs < NNDataPoint
 			
 			prop = NNDataPoint_VOIs.getPropProp(pointer);
 			
-			switch prop
-				case NNDataPoint_VOIs.VOI_DICT
-					prop_description = 'VOI_DICT (data, idict) is a dictionary with variable of interests.';
-				case NNDataPoint_VOIs.TARGET_CLASS
-					prop_description = 'TARGET_CLASS (parameter, stringlist) is a list of variable-of-interest IDs to be used as the class targets.';
-				case NNDataPoint_VOIs.ELCLASS
-					prop_description = 'ELCLASS (constant, string) is the class of the data point for variable of interest.';
-				case NNDataPoint_VOIs.NAME
-					prop_description = 'NAME (constant, string) is the name of the data point for variable of interest.';
-				case NNDataPoint_VOIs.DESCRIPTION
-					prop_description = 'DESCRIPTION (constant, string) is the description of the data point for variable of interest.';
-				case NNDataPoint_VOIs.TEMPLATE
-					prop_description = 'TEMPLATE (parameter, item) is the template of the data point for variable of interest.';
-				case NNDataPoint_VOIs.ID
-					prop_description = 'ID (data, string) is a few-letter code for the data point for variable of interest.';
-				case NNDataPoint_VOIs.LABEL
-					prop_description = 'LABEL (metadata, string) is an extended label of the data point for variable of interest.';
-				case NNDataPoint_VOIs.NOTES
-					prop_description = 'NOTES (metadata, string) are some specific notes about the data point for variable of interest.';
-				case NNDataPoint_VOIs.INPUT
-					prop_description = 'INPUT (result, cell) is the input value for this data point, a vector of VOI values.';
-				case NNDataPoint_VOIs.TARGET
-					prop_description = 'TARGET (result, cell) is the target values for this data point.';
-				otherwise
-					prop_description = getPropDescription@NNDataPoint(prop);
-			end
+			%CET: Computational Efficiency Trick
+			nndatapoint_vois_description_list = { 'ELCLASS (constant, string) is the class of the data point for variable of interest.'  'NAME (constant, string) is the name of the data point for variable of interest.'  'DESCRIPTION (constant, string) is the description of the data point for variable of interest.'  'TEMPLATE (parameter, item) is the template of the data point for variable of interest.'  'ID (data, string) is a few-letter code for the data point for variable of interest.'  'LABEL (metadata, string) is an extended label of the data point for variable of interest.'  'NOTES (metadata, string) are some specific notes about the data point for variable of interest.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'INPUT (result, cell) is the input value for this data point, a vector of VOI values.'  'TARGET (result, cell) is the target values for this data point.'  'VOI_DICT (data, idict) is a dictionary with variable of interests.'  'TARGET_CLASS (parameter, stringlist) is a list of variable-of-interest IDs to be used as the class targets.' };
+			prop_description = nndatapoint_vois_description_list{prop};
 		end
 		function prop_settings = getPropSettings(pointer)
 			%GETPROPSETTINGS returns the settings of a property.
@@ -530,12 +511,12 @@ classdef NNDataPoint_VOIs < NNDataPoint
 			
 			prop = NNDataPoint_VOIs.getPropProp(pointer);
 			
-			switch prop
-				case NNDataPoint_VOIs.VOI_DICT
+			switch prop %CET: Computational Efficiency Trick
+				case 11 % NNDataPoint_VOIs.VOI_DICT
 					prop_settings = 'Subject';
-				case NNDataPoint_VOIs.TARGET_CLASS
-					prop_settings = Format.getFormatSettings(Format.STRINGLIST);
-				case NNDataPoint_VOIs.TEMPLATE
+				case 12 % NNDataPoint_VOIs.TARGET_CLASS
+					prop_settings = Format.getFormatSettings(3);
+				case 4 % NNDataPoint_VOIs.TEMPLATE
 					prop_settings = 'NNDataPoint_VOIs';
 				otherwise
 					prop_settings = getPropSettings@NNDataPoint(prop);
@@ -563,24 +544,24 @@ classdef NNDataPoint_VOIs < NNDataPoint
 			
 			prop = NNDataPoint_VOIs.getPropProp(pointer);
 			
-			switch prop
-				case NNDataPoint_VOIs.VOI_DICT
-					prop_default = Format.getFormatDefault(Format.IDICT, NNDataPoint_VOIs.getPropSettings(prop));
-				case NNDataPoint_VOIs.TARGET_CLASS
-					prop_default = Format.getFormatDefault(Format.STRINGLIST, NNDataPoint_VOIs.getPropSettings(prop));
-				case NNDataPoint_VOIs.ELCLASS
+			switch prop %CET: Computational Efficiency Trick
+				case 11 % NNDataPoint_VOIs.VOI_DICT
+					prop_default = Format.getFormatDefault(10, NNDataPoint_VOIs.getPropSettings(prop));
+				case 12 % NNDataPoint_VOIs.TARGET_CLASS
+					prop_default = Format.getFormatDefault(3, NNDataPoint_VOIs.getPropSettings(prop));
+				case 1 % NNDataPoint_VOIs.ELCLASS
 					prop_default = 'NNDataPoint_VOIs';
-				case NNDataPoint_VOIs.NAME
+				case 2 % NNDataPoint_VOIs.NAME
 					prop_default = 'Neural Network Data Point for variable of interests';
-				case NNDataPoint_VOIs.DESCRIPTION
+				case 3 % NNDataPoint_VOIs.DESCRIPTION
 					prop_default = 'A data point for variable of interests (NNDataPoint_VOIs) contains both input and target for neural network analysis. The input is the value of variable of interests extracted from vois.file of subject.. The target is obtained from the variables of interest of the subject.';
-				case NNDataPoint_VOIs.TEMPLATE
-					prop_default = Format.getFormatDefault(Format.ITEM, NNDataPoint_VOIs.getPropSettings(prop));
-				case NNDataPoint_VOIs.ID
+				case 4 % NNDataPoint_VOIs.TEMPLATE
+					prop_default = Format.getFormatDefault(8, NNDataPoint_VOIs.getPropSettings(prop));
+				case 5 % NNDataPoint_VOIs.ID
 					prop_default = 'NNDataPoint_VOIs ID';
-				case NNDataPoint_VOIs.LABEL
+				case 6 % NNDataPoint_VOIs.LABEL
 					prop_default = 'NNDataPoint_VOIs label';
-				case NNDataPoint_VOIs.NOTES
+				case 7 % NNDataPoint_VOIs.NOTES
 					prop_default = 'NNDataPoint_VOIs notes';
 				otherwise
 					prop_default = getPropDefault@NNDataPoint(prop);
@@ -627,15 +608,15 @@ classdef NNDataPoint_VOIs < NNDataPoint
 			% 
 			% DP.CHECKPROP(POINTER, VALUE) throws an error if VALUE is
 			%  NOT an acceptable value for the format of the property POINTER.
-			%  Error id: €BRAPH2.STR€:NNDataPoint_VOIs:€BRAPH2.WRONG_INPUT€
+			%  Error id: BRAPH2:NNDataPoint_VOIs:WrongInput
 			% 
 			% Alternative forms to call this method are (POINTER = PROP or TAG):
 			%  DP.CHECKPROP(POINTER, VALUE) throws error if VALUE has not a valid format for PROP of DP.
-			%   Error id: €BRAPH2.STR€:NNDataPoint_VOIs:€BRAPH2.WRONG_INPUT€
+			%   Error id: BRAPH2:NNDataPoint_VOIs:WrongInput
 			%  Element.CHECKPROP(NNDataPoint_VOIs, PROP, VALUE) throws error if VALUE has not a valid format for PROP of NNDataPoint_VOIs.
-			%   Error id: €BRAPH2.STR€:NNDataPoint_VOIs:€BRAPH2.WRONG_INPUT€
+			%   Error id: BRAPH2:NNDataPoint_VOIs:WrongInput
 			%  DP.CHECKPROP(NNDataPoint_VOIs, PROP, VALUE) throws error if VALUE has not a valid format for PROP of NNDataPoint_VOIs.
-			%   Error id: €BRAPH2.STR€:NNDataPoint_VOIs:€BRAPH2.WRONG_INPUT€]
+			%   Error id: BRAPH2:NNDataPoint_VOIs:WrongInput]
 			% 
 			% Note that the Element.CHECKPROP(DP) and Element.CHECKPROP('NNDataPoint_VOIs')
 			%  are less computationally efficient.
@@ -646,14 +627,14 @@ classdef NNDataPoint_VOIs < NNDataPoint
 			prop = NNDataPoint_VOIs.getPropProp(pointer);
 			
 			switch prop
-				case NNDataPoint_VOIs.VOI_DICT % __NNDataPoint_VOIs.VOI_DICT__
-					check = Format.checkFormat(Format.IDICT, value, NNDataPoint_VOIs.getPropSettings(prop));
-				case NNDataPoint_VOIs.TARGET_CLASS % __NNDataPoint_VOIs.TARGET_CLASS__
-					check = Format.checkFormat(Format.STRINGLIST, value, NNDataPoint_VOIs.getPropSettings(prop));
-				case NNDataPoint_VOIs.TEMPLATE % __NNDataPoint_VOIs.TEMPLATE__
-					check = Format.checkFormat(Format.ITEM, value, NNDataPoint_VOIs.getPropSettings(prop));
+				case 11 % NNDataPoint_VOIs.VOI_DICT
+					check = Format.checkFormat(10, value, NNDataPoint_VOIs.getPropSettings(prop));
+				case 12 % NNDataPoint_VOIs.TARGET_CLASS
+					check = Format.checkFormat(3, value, NNDataPoint_VOIs.getPropSettings(prop));
+				case 4 % NNDataPoint_VOIs.TEMPLATE
+					check = Format.checkFormat(8, value, NNDataPoint_VOIs.getPropSettings(prop));
 				otherwise
-					if prop <= NNDataPoint.getPropNumber()
+					if prop <= 10
 						check = checkProp@NNDataPoint(prop, value);
 					end
 			end
@@ -662,8 +643,8 @@ classdef NNDataPoint_VOIs < NNDataPoint
 				prop_check = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':NNDataPoint_VOIs:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':NNDataPoint_VOIs:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':NNDataPoint_VOIs:' 'WrongInput'], ...
+					['BRAPH2' ':NNDataPoint_VOIs:' 'WrongInput' '\n' ...
 					'The value ' tostring(value, 100, ' ...') ' is not a valid property ' NNDataPoint_VOIs.getPropTag(prop) ' (' NNDataPoint_VOIs.getFormatTag(NNDataPoint_VOIs.getPropFormat(prop)) ').'] ...
 					)
 			end
@@ -674,20 +655,20 @@ classdef NNDataPoint_VOIs < NNDataPoint
 			%CALCULATEVALUE calculates the value of a property.
 			%
 			% VALUE = CALCULATEVALUE(EL, PROP) calculates the value of the property
-			%  PROP. It works only with properties with Category.RESULT,
-			%  Category.QUERY, and Category.EVANESCENT. By default this function
+			%  PROP. It works only with properties with 5,
+			%  6, and 7. By default this function
 			%  returns the default value for the prop and should be implemented in the
 			%  subclasses of Element when needed.
 			%
 			% VALUE = CALCULATEVALUE(EL, PROP, VARARGIN) works with properties with
-			%  Category.QUERY.
+			%  6.
 			%
 			% See also getPropDefaultConditioned, conditioning, preset, checkProp,
 			%  postset, postprocessing, checkValue.
 			
 			switch prop
-				case NNDataPoint_VOIs.INPUT % __NNDataPoint_VOIs.INPUT__
-					rng_settings_ = rng(); rng(dp.getPropSeed(NNDataPoint_VOIs.INPUT), 'twister')
+				case 9 % NNDataPoint_VOIs.INPUT
+					rng_settings_ = rng(); rng(dp.getPropSeed(9), 'twister')
 					
 					voi_dict = dp.get('VOI_DICT');
 					if voi_dict.get('LENGTH') == 0
@@ -702,15 +683,15 @@ classdef NNDataPoint_VOIs < NNDataPoint
 					
 					rng(rng_settings_)
 					
-				case NNDataPoint_VOIs.TARGET % __NNDataPoint_VOIs.TARGET__
-					rng_settings_ = rng(); rng(dp.getPropSeed(NNDataPoint_VOIs.TARGET), 'twister')
+				case 10 % NNDataPoint_VOIs.TARGET
+					rng_settings_ = rng(); rng(dp.getPropSeed(10), 'twister')
 					
 					value = cellfun(@(c) sum(double(c)), dp.get('TARGET_CLASS'), 'UniformOutput', false);
 					
 					rng(rng_settings_)
 					
 				otherwise
-					if prop <= NNDataPoint.getPropNumber()
+					if prop <= 10
 						value = calculateValue@NNDataPoint(dp, prop, varargin{:});
 					else
 						value = calculateValue@Element(dp, prop, varargin{:});

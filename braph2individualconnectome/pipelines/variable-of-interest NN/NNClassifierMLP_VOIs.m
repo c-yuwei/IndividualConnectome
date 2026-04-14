@@ -4,6 +4,37 @@ classdef NNClassifierMLP_VOIs < NNClassifierMLP
 	%
 	% This is children class of NNClassifierMLP that also includes user-defined variable of interests loaded from NNDataset for classification
 	%
+	% The list of NNClassifierMLP_VOIs properties is:
+	%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the neural network multi-layer perceptron classifier.
+	%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the neural network multi-layer perceptron classifier.
+	%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the neural network multi-layer perceptron classifier.
+	%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the neural network multi-layer perceptron classifier with VOI.
+	%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the neural network multi-layer perceptron classifier.
+	%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the neural network multi-layer perceptron classifier.
+	%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the neural network multi-layer perceptron classifier.
+	%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
+	%  <strong>9</strong> <strong>D</strong> 	D (data, item) is the dataset to train the neural network model, and its data point class DP_CLASS defaults to one of the compatible classes within the set of DP_CLASSES.
+	%  <strong>10</strong> <strong>DP_CLASSES</strong> 	DP_CLASSES (parameter, classlist) is the list of compatible data points.
+	%  <strong>11</strong> <strong>EPOCHS</strong> 	EPOCHS (parameter, scalar) is the maximum number of epochs.
+	%  <strong>12</strong> <strong>BATCH</strong> 	BATCH (parameter, scalar) is the size of the mini-batch used for each training iteration.
+	%  <strong>13</strong> <strong>SHUFFLE</strong> 	SHUFFLE (parameter, option) is an option for data shuffling.
+	%  <strong>14</strong> <strong>SOLVER</strong> 	SOLVER (parameter, option) is an option for the solver.
+	%  <strong>15</strong> <strong>MODEL</strong> 	MODEL (result, net) is a trained neural network model.
+	%  <strong>16</strong> <strong>INPUTS</strong> 	INPUTS (query, cell) constructs the data in the CB (channel-batch) format.
+	%  <strong>17</strong> <strong>TARGETS</strong> 	TARGETS (query, cell) constructs the targets in the CB (channel-batch) format with one-hot vectors.
+	%  <strong>18</strong> <strong>TRAIN</strong> 	TRAIN (query, empty) trains the neural network model with the given dataset.
+	%  <strong>19</strong> <strong>VERBOSE</strong> 	VERBOSE (gui, logical) is an indicator to display training progress information.
+	%  <strong>20</strong> <strong>PLOT_TRAINING</strong> 	PLOT_TRAINING (metadata, option) determines whether to plot the training progress.
+	%  <strong>21</strong> <strong>PREDICT</strong> 	PREDICT (query, cell) returns the predictions of the trained neural network for a dataset pair (D and D_VOIs).
+	%  <strong>22</strong> <strong>TARGET_CLASSES</strong> 	TARGET_CLASSES (query, stringlist) constructs the target classes which represent the class of each data point.
+	%  <strong>23</strong> <strong>LAYERS</strong> 	LAYERS (data, rvector) defines the number of layers and their neurons.
+	%  <strong>24</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) detemines whether to show the waitbar.
+	%  <strong>25</strong> <strong>INTERRUPTIBLE</strong> 	INTERRUPTIBLE (gui, scalar) sets whether the comparison computation is interruptible for multitasking.
+	%  <strong>26</strong> <strong>FEATURE_IMPORTANCE</strong> 	FEATURE_IMPORTANCE (query, cell) evaluates the average significance of each feature by iteratively shuffling its values P times and measuring the resulting average decrease in model performance.
+	%  <strong>27</strong> <strong>VOI_SELECTION</strong> 	VOI_SELECTION (parameter, stringlist) defines which VOIs should be included in the analysis.
+	%  <strong>28</strong> <strong>D_VOIS</strong> 	D_VOIS (data, item) is the voi dataset to train the neural network model, and its data point class DP_CLASS defaults to one of the compatible classes within the set of DP_CLASSES.
+	%  <strong>29</strong> <strong>VOI_INPUT</strong> 	VOI_INPUT (query, cell) extracts VOI values based on the selection list.
+	%
 	% NNClassifierMLP_VOIs methods (constructor):
 	%  NNClassifierMLP_VOIs - constructor
 	%
@@ -92,23 +123,23 @@ classdef NNClassifierMLP_VOIs < NNClassifierMLP
 	%
 	% See also NNDataPoint_CON_CLA, NNClassifier_Evaluator_VOIs.
 	%
-	% BUILD BRAPH2 BRAPH2.BUILD class_name 1
+	% BUILD BRAPH2 7 class_name 1
 	
 	properties (Constant) % properties
-		VOI_SELECTION = NNClassifierMLP.getPropNumber() + 1;
+		VOI_SELECTION = 27; %CET: Computational Efficiency Trick
 		VOI_SELECTION_TAG = 'VOI_SELECTION';
-		VOI_SELECTION_CATEGORY = Category.PARAMETER;
-		VOI_SELECTION_FORMAT = Format.STRINGLIST;
+		VOI_SELECTION_CATEGORY = 3;
+		VOI_SELECTION_FORMAT = 3;
 		
-		D_VOIS = NNClassifierMLP.getPropNumber() + 2;
+		D_VOIS = 28; %CET: Computational Efficiency Trick
 		D_VOIS_TAG = 'D_VOIS';
-		D_VOIS_CATEGORY = Category.DATA;
-		D_VOIS_FORMAT = Format.ITEM;
+		D_VOIS_CATEGORY = 4;
+		D_VOIS_FORMAT = 8;
 		
-		VOI_INPUT = NNClassifierMLP.getPropNumber() + 3;
+		VOI_INPUT = 29; %CET: Computational Efficiency Trick
 		VOI_INPUT_TAG = 'VOI_INPUT';
-		VOI_INPUT_CATEGORY = Category.QUERY;
-		VOI_INPUT_FORMAT = Format.CELL;
+		VOI_INPUT_CATEGORY = 6;
+		VOI_INPUT_FORMAT = 16;
 	end
 	methods % constructor
 		function nn = NNClassifierMLP_VOIs(varargin)
@@ -121,6 +152,36 @@ classdef NNClassifierMLP_VOIs < NNClassifierMLP
 			% Multiple properties can be initialized at once identifying
 			%  them with either property numbers (PROP) or tags (TAG).
 			%
+			% The list of NNClassifierMLP_VOIs properties is:
+			%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the neural network multi-layer perceptron classifier.
+			%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the neural network multi-layer perceptron classifier.
+			%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the neural network multi-layer perceptron classifier.
+			%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the neural network multi-layer perceptron classifier with VOI.
+			%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the neural network multi-layer perceptron classifier.
+			%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the neural network multi-layer perceptron classifier.
+			%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the neural network multi-layer perceptron classifier.
+			%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
+			%  <strong>9</strong> <strong>D</strong> 	D (data, item) is the dataset to train the neural network model, and its data point class DP_CLASS defaults to one of the compatible classes within the set of DP_CLASSES.
+			%  <strong>10</strong> <strong>DP_CLASSES</strong> 	DP_CLASSES (parameter, classlist) is the list of compatible data points.
+			%  <strong>11</strong> <strong>EPOCHS</strong> 	EPOCHS (parameter, scalar) is the maximum number of epochs.
+			%  <strong>12</strong> <strong>BATCH</strong> 	BATCH (parameter, scalar) is the size of the mini-batch used for each training iteration.
+			%  <strong>13</strong> <strong>SHUFFLE</strong> 	SHUFFLE (parameter, option) is an option for data shuffling.
+			%  <strong>14</strong> <strong>SOLVER</strong> 	SOLVER (parameter, option) is an option for the solver.
+			%  <strong>15</strong> <strong>MODEL</strong> 	MODEL (result, net) is a trained neural network model.
+			%  <strong>16</strong> <strong>INPUTS</strong> 	INPUTS (query, cell) constructs the data in the CB (channel-batch) format.
+			%  <strong>17</strong> <strong>TARGETS</strong> 	TARGETS (query, cell) constructs the targets in the CB (channel-batch) format with one-hot vectors.
+			%  <strong>18</strong> <strong>TRAIN</strong> 	TRAIN (query, empty) trains the neural network model with the given dataset.
+			%  <strong>19</strong> <strong>VERBOSE</strong> 	VERBOSE (gui, logical) is an indicator to display training progress information.
+			%  <strong>20</strong> <strong>PLOT_TRAINING</strong> 	PLOT_TRAINING (metadata, option) determines whether to plot the training progress.
+			%  <strong>21</strong> <strong>PREDICT</strong> 	PREDICT (query, cell) returns the predictions of the trained neural network for a dataset pair (D and D_VOIs).
+			%  <strong>22</strong> <strong>TARGET_CLASSES</strong> 	TARGET_CLASSES (query, stringlist) constructs the target classes which represent the class of each data point.
+			%  <strong>23</strong> <strong>LAYERS</strong> 	LAYERS (data, rvector) defines the number of layers and their neurons.
+			%  <strong>24</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) detemines whether to show the waitbar.
+			%  <strong>25</strong> <strong>INTERRUPTIBLE</strong> 	INTERRUPTIBLE (gui, scalar) sets whether the comparison computation is interruptible for multitasking.
+			%  <strong>26</strong> <strong>FEATURE_IMPORTANCE</strong> 	FEATURE_IMPORTANCE (query, cell) evaluates the average significance of each feature by iteratively shuffling its values P times and measuring the resulting average decrease in model performance.
+			%  <strong>27</strong> <strong>VOI_SELECTION</strong> 	VOI_SELECTION (parameter, stringlist) defines which VOIs should be included in the analysis.
+			%  <strong>28</strong> <strong>D_VOIS</strong> 	D_VOIS (data, item) is the voi dataset to train the neural network model, and its data point class DP_CLASS defaults to one of the compatible classes within the set of DP_CLASSES.
+			%  <strong>29</strong> <strong>VOI_INPUT</strong> 	VOI_INPUT (query, cell) extracts VOI values based on the selection list.
 			%
 			% See also Category, Format.
 			
@@ -173,7 +234,7 @@ classdef NNClassifierMLP_VOIs < NNClassifierMLP
 			%
 			% See also subclasses.
 			
-			subclass_list = subclasses('NNClassifierMLP_VOIs', [], [], true);
+			subclass_list = { 'NNClassifierMLP_VOIs' }; %CET: Computational Efficiency Trick
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of multi-layer perceptron classifier with vois.
@@ -194,56 +255,30 @@ classdef NNClassifierMLP_VOIs < NNClassifierMLP
 			%
 			% See also getPropNumber, Category.
 			
+			%CET: Computational Efficiency Trick
+			
 			if nargin == 0
-				prop_list = [ ...
-					NNClassifierMLP.getProps() ...
-						NNClassifierMLP_VOIs.VOI_SELECTION ...
-						NNClassifierMLP_VOIs.D_VOIS ...
-						NNClassifierMLP_VOIs.VOI_INPUT ...
-						];
+				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29];
 				return
 			end
 			
 			switch category
-				case Category.CONSTANT
-					prop_list = [ ...
-						NNClassifierMLP.getProps(Category.CONSTANT) ...
-						];
-				case Category.METADATA
-					prop_list = [ ...
-						NNClassifierMLP.getProps(Category.METADATA) ...
-						];
-				case Category.PARAMETER
-					prop_list = [ ...
-						NNClassifierMLP.getProps(Category.PARAMETER) ...
-						NNClassifierMLP_VOIs.VOI_SELECTION ...
-						];
-				case Category.DATA
-					prop_list = [ ...
-						NNClassifierMLP.getProps(Category.DATA) ...
-						NNClassifierMLP_VOIs.D_VOIS ...
-						];
-				case Category.RESULT
-					prop_list = [
-						NNClassifierMLP.getProps(Category.RESULT) ...
-						];
-				case Category.QUERY
-					prop_list = [ ...
-						NNClassifierMLP.getProps(Category.QUERY) ...
-						NNClassifierMLP_VOIs.VOI_INPUT ...
-						];
-				case Category.EVANESCENT
-					prop_list = [ ...
-						NNClassifierMLP.getProps(Category.EVANESCENT) ...
-						];
-				case Category.FIGURE
-					prop_list = [ ...
-						NNClassifierMLP.getProps(Category.FIGURE) ...
-						];
-				case Category.GUI
-					prop_list = [ ...
-						NNClassifierMLP.getProps(Category.GUI) ...
-						];
+				case 1 % Category.CONSTANT
+					prop_list = [1 2 3];
+				case 2 % Category.METADATA
+					prop_list = [6 7 20];
+				case 3 % Category.PARAMETER
+					prop_list = [4 10 11 12 13 14 27];
+				case 4 % Category.DATA
+					prop_list = [5 9 23 28];
+				case 5 % Category.RESULT
+					prop_list = 15;
+				case 6 % Category.QUERY
+					prop_list = [8 16 17 18 21 22 26 29];
+				case 9 % Category.GUI
+					prop_list = [19 24 25];
+				otherwise
+					prop_list = [];
 			end
 		end
 		function prop_number = getPropNumber(varargin)
@@ -264,7 +299,31 @@ classdef NNClassifierMLP_VOIs < NNClassifierMLP
 			%
 			% See also getProps, Category.
 			
-			prop_number = numel(NNClassifierMLP_VOIs.getProps(varargin{:}));
+			%CET: Computational Efficiency Trick
+			
+			if nargin == 0
+				prop_number = 29;
+				return
+			end
+			
+			switch varargin{1} % category = varargin{1}
+				case 1 % Category.CONSTANT
+					prop_number = 3;
+				case 2 % Category.METADATA
+					prop_number = 3;
+				case 3 % Category.PARAMETER
+					prop_number = 7;
+				case 4 % Category.DATA
+					prop_number = 4;
+				case 5 % Category.RESULT
+					prop_number = 1;
+				case 6 % Category.QUERY
+					prop_number = 8;
+				case 9 % Category.GUI
+					prop_number = 3;
+				otherwise
+					prop_number = 0;
+			end
 		end
 		function check_out = existsProp(prop)
 			%EXISTSPROP checks whether property exists in multi-layer perceptron classifier with vois/error.
@@ -292,14 +351,14 @@ classdef NNClassifierMLP_VOIs < NNClassifierMLP
 			%
 			% See also getProps, existsTag.
 			
-			check = any(prop == NNClassifierMLP_VOIs.getProps());
+			check = prop >= 1 && prop <= 29 && round(prop) == prop; %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':NNClassifierMLP_VOIs:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':NNClassifierMLP_VOIs:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':NNClassifierMLP_VOIs:' 'WrongInput'], ...
+					['BRAPH2' ':NNClassifierMLP_VOIs:' 'WrongInput' '\n' ...
 					'The value ' tostring(prop, 100, ' ...') ' is not a valid prop for NNClassifierMLP_VOIs.'] ...
 					)
 			end
@@ -330,15 +389,14 @@ classdef NNClassifierMLP_VOIs < NNClassifierMLP
 			%
 			% See also getProps, existsTag.
 			
-			nnclassifiermlp_vois_tag_list = cellfun(@(x) NNClassifierMLP_VOIs.getPropTag(x), num2cell(NNClassifierMLP_VOIs.getProps()), 'UniformOutput', false);
-			check = any(strcmp(tag, nnclassifiermlp_vois_tag_list));
+			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'D'  'DP_CLASSES'  'EPOCHS'  'BATCH'  'SHUFFLE'  'SOLVER'  'MODEL'  'INPUTS'  'TARGETS'  'TRAIN'  'VERBOSE'  'PLOT_TRAINING'  'PREDICT'  'TARGET_CLASSES'  'LAYERS'  'WAITBAR'  'INTERRUPTIBLE'  'FEATURE_IMPORTANCE'  'VOI_SELECTION'  'D_VOIS'  'VOI_INPUT' })); %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':NNClassifierMLP_VOIs:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':NNClassifierMLP_VOIs:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':NNClassifierMLP_VOIs:' 'WrongInput'], ...
+					['BRAPH2' ':NNClassifierMLP_VOIs:' 'WrongInput' '\n' ...
 					'The value ' tag ' is not a valid tag for NNClassifierMLP_VOIs.'] ...
 					)
 			end
@@ -364,8 +422,7 @@ classdef NNClassifierMLP_VOIs < NNClassifierMLP
 			%  getPropSettings, getPropDefault, checkProp.
 			
 			if ischar(pointer)
-				nnclassifiermlp_vois_tag_list = cellfun(@(x) NNClassifierMLP_VOIs.getPropTag(x), num2cell(NNClassifierMLP_VOIs.getProps()), 'UniformOutput', false);
-				prop = find(strcmp(pointer, nnclassifiermlp_vois_tag_list)); % tag = pointer
+				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'D'  'DP_CLASSES'  'EPOCHS'  'BATCH'  'SHUFFLE'  'SOLVER'  'MODEL'  'INPUTS'  'TARGETS'  'TRAIN'  'VERBOSE'  'PLOT_TRAINING'  'PREDICT'  'TARGET_CLASSES'  'LAYERS'  'WAITBAR'  'INTERRUPTIBLE'  'FEATURE_IMPORTANCE'  'VOI_SELECTION'  'D_VOIS'  'VOI_INPUT' })); % tag = pointer %CET: Computational Efficiency Trick
 			else % numeric
 				prop = pointer;
 			end
@@ -393,18 +450,9 @@ classdef NNClassifierMLP_VOIs < NNClassifierMLP
 			if ischar(pointer)
 				tag = pointer;
 			else % numeric
-				prop = pointer;
-				
-				switch prop
-					case NNClassifierMLP_VOIs.VOI_SELECTION
-						tag = NNClassifierMLP_VOIs.VOI_SELECTION_TAG;
-					case NNClassifierMLP_VOIs.D_VOIS
-						tag = NNClassifierMLP_VOIs.D_VOIS_TAG;
-					case NNClassifierMLP_VOIs.VOI_INPUT
-						tag = NNClassifierMLP_VOIs.VOI_INPUT_TAG;
-					otherwise
-						tag = getPropTag@NNClassifierMLP(prop);
-				end
+				%CET: Computational Efficiency Trick
+				nnclassifiermlp_vois_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'D'  'DP_CLASSES'  'EPOCHS'  'BATCH'  'SHUFFLE'  'SOLVER'  'MODEL'  'INPUTS'  'TARGETS'  'TRAIN'  'VERBOSE'  'PLOT_TRAINING'  'PREDICT'  'TARGET_CLASSES'  'LAYERS'  'WAITBAR'  'INTERRUPTIBLE'  'FEATURE_IMPORTANCE'  'VOI_SELECTION'  'D_VOIS'  'VOI_INPUT' };
+				tag = nnclassifiermlp_vois_tag_list{pointer}; % prop = pointer
 			end
 		end
 		function prop_category = getPropCategory(pointer)
@@ -429,16 +477,9 @@ classdef NNClassifierMLP_VOIs < NNClassifierMLP
 			
 			prop = NNClassifierMLP_VOIs.getPropProp(pointer);
 			
-			switch prop
-				case NNClassifierMLP_VOIs.VOI_SELECTION
-					prop_category = NNClassifierMLP_VOIs.VOI_SELECTION_CATEGORY;
-				case NNClassifierMLP_VOIs.D_VOIS
-					prop_category = NNClassifierMLP_VOIs.D_VOIS_CATEGORY;
-				case NNClassifierMLP_VOIs.VOI_INPUT
-					prop_category = NNClassifierMLP_VOIs.VOI_INPUT_CATEGORY;
-				otherwise
-					prop_category = getPropCategory@NNClassifierMLP(prop);
-			end
+			%CET: Computational Efficiency Trick
+			nnclassifiermlp_vois_category_list = { 1  1  1  3  4  2  2  6  4  3  3  3  3  3  5  6  6  6  9  2  6  6  4  9  9  6  3  4  6 };
+			prop_category = nnclassifiermlp_vois_category_list{prop};
 		end
 		function prop_format = getPropFormat(pointer)
 			%GETPROPFORMAT returns the format of a property.
@@ -462,16 +503,9 @@ classdef NNClassifierMLP_VOIs < NNClassifierMLP
 			
 			prop = NNClassifierMLP_VOIs.getPropProp(pointer);
 			
-			switch prop
-				case NNClassifierMLP_VOIs.VOI_SELECTION
-					prop_format = NNClassifierMLP_VOIs.VOI_SELECTION_FORMAT;
-				case NNClassifierMLP_VOIs.D_VOIS
-					prop_format = NNClassifierMLP_VOIs.D_VOIS_FORMAT;
-				case NNClassifierMLP_VOIs.VOI_INPUT
-					prop_format = NNClassifierMLP_VOIs.VOI_INPUT_FORMAT;
-				otherwise
-					prop_format = getPropFormat@NNClassifierMLP(prop);
-			end
+			%CET: Computational Efficiency Trick
+			nnclassifiermlp_vois_format_list = { 2  2  2  8  2  2  2  2  8  7  11  11  5  5  17  16  16  1  4  5  16  3  12  4  11  16  3  8  16 };
+			prop_format = nnclassifiermlp_vois_format_list{prop};
 		end
 		function prop_description = getPropDescription(pointer)
 			%GETPROPDESCRIPTION returns the description of a property.
@@ -495,36 +529,9 @@ classdef NNClassifierMLP_VOIs < NNClassifierMLP
 			
 			prop = NNClassifierMLP_VOIs.getPropProp(pointer);
 			
-			switch prop
-				case NNClassifierMLP_VOIs.VOI_SELECTION
-					prop_description = 'VOI_SELECTION (parameter, stringlist) defines which VOIs should be included in the analysis.';
-				case NNClassifierMLP_VOIs.D_VOIS
-					prop_description = 'D_VOIS (data, item) is the voi dataset to train the neural network model, and its data point class DP_CLASS defaults to one of the compatible classes within the set of DP_CLASSES.';
-				case NNClassifierMLP_VOIs.VOI_INPUT
-					prop_description = 'VOI_INPUT (query, cell) extracts VOI values based on the selection list.';
-				case NNClassifierMLP_VOIs.ELCLASS
-					prop_description = 'ELCLASS (constant, string) is the class of the neural network multi-layer perceptron classifier.';
-				case NNClassifierMLP_VOIs.NAME
-					prop_description = 'NAME (constant, string) is the name of the neural network multi-layer perceptron classifier.';
-				case NNClassifierMLP_VOIs.DESCRIPTION
-					prop_description = 'DESCRIPTION (constant, string) is the description of the neural network multi-layer perceptron classifier.';
-				case NNClassifierMLP_VOIs.TEMPLATE
-					prop_description = 'TEMPLATE (parameter, item) is the template of the neural network multi-layer perceptron classifier with VOI.';
-				case NNClassifierMLP_VOIs.ID
-					prop_description = 'ID (data, string) is a few-letter code for the neural network multi-layer perceptron classifier.';
-				case NNClassifierMLP_VOIs.LABEL
-					prop_description = 'LABEL (metadata, string) is an extended label of the neural network multi-layer perceptron classifier.';
-				case NNClassifierMLP_VOIs.NOTES
-					prop_description = 'NOTES (metadata, string) are some specific notes about the neural network multi-layer perceptron classifier.';
-				case NNClassifierMLP_VOIs.DP_CLASSES
-					prop_description = 'DP_CLASSES (parameter, classlist) is the list of compatible data points.';
-				case NNClassifierMLP_VOIs.MODEL
-					prop_description = 'MODEL (result, net) is a trained neural network model.';
-				case NNClassifierMLP_VOIs.PREDICT
-					prop_description = 'PREDICT (query, cell) returns the predictions of the trained neural network for a dataset pair (D and D_VOIs).';
-				otherwise
-					prop_description = getPropDescription@NNClassifierMLP(prop);
-			end
+			%CET: Computational Efficiency Trick
+			nnclassifiermlp_vois_description_list = { 'ELCLASS (constant, string) is the class of the neural network multi-layer perceptron classifier.'  'NAME (constant, string) is the name of the neural network multi-layer perceptron classifier.'  'DESCRIPTION (constant, string) is the description of the neural network multi-layer perceptron classifier.'  'TEMPLATE (parameter, item) is the template of the neural network multi-layer perceptron classifier with VOI.'  'ID (data, string) is a few-letter code for the neural network multi-layer perceptron classifier.'  'LABEL (metadata, string) is an extended label of the neural network multi-layer perceptron classifier.'  'NOTES (metadata, string) are some specific notes about the neural network multi-layer perceptron classifier.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'D (data, item) is the dataset to train the neural network model, and its data point class DP_CLASS defaults to one of the compatible classes within the set of DP_CLASSES.'  'DP_CLASSES (parameter, classlist) is the list of compatible data points.'  'EPOCHS (parameter, scalar) is the maximum number of epochs.'  'BATCH (parameter, scalar) is the size of the mini-batch used for each training iteration.'  'SHUFFLE (parameter, option) is an option for data shuffling.'  'SOLVER (parameter, option) is an option for the solver.'  'MODEL (result, net) is a trained neural network model.'  'INPUTS (query, cell) constructs the data in the CB (channel-batch) format.'  'TARGETS (query, cell) constructs the targets in the CB (channel-batch) format with one-hot vectors.'  'TRAIN (query, empty) trains the neural network model with the given dataset.'  'VERBOSE (gui, logical) is an indicator to display training progress information.'  'PLOT_TRAINING (metadata, option) determines whether to plot the training progress.'  'PREDICT (query, cell) returns the predictions of the trained neural network for a dataset pair (D and D_VOIs).'  'TARGET_CLASSES (query, stringlist) constructs the target classes which represent the class of each data point.'  'LAYERS (data, rvector) defines the number of layers and their neurons.'  'WAITBAR (gui, logical) detemines whether to show the waitbar.'  'INTERRUPTIBLE (gui, scalar) sets whether the comparison computation is interruptible for multitasking.'  'FEATURE_IMPORTANCE (query, cell) evaluates the average significance of each feature by iteratively shuffling its values P times and measuring the resulting average decrease in model performance.'  'VOI_SELECTION (parameter, stringlist) defines which VOIs should be included in the analysis.'  'D_VOIS (data, item) is the voi dataset to train the neural network model, and its data point class DP_CLASS defaults to one of the compatible classes within the set of DP_CLASSES.'  'VOI_INPUT (query, cell) extracts VOI values based on the selection list.' };
+			prop_description = nnclassifiermlp_vois_description_list{prop};
 		end
 		function prop_settings = getPropSettings(pointer)
 			%GETPROPSETTINGS returns the settings of a property.
@@ -548,14 +555,14 @@ classdef NNClassifierMLP_VOIs < NNClassifierMLP
 			
 			prop = NNClassifierMLP_VOIs.getPropProp(pointer);
 			
-			switch prop
-				case NNClassifierMLP_VOIs.VOI_SELECTION
-					prop_settings = Format.getFormatSettings(Format.STRINGLIST);
-				case NNClassifierMLP_VOIs.D_VOIS
+			switch prop %CET: Computational Efficiency Trick
+				case 27 % NNClassifierMLP_VOIs.VOI_SELECTION
+					prop_settings = Format.getFormatSettings(3);
+				case 28 % NNClassifierMLP_VOIs.D_VOIS
 					prop_settings = 'NNDataset';
-				case NNClassifierMLP_VOIs.VOI_INPUT
-					prop_settings = Format.getFormatSettings(Format.CELL);
-				case NNClassifierMLP_VOIs.TEMPLATE
+				case 29 % NNClassifierMLP_VOIs.VOI_INPUT
+					prop_settings = Format.getFormatSettings(16);
+				case 4 % NNClassifierMLP_VOIs.TEMPLATE
 					prop_settings = 'NNClassifierMLP_VOIs';
 				otherwise
 					prop_settings = getPropSettings@NNClassifierMLP(prop);
@@ -583,28 +590,28 @@ classdef NNClassifierMLP_VOIs < NNClassifierMLP
 			
 			prop = NNClassifierMLP_VOIs.getPropProp(pointer);
 			
-			switch prop
-				case NNClassifierMLP_VOIs.VOI_SELECTION
+			switch prop %CET: Computational Efficiency Trick
+				case 27 % NNClassifierMLP_VOIs.VOI_SELECTION
 					prop_default = {'Age', 'Sex','Education'};
-				case NNClassifierMLP_VOIs.D_VOIS
+				case 28 % NNClassifierMLP_VOIs.D_VOIS
 					prop_default = NNDataset('DP_CLASS', 'NNDataPoint_VOIs');
-				case NNClassifierMLP_VOIs.VOI_INPUT
-					prop_default = Format.getFormatDefault(Format.CELL, NNClassifierMLP_VOIs.getPropSettings(prop));
-				case NNClassifierMLP_VOIs.ELCLASS
+				case 29 % NNClassifierMLP_VOIs.VOI_INPUT
+					prop_default = Format.getFormatDefault(16, NNClassifierMLP_VOIs.getPropSettings(prop));
+				case 1 % NNClassifierMLP_VOIs.ELCLASS
 					prop_default = 'NNClassifierMLP_VOIs';
-				case NNClassifierMLP_VOIs.NAME
+				case 2 % NNClassifierMLP_VOIs.NAME
 					prop_default = 'Neural Network Multi-layer Perceptron Classifier with Variables of interests';
-				case NNClassifierMLP_VOIs.DESCRIPTION
+				case 3 % NNClassifierMLP_VOIs.DESCRIPTION
 					prop_default = 'A neural network multi-layer perceptron classifier (NNClassifierMLP) comprises a multi-layer perceptron classifier model and a given dataset. NNClassifierMLP trains the multi-layer perceptron classifier with a formatted inputs ("CB", channel and batch) derived from the given dataset.';
-				case NNClassifierMLP_VOIs.TEMPLATE
-					prop_default = Format.getFormatDefault(Format.ITEM, NNClassifierMLP_VOIs.getPropSettings(prop));
-				case NNClassifierMLP_VOIs.ID
+				case 4 % NNClassifierMLP_VOIs.TEMPLATE
+					prop_default = Format.getFormatDefault(8, NNClassifierMLP_VOIs.getPropSettings(prop));
+				case 5 % NNClassifierMLP_VOIs.ID
 					prop_default = 'NNClassifierMLP_VOIs ID';
-				case NNClassifierMLP_VOIs.LABEL
+				case 6 % NNClassifierMLP_VOIs.LABEL
 					prop_default = 'NNClassifierMLP_VOIs label';
-				case NNClassifierMLP_VOIs.NOTES
+				case 7 % NNClassifierMLP_VOIs.NOTES
 					prop_default = 'NNClassifierMLP_VOIs notes';
-				case NNClassifierMLP_VOIs.DP_CLASSES
+				case 10 % NNClassifierMLP_VOIs.DP_CLASSES
 					prop_default = {'NNDataPoint_CON_CLA' 'NNDataPoint_FUN_CLA' 'NNDataPoint_ST_CLA' 'NNDataPoint_Graph_CLA' 'NNDataPoint_Measure_CLA' 'NNDataPoint_VOIs'};
 				otherwise
 					prop_default = getPropDefault@NNClassifierMLP(prop);
@@ -651,15 +658,15 @@ classdef NNClassifierMLP_VOIs < NNClassifierMLP
 			% 
 			% NN.CHECKPROP(POINTER, VALUE) throws an error if VALUE is
 			%  NOT an acceptable value for the format of the property POINTER.
-			%  Error id: €BRAPH2.STR€:NNClassifierMLP_VOIs:€BRAPH2.WRONG_INPUT€
+			%  Error id: BRAPH2:NNClassifierMLP_VOIs:WrongInput
 			% 
 			% Alternative forms to call this method are (POINTER = PROP or TAG):
 			%  NN.CHECKPROP(POINTER, VALUE) throws error if VALUE has not a valid format for PROP of NN.
-			%   Error id: €BRAPH2.STR€:NNClassifierMLP_VOIs:€BRAPH2.WRONG_INPUT€
+			%   Error id: BRAPH2:NNClassifierMLP_VOIs:WrongInput
 			%  Element.CHECKPROP(NNClassifierMLP_VOIs, PROP, VALUE) throws error if VALUE has not a valid format for PROP of NNClassifierMLP_VOIs.
-			%   Error id: €BRAPH2.STR€:NNClassifierMLP_VOIs:€BRAPH2.WRONG_INPUT€
+			%   Error id: BRAPH2:NNClassifierMLP_VOIs:WrongInput
 			%  NN.CHECKPROP(NNClassifierMLP_VOIs, PROP, VALUE) throws error if VALUE has not a valid format for PROP of NNClassifierMLP_VOIs.
-			%   Error id: €BRAPH2.STR€:NNClassifierMLP_VOIs:€BRAPH2.WRONG_INPUT€]
+			%   Error id: BRAPH2:NNClassifierMLP_VOIs:WrongInput]
 			% 
 			% Note that the Element.CHECKPROP(NN) and Element.CHECKPROP('NNClassifierMLP_VOIs')
 			%  are less computationally efficient.
@@ -670,16 +677,16 @@ classdef NNClassifierMLP_VOIs < NNClassifierMLP
 			prop = NNClassifierMLP_VOIs.getPropProp(pointer);
 			
 			switch prop
-				case NNClassifierMLP_VOIs.VOI_SELECTION % __NNClassifierMLP_VOIs.VOI_SELECTION__
-					check = Format.checkFormat(Format.STRINGLIST, value, NNClassifierMLP_VOIs.getPropSettings(prop));
-				case NNClassifierMLP_VOIs.D_VOIS % __NNClassifierMLP_VOIs.D_VOIS__
-					check = Format.checkFormat(Format.ITEM, value, NNClassifierMLP_VOIs.getPropSettings(prop));
-				case NNClassifierMLP_VOIs.VOI_INPUT % __NNClassifierMLP_VOIs.VOI_INPUT__
-					check = Format.checkFormat(Format.CELL, value, NNClassifierMLP_VOIs.getPropSettings(prop));
-				case NNClassifierMLP_VOIs.TEMPLATE % __NNClassifierMLP_VOIs.TEMPLATE__
-					check = Format.checkFormat(Format.ITEM, value, NNClassifierMLP_VOIs.getPropSettings(prop));
+				case 27 % NNClassifierMLP_VOIs.VOI_SELECTION
+					check = Format.checkFormat(3, value, NNClassifierMLP_VOIs.getPropSettings(prop));
+				case 28 % NNClassifierMLP_VOIs.D_VOIS
+					check = Format.checkFormat(8, value, NNClassifierMLP_VOIs.getPropSettings(prop));
+				case 29 % NNClassifierMLP_VOIs.VOI_INPUT
+					check = Format.checkFormat(16, value, NNClassifierMLP_VOIs.getPropSettings(prop));
+				case 4 % NNClassifierMLP_VOIs.TEMPLATE
+					check = Format.checkFormat(8, value, NNClassifierMLP_VOIs.getPropSettings(prop));
 				otherwise
-					if prop <= NNClassifierMLP.getPropNumber()
+					if prop <= 26
 						check = checkProp@NNClassifierMLP(prop, value);
 					end
 			end
@@ -688,8 +695,8 @@ classdef NNClassifierMLP_VOIs < NNClassifierMLP
 				prop_check = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':NNClassifierMLP_VOIs:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':NNClassifierMLP_VOIs:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':NNClassifierMLP_VOIs:' 'WrongInput'], ...
+					['BRAPH2' ':NNClassifierMLP_VOIs:' 'WrongInput' '\n' ...
 					'The value ' tostring(value, 100, ' ...') ' is not a valid property ' NNClassifierMLP_VOIs.getPropTag(prop) ' (' NNClassifierMLP_VOIs.getFormatTag(NNClassifierMLP_VOIs.getPropFormat(prop)) ').'] ...
 					)
 			end
@@ -700,19 +707,19 @@ classdef NNClassifierMLP_VOIs < NNClassifierMLP
 			%CALCULATEVALUE calculates the value of a property.
 			%
 			% VALUE = CALCULATEVALUE(EL, PROP) calculates the value of the property
-			%  PROP. It works only with properties with Category.RESULT,
-			%  Category.QUERY, and Category.EVANESCENT. By default this function
+			%  PROP. It works only with properties with 5,
+			%  6, and 7. By default this function
 			%  returns the default value for the prop and should be implemented in the
 			%  subclasses of Element when needed.
 			%
 			% VALUE = CALCULATEVALUE(EL, PROP, VARARGIN) works with properties with
-			%  Category.QUERY.
+			%  6.
 			%
 			% See also getPropDefaultConditioned, conditioning, preset, checkProp,
 			%  postset, postprocessing, checkValue.
 			
 			switch prop
-				case NNClassifierMLP_VOIs.VOI_INPUT % __NNClassifierMLP_VOIs.VOI_INPUT__
+				case 29 % NNClassifierMLP_VOIs.VOI_INPUT
 					if isempty(varargin)
 					    value = {};
 					    return
@@ -746,8 +753,8 @@ classdef NNClassifierMLP_VOIs < NNClassifierMLP
 					
 					value = {voi_data};
 					
-				case NNClassifierMLP_VOIs.MODEL % __NNClassifierMLP_VOIs.MODEL__
-					rng_settings_ = rng(); rng(nn.getPropSeed(NNClassifierMLP_VOIs.MODEL), 'twister')
+				case 15 % NNClassifierMLP_VOIs.MODEL
+					rng_settings_ = rng(); rng(nn.getPropSeed(15), 'twister')
 					
 					inputs = cell2mat(nn.get('INPUTS', nn.get('D')));
 					targets = nn.get('TARGET_CLASSES', nn.get('D'));
@@ -823,7 +830,7 @@ classdef NNClassifierMLP_VOIs < NNClassifierMLP
 					
 					rng(rng_settings_)
 					
-				case NNClassifierMLP_VOIs.PREDICT % __NNClassifierMLP_VOIs.PREDICT__
+				case 21 % NNClassifierMLP_VOIs.PREDICT
 					if isempty(varargin)
 					    value = {};
 					    return
@@ -844,7 +851,7 @@ classdef NNClassifierMLP_VOIs < NNClassifierMLP
 					end
 					
 				otherwise
-					if prop <= NNClassifierMLP.getPropNumber()
+					if prop <= 26
 						value = calculateValue@NNClassifierMLP(nn, prop, varargin{:});
 					else
 						value = calculateValue@Element(nn, prop, varargin{:});

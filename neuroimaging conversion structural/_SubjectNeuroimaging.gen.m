@@ -1,8 +1,8 @@
 %% ¡header!
-SubjectNIfTI < Subject (sub, subject with Nifti files) is a subject with Nifti data (e.g. PET, MRI).
+SubjectNeuroimaging < Subject (sub, subject with neuroimaging file) is a subject with neuroimaging file (NIfTI).
 
 %%% ¡description!
-Subject with nifti files containing brain imaging data (e.g. obtained from PET).
+Subject with a NIfTI files containing brain imaging data.
 
 %%% ¡seealso!
 ImporterGroupSubjectCON_TXT, ExporterGroupSubjectCON_TXT, ImporterGroupSubjectCON_XLS, ExporterGroupSubjectCON_XLS, ImporterGroupSubjNIfTI
@@ -108,31 +108,25 @@ end
 
 %%% ¡prop!
 %%%% ¡id!
-SubjectNIfTI.ID
+SubjectNeuroimaging.ID
 %%%% ¡title!
 Subject ID
 
 %%% ¡prop!
 %%%% ¡id!
-SubjectNIfTI.LABEL
+SubjectNeuroimaging.LABEL
 %%%% ¡title!
 Subject LABEL
 
 %%% ¡prop!
 %%%% ¡id!
-SubjectNIfTI.VOI_DICT
+SubjectNeuroimaging.VOI_DICT
 %%%% ¡title!
 Variables of Interest
 
 %%% ¡prop!
 %%%% ¡id!
-SubjectNIfTI.NIFTI_PATH_DICT
-%%%% ¡title!
-Nifti data directory
-
-%%% ¡prop!
-%%%% ¡id!
-SubjectNIfTI.NOTES
+SubjectNeuroimaging.NOTES
 %%%% ¡title!
 Subject NOTES
 
@@ -141,45 +135,42 @@ Subject NOTES
 %%% ¡prop!
 ELCLASS (constant, string) is the class of the subject.
 %%%% ¡default!
-'SubjectNIfTI'
+'SubjectNeuroimaging'
 
 %%% ¡prop!
 NAME (constant, string) is the name of the subject.
 %%%% ¡default!
-'Subject NIfTI'
+'Subject Neuroimaging'
 
 %%% ¡prop!
 DESCRIPTION (constant, string) is the description of the subject.
 %%%% ¡default!
-'Subject with nifti files containing brain imaging data (e.g. obtained from PET).'
+'Subject with a NIfTI files containing brain imaging data.'
 
 %%% ¡prop!
 TEMPLATE (parameter, item) is the template of the subject.
 %%% ¡settings!
-'SubjectNIfTI'
+'SubjectNeuroimaging'
 
 %%% ¡prop!
 ID (data, string) is a few-letter code for the subject.
 %%%% ¡default!
-'SubjectNIfTI ID'
+'SubjectNeuroimaging ID'
 
 %%% ¡prop!
 LABEL (metadata, string) is an extended label of the subject.
 %%%% ¡default!
-'SubjectNIfTI label'
+'SubjectNeuroimaging label'
 
 %%% ¡prop!
 NOTES (metadata, string) are some specific notes about the subject.
 %%%% ¡default!
-'SubjectNIfTI notes'
+'SubjectNeuroimaging notes'
 
 %% ¡props!
 
 %%% ¡prop!
-NIFTI_PATH_DICT (data, idict) is direcotry to subject nifti data.
-%%%% ¡settings!
-'FILE_PATH'
-
+NIFTI_FILE (data, string) is direcotry to subject nifti data.
 
 %% ¡tests!
 
@@ -193,10 +184,10 @@ GUI
 im_ba = ImporterBrainAtlasXLS('FILE', 'desikan_atlas.xlsx');
 ba = im_ba.get('BA');
 
-% Step 2: Create Group with SubjectNIfTI instances
-gr = Group('SUB_CLASS', 'SubjectNIfTI', 'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectNIfTI'));
+% Step 2: Create Group with SubjectNeuroimaging instances
+gr = Group('SUB_CLASS', 'SubjectNeuroimaging', 'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectNeuroimaging'));
 for i = 1:1:50
-    sub = SubjectNIfTI( ...
+    sub = SubjectNeuroimaging( ...
         'ID', ['SUB Nifti ' int2str(i)]);
     % Add the file path to the subject's nifty dictionary
     sub.memorize('NIFTI_PATH_DICT').get('ADD', FILE_PATH('ID', convertStringsToChars(string(i)), 'PATH', convertStringsToChars('*/*')));

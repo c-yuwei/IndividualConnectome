@@ -4,6 +4,25 @@ classdef GTA_AL < ConcreteElement
 	%
 	% GTA_AL tests PanelPropAlpha.
 	%
+	% The list of GTA_AL properties is:
+	%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the concrete element (ConcreteElement).
+	%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the concrete element.
+	%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the concrete element.
+	%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the concrete element.
+	%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the concrete element.
+	%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the concrete element.
+	%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the concrete element.
+	%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
+	%  <strong>9</strong> <strong>AL_C</strong> 	AL_C (constant, alpha) is a prop constant alpha.
+	%  <strong>10</strong> <strong>AL_M</strong> 	AL_M (metadata, alpha) is a prop metadata alpha.
+	%  <strong>11</strong> <strong>AL_P</strong> 	AL_P (parameter, alpha) is a prop parameter alpha.
+	%  <strong>12</strong> <strong>AL_D</strong> 	AL_D (data, alpha) is a prop data alpha.
+	%  <strong>13</strong> <strong>AL_R</strong> 	AL_R (result, alpha) is a prop result alpha.
+	%  <strong>14</strong> <strong>AL_Q</strong> 	AL_Q (query, alpha) is a prop query alpha.
+	%  <strong>15</strong> <strong>AL_E</strong> 	AL_E (evanescent, alpha) is a prop evanescent alpha.
+	%  <strong>16</strong> <strong>AL_F</strong> 	AL_F (figure, alpha) is a prop figure alpha.
+	%  <strong>17</strong> <strong>AL_G</strong> 	AL_G (gui, alpha) is a prop gui alpha.
+	%
 	% GTA_AL methods (constructor):
 	%  GTA_AL - constructor
 	%
@@ -92,53 +111,53 @@ classdef GTA_AL < ConcreteElement
 	%
 	% See also PanelPropAlpha.
 	%
-	% BUILD BRAPH2 BRAPH2.BUILD class_name 1
+	% BUILD BRAPH2 7 class_name 1
 	
 	properties (Constant) % properties
-		AL_C = ConcreteElement.getPropNumber() + 1;
+		AL_C = 9; %CET: Computational Efficiency Trick
 		AL_C_TAG = 'AL_C';
-		AL_C_CATEGORY = Category.CONSTANT;
-		AL_C_FORMAT = Format.ALPHA;
+		AL_C_CATEGORY = 1;
+		AL_C_FORMAT = 21;
 		
-		AL_M = ConcreteElement.getPropNumber() + 2;
+		AL_M = 10; %CET: Computational Efficiency Trick
 		AL_M_TAG = 'AL_M';
-		AL_M_CATEGORY = Category.METADATA;
-		AL_M_FORMAT = Format.ALPHA;
+		AL_M_CATEGORY = 2;
+		AL_M_FORMAT = 21;
 		
-		AL_P = ConcreteElement.getPropNumber() + 3;
+		AL_P = 11; %CET: Computational Efficiency Trick
 		AL_P_TAG = 'AL_P';
-		AL_P_CATEGORY = Category.PARAMETER;
-		AL_P_FORMAT = Format.ALPHA;
+		AL_P_CATEGORY = 3;
+		AL_P_FORMAT = 21;
 		
-		AL_D = ConcreteElement.getPropNumber() + 4;
+		AL_D = 12; %CET: Computational Efficiency Trick
 		AL_D_TAG = 'AL_D';
-		AL_D_CATEGORY = Category.DATA;
-		AL_D_FORMAT = Format.ALPHA;
+		AL_D_CATEGORY = 4;
+		AL_D_FORMAT = 21;
 		
-		AL_R = ConcreteElement.getPropNumber() + 5;
+		AL_R = 13; %CET: Computational Efficiency Trick
 		AL_R_TAG = 'AL_R';
-		AL_R_CATEGORY = Category.RESULT;
-		AL_R_FORMAT = Format.ALPHA;
+		AL_R_CATEGORY = 5;
+		AL_R_FORMAT = 21;
 		
-		AL_Q = ConcreteElement.getPropNumber() + 6;
+		AL_Q = 14; %CET: Computational Efficiency Trick
 		AL_Q_TAG = 'AL_Q';
-		AL_Q_CATEGORY = Category.QUERY;
-		AL_Q_FORMAT = Format.ALPHA;
+		AL_Q_CATEGORY = 6;
+		AL_Q_FORMAT = 21;
 		
-		AL_E = ConcreteElement.getPropNumber() + 7;
+		AL_E = 15; %CET: Computational Efficiency Trick
 		AL_E_TAG = 'AL_E';
-		AL_E_CATEGORY = Category.EVANESCENT;
-		AL_E_FORMAT = Format.ALPHA;
+		AL_E_CATEGORY = 7;
+		AL_E_FORMAT = 21;
 		
-		AL_F = ConcreteElement.getPropNumber() + 8;
+		AL_F = 16; %CET: Computational Efficiency Trick
 		AL_F_TAG = 'AL_F';
-		AL_F_CATEGORY = Category.FIGURE;
-		AL_F_FORMAT = Format.ALPHA;
+		AL_F_CATEGORY = 8;
+		AL_F_FORMAT = 21;
 		
-		AL_G = ConcreteElement.getPropNumber() + 9;
+		AL_G = 17; %CET: Computational Efficiency Trick
 		AL_G_TAG = 'AL_G';
-		AL_G_CATEGORY = Category.GUI;
-		AL_G_FORMAT = Format.ALPHA;
+		AL_G_CATEGORY = 9;
+		AL_G_FORMAT = 21;
 	end
 	methods % constructor
 		function gt = GTA_AL(varargin)
@@ -151,6 +170,24 @@ classdef GTA_AL < ConcreteElement
 			% Multiple properties can be initialized at once identifying
 			%  them with either property numbers (PROP) or tags (TAG).
 			%
+			% The list of GTA_AL properties is:
+			%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the concrete element (ConcreteElement).
+			%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the concrete element.
+			%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the concrete element.
+			%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the concrete element.
+			%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the concrete element.
+			%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the concrete element.
+			%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the concrete element.
+			%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
+			%  <strong>9</strong> <strong>AL_C</strong> 	AL_C (constant, alpha) is a prop constant alpha.
+			%  <strong>10</strong> <strong>AL_M</strong> 	AL_M (metadata, alpha) is a prop metadata alpha.
+			%  <strong>11</strong> <strong>AL_P</strong> 	AL_P (parameter, alpha) is a prop parameter alpha.
+			%  <strong>12</strong> <strong>AL_D</strong> 	AL_D (data, alpha) is a prop data alpha.
+			%  <strong>13</strong> <strong>AL_R</strong> 	AL_R (result, alpha) is a prop result alpha.
+			%  <strong>14</strong> <strong>AL_Q</strong> 	AL_Q (query, alpha) is a prop query alpha.
+			%  <strong>15</strong> <strong>AL_E</strong> 	AL_E (evanescent, alpha) is a prop evanescent alpha.
+			%  <strong>16</strong> <strong>AL_F</strong> 	AL_F (figure, alpha) is a prop figure alpha.
+			%  <strong>17</strong> <strong>AL_G</strong> 	AL_G (gui, alpha) is a prop gui alpha.
 			%
 			% See also Category, Format.
 			
@@ -203,7 +240,7 @@ classdef GTA_AL < ConcreteElement
 			%
 			% See also subclasses.
 			
-			subclass_list = subclasses('GTA_AL', [], [], true);
+			subclass_list = { 'GTA_AL' }; %CET: Computational Efficiency Trick
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of test A PanelPropAlpha.
@@ -224,68 +261,34 @@ classdef GTA_AL < ConcreteElement
 			%
 			% See also getPropNumber, Category.
 			
+			%CET: Computational Efficiency Trick
+			
 			if nargin == 0
-				prop_list = [ ...
-					ConcreteElement.getProps() ...
-						GTA_AL.AL_C ...
-						GTA_AL.AL_M ...
-						GTA_AL.AL_P ...
-						GTA_AL.AL_D ...
-						GTA_AL.AL_R ...
-						GTA_AL.AL_Q ...
-						GTA_AL.AL_E ...
-						GTA_AL.AL_F ...
-						GTA_AL.AL_G ...
-						];
+				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17];
 				return
 			end
 			
 			switch category
-				case Category.CONSTANT
-					prop_list = [ ...
-						ConcreteElement.getProps(Category.CONSTANT) ...
-						GTA_AL.AL_C ...
-						];
-				case Category.METADATA
-					prop_list = [ ...
-						ConcreteElement.getProps(Category.METADATA) ...
-						GTA_AL.AL_M ...
-						];
-				case Category.PARAMETER
-					prop_list = [ ...
-						ConcreteElement.getProps(Category.PARAMETER) ...
-						GTA_AL.AL_P ...
-						];
-				case Category.DATA
-					prop_list = [ ...
-						ConcreteElement.getProps(Category.DATA) ...
-						GTA_AL.AL_D ...
-						];
-				case Category.RESULT
-					prop_list = [
-						ConcreteElement.getProps(Category.RESULT) ...
-						GTA_AL.AL_R ...
-						];
-				case Category.QUERY
-					prop_list = [ ...
-						ConcreteElement.getProps(Category.QUERY) ...
-						GTA_AL.AL_Q ...
-						];
-				case Category.EVANESCENT
-					prop_list = [ ...
-						ConcreteElement.getProps(Category.EVANESCENT) ...
-						GTA_AL.AL_E ...
-						];
-				case Category.FIGURE
-					prop_list = [ ...
-						ConcreteElement.getProps(Category.FIGURE) ...
-						GTA_AL.AL_F ...
-						];
-				case Category.GUI
-					prop_list = [ ...
-						ConcreteElement.getProps(Category.GUI) ...
-						GTA_AL.AL_G ...
-						];
+				case 1 % Category.CONSTANT
+					prop_list = [1 2 3 9];
+				case 2 % Category.METADATA
+					prop_list = [6 7 10];
+				case 3 % Category.PARAMETER
+					prop_list = [4 11];
+				case 4 % Category.DATA
+					prop_list = [5 12];
+				case 5 % Category.RESULT
+					prop_list = 13;
+				case 6 % Category.QUERY
+					prop_list = [8 14];
+				case 7 % Category.EVANESCENT
+					prop_list = 15;
+				case 8 % Category.FIGURE
+					prop_list = 16;
+				case 9 % Category.GUI
+					prop_list = 17;
+				otherwise
+					prop_list = [];
 			end
 		end
 		function prop_number = getPropNumber(varargin)
@@ -306,7 +309,35 @@ classdef GTA_AL < ConcreteElement
 			%
 			% See also getProps, Category.
 			
-			prop_number = numel(GTA_AL.getProps(varargin{:}));
+			%CET: Computational Efficiency Trick
+			
+			if nargin == 0
+				prop_number = 17;
+				return
+			end
+			
+			switch varargin{1} % category = varargin{1}
+				case 1 % Category.CONSTANT
+					prop_number = 4;
+				case 2 % Category.METADATA
+					prop_number = 3;
+				case 3 % Category.PARAMETER
+					prop_number = 2;
+				case 4 % Category.DATA
+					prop_number = 2;
+				case 5 % Category.RESULT
+					prop_number = 1;
+				case 6 % Category.QUERY
+					prop_number = 2;
+				case 7 % Category.EVANESCENT
+					prop_number = 1;
+				case 8 % Category.FIGURE
+					prop_number = 1;
+				case 9 % Category.GUI
+					prop_number = 1;
+				otherwise
+					prop_number = 0;
+			end
 		end
 		function check_out = existsProp(prop)
 			%EXISTSPROP checks whether property exists in test A PanelPropAlpha/error.
@@ -334,14 +365,14 @@ classdef GTA_AL < ConcreteElement
 			%
 			% See also getProps, existsTag.
 			
-			check = any(prop == GTA_AL.getProps());
+			check = prop >= 1 && prop <= 17 && round(prop) == prop; %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':GTA_AL:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':GTA_AL:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':GTA_AL:' 'WrongInput'], ...
+					['BRAPH2' ':GTA_AL:' 'WrongInput' '\n' ...
 					'The value ' tostring(prop, 100, ' ...') ' is not a valid prop for GTA_AL.'] ...
 					)
 			end
@@ -372,15 +403,14 @@ classdef GTA_AL < ConcreteElement
 			%
 			% See also getProps, existsTag.
 			
-			gta_al_tag_list = cellfun(@(x) GTA_AL.getPropTag(x), num2cell(GTA_AL.getProps()), 'UniformOutput', false);
-			check = any(strcmp(tag, gta_al_tag_list));
+			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'AL_C'  'AL_M'  'AL_P'  'AL_D'  'AL_R'  'AL_Q'  'AL_E'  'AL_F'  'AL_G' })); %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':GTA_AL:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':GTA_AL:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':GTA_AL:' 'WrongInput'], ...
+					['BRAPH2' ':GTA_AL:' 'WrongInput' '\n' ...
 					'The value ' tag ' is not a valid tag for GTA_AL.'] ...
 					)
 			end
@@ -406,8 +436,7 @@ classdef GTA_AL < ConcreteElement
 			%  getPropSettings, getPropDefault, checkProp.
 			
 			if ischar(pointer)
-				gta_al_tag_list = cellfun(@(x) GTA_AL.getPropTag(x), num2cell(GTA_AL.getProps()), 'UniformOutput', false);
-				prop = find(strcmp(pointer, gta_al_tag_list)); % tag = pointer
+				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'AL_C'  'AL_M'  'AL_P'  'AL_D'  'AL_R'  'AL_Q'  'AL_E'  'AL_F'  'AL_G' })); % tag = pointer %CET: Computational Efficiency Trick
 			else % numeric
 				prop = pointer;
 			end
@@ -435,30 +464,9 @@ classdef GTA_AL < ConcreteElement
 			if ischar(pointer)
 				tag = pointer;
 			else % numeric
-				prop = pointer;
-				
-				switch prop
-					case GTA_AL.AL_C
-						tag = GTA_AL.AL_C_TAG;
-					case GTA_AL.AL_M
-						tag = GTA_AL.AL_M_TAG;
-					case GTA_AL.AL_P
-						tag = GTA_AL.AL_P_TAG;
-					case GTA_AL.AL_D
-						tag = GTA_AL.AL_D_TAG;
-					case GTA_AL.AL_R
-						tag = GTA_AL.AL_R_TAG;
-					case GTA_AL.AL_Q
-						tag = GTA_AL.AL_Q_TAG;
-					case GTA_AL.AL_E
-						tag = GTA_AL.AL_E_TAG;
-					case GTA_AL.AL_F
-						tag = GTA_AL.AL_F_TAG;
-					case GTA_AL.AL_G
-						tag = GTA_AL.AL_G_TAG;
-					otherwise
-						tag = getPropTag@ConcreteElement(prop);
-				end
+				%CET: Computational Efficiency Trick
+				gta_al_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'AL_C'  'AL_M'  'AL_P'  'AL_D'  'AL_R'  'AL_Q'  'AL_E'  'AL_F'  'AL_G' };
+				tag = gta_al_tag_list{pointer}; % prop = pointer
 			end
 		end
 		function prop_category = getPropCategory(pointer)
@@ -483,28 +491,9 @@ classdef GTA_AL < ConcreteElement
 			
 			prop = GTA_AL.getPropProp(pointer);
 			
-			switch prop
-				case GTA_AL.AL_C
-					prop_category = GTA_AL.AL_C_CATEGORY;
-				case GTA_AL.AL_M
-					prop_category = GTA_AL.AL_M_CATEGORY;
-				case GTA_AL.AL_P
-					prop_category = GTA_AL.AL_P_CATEGORY;
-				case GTA_AL.AL_D
-					prop_category = GTA_AL.AL_D_CATEGORY;
-				case GTA_AL.AL_R
-					prop_category = GTA_AL.AL_R_CATEGORY;
-				case GTA_AL.AL_Q
-					prop_category = GTA_AL.AL_Q_CATEGORY;
-				case GTA_AL.AL_E
-					prop_category = GTA_AL.AL_E_CATEGORY;
-				case GTA_AL.AL_F
-					prop_category = GTA_AL.AL_F_CATEGORY;
-				case GTA_AL.AL_G
-					prop_category = GTA_AL.AL_G_CATEGORY;
-				otherwise
-					prop_category = getPropCategory@ConcreteElement(prop);
-			end
+			%CET: Computational Efficiency Trick
+			gta_al_category_list = { 1  1  1  3  4  2  2  6  1  2  3  4  5  6  7  8  9 };
+			prop_category = gta_al_category_list{prop};
 		end
 		function prop_format = getPropFormat(pointer)
 			%GETPROPFORMAT returns the format of a property.
@@ -528,28 +517,9 @@ classdef GTA_AL < ConcreteElement
 			
 			prop = GTA_AL.getPropProp(pointer);
 			
-			switch prop
-				case GTA_AL.AL_C
-					prop_format = GTA_AL.AL_C_FORMAT;
-				case GTA_AL.AL_M
-					prop_format = GTA_AL.AL_M_FORMAT;
-				case GTA_AL.AL_P
-					prop_format = GTA_AL.AL_P_FORMAT;
-				case GTA_AL.AL_D
-					prop_format = GTA_AL.AL_D_FORMAT;
-				case GTA_AL.AL_R
-					prop_format = GTA_AL.AL_R_FORMAT;
-				case GTA_AL.AL_Q
-					prop_format = GTA_AL.AL_Q_FORMAT;
-				case GTA_AL.AL_E
-					prop_format = GTA_AL.AL_E_FORMAT;
-				case GTA_AL.AL_F
-					prop_format = GTA_AL.AL_F_FORMAT;
-				case GTA_AL.AL_G
-					prop_format = GTA_AL.AL_G_FORMAT;
-				otherwise
-					prop_format = getPropFormat@ConcreteElement(prop);
-			end
+			%CET: Computational Efficiency Trick
+			gta_al_format_list = { 2  2  2  8  2  2  2  2  21  21  21  21  21  21  21  21  21 };
+			prop_format = gta_al_format_list{prop};
 		end
 		function prop_description = getPropDescription(pointer)
 			%GETPROPDESCRIPTION returns the description of a property.
@@ -573,28 +543,9 @@ classdef GTA_AL < ConcreteElement
 			
 			prop = GTA_AL.getPropProp(pointer);
 			
-			switch prop
-				case GTA_AL.AL_C
-					prop_description = 'AL_C (constant, alpha) is a prop constant alpha.';
-				case GTA_AL.AL_M
-					prop_description = 'AL_M (metadata, alpha) is a prop metadata alpha.';
-				case GTA_AL.AL_P
-					prop_description = 'AL_P (parameter, alpha) is a prop parameter alpha.';
-				case GTA_AL.AL_D
-					prop_description = 'AL_D (data, alpha) is a prop data alpha.';
-				case GTA_AL.AL_R
-					prop_description = 'AL_R (result, alpha) is a prop result alpha.';
-				case GTA_AL.AL_Q
-					prop_description = 'AL_Q (query, alpha) is a prop query alpha.';
-				case GTA_AL.AL_E
-					prop_description = 'AL_E (evanescent, alpha) is a prop evanescent alpha.';
-				case GTA_AL.AL_F
-					prop_description = 'AL_F (figure, alpha) is a prop figure alpha.';
-				case GTA_AL.AL_G
-					prop_description = 'AL_G (gui, alpha) is a prop gui alpha.';
-				otherwise
-					prop_description = getPropDescription@ConcreteElement(prop);
-			end
+			%CET: Computational Efficiency Trick
+			gta_al_description_list = { 'ELCLASS (constant, string) is the class of the concrete element (ConcreteElement).'  'NAME (constant, string) is the name of the concrete element.'  'DESCRIPTION (constant, string) is the description of the concrete element.'  'TEMPLATE (parameter, item) is the template of the concrete element.'  'ID (data, string) is a few-letter code for the concrete element.'  'LABEL (metadata, string) is an extended label of the concrete element.'  'NOTES (metadata, string) are some specific notes about the concrete element.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'AL_C (constant, alpha) is a prop constant alpha.'  'AL_M (metadata, alpha) is a prop metadata alpha.'  'AL_P (parameter, alpha) is a prop parameter alpha.'  'AL_D (data, alpha) is a prop data alpha.'  'AL_R (result, alpha) is a prop result alpha.'  'AL_Q (query, alpha) is a prop query alpha.'  'AL_E (evanescent, alpha) is a prop evanescent alpha.'  'AL_F (figure, alpha) is a prop figure alpha.'  'AL_G (gui, alpha) is a prop gui alpha.' };
+			prop_description = gta_al_description_list{prop};
 		end
 		function prop_settings = getPropSettings(pointer)
 			%GETPROPSETTINGS returns the settings of a property.
@@ -618,25 +569,25 @@ classdef GTA_AL < ConcreteElement
 			
 			prop = GTA_AL.getPropProp(pointer);
 			
-			switch prop
-				case GTA_AL.AL_C
-					prop_settings = Format.getFormatSettings(Format.ALPHA);
-				case GTA_AL.AL_M
-					prop_settings = Format.getFormatSettings(Format.ALPHA);
-				case GTA_AL.AL_P
-					prop_settings = Format.getFormatSettings(Format.ALPHA);
-				case GTA_AL.AL_D
-					prop_settings = Format.getFormatSettings(Format.ALPHA);
-				case GTA_AL.AL_R
-					prop_settings = Format.getFormatSettings(Format.ALPHA);
-				case GTA_AL.AL_Q
-					prop_settings = Format.getFormatSettings(Format.ALPHA);
-				case GTA_AL.AL_E
-					prop_settings = Format.getFormatSettings(Format.ALPHA);
-				case GTA_AL.AL_F
-					prop_settings = Format.getFormatSettings(Format.ALPHA);
-				case GTA_AL.AL_G
-					prop_settings = Format.getFormatSettings(Format.ALPHA);
+			switch prop %CET: Computational Efficiency Trick
+				case 9 % GTA_AL.AL_C
+					prop_settings = Format.getFormatSettings(21);
+				case 10 % GTA_AL.AL_M
+					prop_settings = Format.getFormatSettings(21);
+				case 11 % GTA_AL.AL_P
+					prop_settings = Format.getFormatSettings(21);
+				case 12 % GTA_AL.AL_D
+					prop_settings = Format.getFormatSettings(21);
+				case 13 % GTA_AL.AL_R
+					prop_settings = Format.getFormatSettings(21);
+				case 14 % GTA_AL.AL_Q
+					prop_settings = Format.getFormatSettings(21);
+				case 15 % GTA_AL.AL_E
+					prop_settings = Format.getFormatSettings(21);
+				case 16 % GTA_AL.AL_F
+					prop_settings = Format.getFormatSettings(21);
+				case 17 % GTA_AL.AL_G
+					prop_settings = Format.getFormatSettings(21);
 				otherwise
 					prop_settings = getPropSettings@ConcreteElement(prop);
 			end
@@ -663,25 +614,25 @@ classdef GTA_AL < ConcreteElement
 			
 			prop = GTA_AL.getPropProp(pointer);
 			
-			switch prop
-				case GTA_AL.AL_C
-					prop_default = Format.getFormatDefault(Format.ALPHA, GTA_AL.getPropSettings(prop));
-				case GTA_AL.AL_M
-					prop_default = Format.getFormatDefault(Format.ALPHA, GTA_AL.getPropSettings(prop));
-				case GTA_AL.AL_P
-					prop_default = Format.getFormatDefault(Format.ALPHA, GTA_AL.getPropSettings(prop));
-				case GTA_AL.AL_D
-					prop_default = Format.getFormatDefault(Format.ALPHA, GTA_AL.getPropSettings(prop));
-				case GTA_AL.AL_R
-					prop_default = Format.getFormatDefault(Format.ALPHA, GTA_AL.getPropSettings(prop));
-				case GTA_AL.AL_Q
-					prop_default = Format.getFormatDefault(Format.ALPHA, GTA_AL.getPropSettings(prop));
-				case GTA_AL.AL_E
-					prop_default = Format.getFormatDefault(Format.ALPHA, GTA_AL.getPropSettings(prop));
-				case GTA_AL.AL_F
-					prop_default = Format.getFormatDefault(Format.ALPHA, GTA_AL.getPropSettings(prop));
-				case GTA_AL.AL_G
-					prop_default = Format.getFormatDefault(Format.ALPHA, GTA_AL.getPropSettings(prop));
+			switch prop %CET: Computational Efficiency Trick
+				case 9 % GTA_AL.AL_C
+					prop_default = Format.getFormatDefault(21, GTA_AL.getPropSettings(prop));
+				case 10 % GTA_AL.AL_M
+					prop_default = Format.getFormatDefault(21, GTA_AL.getPropSettings(prop));
+				case 11 % GTA_AL.AL_P
+					prop_default = Format.getFormatDefault(21, GTA_AL.getPropSettings(prop));
+				case 12 % GTA_AL.AL_D
+					prop_default = Format.getFormatDefault(21, GTA_AL.getPropSettings(prop));
+				case 13 % GTA_AL.AL_R
+					prop_default = Format.getFormatDefault(21, GTA_AL.getPropSettings(prop));
+				case 14 % GTA_AL.AL_Q
+					prop_default = Format.getFormatDefault(21, GTA_AL.getPropSettings(prop));
+				case 15 % GTA_AL.AL_E
+					prop_default = Format.getFormatDefault(21, GTA_AL.getPropSettings(prop));
+				case 16 % GTA_AL.AL_F
+					prop_default = Format.getFormatDefault(21, GTA_AL.getPropSettings(prop));
+				case 17 % GTA_AL.AL_G
+					prop_default = Format.getFormatDefault(21, GTA_AL.getPropSettings(prop));
 				otherwise
 					prop_default = getPropDefault@ConcreteElement(prop);
 			end
@@ -727,15 +678,15 @@ classdef GTA_AL < ConcreteElement
 			% 
 			% GT.CHECKPROP(POINTER, VALUE) throws an error if VALUE is
 			%  NOT an acceptable value for the format of the property POINTER.
-			%  Error id: €BRAPH2.STR€:GTA_AL:€BRAPH2.WRONG_INPUT€
+			%  Error id: BRAPH2:GTA_AL:WrongInput
 			% 
 			% Alternative forms to call this method are (POINTER = PROP or TAG):
 			%  GT.CHECKPROP(POINTER, VALUE) throws error if VALUE has not a valid format for PROP of GT.
-			%   Error id: €BRAPH2.STR€:GTA_AL:€BRAPH2.WRONG_INPUT€
+			%   Error id: BRAPH2:GTA_AL:WrongInput
 			%  Element.CHECKPROP(GTA_AL, PROP, VALUE) throws error if VALUE has not a valid format for PROP of GTA_AL.
-			%   Error id: €BRAPH2.STR€:GTA_AL:€BRAPH2.WRONG_INPUT€
+			%   Error id: BRAPH2:GTA_AL:WrongInput
 			%  GT.CHECKPROP(GTA_AL, PROP, VALUE) throws error if VALUE has not a valid format for PROP of GTA_AL.
-			%   Error id: €BRAPH2.STR€:GTA_AL:€BRAPH2.WRONG_INPUT€]
+			%   Error id: BRAPH2:GTA_AL:WrongInput]
 			% 
 			% Note that the Element.CHECKPROP(GT) and Element.CHECKPROP('GTA_AL')
 			%  are less computationally efficient.
@@ -746,26 +697,26 @@ classdef GTA_AL < ConcreteElement
 			prop = GTA_AL.getPropProp(pointer);
 			
 			switch prop
-				case GTA_AL.AL_C % __GTA_AL.AL_C__
-					check = Format.checkFormat(Format.ALPHA, value, GTA_AL.getPropSettings(prop));
-				case GTA_AL.AL_M % __GTA_AL.AL_M__
-					check = Format.checkFormat(Format.ALPHA, value, GTA_AL.getPropSettings(prop));
-				case GTA_AL.AL_P % __GTA_AL.AL_P__
-					check = Format.checkFormat(Format.ALPHA, value, GTA_AL.getPropSettings(prop));
-				case GTA_AL.AL_D % __GTA_AL.AL_D__
-					check = Format.checkFormat(Format.ALPHA, value, GTA_AL.getPropSettings(prop));
-				case GTA_AL.AL_R % __GTA_AL.AL_R__
-					check = Format.checkFormat(Format.ALPHA, value, GTA_AL.getPropSettings(prop));
-				case GTA_AL.AL_Q % __GTA_AL.AL_Q__
-					check = Format.checkFormat(Format.ALPHA, value, GTA_AL.getPropSettings(prop));
-				case GTA_AL.AL_E % __GTA_AL.AL_E__
-					check = Format.checkFormat(Format.ALPHA, value, GTA_AL.getPropSettings(prop));
-				case GTA_AL.AL_F % __GTA_AL.AL_F__
-					check = Format.checkFormat(Format.ALPHA, value, GTA_AL.getPropSettings(prop));
-				case GTA_AL.AL_G % __GTA_AL.AL_G__
-					check = Format.checkFormat(Format.ALPHA, value, GTA_AL.getPropSettings(prop));
+				case 9 % GTA_AL.AL_C
+					check = Format.checkFormat(21, value, GTA_AL.getPropSettings(prop));
+				case 10 % GTA_AL.AL_M
+					check = Format.checkFormat(21, value, GTA_AL.getPropSettings(prop));
+				case 11 % GTA_AL.AL_P
+					check = Format.checkFormat(21, value, GTA_AL.getPropSettings(prop));
+				case 12 % GTA_AL.AL_D
+					check = Format.checkFormat(21, value, GTA_AL.getPropSettings(prop));
+				case 13 % GTA_AL.AL_R
+					check = Format.checkFormat(21, value, GTA_AL.getPropSettings(prop));
+				case 14 % GTA_AL.AL_Q
+					check = Format.checkFormat(21, value, GTA_AL.getPropSettings(prop));
+				case 15 % GTA_AL.AL_E
+					check = Format.checkFormat(21, value, GTA_AL.getPropSettings(prop));
+				case 16 % GTA_AL.AL_F
+					check = Format.checkFormat(21, value, GTA_AL.getPropSettings(prop));
+				case 17 % GTA_AL.AL_G
+					check = Format.checkFormat(21, value, GTA_AL.getPropSettings(prop));
 				otherwise
-					if prop <= ConcreteElement.getPropNumber()
+					if prop <= 8
 						check = checkProp@ConcreteElement(prop, value);
 					end
 			end
@@ -774,8 +725,8 @@ classdef GTA_AL < ConcreteElement
 				prop_check = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':GTA_AL:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':GTA_AL:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':GTA_AL:' 'WrongInput'], ...
+					['BRAPH2' ':GTA_AL:' 'WrongInput' '\n' ...
 					'The value ' tostring(value, 100, ' ...') ' is not a valid property ' GTA_AL.getPropTag(prop) ' (' GTA_AL.getFormatTag(GTA_AL.getPropFormat(prop)) ').'] ...
 					)
 			end

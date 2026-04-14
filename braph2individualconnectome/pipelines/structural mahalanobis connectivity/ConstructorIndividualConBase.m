@@ -6,6 +6,21 @@ classdef ConstructorIndividualConBase < ConcreteElement
 	% 
 	% Its subclasses need to implement some or all of the following props, including GR GR_REF CONNECTOME_METHOD.
 	%
+	% The list of ConstructorIndividualConBase properties is:
+	%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of Individual Connectome Constructor Base.
+	%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the Individual Connectome Constructor Base.
+	%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the Individual Connectome Constructor Base.
+	%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the Individual Connectome Constructor Base.
+	%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the Individual Connectome Constructor Base.
+	%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the Individual Connectome Constructor Base.
+	%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the Individual Connectome Constructor Base.
+	%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
+	%  <strong>9</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) detemines whether to show the waitbar.
+	%  <strong>10</strong> <strong>GR_SUVR</strong> 	GR_SUVR (data, item) is a group of subjects with mean SUVR data.
+	%  <strong>11</strong> <strong>GR_SUVR_REF</strong> 	GR_SUVR_REF (data, item) is a group of subjects with mean SUVR data for deviation reference.
+	%  <strong>12</strong> <strong>CONNECTOME_CONSTRUCT_METHOD</strong> 	CONNECTOME_CONSTRUCT_METHOD (query, cell) defines the method for individual connectome construction.
+	%  <strong>13</strong> <strong>GR</strong> 	GR (result, item) is a group of subjects with connectivity data.
+	%
 	% ConstructorIndividualConBase methods (constructor):
 	%  ConstructorIndividualConBase - constructor
 	%
@@ -93,30 +108,30 @@ classdef ConstructorIndividualConBase < ConcreteElement
 	%
 	
 	properties (Constant) % properties
-		WAITBAR = ConcreteElement.getPropNumber() + 1;
+		WAITBAR = 9; %CET: Computational Efficiency Trick
 		WAITBAR_TAG = 'WAITBAR';
-		WAITBAR_CATEGORY = Category.GUI;
-		WAITBAR_FORMAT = Format.LOGICAL;
+		WAITBAR_CATEGORY = 9;
+		WAITBAR_FORMAT = 4;
 		
-		GR_SUVR = ConcreteElement.getPropNumber() + 2;
+		GR_SUVR = 10; %CET: Computational Efficiency Trick
 		GR_SUVR_TAG = 'GR_SUVR';
-		GR_SUVR_CATEGORY = Category.DATA;
-		GR_SUVR_FORMAT = Format.ITEM;
+		GR_SUVR_CATEGORY = 4;
+		GR_SUVR_FORMAT = 8;
 		
-		GR_SUVR_REF = ConcreteElement.getPropNumber() + 3;
+		GR_SUVR_REF = 11; %CET: Computational Efficiency Trick
 		GR_SUVR_REF_TAG = 'GR_SUVR_REF';
-		GR_SUVR_REF_CATEGORY = Category.DATA;
-		GR_SUVR_REF_FORMAT = Format.ITEM;
+		GR_SUVR_REF_CATEGORY = 4;
+		GR_SUVR_REF_FORMAT = 8;
 		
-		CONNECTOME_CONSTRUCT_METHOD = ConcreteElement.getPropNumber() + 4;
+		CONNECTOME_CONSTRUCT_METHOD = 12; %CET: Computational Efficiency Trick
 		CONNECTOME_CONSTRUCT_METHOD_TAG = 'CONNECTOME_CONSTRUCT_METHOD';
-		CONNECTOME_CONSTRUCT_METHOD_CATEGORY = Category.QUERY;
-		CONNECTOME_CONSTRUCT_METHOD_FORMAT = Format.CELL;
+		CONNECTOME_CONSTRUCT_METHOD_CATEGORY = 6;
+		CONNECTOME_CONSTRUCT_METHOD_FORMAT = 16;
 		
-		GR = ConcreteElement.getPropNumber() + 5;
+		GR = 13; %CET: Computational Efficiency Trick
 		GR_TAG = 'GR';
-		GR_CATEGORY = Category.RESULT;
-		GR_FORMAT = Format.ITEM;
+		GR_CATEGORY = 5;
+		GR_FORMAT = 8;
 	end
 	methods % constructor
 		function base = ConstructorIndividualConBase(varargin)
@@ -129,6 +144,20 @@ classdef ConstructorIndividualConBase < ConcreteElement
 			% Multiple properties can be initialized at once identifying
 			%  them with either property numbers (PROP) or tags (TAG).
 			%
+			% The list of ConstructorIndividualConBase properties is:
+			%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of Individual Connectome Constructor Base.
+			%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the Individual Connectome Constructor Base.
+			%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the Individual Connectome Constructor Base.
+			%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the Individual Connectome Constructor Base.
+			%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the Individual Connectome Constructor Base.
+			%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the Individual Connectome Constructor Base.
+			%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the Individual Connectome Constructor Base.
+			%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
+			%  <strong>9</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) detemines whether to show the waitbar.
+			%  <strong>10</strong> <strong>GR_SUVR</strong> 	GR_SUVR (data, item) is a group of subjects with mean SUVR data.
+			%  <strong>11</strong> <strong>GR_SUVR_REF</strong> 	GR_SUVR_REF (data, item) is a group of subjects with mean SUVR data for deviation reference.
+			%  <strong>12</strong> <strong>CONNECTOME_CONSTRUCT_METHOD</strong> 	CONNECTOME_CONSTRUCT_METHOD (query, cell) defines the method for individual connectome construction.
+			%  <strong>13</strong> <strong>GR</strong> 	GR (result, item) is a group of subjects with connectivity data.
 			%
 			% See also Category, Format.
 			
@@ -181,7 +210,7 @@ classdef ConstructorIndividualConBase < ConcreteElement
 			%
 			% See also subclasses.
 			
-			subclass_list = subclasses('ConstructorIndividualConBase', [], [], true);
+			subclass_list = { 'ConstructorIndividualConBase'  'ConstructorIndividualConMahalanobis'  'ConstructorIndividualConPerturbation' }; %CET: Computational Efficiency Trick
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of Individual Base Constructor.
@@ -202,60 +231,30 @@ classdef ConstructorIndividualConBase < ConcreteElement
 			%
 			% See also getPropNumber, Category.
 			
+			%CET: Computational Efficiency Trick
+			
 			if nargin == 0
-				prop_list = [ ...
-					ConcreteElement.getProps() ...
-						ConstructorIndividualConBase.WAITBAR ...
-						ConstructorIndividualConBase.GR_SUVR ...
-						ConstructorIndividualConBase.GR_SUVR_REF ...
-						ConstructorIndividualConBase.CONNECTOME_CONSTRUCT_METHOD ...
-						ConstructorIndividualConBase.GR ...
-						];
+				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12 13];
 				return
 			end
 			
 			switch category
-				case Category.CONSTANT
-					prop_list = [ ...
-						ConcreteElement.getProps(Category.CONSTANT) ...
-						];
-				case Category.METADATA
-					prop_list = [ ...
-						ConcreteElement.getProps(Category.METADATA) ...
-						];
-				case Category.PARAMETER
-					prop_list = [ ...
-						ConcreteElement.getProps(Category.PARAMETER) ...
-						];
-				case Category.DATA
-					prop_list = [ ...
-						ConcreteElement.getProps(Category.DATA) ...
-						ConstructorIndividualConBase.GR_SUVR ...
-						ConstructorIndividualConBase.GR_SUVR_REF ...
-						];
-				case Category.RESULT
-					prop_list = [
-						ConcreteElement.getProps(Category.RESULT) ...
-						ConstructorIndividualConBase.GR ...
-						];
-				case Category.QUERY
-					prop_list = [ ...
-						ConcreteElement.getProps(Category.QUERY) ...
-						ConstructorIndividualConBase.CONNECTOME_CONSTRUCT_METHOD ...
-						];
-				case Category.EVANESCENT
-					prop_list = [ ...
-						ConcreteElement.getProps(Category.EVANESCENT) ...
-						];
-				case Category.FIGURE
-					prop_list = [ ...
-						ConcreteElement.getProps(Category.FIGURE) ...
-						];
-				case Category.GUI
-					prop_list = [ ...
-						ConcreteElement.getProps(Category.GUI) ...
-						ConstructorIndividualConBase.WAITBAR ...
-						];
+				case 1 % Category.CONSTANT
+					prop_list = [1 2 3];
+				case 2 % Category.METADATA
+					prop_list = [6 7];
+				case 3 % Category.PARAMETER
+					prop_list = 4;
+				case 4 % Category.DATA
+					prop_list = [5 10 11];
+				case 5 % Category.RESULT
+					prop_list = 13;
+				case 6 % Category.QUERY
+					prop_list = [8 12];
+				case 9 % Category.GUI
+					prop_list = 9;
+				otherwise
+					prop_list = [];
 			end
 		end
 		function prop_number = getPropNumber(varargin)
@@ -276,7 +275,31 @@ classdef ConstructorIndividualConBase < ConcreteElement
 			%
 			% See also getProps, Category.
 			
-			prop_number = numel(ConstructorIndividualConBase.getProps(varargin{:}));
+			%CET: Computational Efficiency Trick
+			
+			if nargin == 0
+				prop_number = 13;
+				return
+			end
+			
+			switch varargin{1} % category = varargin{1}
+				case 1 % Category.CONSTANT
+					prop_number = 3;
+				case 2 % Category.METADATA
+					prop_number = 2;
+				case 3 % Category.PARAMETER
+					prop_number = 1;
+				case 4 % Category.DATA
+					prop_number = 3;
+				case 5 % Category.RESULT
+					prop_number = 1;
+				case 6 % Category.QUERY
+					prop_number = 2;
+				case 9 % Category.GUI
+					prop_number = 1;
+				otherwise
+					prop_number = 0;
+			end
 		end
 		function check_out = existsProp(prop)
 			%EXISTSPROP checks whether property exists in Individual Base Constructor/error.
@@ -304,14 +327,14 @@ classdef ConstructorIndividualConBase < ConcreteElement
 			%
 			% See also getProps, existsTag.
 			
-			check = any(prop == ConstructorIndividualConBase.getProps());
+			check = prop >= 1 && prop <= 13 && round(prop) == prop; %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':ConstructorIndividualConBase:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':ConstructorIndividualConBase:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':ConstructorIndividualConBase:' 'WrongInput'], ...
+					['BRAPH2' ':ConstructorIndividualConBase:' 'WrongInput' '\n' ...
 					'The value ' tostring(prop, 100, ' ...') ' is not a valid prop for ConstructorIndividualConBase.'] ...
 					)
 			end
@@ -342,15 +365,14 @@ classdef ConstructorIndividualConBase < ConcreteElement
 			%
 			% See also getProps, existsTag.
 			
-			constructorindividualconbase_tag_list = cellfun(@(x) ConstructorIndividualConBase.getPropTag(x), num2cell(ConstructorIndividualConBase.getProps()), 'UniformOutput', false);
-			check = any(strcmp(tag, constructorindividualconbase_tag_list));
+			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'GR_SUVR'  'GR_SUVR_REF'  'CONNECTOME_CONSTRUCT_METHOD'  'GR' })); %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':ConstructorIndividualConBase:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':ConstructorIndividualConBase:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':ConstructorIndividualConBase:' 'WrongInput'], ...
+					['BRAPH2' ':ConstructorIndividualConBase:' 'WrongInput' '\n' ...
 					'The value ' tag ' is not a valid tag for ConstructorIndividualConBase.'] ...
 					)
 			end
@@ -376,8 +398,7 @@ classdef ConstructorIndividualConBase < ConcreteElement
 			%  getPropSettings, getPropDefault, checkProp.
 			
 			if ischar(pointer)
-				constructorindividualconbase_tag_list = cellfun(@(x) ConstructorIndividualConBase.getPropTag(x), num2cell(ConstructorIndividualConBase.getProps()), 'UniformOutput', false);
-				prop = find(strcmp(pointer, constructorindividualconbase_tag_list)); % tag = pointer
+				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'GR_SUVR'  'GR_SUVR_REF'  'CONNECTOME_CONSTRUCT_METHOD'  'GR' })); % tag = pointer %CET: Computational Efficiency Trick
 			else % numeric
 				prop = pointer;
 			end
@@ -405,22 +426,9 @@ classdef ConstructorIndividualConBase < ConcreteElement
 			if ischar(pointer)
 				tag = pointer;
 			else % numeric
-				prop = pointer;
-				
-				switch prop
-					case ConstructorIndividualConBase.WAITBAR
-						tag = ConstructorIndividualConBase.WAITBAR_TAG;
-					case ConstructorIndividualConBase.GR_SUVR
-						tag = ConstructorIndividualConBase.GR_SUVR_TAG;
-					case ConstructorIndividualConBase.GR_SUVR_REF
-						tag = ConstructorIndividualConBase.GR_SUVR_REF_TAG;
-					case ConstructorIndividualConBase.CONNECTOME_CONSTRUCT_METHOD
-						tag = ConstructorIndividualConBase.CONNECTOME_CONSTRUCT_METHOD_TAG;
-					case ConstructorIndividualConBase.GR
-						tag = ConstructorIndividualConBase.GR_TAG;
-					otherwise
-						tag = getPropTag@ConcreteElement(prop);
-				end
+				%CET: Computational Efficiency Trick
+				constructorindividualconbase_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'GR_SUVR'  'GR_SUVR_REF'  'CONNECTOME_CONSTRUCT_METHOD'  'GR' };
+				tag = constructorindividualconbase_tag_list{pointer}; % prop = pointer
 			end
 		end
 		function prop_category = getPropCategory(pointer)
@@ -445,20 +453,9 @@ classdef ConstructorIndividualConBase < ConcreteElement
 			
 			prop = ConstructorIndividualConBase.getPropProp(pointer);
 			
-			switch prop
-				case ConstructorIndividualConBase.WAITBAR
-					prop_category = ConstructorIndividualConBase.WAITBAR_CATEGORY;
-				case ConstructorIndividualConBase.GR_SUVR
-					prop_category = ConstructorIndividualConBase.GR_SUVR_CATEGORY;
-				case ConstructorIndividualConBase.GR_SUVR_REF
-					prop_category = ConstructorIndividualConBase.GR_SUVR_REF_CATEGORY;
-				case ConstructorIndividualConBase.CONNECTOME_CONSTRUCT_METHOD
-					prop_category = ConstructorIndividualConBase.CONNECTOME_CONSTRUCT_METHOD_CATEGORY;
-				case ConstructorIndividualConBase.GR
-					prop_category = ConstructorIndividualConBase.GR_CATEGORY;
-				otherwise
-					prop_category = getPropCategory@ConcreteElement(prop);
-			end
+			%CET: Computational Efficiency Trick
+			constructorindividualconbase_category_list = { 1  1  1  3  4  2  2  6  9  4  4  6  5 };
+			prop_category = constructorindividualconbase_category_list{prop};
 		end
 		function prop_format = getPropFormat(pointer)
 			%GETPROPFORMAT returns the format of a property.
@@ -482,20 +479,9 @@ classdef ConstructorIndividualConBase < ConcreteElement
 			
 			prop = ConstructorIndividualConBase.getPropProp(pointer);
 			
-			switch prop
-				case ConstructorIndividualConBase.WAITBAR
-					prop_format = ConstructorIndividualConBase.WAITBAR_FORMAT;
-				case ConstructorIndividualConBase.GR_SUVR
-					prop_format = ConstructorIndividualConBase.GR_SUVR_FORMAT;
-				case ConstructorIndividualConBase.GR_SUVR_REF
-					prop_format = ConstructorIndividualConBase.GR_SUVR_REF_FORMAT;
-				case ConstructorIndividualConBase.CONNECTOME_CONSTRUCT_METHOD
-					prop_format = ConstructorIndividualConBase.CONNECTOME_CONSTRUCT_METHOD_FORMAT;
-				case ConstructorIndividualConBase.GR
-					prop_format = ConstructorIndividualConBase.GR_FORMAT;
-				otherwise
-					prop_format = getPropFormat@ConcreteElement(prop);
-			end
+			%CET: Computational Efficiency Trick
+			constructorindividualconbase_format_list = { 2  2  2  8  2  2  2  2  4  8  8  16  8 };
+			prop_format = constructorindividualconbase_format_list{prop};
 		end
 		function prop_description = getPropDescription(pointer)
 			%GETPROPDESCRIPTION returns the description of a property.
@@ -519,34 +505,9 @@ classdef ConstructorIndividualConBase < ConcreteElement
 			
 			prop = ConstructorIndividualConBase.getPropProp(pointer);
 			
-			switch prop
-				case ConstructorIndividualConBase.WAITBAR
-					prop_description = 'WAITBAR (gui, logical) detemines whether to show the waitbar.';
-				case ConstructorIndividualConBase.GR_SUVR
-					prop_description = 'GR_SUVR (data, item) is a group of subjects with mean SUVR data.';
-				case ConstructorIndividualConBase.GR_SUVR_REF
-					prop_description = 'GR_SUVR_REF (data, item) is a group of subjects with mean SUVR data for deviation reference.';
-				case ConstructorIndividualConBase.CONNECTOME_CONSTRUCT_METHOD
-					prop_description = 'CONNECTOME_CONSTRUCT_METHOD (query, cell) defines the method for individual connectome construction.';
-				case ConstructorIndividualConBase.GR
-					prop_description = 'GR (result, item) is a group of subjects with connectivity data.';
-				case ConstructorIndividualConBase.ELCLASS
-					prop_description = 'ELCLASS (constant, string) is the class of Individual Connectome Constructor Base.';
-				case ConstructorIndividualConBase.NAME
-					prop_description = 'NAME (constant, string) is the name of the Individual Connectome Constructor Base.';
-				case ConstructorIndividualConBase.DESCRIPTION
-					prop_description = 'DESCRIPTION (constant, string) is the description of the Individual Connectome Constructor Base.';
-				case ConstructorIndividualConBase.TEMPLATE
-					prop_description = 'TEMPLATE (parameter, item) is the template of the Individual Connectome Constructor Base.';
-				case ConstructorIndividualConBase.ID
-					prop_description = 'ID (data, string) is a few-letter code for the Individual Connectome Constructor Base.';
-				case ConstructorIndividualConBase.LABEL
-					prop_description = 'LABEL (metadata, string) is an extended label of the Individual Connectome Constructor Base.';
-				case ConstructorIndividualConBase.NOTES
-					prop_description = 'NOTES (metadata, string) are some specific notes about the Individual Connectome Constructor Base.';
-				otherwise
-					prop_description = getPropDescription@ConcreteElement(prop);
-			end
+			%CET: Computational Efficiency Trick
+			constructorindividualconbase_description_list = { 'ELCLASS (constant, string) is the class of Individual Connectome Constructor Base.'  'NAME (constant, string) is the name of the Individual Connectome Constructor Base.'  'DESCRIPTION (constant, string) is the description of the Individual Connectome Constructor Base.'  'TEMPLATE (parameter, item) is the template of the Individual Connectome Constructor Base.'  'ID (data, string) is a few-letter code for the Individual Connectome Constructor Base.'  'LABEL (metadata, string) is an extended label of the Individual Connectome Constructor Base.'  'NOTES (metadata, string) are some specific notes about the Individual Connectome Constructor Base.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'WAITBAR (gui, logical) detemines whether to show the waitbar.'  'GR_SUVR (data, item) is a group of subjects with mean SUVR data.'  'GR_SUVR_REF (data, item) is a group of subjects with mean SUVR data for deviation reference.'  'CONNECTOME_CONSTRUCT_METHOD (query, cell) defines the method for individual connectome construction.'  'GR (result, item) is a group of subjects with connectivity data.' };
+			prop_description = constructorindividualconbase_description_list{prop};
 		end
 		function prop_settings = getPropSettings(pointer)
 			%GETPROPSETTINGS returns the settings of a property.
@@ -570,18 +531,18 @@ classdef ConstructorIndividualConBase < ConcreteElement
 			
 			prop = ConstructorIndividualConBase.getPropProp(pointer);
 			
-			switch prop
-				case ConstructorIndividualConBase.WAITBAR
-					prop_settings = Format.getFormatSettings(Format.LOGICAL);
-				case ConstructorIndividualConBase.GR_SUVR
-					prop_settings = Format.getFormatSettings(Format.ITEM);
-				case ConstructorIndividualConBase.GR_SUVR_REF
-					prop_settings = Format.getFormatSettings(Format.ITEM);
-				case ConstructorIndividualConBase.CONNECTOME_CONSTRUCT_METHOD
-					prop_settings = Format.getFormatSettings(Format.CELL);
-				case ConstructorIndividualConBase.GR
+			switch prop %CET: Computational Efficiency Trick
+				case 9 % ConstructorIndividualConBase.WAITBAR
+					prop_settings = Format.getFormatSettings(4);
+				case 10 % ConstructorIndividualConBase.GR_SUVR
+					prop_settings = Format.getFormatSettings(8);
+				case 11 % ConstructorIndividualConBase.GR_SUVR_REF
+					prop_settings = Format.getFormatSettings(8);
+				case 12 % ConstructorIndividualConBase.CONNECTOME_CONSTRUCT_METHOD
+					prop_settings = Format.getFormatSettings(16);
+				case 13 % ConstructorIndividualConBase.GR
 					prop_settings = 'Group';
-				case ConstructorIndividualConBase.TEMPLATE
+				case 4 % ConstructorIndividualConBase.TEMPLATE
 					prop_settings = 'IndividualConConstructorBase';
 				otherwise
 					prop_settings = getPropSettings@ConcreteElement(prop);
@@ -609,30 +570,30 @@ classdef ConstructorIndividualConBase < ConcreteElement
 			
 			prop = ConstructorIndividualConBase.getPropProp(pointer);
 			
-			switch prop
-				case ConstructorIndividualConBase.WAITBAR
+			switch prop %CET: Computational Efficiency Trick
+				case 9 % ConstructorIndividualConBase.WAITBAR
 					prop_default = true;
-				case ConstructorIndividualConBase.GR_SUVR
+				case 10 % ConstructorIndividualConBase.GR_SUVR
 					prop_default = Group('SUB_CLASS', 'SubjectST');
-				case ConstructorIndividualConBase.GR_SUVR_REF
+				case 11 % ConstructorIndividualConBase.GR_SUVR_REF
 					prop_default = Group('SUB_CLASS', 'SubjectST');
-				case ConstructorIndividualConBase.CONNECTOME_CONSTRUCT_METHOD
+				case 12 % ConstructorIndividualConBase.CONNECTOME_CONSTRUCT_METHOD
 					prop_default = {};
-				case ConstructorIndividualConBase.GR
+				case 13 % ConstructorIndividualConBase.GR
 					prop_default = Group('SUB_CLASS', 'SubjectCON', 'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectCON'));
-				case ConstructorIndividualConBase.ELCLASS
+				case 1 % ConstructorIndividualConBase.ELCLASS
 					prop_default = 'ConstructorIndividualConBase';
-				case ConstructorIndividualConBase.NAME
+				case 2 % ConstructorIndividualConBase.NAME
 					prop_default = 'Individual Connectome Constructor Base';
-				case ConstructorIndividualConBase.DESCRIPTION
+				case 3 % ConstructorIndividualConBase.DESCRIPTION
 					prop_default = 'A Individual Connectome Constructor Base (IndividualConConstructorBase) comprises brain connectome constructor with a specific dataset. Its subclasses need to implement the props GR, GR_REF and CONNECTOME_METHOD.';
-				case ConstructorIndividualConBase.TEMPLATE
-					prop_default = Format.getFormatDefault(Format.ITEM, ConstructorIndividualConBase.getPropSettings(prop));
-				case ConstructorIndividualConBase.ID
+				case 4 % ConstructorIndividualConBase.TEMPLATE
+					prop_default = Format.getFormatDefault(8, ConstructorIndividualConBase.getPropSettings(prop));
+				case 5 % ConstructorIndividualConBase.ID
 					prop_default = 'IndividualConConstructorBase ID';
-				case ConstructorIndividualConBase.LABEL
+				case 6 % ConstructorIndividualConBase.LABEL
 					prop_default = 'Individual Connectome Constructor Base label';
-				case ConstructorIndividualConBase.NOTES
+				case 7 % ConstructorIndividualConBase.NOTES
 					prop_default = 'Individual Connectome Constructor Base notes';
 				otherwise
 					prop_default = getPropDefault@ConcreteElement(prop);
@@ -679,15 +640,15 @@ classdef ConstructorIndividualConBase < ConcreteElement
 			% 
 			% BASE.CHECKPROP(POINTER, VALUE) throws an error if VALUE is
 			%  NOT an acceptable value for the format of the property POINTER.
-			%  Error id: €BRAPH2.STR€:ConstructorIndividualConBase:€BRAPH2.WRONG_INPUT€
+			%  Error id: BRAPH2:ConstructorIndividualConBase:WrongInput
 			% 
 			% Alternative forms to call this method are (POINTER = PROP or TAG):
 			%  BASE.CHECKPROP(POINTER, VALUE) throws error if VALUE has not a valid format for PROP of BASE.
-			%   Error id: €BRAPH2.STR€:ConstructorIndividualConBase:€BRAPH2.WRONG_INPUT€
+			%   Error id: BRAPH2:ConstructorIndividualConBase:WrongInput
 			%  Element.CHECKPROP(ConstructorIndividualConBase, PROP, VALUE) throws error if VALUE has not a valid format for PROP of ConstructorIndividualConBase.
-			%   Error id: €BRAPH2.STR€:ConstructorIndividualConBase:€BRAPH2.WRONG_INPUT€
+			%   Error id: BRAPH2:ConstructorIndividualConBase:WrongInput
 			%  BASE.CHECKPROP(ConstructorIndividualConBase, PROP, VALUE) throws error if VALUE has not a valid format for PROP of ConstructorIndividualConBase.
-			%   Error id: €BRAPH2.STR€:ConstructorIndividualConBase:€BRAPH2.WRONG_INPUT€]
+			%   Error id: BRAPH2:ConstructorIndividualConBase:WrongInput]
 			% 
 			% Note that the Element.CHECKPROP(BASE) and Element.CHECKPROP('ConstructorIndividualConBase')
 			%  are less computationally efficient.
@@ -698,20 +659,20 @@ classdef ConstructorIndividualConBase < ConcreteElement
 			prop = ConstructorIndividualConBase.getPropProp(pointer);
 			
 			switch prop
-				case ConstructorIndividualConBase.WAITBAR % __ConstructorIndividualConBase.WAITBAR__
-					check = Format.checkFormat(Format.LOGICAL, value, ConstructorIndividualConBase.getPropSettings(prop));
-				case ConstructorIndividualConBase.GR_SUVR % __ConstructorIndividualConBase.GR_SUVR__
-					check = Format.checkFormat(Format.ITEM, value, ConstructorIndividualConBase.getPropSettings(prop));
-				case ConstructorIndividualConBase.GR_SUVR_REF % __ConstructorIndividualConBase.GR_SUVR_REF__
-					check = Format.checkFormat(Format.ITEM, value, ConstructorIndividualConBase.getPropSettings(prop));
-				case ConstructorIndividualConBase.CONNECTOME_CONSTRUCT_METHOD % __ConstructorIndividualConBase.CONNECTOME_CONSTRUCT_METHOD__
-					check = Format.checkFormat(Format.CELL, value, ConstructorIndividualConBase.getPropSettings(prop));
-				case ConstructorIndividualConBase.GR % __ConstructorIndividualConBase.GR__
-					check = Format.checkFormat(Format.ITEM, value, ConstructorIndividualConBase.getPropSettings(prop));
-				case ConstructorIndividualConBase.TEMPLATE % __ConstructorIndividualConBase.TEMPLATE__
-					check = Format.checkFormat(Format.ITEM, value, ConstructorIndividualConBase.getPropSettings(prop));
+				case 9 % ConstructorIndividualConBase.WAITBAR
+					check = Format.checkFormat(4, value, ConstructorIndividualConBase.getPropSettings(prop));
+				case 10 % ConstructorIndividualConBase.GR_SUVR
+					check = Format.checkFormat(8, value, ConstructorIndividualConBase.getPropSettings(prop));
+				case 11 % ConstructorIndividualConBase.GR_SUVR_REF
+					check = Format.checkFormat(8, value, ConstructorIndividualConBase.getPropSettings(prop));
+				case 12 % ConstructorIndividualConBase.CONNECTOME_CONSTRUCT_METHOD
+					check = Format.checkFormat(16, value, ConstructorIndividualConBase.getPropSettings(prop));
+				case 13 % ConstructorIndividualConBase.GR
+					check = Format.checkFormat(8, value, ConstructorIndividualConBase.getPropSettings(prop));
+				case 4 % ConstructorIndividualConBase.TEMPLATE
+					check = Format.checkFormat(8, value, ConstructorIndividualConBase.getPropSettings(prop));
 				otherwise
-					if prop <= ConcreteElement.getPropNumber()
+					if prop <= 8
 						check = checkProp@ConcreteElement(prop, value);
 					end
 			end
@@ -720,8 +681,8 @@ classdef ConstructorIndividualConBase < ConcreteElement
 				prop_check = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':ConstructorIndividualConBase:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':ConstructorIndividualConBase:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':ConstructorIndividualConBase:' 'WrongInput'], ...
+					['BRAPH2' ':ConstructorIndividualConBase:' 'WrongInput' '\n' ...
 					'The value ' tostring(value, 100, ' ...') ' is not a valid property ' ConstructorIndividualConBase.getPropTag(prop) ' (' ConstructorIndividualConBase.getFormatTag(ConstructorIndividualConBase.getPropFormat(prop)) ').'] ...
 					)
 			end
@@ -732,20 +693,20 @@ classdef ConstructorIndividualConBase < ConcreteElement
 			%CALCULATEVALUE calculates the value of a property.
 			%
 			% VALUE = CALCULATEVALUE(EL, PROP) calculates the value of the property
-			%  PROP. It works only with properties with Category.RESULT,
-			%  Category.QUERY, and Category.EVANESCENT. By default this function
+			%  PROP. It works only with properties with 5,
+			%  6, and 7. By default this function
 			%  returns the default value for the prop and should be implemented in the
 			%  subclasses of Element when needed.
 			%
 			% VALUE = CALCULATEVALUE(EL, PROP, VARARGIN) works with properties with
-			%  Category.QUERY.
+			%  6.
 			%
 			% See also getPropDefaultConditioned, conditioning, preset, checkProp,
 			%  postset, postprocessing, checkValue.
 			
 			switch prop
-				case ConstructorIndividualConBase.GR % __ConstructorIndividualConBase.GR__
-					rng_settings_ = rng(); rng(base.getPropSeed(ConstructorIndividualConBase.GR), 'twister')
+				case 13 % ConstructorIndividualConBase.GR
+					rng_settings_ = rng(); rng(base.getPropSeed(13), 'twister')
 					
 					% creates empty Group
 					gr = Group( ...
@@ -776,7 +737,7 @@ classdef ConstructorIndividualConBase < ConcreteElement
 					rng(rng_settings_)
 					
 				otherwise
-					if prop <= ConcreteElement.getPropNumber()
+					if prop <= 8
 						value = calculateValue@ConcreteElement(base, prop, varargin{:});
 					else
 						value = calculateValue@Element(base, prop, varargin{:});
@@ -801,11 +762,11 @@ classdef ConstructorIndividualConBase < ConcreteElement
 			msg = ['Error while checking ' tostring(base) ' ' base.getPropTag(prop) '.'];
 			
 			switch prop
-				case ConstructorIndividualConBase.GR % __ConstructorIndividualConBase.GR__
-					check = any(strcmp(value.get(Group.SUB_CLASS_TAG), subclasses('SubjectCON', [], [], true))); % Format.checkFormat(Format.ITEM, value, 'Group') already checked
+				case 13 % ConstructorIndividualConBase.GR
+					check = any(strcmp(value.get('SUB_CLASS'), subclasses('SubjectCON', [], [], true))); % Format.checkFormat(8, value, 'Group') already checked
 					
 				otherwise
-					if prop <= ConcreteElement.getPropNumber()
+					if prop <= 8
 						[check, msg] = checkValue@ConcreteElement(base, prop, value);
 					end
 			end

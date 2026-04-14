@@ -5,6 +5,47 @@ classdef ConverterNeuroimaging2RegionalValuesPP_BR_DICT < PanelProp
 	% SUVRConstructorPP_BR_DICT plots the panel to manage the graph and measures of an ensemble analysis.
 	% It is intended to be used only with the property ME_DICT of AnalyzeEnsemble.
 	%
+	% The list of ConverterNeuroimaging2RegionalValuesPP_BR_DICT properties is:
+	%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the % % % .
+	%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the graph and measure panel.
+	%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the graph and measure panel.
+	%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the graph and measure panel.
+	%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the graph and measure panel.
+	%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the graph and measure panel.
+	%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the graph and measure panel.
+	%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
+	%  <strong>9</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) detemines whether to show the waitbar.
+	%  <strong>10</strong> <strong>H_WAITBAR</strong> 	H_WAITBAR (evanescent, handle) is the waitbar handle.
+	%  <strong>11</strong> <strong>DRAW</strong> 	DRAW (query, logical) draws the property panel.
+	%  <strong>12</strong> <strong>DRAWN</strong> 	DRAWN (query, logical) returns whether the panel has been drawn.
+	%  <strong>13</strong> <strong>PARENT</strong> 	PARENT (gui, item) is the panel parent.
+	%  <strong>14</strong> <strong>BKGCOLOR</strong> 	BKGCOLOR (figure, color) is the panel background color.
+	%  <strong>15</strong> <strong>H</strong> 	H (evanescent, handle) is the panel handle.
+	%  <strong>16</strong> <strong>SHOW</strong> 	SHOW (query, logical) shows the figure containing the panel and, possibly, the item figures.
+	%  <strong>17</strong> <strong>HIDE</strong> 	HIDE (query, logical) hides the figure containing the panel and, possibly, the item figures.
+	%  <strong>18</strong> <strong>DELETE</strong> 	DELETE (query, logical) resets the handles when the panel is deleted.
+	%  <strong>19</strong> <strong>CLOSE</strong> 	CLOSE (query, logical) closes the figure containing the panel and, possibly, the item figures.
+	%  <strong>20</strong> <strong>X_DRAW</strong> 	X_DRAW (query, logical) draws the property panel.
+	%  <strong>21</strong> <strong>UPDATE</strong> 	UPDATE (query, logical) updates the content and permissions of the table.
+	%  <strong>22</strong> <strong>REDRAW</strong> 	REDRAW (query, logical) resizes the property panel and repositions its graphical objects.
+	%  <strong>23</strong> <strong>EL</strong> 	EL (data, item) is the element.
+	%  <strong>24</strong> <strong>PROP</strong> 	PROP (data, scalar) is the property number.
+	%  <strong>25</strong> <strong>HEIGHT</strong> 	HEIGHT (gui, size) is the pixel height of the prop panel.
+	%  <strong>26</strong> <strong>TITLE</strong> 	TITLE (gui, string) is the property title.
+	%  <strong>27</strong> <strong>LABEL_TITLE</strong> 	LABEL_TITLE (evanescent, handle) is the handle for the title uilabel.
+	%  <strong>28</strong> <strong>BUTTON_CB</strong> 	BUTTON_CB (evanescent, handle) is the handle for the callback button [only for PARAMETER, DATA, FIGURE and GUI].
+	%  <strong>29</strong> <strong>GUI_CB</strong> 	GUI_CB (data, item) is the handle to the item figure.
+	%  <strong>30</strong> <strong>LISTENER_CB</strong> 	LISTENER_CB (evanescent, handle) contains the listener to the updates in the property callback.
+	%  <strong>31</strong> <strong>BUTTON_CALC</strong> 	BUTTON_CALC (evanescent, handle) is the handle for the calculate button [only for RESULT, QUERY and EVANESCENT].
+	%  <strong>32</strong> <strong>BUTTON_DEL</strong> 	BUTTON_DEL (evanescent, handle) is the handle for the delete button [only for RESULT, QUERY and EVANESCENT].
+	%  <strong>33</strong> <strong>LISTENER_SET</strong> 	LISTENER_SET (evanescent, handlelist) contains the listeners to the PropSet events.
+	%  <strong>34</strong> <strong>LISTENER_MEMORIZED</strong> 	LISTENER_MEMORIZED (evanescent, handlelist) contains the listeners to the PropMemorized events.
+	%  <strong>35</strong> <strong>LISTENER_LOCKED</strong> 	LISTENER_LOCKED (evanescent, handlelist) contains the listeners to the PropLocked events.
+	%  <strong>36</strong> <strong>TABLE_HEIGHT</strong> 	TABLE_HEIGHT (gui, size) is the pixel height of the property panel when the table is shown.
+	%  <strong>37</strong> <strong>SELECTED</strong> 	SELECTED (gui, cvector) is the list of selected items.
+	%  <strong>38</strong> <strong>TABLE</strong> 	TABLE (evanescent, handle) is the table.
+	%  <strong>39</strong> <strong>CONTEXTMENU</strong> 	CONTEXTMENU (evanescent, handle) is the context menu.
+	%
 	% ConverterNeuroimaging2RegionalValuesPP_BR_DICT methods (constructor):
 	%  ConverterNeuroimaging2RegionalValuesPP_BR_DICT - constructor
 	%
@@ -93,28 +134,28 @@ classdef ConverterNeuroimaging2RegionalValuesPP_BR_DICT < PanelProp
 	%
 	% See also uitable, AnalyzeEnsemble, Graph, Measure.
 	%
-	% BUILD BRAPH2 BRAPH2.BUILD class_name 1
+	% BUILD BRAPH2 7 class_name 1
 	
 	properties (Constant) % properties
-		TABLE_HEIGHT = PanelProp.getPropNumber() + 1;
+		TABLE_HEIGHT = 36; %CET: Computational Efficiency Trick
 		TABLE_HEIGHT_TAG = 'TABLE_HEIGHT';
-		TABLE_HEIGHT_CATEGORY = Category.GUI;
-		TABLE_HEIGHT_FORMAT = Format.SIZE;
+		TABLE_HEIGHT_CATEGORY = 9;
+		TABLE_HEIGHT_FORMAT = 22;
 		
-		SELECTED = PanelProp.getPropNumber() + 2;
+		SELECTED = 37; %CET: Computational Efficiency Trick
 		SELECTED_TAG = 'SELECTED';
-		SELECTED_CATEGORY = Category.GUI;
-		SELECTED_FORMAT = Format.CVECTOR;
+		SELECTED_CATEGORY = 9;
+		SELECTED_FORMAT = 13;
 		
-		TABLE = PanelProp.getPropNumber() + 3;
+		TABLE = 38; %CET: Computational Efficiency Trick
 		TABLE_TAG = 'TABLE';
-		TABLE_CATEGORY = Category.EVANESCENT;
-		TABLE_FORMAT = Format.HANDLE;
+		TABLE_CATEGORY = 7;
+		TABLE_FORMAT = 18;
 		
-		CONTEXTMENU = PanelProp.getPropNumber() + 4;
+		CONTEXTMENU = 39; %CET: Computational Efficiency Trick
 		CONTEXTMENU_TAG = 'CONTEXTMENU';
-		CONTEXTMENU_CATEGORY = Category.EVANESCENT;
-		CONTEXTMENU_FORMAT = Format.HANDLE;
+		CONTEXTMENU_CATEGORY = 7;
+		CONTEXTMENU_FORMAT = 18;
 	end
 	methods % constructor
 		function pr = ConverterNeuroimaging2RegionalValuesPP_BR_DICT(varargin)
@@ -127,6 +168,46 @@ classdef ConverterNeuroimaging2RegionalValuesPP_BR_DICT < PanelProp
 			% Multiple properties can be initialized at once identifying
 			%  them with either property numbers (PROP) or tags (TAG).
 			%
+			% The list of ConverterNeuroimaging2RegionalValuesPP_BR_DICT properties is:
+			%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the % % % .
+			%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the graph and measure panel.
+			%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the graph and measure panel.
+			%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the graph and measure panel.
+			%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the graph and measure panel.
+			%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the graph and measure panel.
+			%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the graph and measure panel.
+			%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
+			%  <strong>9</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) detemines whether to show the waitbar.
+			%  <strong>10</strong> <strong>H_WAITBAR</strong> 	H_WAITBAR (evanescent, handle) is the waitbar handle.
+			%  <strong>11</strong> <strong>DRAW</strong> 	DRAW (query, logical) draws the property panel.
+			%  <strong>12</strong> <strong>DRAWN</strong> 	DRAWN (query, logical) returns whether the panel has been drawn.
+			%  <strong>13</strong> <strong>PARENT</strong> 	PARENT (gui, item) is the panel parent.
+			%  <strong>14</strong> <strong>BKGCOLOR</strong> 	BKGCOLOR (figure, color) is the panel background color.
+			%  <strong>15</strong> <strong>H</strong> 	H (evanescent, handle) is the panel handle.
+			%  <strong>16</strong> <strong>SHOW</strong> 	SHOW (query, logical) shows the figure containing the panel and, possibly, the item figures.
+			%  <strong>17</strong> <strong>HIDE</strong> 	HIDE (query, logical) hides the figure containing the panel and, possibly, the item figures.
+			%  <strong>18</strong> <strong>DELETE</strong> 	DELETE (query, logical) resets the handles when the panel is deleted.
+			%  <strong>19</strong> <strong>CLOSE</strong> 	CLOSE (query, logical) closes the figure containing the panel and, possibly, the item figures.
+			%  <strong>20</strong> <strong>X_DRAW</strong> 	X_DRAW (query, logical) draws the property panel.
+			%  <strong>21</strong> <strong>UPDATE</strong> 	UPDATE (query, logical) updates the content and permissions of the table.
+			%  <strong>22</strong> <strong>REDRAW</strong> 	REDRAW (query, logical) resizes the property panel and repositions its graphical objects.
+			%  <strong>23</strong> <strong>EL</strong> 	EL (data, item) is the element.
+			%  <strong>24</strong> <strong>PROP</strong> 	PROP (data, scalar) is the property number.
+			%  <strong>25</strong> <strong>HEIGHT</strong> 	HEIGHT (gui, size) is the pixel height of the prop panel.
+			%  <strong>26</strong> <strong>TITLE</strong> 	TITLE (gui, string) is the property title.
+			%  <strong>27</strong> <strong>LABEL_TITLE</strong> 	LABEL_TITLE (evanescent, handle) is the handle for the title uilabel.
+			%  <strong>28</strong> <strong>BUTTON_CB</strong> 	BUTTON_CB (evanescent, handle) is the handle for the callback button [only for PARAMETER, DATA, FIGURE and GUI].
+			%  <strong>29</strong> <strong>GUI_CB</strong> 	GUI_CB (data, item) is the handle to the item figure.
+			%  <strong>30</strong> <strong>LISTENER_CB</strong> 	LISTENER_CB (evanescent, handle) contains the listener to the updates in the property callback.
+			%  <strong>31</strong> <strong>BUTTON_CALC</strong> 	BUTTON_CALC (evanescent, handle) is the handle for the calculate button [only for RESULT, QUERY and EVANESCENT].
+			%  <strong>32</strong> <strong>BUTTON_DEL</strong> 	BUTTON_DEL (evanescent, handle) is the handle for the delete button [only for RESULT, QUERY and EVANESCENT].
+			%  <strong>33</strong> <strong>LISTENER_SET</strong> 	LISTENER_SET (evanescent, handlelist) contains the listeners to the PropSet events.
+			%  <strong>34</strong> <strong>LISTENER_MEMORIZED</strong> 	LISTENER_MEMORIZED (evanescent, handlelist) contains the listeners to the PropMemorized events.
+			%  <strong>35</strong> <strong>LISTENER_LOCKED</strong> 	LISTENER_LOCKED (evanescent, handlelist) contains the listeners to the PropLocked events.
+			%  <strong>36</strong> <strong>TABLE_HEIGHT</strong> 	TABLE_HEIGHT (gui, size) is the pixel height of the property panel when the table is shown.
+			%  <strong>37</strong> <strong>SELECTED</strong> 	SELECTED (gui, cvector) is the list of selected items.
+			%  <strong>38</strong> <strong>TABLE</strong> 	TABLE (evanescent, handle) is the table.
+			%  <strong>39</strong> <strong>CONTEXTMENU</strong> 	CONTEXTMENU (evanescent, handle) is the context menu.
 			%
 			% See also Category, Format.
 			
@@ -179,7 +260,7 @@ classdef ConverterNeuroimaging2RegionalValuesPP_BR_DICT < PanelProp
 			%
 			% See also subclasses.
 			
-			subclass_list = subclasses('ConverterNeuroimaging2RegionalValuesPP_BR_DICT', [], [], true);
+			subclass_list = { 'ConverterNeuroimaging2RegionalValuesPP_BR_DICT' }; %CET: Computational Efficiency Trick
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of graph and measure plot.
@@ -200,58 +281,32 @@ classdef ConverterNeuroimaging2RegionalValuesPP_BR_DICT < PanelProp
 			%
 			% See also getPropNumber, Category.
 			
+			%CET: Computational Efficiency Trick
+			
 			if nargin == 0
-				prop_list = [ ...
-					PanelProp.getProps() ...
-						ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE_HEIGHT ...
-						ConverterNeuroimaging2RegionalValuesPP_BR_DICT.SELECTED ...
-						ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE ...
-						ConverterNeuroimaging2RegionalValuesPP_BR_DICT.CONTEXTMENU ...
-						];
+				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39];
 				return
 			end
 			
 			switch category
-				case Category.CONSTANT
-					prop_list = [ ...
-						PanelProp.getProps(Category.CONSTANT) ...
-						];
-				case Category.METADATA
-					prop_list = [ ...
-						PanelProp.getProps(Category.METADATA) ...
-						];
-				case Category.PARAMETER
-					prop_list = [ ...
-						PanelProp.getProps(Category.PARAMETER) ...
-						];
-				case Category.DATA
-					prop_list = [ ...
-						PanelProp.getProps(Category.DATA) ...
-						];
-				case Category.RESULT
-					prop_list = [
-						PanelProp.getProps(Category.RESULT) ...
-						];
-				case Category.QUERY
-					prop_list = [ ...
-						PanelProp.getProps(Category.QUERY) ...
-						];
-				case Category.EVANESCENT
-					prop_list = [ ...
-						PanelProp.getProps(Category.EVANESCENT) ...
-						ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE ...
-						ConverterNeuroimaging2RegionalValuesPP_BR_DICT.CONTEXTMENU ...
-						];
-				case Category.FIGURE
-					prop_list = [ ...
-						PanelProp.getProps(Category.FIGURE) ...
-						];
-				case Category.GUI
-					prop_list = [ ...
-						PanelProp.getProps(Category.GUI) ...
-						ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE_HEIGHT ...
-						ConverterNeuroimaging2RegionalValuesPP_BR_DICT.SELECTED ...
-						];
+				case 1 % Category.CONSTANT
+					prop_list = [1 2 3];
+				case 2 % Category.METADATA
+					prop_list = [6 7];
+				case 3 % Category.PARAMETER
+					prop_list = 4;
+				case 4 % Category.DATA
+					prop_list = [5 23 24 29];
+				case 6 % Category.QUERY
+					prop_list = [8 11 12 16 17 18 19 20 21 22];
+				case 7 % Category.EVANESCENT
+					prop_list = [10 15 27 28 30 31 32 33 34 35 38 39];
+				case 8 % Category.FIGURE
+					prop_list = 14;
+				case 9 % Category.GUI
+					prop_list = [9 13 25 26 36 37];
+				otherwise
+					prop_list = [];
 			end
 		end
 		function prop_number = getPropNumber(varargin)
@@ -272,7 +327,33 @@ classdef ConverterNeuroimaging2RegionalValuesPP_BR_DICT < PanelProp
 			%
 			% See also getProps, Category.
 			
-			prop_number = numel(ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getProps(varargin{:}));
+			%CET: Computational Efficiency Trick
+			
+			if nargin == 0
+				prop_number = 39;
+				return
+			end
+			
+			switch varargin{1} % category = varargin{1}
+				case 1 % Category.CONSTANT
+					prop_number = 3;
+				case 2 % Category.METADATA
+					prop_number = 2;
+				case 3 % Category.PARAMETER
+					prop_number = 1;
+				case 4 % Category.DATA
+					prop_number = 4;
+				case 6 % Category.QUERY
+					prop_number = 10;
+				case 7 % Category.EVANESCENT
+					prop_number = 12;
+				case 8 % Category.FIGURE
+					prop_number = 1;
+				case 9 % Category.GUI
+					prop_number = 6;
+				otherwise
+					prop_number = 0;
+			end
 		end
 		function check_out = existsProp(prop)
 			%EXISTSPROP checks whether property exists in graph and measure plot/error.
@@ -300,14 +381,14 @@ classdef ConverterNeuroimaging2RegionalValuesPP_BR_DICT < PanelProp
 			%
 			% See also getProps, existsTag.
 			
-			check = any(prop == ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getProps());
+			check = prop >= 1 && prop <= 39 && round(prop) == prop; %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':ConverterNeuroimaging2RegionalValuesPP_BR_DICT:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':ConverterNeuroimaging2RegionalValuesPP_BR_DICT:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':ConverterNeuroimaging2RegionalValuesPP_BR_DICT:' 'WrongInput'], ...
+					['BRAPH2' ':ConverterNeuroimaging2RegionalValuesPP_BR_DICT:' 'WrongInput' '\n' ...
 					'The value ' tostring(prop, 100, ' ...') ' is not a valid prop for ConverterNeuroimaging2RegionalValuesPP_BR_DICT.'] ...
 					)
 			end
@@ -338,15 +419,14 @@ classdef ConverterNeuroimaging2RegionalValuesPP_BR_DICT < PanelProp
 			%
 			% See also getProps, existsTag.
 			
-			converterneuroimaging2regionalvaluespp_br_dict_tag_list = cellfun(@(x) ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getPropTag(x), num2cell(ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getProps()), 'UniformOutput', false);
-			check = any(strcmp(tag, converterneuroimaging2regionalvaluespp_br_dict_tag_list));
+			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'H_WAITBAR'  'DRAW'  'DRAWN'  'PARENT'  'BKGCOLOR'  'H'  'SHOW'  'HIDE'  'DELETE'  'CLOSE'  'X_DRAW'  'UPDATE'  'REDRAW'  'EL'  'PROP'  'HEIGHT'  'TITLE'  'LABEL_TITLE'  'BUTTON_CB'  'GUI_CB'  'LISTENER_CB'  'BUTTON_CALC'  'BUTTON_DEL'  'LISTENER_SET'  'LISTENER_MEMORIZED'  'LISTENER_LOCKED'  'TABLE_HEIGHT'  'SELECTED'  'TABLE'  'CONTEXTMENU' })); %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':ConverterNeuroimaging2RegionalValuesPP_BR_DICT:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':ConverterNeuroimaging2RegionalValuesPP_BR_DICT:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':ConverterNeuroimaging2RegionalValuesPP_BR_DICT:' 'WrongInput'], ...
+					['BRAPH2' ':ConverterNeuroimaging2RegionalValuesPP_BR_DICT:' 'WrongInput' '\n' ...
 					'The value ' tag ' is not a valid tag for ConverterNeuroimaging2RegionalValuesPP_BR_DICT.'] ...
 					)
 			end
@@ -372,8 +452,7 @@ classdef ConverterNeuroimaging2RegionalValuesPP_BR_DICT < PanelProp
 			%  getPropSettings, getPropDefault, checkProp.
 			
 			if ischar(pointer)
-				converterneuroimaging2regionalvaluespp_br_dict_tag_list = cellfun(@(x) ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getPropTag(x), num2cell(ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getProps()), 'UniformOutput', false);
-				prop = find(strcmp(pointer, converterneuroimaging2regionalvaluespp_br_dict_tag_list)); % tag = pointer
+				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'H_WAITBAR'  'DRAW'  'DRAWN'  'PARENT'  'BKGCOLOR'  'H'  'SHOW'  'HIDE'  'DELETE'  'CLOSE'  'X_DRAW'  'UPDATE'  'REDRAW'  'EL'  'PROP'  'HEIGHT'  'TITLE'  'LABEL_TITLE'  'BUTTON_CB'  'GUI_CB'  'LISTENER_CB'  'BUTTON_CALC'  'BUTTON_DEL'  'LISTENER_SET'  'LISTENER_MEMORIZED'  'LISTENER_LOCKED'  'TABLE_HEIGHT'  'SELECTED'  'TABLE'  'CONTEXTMENU' })); % tag = pointer %CET: Computational Efficiency Trick
 			else % numeric
 				prop = pointer;
 			end
@@ -401,20 +480,9 @@ classdef ConverterNeuroimaging2RegionalValuesPP_BR_DICT < PanelProp
 			if ischar(pointer)
 				tag = pointer;
 			else % numeric
-				prop = pointer;
-				
-				switch prop
-					case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE_HEIGHT
-						tag = ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE_HEIGHT_TAG;
-					case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.SELECTED
-						tag = ConverterNeuroimaging2RegionalValuesPP_BR_DICT.SELECTED_TAG;
-					case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE
-						tag = ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE_TAG;
-					case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.CONTEXTMENU
-						tag = ConverterNeuroimaging2RegionalValuesPP_BR_DICT.CONTEXTMENU_TAG;
-					otherwise
-						tag = getPropTag@PanelProp(prop);
-				end
+				%CET: Computational Efficiency Trick
+				converterneuroimaging2regionalvaluespp_br_dict_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'H_WAITBAR'  'DRAW'  'DRAWN'  'PARENT'  'BKGCOLOR'  'H'  'SHOW'  'HIDE'  'DELETE'  'CLOSE'  'X_DRAW'  'UPDATE'  'REDRAW'  'EL'  'PROP'  'HEIGHT'  'TITLE'  'LABEL_TITLE'  'BUTTON_CB'  'GUI_CB'  'LISTENER_CB'  'BUTTON_CALC'  'BUTTON_DEL'  'LISTENER_SET'  'LISTENER_MEMORIZED'  'LISTENER_LOCKED'  'TABLE_HEIGHT'  'SELECTED'  'TABLE'  'CONTEXTMENU' };
+				tag = converterneuroimaging2regionalvaluespp_br_dict_tag_list{pointer}; % prop = pointer
 			end
 		end
 		function prop_category = getPropCategory(pointer)
@@ -439,18 +507,9 @@ classdef ConverterNeuroimaging2RegionalValuesPP_BR_DICT < PanelProp
 			
 			prop = ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getPropProp(pointer);
 			
-			switch prop
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE_HEIGHT
-					prop_category = ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE_HEIGHT_CATEGORY;
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.SELECTED
-					prop_category = ConverterNeuroimaging2RegionalValuesPP_BR_DICT.SELECTED_CATEGORY;
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE
-					prop_category = ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE_CATEGORY;
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.CONTEXTMENU
-					prop_category = ConverterNeuroimaging2RegionalValuesPP_BR_DICT.CONTEXTMENU_CATEGORY;
-				otherwise
-					prop_category = getPropCategory@PanelProp(prop);
-			end
+			%CET: Computational Efficiency Trick
+			converterneuroimaging2regionalvaluespp_br_dict_category_list = { 1  1  1  3  4  2  2  6  9  7  6  6  9  8  7  6  6  6  6  6  6  6  4  4  9  9  7  7  4  7  7  7  7  7  7  9  9  7  7 };
+			prop_category = converterneuroimaging2regionalvaluespp_br_dict_category_list{prop};
 		end
 		function prop_format = getPropFormat(pointer)
 			%GETPROPFORMAT returns the format of a property.
@@ -474,18 +533,9 @@ classdef ConverterNeuroimaging2RegionalValuesPP_BR_DICT < PanelProp
 			
 			prop = ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getPropProp(pointer);
 			
-			switch prop
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE_HEIGHT
-					prop_format = ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE_HEIGHT_FORMAT;
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.SELECTED
-					prop_format = ConverterNeuroimaging2RegionalValuesPP_BR_DICT.SELECTED_FORMAT;
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE
-					prop_format = ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE_FORMAT;
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.CONTEXTMENU
-					prop_format = ConverterNeuroimaging2RegionalValuesPP_BR_DICT.CONTEXTMENU_FORMAT;
-				otherwise
-					prop_format = getPropFormat@PanelProp(prop);
-			end
+			%CET: Computational Efficiency Trick
+			converterneuroimaging2regionalvaluespp_br_dict_format_list = { 2  2  2  8  2  2  2  2  4  18  4  4  8  20  18  4  4  4  4  4  4  4  8  11  22  2  18  18  8  18  18  18  19  19  19  22  13  18  18 };
+			prop_format = converterneuroimaging2regionalvaluespp_br_dict_format_list{prop};
 		end
 		function prop_description = getPropDescription(pointer)
 			%GETPROPDESCRIPTION returns the description of a property.
@@ -509,50 +559,9 @@ classdef ConverterNeuroimaging2RegionalValuesPP_BR_DICT < PanelProp
 			
 			prop = ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getPropProp(pointer);
 			
-			switch prop
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE_HEIGHT
-					prop_description = 'TABLE_HEIGHT (gui, size) is the pixel height of the property panel when the table is shown.';
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.SELECTED
-					prop_description = 'SELECTED (gui, cvector) is the list of selected items.';
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE
-					prop_description = 'TABLE (evanescent, handle) is the table.';
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.CONTEXTMENU
-					prop_description = 'CONTEXTMENU (evanescent, handle) is the context menu.';
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.ELCLASS
-					prop_description = 'ELCLASS (constant, string) is the class of the % % % .';
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.NAME
-					prop_description = 'NAME (constant, string) is the name of the graph and measure panel.';
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.DESCRIPTION
-					prop_description = 'DESCRIPTION (constant, string) is the description of the graph and measure panel.';
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TEMPLATE
-					prop_description = 'TEMPLATE (parameter, item) is the template of the graph and measure panel.';
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.ID
-					prop_description = 'ID (data, string) is a few-letter code for the graph and measure panel.';
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.LABEL
-					prop_description = 'LABEL (metadata, string) is an extended label of the graph and measure panel.';
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.NOTES
-					prop_description = 'NOTES (metadata, string) are some specific notes about the graph and measure panel.';
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.EL
-					prop_description = 'EL (data, item) is the element.';
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.PROP
-					prop_description = 'PROP (data, scalar) is the property number.';
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.X_DRAW
-					prop_description = 'X_DRAW (query, logical) draws the property panel.';
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.UPDATE
-					prop_description = 'UPDATE (query, logical) updates the content and permissions of the table.';
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.REDRAW
-					prop_description = 'REDRAW (query, logical) resizes the property panel and repositions its graphical objects.';
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.SHOW
-					prop_description = 'SHOW (query, logical) shows the figure containing the panel and, possibly, the item figures.';
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.HIDE
-					prop_description = 'HIDE (query, logical) hides the figure containing the panel and, possibly, the item figures.';
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.DELETE
-					prop_description = 'DELETE (query, logical) resets the handles when the panel is deleted.';
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.CLOSE
-					prop_description = 'CLOSE (query, logical) closes the figure containing the panel and, possibly, the item figures.';
-				otherwise
-					prop_description = getPropDescription@PanelProp(prop);
-			end
+			%CET: Computational Efficiency Trick
+			converterneuroimaging2regionalvaluespp_br_dict_description_list = { 'ELCLASS (constant, string) is the class of the % % % .'  'NAME (constant, string) is the name of the graph and measure panel.'  'DESCRIPTION (constant, string) is the description of the graph and measure panel.'  'TEMPLATE (parameter, item) is the template of the graph and measure panel.'  'ID (data, string) is a few-letter code for the graph and measure panel.'  'LABEL (metadata, string) is an extended label of the graph and measure panel.'  'NOTES (metadata, string) are some specific notes about the graph and measure panel.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'WAITBAR (gui, logical) detemines whether to show the waitbar.'  'H_WAITBAR (evanescent, handle) is the waitbar handle.'  'DRAW (query, logical) draws the property panel.'  'DRAWN (query, logical) returns whether the panel has been drawn.'  'PARENT (gui, item) is the panel parent.'  'BKGCOLOR (figure, color) is the panel background color.'  'H (evanescent, handle) is the panel handle.'  'SHOW (query, logical) shows the figure containing the panel and, possibly, the item figures.'  'HIDE (query, logical) hides the figure containing the panel and, possibly, the item figures.'  'DELETE (query, logical) resets the handles when the panel is deleted.'  'CLOSE (query, logical) closes the figure containing the panel and, possibly, the item figures.'  'X_DRAW (query, logical) draws the property panel.'  'UPDATE (query, logical) updates the content and permissions of the table.'  'REDRAW (query, logical) resizes the property panel and repositions its graphical objects.'  'EL (data, item) is the element.'  'PROP (data, scalar) is the property number.'  'HEIGHT (gui, size) is the pixel height of the prop panel.'  'TITLE (gui, string) is the property title.'  'LABEL_TITLE (evanescent, handle) is the handle for the title uilabel.'  'BUTTON_CB (evanescent, handle) is the handle for the callback button [only for PARAMETER, DATA, FIGURE and GUI].'  'GUI_CB (data, item) is the handle to the item figure.'  'LISTENER_CB (evanescent, handle) contains the listener to the updates in the property callback.'  'BUTTON_CALC (evanescent, handle) is the handle for the calculate button [only for RESULT, QUERY and EVANESCENT].'  'BUTTON_DEL (evanescent, handle) is the handle for the delete button [only for RESULT, QUERY and EVANESCENT].'  'LISTENER_SET (evanescent, handlelist) contains the listeners to the PropSet events.'  'LISTENER_MEMORIZED (evanescent, handlelist) contains the listeners to the PropMemorized events.'  'LISTENER_LOCKED (evanescent, handlelist) contains the listeners to the PropLocked events.'  'TABLE_HEIGHT (gui, size) is the pixel height of the property panel when the table is shown.'  'SELECTED (gui, cvector) is the list of selected items.'  'TABLE (evanescent, handle) is the table.'  'CONTEXTMENU (evanescent, handle) is the context menu.' };
+			prop_description = converterneuroimaging2regionalvaluespp_br_dict_description_list{prop};
 		end
 		function prop_settings = getPropSettings(pointer)
 			%GETPROPSETTINGS returns the settings of a property.
@@ -576,16 +585,16 @@ classdef ConverterNeuroimaging2RegionalValuesPP_BR_DICT < PanelProp
 			
 			prop = ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getPropProp(pointer);
 			
-			switch prop
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE_HEIGHT
-					prop_settings = Format.getFormatSettings(Format.SIZE);
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.SELECTED
-					prop_settings = Format.getFormatSettings(Format.CVECTOR);
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE
-					prop_settings = Format.getFormatSettings(Format.HANDLE);
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.CONTEXTMENU
-					prop_settings = Format.getFormatSettings(Format.HANDLE);
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TEMPLATE
+			switch prop %CET: Computational Efficiency Trick
+				case 36 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE_HEIGHT
+					prop_settings = Format.getFormatSettings(22);
+				case 37 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.SELECTED
+					prop_settings = Format.getFormatSettings(13);
+				case 38 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE
+					prop_settings = Format.getFormatSettings(18);
+				case 39 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.CONTEXTMENU
+					prop_settings = Format.getFormatSettings(18);
+				case 4 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TEMPLATE
 					prop_settings = 'SUVRConstructorPP_BR_DICT';
 				otherwise
 					prop_settings = getPropSettings@PanelProp(prop);
@@ -613,32 +622,32 @@ classdef ConverterNeuroimaging2RegionalValuesPP_BR_DICT < PanelProp
 			
 			prop = ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getPropProp(pointer);
 			
-			switch prop
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE_HEIGHT
-					prop_default = s(30);
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.SELECTED
-					prop_default = Format.getFormatDefault(Format.CVECTOR, ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getPropSettings(prop));
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE
-					prop_default = Format.getFormatDefault(Format.HANDLE, ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getPropSettings(prop));
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.CONTEXTMENU
-					prop_default = Format.getFormatDefault(Format.HANDLE, ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getPropSettings(prop));
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.ELCLASS
+			switch prop %CET: Computational Efficiency Trick
+				case 36 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE_HEIGHT
+					prop_default = 360;
+				case 37 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.SELECTED
+					prop_default = Format.getFormatDefault(13, ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getPropSettings(prop));
+				case 38 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE
+					prop_default = Format.getFormatDefault(18, ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getPropSettings(prop));
+				case 39 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.CONTEXTMENU
+					prop_default = Format.getFormatDefault(18, ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getPropSettings(prop));
+				case 1 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.ELCLASS
 					prop_default = 'ConverterNeuroimaging2RegionalValuesPP_BR_DICT';
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.NAME
+				case 2 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.NAME
 					prop_default = 'SUVRConstructorPP_BR_DICT';
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.DESCRIPTION
+				case 3 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.DESCRIPTION
 					prop_default = 'SUVRConstructorPP_BR_DICT plots the panel to manage the graph and measures of an ensemble analysis.';
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TEMPLATE
-					prop_default = Format.getFormatDefault(Format.ITEM, ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getPropSettings(prop));
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.ID
+				case 4 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TEMPLATE
+					prop_default = Format.getFormatDefault(8, ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getPropSettings(prop));
+				case 5 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.ID
 					prop_default = 'SUVRConstructorPP_BR_DICT';
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.LABEL
+				case 6 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.LABEL
 					prop_default = 'SUVRConstructorPP_BR_DICT label';
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.NOTES
+				case 7 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.NOTES
 					prop_default = 'SUVRConstructorPP_BR_DICT';
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.EL
+				case 23 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.EL
 					prop_default = SUVRConstructor();
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.PROP
+				case 24 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.PROP
 					prop_default = SUVRConstructor.REF_BR_DICT;
 				otherwise
 					prop_default = getPropDefault@PanelProp(prop);
@@ -679,8 +688,8 @@ classdef ConverterNeuroimaging2RegionalValuesPP_BR_DICT < PanelProp
 			%  By default, this function does not do anything, so it should be
 			%  implemented in the subclasses of Element when needed.
 			%
-			% Conditioning is only used for props of Category.METADATA,
-			%  Category.PARAMETER, Category.DATA, Category.FIGURE and Category.GUI.
+			% Conditioning is only used for props of 2,
+			%  3, 4, 8 and 9.
 			%
 			% See also preset, checkProp, postset, postprocessing, calculateValue,
 			%  checkValue.
@@ -688,13 +697,13 @@ classdef ConverterNeuroimaging2RegionalValuesPP_BR_DICT < PanelProp
 			prop = ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getPropProp(pointer);
 			
 			switch prop
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.SELECTED % __ConverterNeuroimaging2RegionalValuesPP_BR_DICT.SELECTED__
+				case 37 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.SELECTED
 					if isrow(value)
 					    value = value';
 					end
 					
 				otherwise
-					if prop <= PanelProp.getPropNumber()
+					if prop <= 35
 						value = conditioning@PanelProp(pointer, value);
 					end
 			end
@@ -715,15 +724,15 @@ classdef ConverterNeuroimaging2RegionalValuesPP_BR_DICT < PanelProp
 			% 
 			% PR.CHECKPROP(POINTER, VALUE) throws an error if VALUE is
 			%  NOT an acceptable value for the format of the property POINTER.
-			%  Error id: €BRAPH2.STR€:ConverterNeuroimaging2RegionalValuesPP_BR_DICT:€BRAPH2.WRONG_INPUT€
+			%  Error id: BRAPH2:ConverterNeuroimaging2RegionalValuesPP_BR_DICT:WrongInput
 			% 
 			% Alternative forms to call this method are (POINTER = PROP or TAG):
 			%  PR.CHECKPROP(POINTER, VALUE) throws error if VALUE has not a valid format for PROP of PR.
-			%   Error id: €BRAPH2.STR€:ConverterNeuroimaging2RegionalValuesPP_BR_DICT:€BRAPH2.WRONG_INPUT€
+			%   Error id: BRAPH2:ConverterNeuroimaging2RegionalValuesPP_BR_DICT:WrongInput
 			%  Element.CHECKPROP(ConverterNeuroimaging2RegionalValuesPP_BR_DICT, PROP, VALUE) throws error if VALUE has not a valid format for PROP of ConverterNeuroimaging2RegionalValuesPP_BR_DICT.
-			%   Error id: €BRAPH2.STR€:ConverterNeuroimaging2RegionalValuesPP_BR_DICT:€BRAPH2.WRONG_INPUT€
+			%   Error id: BRAPH2:ConverterNeuroimaging2RegionalValuesPP_BR_DICT:WrongInput
 			%  PR.CHECKPROP(ConverterNeuroimaging2RegionalValuesPP_BR_DICT, PROP, VALUE) throws error if VALUE has not a valid format for PROP of ConverterNeuroimaging2RegionalValuesPP_BR_DICT.
-			%   Error id: €BRAPH2.STR€:ConverterNeuroimaging2RegionalValuesPP_BR_DICT:€BRAPH2.WRONG_INPUT€]
+			%   Error id: BRAPH2:ConverterNeuroimaging2RegionalValuesPP_BR_DICT:WrongInput]
 			% 
 			% Note that the Element.CHECKPROP(PR) and Element.CHECKPROP('ConverterNeuroimaging2RegionalValuesPP_BR_DICT')
 			%  are less computationally efficient.
@@ -734,18 +743,18 @@ classdef ConverterNeuroimaging2RegionalValuesPP_BR_DICT < PanelProp
 			prop = ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getPropProp(pointer);
 			
 			switch prop
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE_HEIGHT % __ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE_HEIGHT__
-					check = Format.checkFormat(Format.SIZE, value, ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getPropSettings(prop));
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.SELECTED % __ConverterNeuroimaging2RegionalValuesPP_BR_DICT.SELECTED__
-					check = Format.checkFormat(Format.CVECTOR, value, ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getPropSettings(prop));
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE % __ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE__
-					check = Format.checkFormat(Format.HANDLE, value, ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getPropSettings(prop));
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.CONTEXTMENU % __ConverterNeuroimaging2RegionalValuesPP_BR_DICT.CONTEXTMENU__
-					check = Format.checkFormat(Format.HANDLE, value, ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getPropSettings(prop));
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TEMPLATE % __ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TEMPLATE__
-					check = Format.checkFormat(Format.ITEM, value, ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getPropSettings(prop));
+				case 36 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE_HEIGHT
+					check = Format.checkFormat(22, value, ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getPropSettings(prop));
+				case 37 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.SELECTED
+					check = Format.checkFormat(13, value, ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getPropSettings(prop));
+				case 38 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE
+					check = Format.checkFormat(18, value, ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getPropSettings(prop));
+				case 39 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.CONTEXTMENU
+					check = Format.checkFormat(18, value, ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getPropSettings(prop));
+				case 4 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TEMPLATE
+					check = Format.checkFormat(8, value, ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getPropSettings(prop));
 				otherwise
-					if prop <= PanelProp.getPropNumber()
+					if prop <= 35
 						check = checkProp@PanelProp(prop, value);
 					end
 			end
@@ -754,8 +763,8 @@ classdef ConverterNeuroimaging2RegionalValuesPP_BR_DICT < PanelProp
 				prop_check = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':ConverterNeuroimaging2RegionalValuesPP_BR_DICT:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':ConverterNeuroimaging2RegionalValuesPP_BR_DICT:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':ConverterNeuroimaging2RegionalValuesPP_BR_DICT:' 'WrongInput'], ...
+					['BRAPH2' ':ConverterNeuroimaging2RegionalValuesPP_BR_DICT:' 'WrongInput' '\n' ...
 					'The value ' tostring(value, 100, ' ...') ' is not a valid property ' ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getPropTag(prop) ' (' ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getFormatTag(ConverterNeuroimaging2RegionalValuesPP_BR_DICT.getPropFormat(prop)) ').'] ...
 					)
 			end
@@ -766,23 +775,23 @@ classdef ConverterNeuroimaging2RegionalValuesPP_BR_DICT < PanelProp
 			%CALCULATEVALUE calculates the value of a property.
 			%
 			% VALUE = CALCULATEVALUE(EL, PROP) calculates the value of the property
-			%  PROP. It works only with properties with Category.RESULT,
-			%  Category.QUERY, and Category.EVANESCENT. By default this function
+			%  PROP. It works only with properties with 5,
+			%  6, and 7. By default this function
 			%  returns the default value for the prop and should be implemented in the
 			%  subclasses of Element when needed.
 			%
 			% VALUE = CALCULATEVALUE(EL, PROP, VARARGIN) works with properties with
-			%  Category.QUERY.
+			%  6.
 			%
 			% See also getPropDefaultConditioned, conditioning, preset, checkProp,
 			%  postset, postprocessing, checkValue.
 			
 			switch prop
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE % __ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE__
+				case 38 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.TABLE
 					table = uitable( ...
 					    'Parent', pr.memorize('H'), ... % H = p for Panel
 					    'Tag', 'table', ...
-					    'FontSize', BRAPH2.FONTSIZE, ...
+					    'FontSize', 12, ...
 					    'ColumnSortable', true, ...
 					    'ColumnName', {'', 'Brain Region', 'ID', 'Label', 'Notes', 'Description'}, ...
 					    'ColumnFormat', {'logical',  'char', 'char', 'char', 'char', 'char'}, ...
@@ -792,7 +801,7 @@ classdef ConverterNeuroimaging2RegionalValuesPP_BR_DICT < PanelProp
 					    );
 					value = table;
 					
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.CONTEXTMENU % __ConverterNeuroimaging2RegionalValuesPP_BR_DICT.CONTEXTMENU__
+				case 39 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.CONTEXTMENU
 					contextmenu = uicontextmenu( ...
 					    'Parent', ancestor(pr.get('H'), 'figure'), ...
 					    'Tag', 'CONTEXTMENU' ...
@@ -828,8 +837,8 @@ classdef ConverterNeuroimaging2RegionalValuesPP_BR_DICT < PanelProp
 					
 					value = contextmenu;
 					
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.X_DRAW % __ConverterNeuroimaging2RegionalValuesPP_BR_DICT.X_DRAW__
-					value = calculateValue@PanelProp(pr, PanelProp.X_DRAW, varargin{:}); % also warning
+				case 20 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.X_DRAW
+					value = calculateValue@PanelProp(pr, 20, varargin{:}); % also warning
 					if value
 					    pr.memorize('TABLE')
 					    pr.memorize('CONTEXTMENU')
@@ -856,8 +865,8 @@ classdef ConverterNeuroimaging2RegionalValuesPP_BR_DICT < PanelProp
 					%     end
 					% end
 					
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.UPDATE % __ConverterNeuroimaging2RegionalValuesPP_BR_DICT.UPDATE__
-					value = calculateValue@PanelProp(pr, PanelProp.UPDATE, varargin{:}); % also warning
+				case 21 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.UPDATE
+					value = calculateValue@PanelProp(pr, 21, varargin{:}); % also warning
 					if value
 						el = pr.get('EL');
 					    prop = pr.get('PROP');
@@ -866,32 +875,32 @@ classdef ConverterNeuroimaging2RegionalValuesPP_BR_DICT < PanelProp
 					    set(pr.get('TABLE'), 'Visible', 'on')
 					end
 					
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.REDRAW % __ConverterNeuroimaging2RegionalValuesPP_BR_DICT.REDRAW__
-					value = calculateValue@PanelProp(pr, PanelProp.REDRAW, varargin{:}); % also warning
+				case 22 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.REDRAW
+					value = calculateValue@PanelProp(pr, 22, varargin{:}); % also warning
 					if value
 					    w_p = get_from_varargin(w(pr.get('H'), 'pixels'), 'Width', varargin);
 					    
-					    set(pr.get('TABLE'), 'Position', [s(.3) s(.3) w_p-s(.6) max(1, pr.get('HEIGHT')-s(2.2))])
+					    set(pr.get('TABLE'), 'Position', [4 4 w_p-8 max(1, pr.get('HEIGHT')-27)])
 					end
 					
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.SHOW % __ConverterNeuroimaging2RegionalValuesPP_BR_DICT.SHOW__
-					value = calculateValue@PanelProp(pr, PanelProp.SHOW, varargin{:}); % also warning
+				case 16 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.SHOW
+					value = calculateValue@PanelProp(pr, 16, varargin{:}); % also warning
 					
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.HIDE % __ConverterNeuroimaging2RegionalValuesPP_BR_DICT.HIDE__
-					value = calculateValue@PanelProp(pr, PanelProp.HIDE, varargin{:}); % also warning
+				case 17 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.HIDE
+					value = calculateValue@PanelProp(pr, 17, varargin{:}); % also warning
 					
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.DELETE % __ConverterNeuroimaging2RegionalValuesPP_BR_DICT.DELETE__
-					value = calculateValue@PanelProp(pr, PanelProp.DELETE, varargin{:}); % also warning
+				case 18 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.DELETE
+					value = calculateValue@PanelProp(pr, 18, varargin{:}); % also warning
 					if value
 					    pr.set('TABLE', Element.getNoValue())
 					    pr.set('CONTEXTMENU', Element.getNoValue())
 					end
 					
-				case ConverterNeuroimaging2RegionalValuesPP_BR_DICT.CLOSE % __ConverterNeuroimaging2RegionalValuesPP_BR_DICT.CLOSE__
-					value = calculateValue@PanelProp(pr, PanelProp.CLOSE, varargin{:}); % also warning
+				case 19 % ConverterNeuroimaging2RegionalValuesPP_BR_DICT.CLOSE
+					value = calculateValue@PanelProp(pr, 19, varargin{:}); % also warning
 					
 				otherwise
-					if prop <= PanelProp.getPropNumber()
+					if prop <= 35
 						value = calculateValue@PanelProp(pr, prop, varargin{:});
 					else
 						value = calculateValue@Element(pr, prop, varargin{:});

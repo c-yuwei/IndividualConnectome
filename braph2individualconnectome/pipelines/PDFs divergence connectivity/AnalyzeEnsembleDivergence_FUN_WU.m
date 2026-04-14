@@ -5,6 +5,23 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 	% This graph analysis (AnalyzeEnsemble_FUN_WU) analyzes functional data 
 	% using weighted undirected graphs.
 	%
+	% The list of AnalyzeEnsembleDivergence_FUN_WU properties is:
+	%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the ensemble-based graph analysis with functional data.
+	%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the ensemble-based graph analysis with functional data.
+	%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the ensemble-based graph analysis with functional data.
+	%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the ensemble-based graph analysis with functional data.
+	%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the ensemble-based graph analysis with functional data.
+	%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the ensemble-based graph analysis with functional data.
+	%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the ensemble-based graph analysis with functional data.
+	%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
+	%  <strong>9</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) detemines whether to show the waitbar.
+	%  <strong>10</strong> <strong>GR</strong> 	GR (data, item) is the subject group, which also defines the subject class SubjectFUN.
+	%  <strong>11</strong> <strong>GRAPH_TEMPLATE</strong> 	GRAPH_TEMPLATE (parameter, item) is the graph template to set all graph and measure parameters.
+	%  <strong>12</strong> <strong>G_DICT</strong> 	G_DICT (result, idict) is the graph (GraphWU) ensemble of Jensen–Shannon divergence individual connectivity matrix.
+	%  <strong>13</strong> <strong>ME_DICT</strong> 	ME_DICT (result, idict) contains the calculated measures of the graph ensemble.
+	%  <strong>14</strong> <strong>MEASUREENSEMBLE</strong> 	MEASUREENSEMBLE (query, item) returns an ensemble-based measure.
+	%  <strong>15</strong> <strong>CONNECTOME_CONSTRUCT_METHOD</strong> 	CONNECTOME_CONSTRUCT_METHOD (query, cell) defines the method for individual connectome construction.
+	%
 	% AnalyzeEnsembleDivergence_FUN_WU methods (constructor):
 	%  AnalyzeEnsembleDivergence_FUN_WU - constructor
 	%
@@ -93,13 +110,13 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 	%
 	% See also SubjectFUN, GraphWU.
 	%
-	% BUILD BRAPH2 BRAPH2.BUILD class_name 1
+	% BUILD BRAPH2 7 class_name 1
 	
 	properties (Constant) % properties
-		CONNECTOME_CONSTRUCT_METHOD = AnalyzeEnsemble.getPropNumber() + 1;
+		CONNECTOME_CONSTRUCT_METHOD = 15; %CET: Computational Efficiency Trick
 		CONNECTOME_CONSTRUCT_METHOD_TAG = 'CONNECTOME_CONSTRUCT_METHOD';
-		CONNECTOME_CONSTRUCT_METHOD_CATEGORY = Category.QUERY;
-		CONNECTOME_CONSTRUCT_METHOD_FORMAT = Format.CELL;
+		CONNECTOME_CONSTRUCT_METHOD_CATEGORY = 6;
+		CONNECTOME_CONSTRUCT_METHOD_FORMAT = 16;
 	end
 	methods % constructor
 		function a = AnalyzeEnsembleDivergence_FUN_WU(varargin)
@@ -112,6 +129,22 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 			% Multiple properties can be initialized at once identifying
 			%  them with either property numbers (PROP) or tags (TAG).
 			%
+			% The list of AnalyzeEnsembleDivergence_FUN_WU properties is:
+			%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the ensemble-based graph analysis with functional data.
+			%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the ensemble-based graph analysis with functional data.
+			%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the ensemble-based graph analysis with functional data.
+			%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the ensemble-based graph analysis with functional data.
+			%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the ensemble-based graph analysis with functional data.
+			%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the ensemble-based graph analysis with functional data.
+			%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the ensemble-based graph analysis with functional data.
+			%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
+			%  <strong>9</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) detemines whether to show the waitbar.
+			%  <strong>10</strong> <strong>GR</strong> 	GR (data, item) is the subject group, which also defines the subject class SubjectFUN.
+			%  <strong>11</strong> <strong>GRAPH_TEMPLATE</strong> 	GRAPH_TEMPLATE (parameter, item) is the graph template to set all graph and measure parameters.
+			%  <strong>12</strong> <strong>G_DICT</strong> 	G_DICT (result, idict) is the graph (GraphWU) ensemble of Jensen–Shannon divergence individual connectivity matrix.
+			%  <strong>13</strong> <strong>ME_DICT</strong> 	ME_DICT (result, idict) contains the calculated measures of the graph ensemble.
+			%  <strong>14</strong> <strong>MEASUREENSEMBLE</strong> 	MEASUREENSEMBLE (query, item) returns an ensemble-based measure.
+			%  <strong>15</strong> <strong>CONNECTOME_CONSTRUCT_METHOD</strong> 	CONNECTOME_CONSTRUCT_METHOD (query, cell) defines the method for individual connectome construction.
 			%
 			% See also Category, Format.
 			
@@ -164,7 +197,7 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 			%
 			% See also subclasses.
 			
-			subclass_list = subclasses('AnalyzeEnsembleDivergence_FUN_WU', [], [], true);
+			subclass_list = { 'AnalyzeEnsembleDivergence_FUN_WU' }; %CET: Computational Efficiency Trick
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of graph analysis with functional data.
@@ -185,52 +218,30 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 			%
 			% See also getPropNumber, Category.
 			
+			%CET: Computational Efficiency Trick
+			
 			if nargin == 0
-				prop_list = [ ...
-					AnalyzeEnsemble.getProps() ...
-						AnalyzeEnsembleDivergence_FUN_WU.CONNECTOME_CONSTRUCT_METHOD ...
-						];
+				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15];
 				return
 			end
 			
 			switch category
-				case Category.CONSTANT
-					prop_list = [ ...
-						AnalyzeEnsemble.getProps(Category.CONSTANT) ...
-						];
-				case Category.METADATA
-					prop_list = [ ...
-						AnalyzeEnsemble.getProps(Category.METADATA) ...
-						];
-				case Category.PARAMETER
-					prop_list = [ ...
-						AnalyzeEnsemble.getProps(Category.PARAMETER) ...
-						];
-				case Category.DATA
-					prop_list = [ ...
-						AnalyzeEnsemble.getProps(Category.DATA) ...
-						];
-				case Category.RESULT
-					prop_list = [
-						AnalyzeEnsemble.getProps(Category.RESULT) ...
-						];
-				case Category.QUERY
-					prop_list = [ ...
-						AnalyzeEnsemble.getProps(Category.QUERY) ...
-						AnalyzeEnsembleDivergence_FUN_WU.CONNECTOME_CONSTRUCT_METHOD ...
-						];
-				case Category.EVANESCENT
-					prop_list = [ ...
-						AnalyzeEnsemble.getProps(Category.EVANESCENT) ...
-						];
-				case Category.FIGURE
-					prop_list = [ ...
-						AnalyzeEnsemble.getProps(Category.FIGURE) ...
-						];
-				case Category.GUI
-					prop_list = [ ...
-						AnalyzeEnsemble.getProps(Category.GUI) ...
-						];
+				case 1 % Category.CONSTANT
+					prop_list = [1 2 3];
+				case 2 % Category.METADATA
+					prop_list = [6 7];
+				case 3 % Category.PARAMETER
+					prop_list = [4 11];
+				case 4 % Category.DATA
+					prop_list = [5 10];
+				case 5 % Category.RESULT
+					prop_list = [12 13];
+				case 6 % Category.QUERY
+					prop_list = [8 14 15];
+				case 9 % Category.GUI
+					prop_list = 9;
+				otherwise
+					prop_list = [];
 			end
 		end
 		function prop_number = getPropNumber(varargin)
@@ -251,7 +262,31 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 			%
 			% See also getProps, Category.
 			
-			prop_number = numel(AnalyzeEnsembleDivergence_FUN_WU.getProps(varargin{:}));
+			%CET: Computational Efficiency Trick
+			
+			if nargin == 0
+				prop_number = 15;
+				return
+			end
+			
+			switch varargin{1} % category = varargin{1}
+				case 1 % Category.CONSTANT
+					prop_number = 3;
+				case 2 % Category.METADATA
+					prop_number = 2;
+				case 3 % Category.PARAMETER
+					prop_number = 2;
+				case 4 % Category.DATA
+					prop_number = 2;
+				case 5 % Category.RESULT
+					prop_number = 2;
+				case 6 % Category.QUERY
+					prop_number = 3;
+				case 9 % Category.GUI
+					prop_number = 1;
+				otherwise
+					prop_number = 0;
+			end
 		end
 		function check_out = existsProp(prop)
 			%EXISTSPROP checks whether property exists in graph analysis with functional data/error.
@@ -279,14 +314,14 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 			%
 			% See also getProps, existsTag.
 			
-			check = any(prop == AnalyzeEnsembleDivergence_FUN_WU.getProps());
+			check = prop >= 1 && prop <= 15 && round(prop) == prop; %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':AnalyzeEnsembleDivergence_FUN_WU:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':AnalyzeEnsembleDivergence_FUN_WU:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':AnalyzeEnsembleDivergence_FUN_WU:' 'WrongInput'], ...
+					['BRAPH2' ':AnalyzeEnsembleDivergence_FUN_WU:' 'WrongInput' '\n' ...
 					'The value ' tostring(prop, 100, ' ...') ' is not a valid prop for AnalyzeEnsembleDivergence_FUN_WU.'] ...
 					)
 			end
@@ -317,15 +352,14 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 			%
 			% See also getProps, existsTag.
 			
-			analyzeensembledivergence_fun_wu_tag_list = cellfun(@(x) AnalyzeEnsembleDivergence_FUN_WU.getPropTag(x), num2cell(AnalyzeEnsembleDivergence_FUN_WU.getProps()), 'UniformOutput', false);
-			check = any(strcmp(tag, analyzeensembledivergence_fun_wu_tag_list));
+			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'GR'  'GRAPH_TEMPLATE'  'G_DICT'  'ME_DICT'  'MEASUREENSEMBLE'  'CONNECTOME_CONSTRUCT_METHOD' })); %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':AnalyzeEnsembleDivergence_FUN_WU:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':AnalyzeEnsembleDivergence_FUN_WU:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':AnalyzeEnsembleDivergence_FUN_WU:' 'WrongInput'], ...
+					['BRAPH2' ':AnalyzeEnsembleDivergence_FUN_WU:' 'WrongInput' '\n' ...
 					'The value ' tag ' is not a valid tag for AnalyzeEnsembleDivergence_FUN_WU.'] ...
 					)
 			end
@@ -351,8 +385,7 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 			%  getPropSettings, getPropDefault, checkProp.
 			
 			if ischar(pointer)
-				analyzeensembledivergence_fun_wu_tag_list = cellfun(@(x) AnalyzeEnsembleDivergence_FUN_WU.getPropTag(x), num2cell(AnalyzeEnsembleDivergence_FUN_WU.getProps()), 'UniformOutput', false);
-				prop = find(strcmp(pointer, analyzeensembledivergence_fun_wu_tag_list)); % tag = pointer
+				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'GR'  'GRAPH_TEMPLATE'  'G_DICT'  'ME_DICT'  'MEASUREENSEMBLE'  'CONNECTOME_CONSTRUCT_METHOD' })); % tag = pointer %CET: Computational Efficiency Trick
 			else % numeric
 				prop = pointer;
 			end
@@ -380,14 +413,9 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 			if ischar(pointer)
 				tag = pointer;
 			else % numeric
-				prop = pointer;
-				
-				switch prop
-					case AnalyzeEnsembleDivergence_FUN_WU.CONNECTOME_CONSTRUCT_METHOD
-						tag = AnalyzeEnsembleDivergence_FUN_WU.CONNECTOME_CONSTRUCT_METHOD_TAG;
-					otherwise
-						tag = getPropTag@AnalyzeEnsemble(prop);
-				end
+				%CET: Computational Efficiency Trick
+				analyzeensembledivergence_fun_wu_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'GR'  'GRAPH_TEMPLATE'  'G_DICT'  'ME_DICT'  'MEASUREENSEMBLE'  'CONNECTOME_CONSTRUCT_METHOD' };
+				tag = analyzeensembledivergence_fun_wu_tag_list{pointer}; % prop = pointer
 			end
 		end
 		function prop_category = getPropCategory(pointer)
@@ -412,12 +440,9 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 			
 			prop = AnalyzeEnsembleDivergence_FUN_WU.getPropProp(pointer);
 			
-			switch prop
-				case AnalyzeEnsembleDivergence_FUN_WU.CONNECTOME_CONSTRUCT_METHOD
-					prop_category = AnalyzeEnsembleDivergence_FUN_WU.CONNECTOME_CONSTRUCT_METHOD_CATEGORY;
-				otherwise
-					prop_category = getPropCategory@AnalyzeEnsemble(prop);
-			end
+			%CET: Computational Efficiency Trick
+			analyzeensembledivergence_fun_wu_category_list = { 1  1  1  3  4  2  2  6  9  4  3  5  5  6  6 };
+			prop_category = analyzeensembledivergence_fun_wu_category_list{prop};
 		end
 		function prop_format = getPropFormat(pointer)
 			%GETPROPFORMAT returns the format of a property.
@@ -441,12 +466,9 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 			
 			prop = AnalyzeEnsembleDivergence_FUN_WU.getPropProp(pointer);
 			
-			switch prop
-				case AnalyzeEnsembleDivergence_FUN_WU.CONNECTOME_CONSTRUCT_METHOD
-					prop_format = AnalyzeEnsembleDivergence_FUN_WU.CONNECTOME_CONSTRUCT_METHOD_FORMAT;
-				otherwise
-					prop_format = getPropFormat@AnalyzeEnsemble(prop);
-			end
+			%CET: Computational Efficiency Trick
+			analyzeensembledivergence_fun_wu_format_list = { 2  2  2  8  2  2  2  2  4  8  8  10  10  8  16 };
+			prop_format = analyzeensembledivergence_fun_wu_format_list{prop};
 		end
 		function prop_description = getPropDescription(pointer)
 			%GETPROPDESCRIPTION returns the description of a property.
@@ -470,36 +492,9 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 			
 			prop = AnalyzeEnsembleDivergence_FUN_WU.getPropProp(pointer);
 			
-			switch prop
-				case AnalyzeEnsembleDivergence_FUN_WU.CONNECTOME_CONSTRUCT_METHOD
-					prop_description = 'CONNECTOME_CONSTRUCT_METHOD (query, cell) defines the method for individual connectome construction.';
-				case AnalyzeEnsembleDivergence_FUN_WU.ELCLASS
-					prop_description = 'ELCLASS (constant, string) is the class of the ensemble-based graph analysis with functional data.';
-				case AnalyzeEnsembleDivergence_FUN_WU.NAME
-					prop_description = 'NAME (constant, string) is the name of the ensemble-based graph analysis with functional data.';
-				case AnalyzeEnsembleDivergence_FUN_WU.DESCRIPTION
-					prop_description = 'DESCRIPTION (constant, string) is the description of the ensemble-based graph analysis with functional data.';
-				case AnalyzeEnsembleDivergence_FUN_WU.TEMPLATE
-					prop_description = 'TEMPLATE (parameter, item) is the template of the ensemble-based graph analysis with functional data.';
-				case AnalyzeEnsembleDivergence_FUN_WU.ID
-					prop_description = 'ID (data, string) is a few-letter code for the ensemble-based graph analysis with functional data.';
-				case AnalyzeEnsembleDivergence_FUN_WU.LABEL
-					prop_description = 'LABEL (metadata, string) is an extended label of the ensemble-based graph analysis with functional data.';
-				case AnalyzeEnsembleDivergence_FUN_WU.NOTES
-					prop_description = 'NOTES (metadata, string) are some specific notes about the ensemble-based graph analysis with functional data.';
-				case AnalyzeEnsembleDivergence_FUN_WU.GR
-					prop_description = 'GR (data, item) is the subject group, which also defines the subject class SubjectFUN.';
-				case AnalyzeEnsembleDivergence_FUN_WU.GRAPH_TEMPLATE
-					prop_description = 'GRAPH_TEMPLATE (parameter, item) is the graph template to set all graph and measure parameters.';
-				case AnalyzeEnsembleDivergence_FUN_WU.G_DICT
-					prop_description = 'G_DICT (result, idict) is the graph (GraphWU) ensemble of Jensen–Shannon divergence individual connectivity matrix.';
-				case AnalyzeEnsembleDivergence_FUN_WU.ME_DICT
-					prop_description = 'ME_DICT (result, idict) contains the calculated measures of the graph ensemble.';
-				case AnalyzeEnsembleDivergence_FUN_WU.WAITBAR
-					prop_description = 'WAITBAR (gui, logical) detemines whether to show the waitbar.';
-				otherwise
-					prop_description = getPropDescription@AnalyzeEnsemble(prop);
-			end
+			%CET: Computational Efficiency Trick
+			analyzeensembledivergence_fun_wu_description_list = { 'ELCLASS (constant, string) is the class of the ensemble-based graph analysis with functional data.'  'NAME (constant, string) is the name of the ensemble-based graph analysis with functional data.'  'DESCRIPTION (constant, string) is the description of the ensemble-based graph analysis with functional data.'  'TEMPLATE (parameter, item) is the template of the ensemble-based graph analysis with functional data.'  'ID (data, string) is a few-letter code for the ensemble-based graph analysis with functional data.'  'LABEL (metadata, string) is an extended label of the ensemble-based graph analysis with functional data.'  'NOTES (metadata, string) are some specific notes about the ensemble-based graph analysis with functional data.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'WAITBAR (gui, logical) detemines whether to show the waitbar.'  'GR (data, item) is the subject group, which also defines the subject class SubjectFUN.'  'GRAPH_TEMPLATE (parameter, item) is the graph template to set all graph and measure parameters.'  'G_DICT (result, idict) is the graph (GraphWU) ensemble of Jensen–Shannon divergence individual connectivity matrix.'  'ME_DICT (result, idict) contains the calculated measures of the graph ensemble.'  'MEASUREENSEMBLE (query, item) returns an ensemble-based measure.'  'CONNECTOME_CONSTRUCT_METHOD (query, cell) defines the method for individual connectome construction.' };
+			prop_description = analyzeensembledivergence_fun_wu_description_list{prop};
 		end
 		function prop_settings = getPropSettings(pointer)
 			%GETPROPSETTINGS returns the settings of a property.
@@ -523,12 +518,12 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 			
 			prop = AnalyzeEnsembleDivergence_FUN_WU.getPropProp(pointer);
 			
-			switch prop
-				case AnalyzeEnsembleDivergence_FUN_WU.CONNECTOME_CONSTRUCT_METHOD
-					prop_settings = Format.getFormatSettings(Format.CELL);
-				case AnalyzeEnsembleDivergence_FUN_WU.GRAPH_TEMPLATE
+			switch prop %CET: Computational Efficiency Trick
+				case 15 % AnalyzeEnsembleDivergence_FUN_WU.CONNECTOME_CONSTRUCT_METHOD
+					prop_settings = Format.getFormatSettings(16);
+				case 11 % AnalyzeEnsembleDivergence_FUN_WU.GRAPH_TEMPLATE
 					prop_settings = 'GraphWU';
-				case AnalyzeEnsembleDivergence_FUN_WU.G_DICT
+				case 12 % AnalyzeEnsembleDivergence_FUN_WU.G_DICT
 					prop_settings = 'GraphWU';
 				otherwise
 					prop_settings = getPropSettings@AnalyzeEnsemble(prop);
@@ -556,28 +551,28 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 			
 			prop = AnalyzeEnsembleDivergence_FUN_WU.getPropProp(pointer);
 			
-			switch prop
-				case AnalyzeEnsembleDivergence_FUN_WU.CONNECTOME_CONSTRUCT_METHOD
-					prop_default = Format.getFormatDefault(Format.CELL, AnalyzeEnsembleDivergence_FUN_WU.getPropSettings(prop));
-				case AnalyzeEnsembleDivergence_FUN_WU.ELCLASS
+			switch prop %CET: Computational Efficiency Trick
+				case 15 % AnalyzeEnsembleDivergence_FUN_WU.CONNECTOME_CONSTRUCT_METHOD
+					prop_default = Format.getFormatDefault(16, AnalyzeEnsembleDivergence_FUN_WU.getPropSettings(prop));
+				case 1 % AnalyzeEnsembleDivergence_FUN_WU.ELCLASS
 					prop_default = 'AnalyzeEnsembleDivergence_FUN_WU';
-				case AnalyzeEnsembleDivergence_FUN_WU.NAME
+				case 2 % AnalyzeEnsembleDivergence_FUN_WU.NAME
 					prop_default = 'Functional Weighted Undirected Analyze Ensemble';
-				case AnalyzeEnsembleDivergence_FUN_WU.DESCRIPTION
+				case 3 % AnalyzeEnsembleDivergence_FUN_WU.DESCRIPTION
 					prop_default = 'This graph analysis (AnalyzeEnsemble_FUN_WU) analyzes functional data using weighted undirected graphs.';
-				case AnalyzeEnsembleDivergence_FUN_WU.ID
+				case 5 % AnalyzeEnsembleDivergence_FUN_WU.ID
 					prop_default = 'AnalyzeEnsembleDivergence_FUN_WU ID';
-				case AnalyzeEnsembleDivergence_FUN_WU.LABEL
+				case 6 % AnalyzeEnsembleDivergence_FUN_WU.LABEL
 					prop_default = 'AnalyzeEnsembleDivergence_FUN_WU label';
-				case AnalyzeEnsembleDivergence_FUN_WU.NOTES
+				case 7 % AnalyzeEnsembleDivergence_FUN_WU.NOTES
 					prop_default = 'AnalyzeEnsembleDivergence_FUN_WU notes';
-				case AnalyzeEnsembleDivergence_FUN_WU.GR
+				case 10 % AnalyzeEnsembleDivergence_FUN_WU.GR
 					prop_default = Group('SUB_CLASS', 'SubjectFUN');
-				case AnalyzeEnsembleDivergence_FUN_WU.GRAPH_TEMPLATE
-					prop_default = Format.getFormatDefault(Format.ITEM, AnalyzeEnsembleDivergence_FUN_WU.getPropSettings(prop));
-				case AnalyzeEnsembleDivergence_FUN_WU.G_DICT
-					prop_default = Format.getFormatDefault(Format.IDICT, AnalyzeEnsembleDivergence_FUN_WU.getPropSettings(prop));
-				case AnalyzeEnsembleDivergence_FUN_WU.WAITBAR
+				case 11 % AnalyzeEnsembleDivergence_FUN_WU.GRAPH_TEMPLATE
+					prop_default = Format.getFormatDefault(8, AnalyzeEnsembleDivergence_FUN_WU.getPropSettings(prop));
+				case 12 % AnalyzeEnsembleDivergence_FUN_WU.G_DICT
+					prop_default = Format.getFormatDefault(10, AnalyzeEnsembleDivergence_FUN_WU.getPropSettings(prop));
+				case 9 % AnalyzeEnsembleDivergence_FUN_WU.WAITBAR
 					prop_default = true;
 				otherwise
 					prop_default = getPropDefault@AnalyzeEnsemble(prop);
@@ -624,15 +619,15 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 			% 
 			% A.CHECKPROP(POINTER, VALUE) throws an error if VALUE is
 			%  NOT an acceptable value for the format of the property POINTER.
-			%  Error id: €BRAPH2.STR€:AnalyzeEnsembleDivergence_FUN_WU:€BRAPH2.WRONG_INPUT€
+			%  Error id: BRAPH2:AnalyzeEnsembleDivergence_FUN_WU:WrongInput
 			% 
 			% Alternative forms to call this method are (POINTER = PROP or TAG):
 			%  A.CHECKPROP(POINTER, VALUE) throws error if VALUE has not a valid format for PROP of A.
-			%   Error id: €BRAPH2.STR€:AnalyzeEnsembleDivergence_FUN_WU:€BRAPH2.WRONG_INPUT€
+			%   Error id: BRAPH2:AnalyzeEnsembleDivergence_FUN_WU:WrongInput
 			%  Element.CHECKPROP(AnalyzeEnsembleDivergence_FUN_WU, PROP, VALUE) throws error if VALUE has not a valid format for PROP of AnalyzeEnsembleDivergence_FUN_WU.
-			%   Error id: €BRAPH2.STR€:AnalyzeEnsembleDivergence_FUN_WU:€BRAPH2.WRONG_INPUT€
+			%   Error id: BRAPH2:AnalyzeEnsembleDivergence_FUN_WU:WrongInput
 			%  A.CHECKPROP(AnalyzeEnsembleDivergence_FUN_WU, PROP, VALUE) throws error if VALUE has not a valid format for PROP of AnalyzeEnsembleDivergence_FUN_WU.
-			%   Error id: €BRAPH2.STR€:AnalyzeEnsembleDivergence_FUN_WU:€BRAPH2.WRONG_INPUT€]
+			%   Error id: BRAPH2:AnalyzeEnsembleDivergence_FUN_WU:WrongInput]
 			% 
 			% Note that the Element.CHECKPROP(A) and Element.CHECKPROP('AnalyzeEnsembleDivergence_FUN_WU')
 			%  are less computationally efficient.
@@ -643,14 +638,14 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 			prop = AnalyzeEnsembleDivergence_FUN_WU.getPropProp(pointer);
 			
 			switch prop
-				case AnalyzeEnsembleDivergence_FUN_WU.CONNECTOME_CONSTRUCT_METHOD % __AnalyzeEnsembleDivergence_FUN_WU.CONNECTOME_CONSTRUCT_METHOD__
-					check = Format.checkFormat(Format.CELL, value, AnalyzeEnsembleDivergence_FUN_WU.getPropSettings(prop));
-				case AnalyzeEnsembleDivergence_FUN_WU.GRAPH_TEMPLATE % __AnalyzeEnsembleDivergence_FUN_WU.GRAPH_TEMPLATE__
-					check = Format.checkFormat(Format.ITEM, value, AnalyzeEnsembleDivergence_FUN_WU.getPropSettings(prop));
-				case AnalyzeEnsembleDivergence_FUN_WU.G_DICT % __AnalyzeEnsembleDivergence_FUN_WU.G_DICT__
-					check = Format.checkFormat(Format.IDICT, value, AnalyzeEnsembleDivergence_FUN_WU.getPropSettings(prop));
+				case 15 % AnalyzeEnsembleDivergence_FUN_WU.CONNECTOME_CONSTRUCT_METHOD
+					check = Format.checkFormat(16, value, AnalyzeEnsembleDivergence_FUN_WU.getPropSettings(prop));
+				case 11 % AnalyzeEnsembleDivergence_FUN_WU.GRAPH_TEMPLATE
+					check = Format.checkFormat(8, value, AnalyzeEnsembleDivergence_FUN_WU.getPropSettings(prop));
+				case 12 % AnalyzeEnsembleDivergence_FUN_WU.G_DICT
+					check = Format.checkFormat(10, value, AnalyzeEnsembleDivergence_FUN_WU.getPropSettings(prop));
 				otherwise
-					if prop <= AnalyzeEnsemble.getPropNumber()
+					if prop <= 14
 						check = checkProp@AnalyzeEnsemble(prop, value);
 					end
 			end
@@ -659,8 +654,8 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 				prop_check = check;
 			elseif ~check
 				error( ...
-					[BRAPH2.STR ':AnalyzeEnsembleDivergence_FUN_WU:' BRAPH2.WRONG_INPUT], ...
-					[BRAPH2.STR ':AnalyzeEnsembleDivergence_FUN_WU:' BRAPH2.WRONG_INPUT '\n' ...
+					['BRAPH2' ':AnalyzeEnsembleDivergence_FUN_WU:' 'WrongInput'], ...
+					['BRAPH2' ':AnalyzeEnsembleDivergence_FUN_WU:' 'WrongInput' '\n' ...
 					'The value ' tostring(value, 100, ' ...') ' is not a valid property ' AnalyzeEnsembleDivergence_FUN_WU.getPropTag(prop) ' (' AnalyzeEnsembleDivergence_FUN_WU.getFormatTag(AnalyzeEnsembleDivergence_FUN_WU.getPropFormat(prop)) ').'] ...
 					)
 			end
@@ -671,19 +666,19 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 			%CALCULATEVALUE calculates the value of a property.
 			%
 			% VALUE = CALCULATEVALUE(EL, PROP) calculates the value of the property
-			%  PROP. It works only with properties with Category.RESULT,
-			%  Category.QUERY, and Category.EVANESCENT. By default this function
+			%  PROP. It works only with properties with 5,
+			%  6, and 7. By default this function
 			%  returns the default value for the prop and should be implemented in the
 			%  subclasses of Element when needed.
 			%
 			% VALUE = CALCULATEVALUE(EL, PROP, VARARGIN) works with properties with
-			%  Category.QUERY.
+			%  6.
 			%
 			% See also getPropDefaultConditioned, conditioning, preset, checkProp,
 			%  postset, postprocessing, checkValue.
 			
 			switch prop
-				case AnalyzeEnsembleDivergence_FUN_WU.CONNECTOME_CONSTRUCT_METHOD % __AnalyzeEnsembleDivergence_FUN_WU.CONNECTOME_CONSTRUCT_METHOD__
+				case 15 % AnalyzeEnsembleDivergence_FUN_WU.CONNECTOME_CONSTRUCT_METHOD
 					gr_pdf = a.get('GR');
 					JSdivMatrix_cross_subjects = {};
 					for sub_index = 1:1:gr_pdf.get('SUB_DICT').get('LENGTH')
@@ -712,8 +707,8 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 					end
 					value = JSdivMatrix_cross_subjects;
 					
-				case AnalyzeEnsembleDivergence_FUN_WU.G_DICT % __AnalyzeEnsembleDivergence_FUN_WU.G_DICT__
-					rng_settings_ = rng(); rng(a.getPropSeed(AnalyzeEnsembleDivergence_FUN_WU.G_DICT), 'twister')
+				case 12 % AnalyzeEnsembleDivergence_FUN_WU.G_DICT
+					rng_settings_ = rng(); rng(a.getPropSeed(12), 'twister')
 					
 					g_dict = IndexedDictionary('IT_CLASS', 'GraphWU');
 					connectivityMatrix = a.get('CONNECTOME_CONSTRUCT_METHOD');
@@ -742,7 +737,7 @@ classdef AnalyzeEnsembleDivergence_FUN_WU < AnalyzeEnsemble
 					rng(rng_settings_)
 					
 				otherwise
-					if prop <= AnalyzeEnsemble.getPropNumber()
+					if prop <= 14
 						value = calculateValue@AnalyzeEnsemble(a, prop, varargin{:});
 					else
 						value = calculateValue@Element(a, prop, varargin{:});
