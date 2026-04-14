@@ -1,6 +1,6 @@
-%EXAMPLE_NEUROIMGING_2_ROI_PET
+%EXAMPLE_NEUROIMGING_2_PDFS_PET
 % Script example pipeline neuroimaing (PET) conversion to
-% region-of-interest values (SUVR)
+% probability density functions (PDFs)
 clear variables %#ok<*NASGU>
 
 %% Load BrainAtlases
@@ -48,8 +48,30 @@ im_gr_wm = ImporterGroupSubjectNeuroimaging_NIfTI( ...
 
 gr_anat_wmprob = im_gr_wm.get('GR');
 
-%% Convert neuroimaging data to region-of-interest data
-cn = ConverterNeuroimaging2RegionalValues( ...
+%% Convert neuroimaging data to probability density functions
+ba_nifti_files = {
+    [fileparts(which('SubjectNeuroimaging')) filesep 'Example atlases neuroimaging NIfTI' filesep 'aal120_atlas.nii']
+    [fileparts(which('SubjectNeuroimaging')) filesep 'Example atlases neuroimaging NIfTI' filesep 'td_atlas.nii']
+    };
+
+ba_mapping_files = {
+    [fileparts(which('SubjectNeuroimaging')) filesep 'Example atlases neuroimaging NIfTI' filesep 'aal120_atlas_mapping.csv']
+    [fileparts(which('SubjectNeuroimaging')) filesep 'Example atlases neuroimaging NIfTI' filesep 'td_atlas_mapping.csv']
+    };
+
+ref_brain_regions = {};
+ref_brain_regions_idx = 95:120; % cerebellum all regions in aal120
+for i = 1:length(ref_brain_regions_idx)
+    ref_brain_regions{i} = ba_aal120.get('BR_DICT').get('IT', ref_brain_regions_idx(i)).get('ID');
+end
+
+brain_regions_to_convert = {};
+convert_brain_regions_idx = 1:94; % cerebral all regions in aal120
+for i = 1:length(convert_brain_regions_idx)
+    brain_regions_to_convert{i} = ba_aal120.get('BR_DICT').get('IT', convert_brain_regions_idx(i)).get('ID');
+end 
+
+cn = ConverterNeuroimaging2PDFs( ...
     'BA_LIST', {ba_aal120, ba_td}, ...
     'BA_NIfTI_FILES', ba_nifti_files, ...
     'BA_MAPPING_FILES', ba_mapping_files, ...
@@ -59,13 +81,22 @@ cn = ConverterNeuroimaging2RegionalValues( ...
     'GR_LIST_ANAT_REF', {gr_anat_gmprob, gr_anat_wmprob}, ...
     'THRESHOLD_ANAT_REF', 0.5);
 
-gr_st = cn.get('GR_ST')
-ba_st = cn.get('BA')
+gr_pdfs = cn.get('GR_PDFS')
+ba_pdfs = cn.get('BA')
 
 %% Export data
-file = [fileparts(which('SubjectNeuroimaging')) filesep 'group_subjects_SUVR.xlsx'];
-ex = ExporterGroupSubjectST_XLS( ...
+directory_base = [fileparts(which('ConverterNeuroimaging2PDFs')) filesep 'Converted data PET'];
+mkdir(directory);
+directory_group = [directory_base filesep 'group']
+ex = ExporterGroupSubjectFUN_XLS( ...
+    'DIRECTORY', directory_group, ...
+    'GR', gr_pdfs ...
+    );
+ex.get('SAVE');
+
+file = [directory_base filesep 'brain_atlas.xlsx'];
+ex = ExporterBrainAtlasXLS( ...
     'FILE', file, ...
-    'GR', gr_st ...
+    'BA', ba_pdfs ...
     );
 ex.get('SAVE');

@@ -1,6 +1,6 @@
-%EXAMPLE_NEUROIMGING_2_ROI_PET
+%EXAMPLE_NEUROIMGING_2_RVS_PET
 % Script example pipeline neuroimaing (PET) conversion to
-% region-of-interest values (SUVR)
+% regional values (SUVR)
 clear variables %#ok<*NASGU>
 
 %% Load BrainAtlases
@@ -85,7 +85,7 @@ gr_st = cn.get('GR_ST')
 ba_st = cn.get('BA')
 
 %% Export data
-directory = [fileparts(which('SubjectNeuroimaging')) filesep 'Converted data'];
+directory = [fileparts(which('SubjectNeuroimaging')) filesep 'Converted data PET'];
 mkdir(directory);
 file = [directory filesep 'group_subjects_SUVR.xlsx'];
 ex = ExporterGroupSubjectST_XLS( ...

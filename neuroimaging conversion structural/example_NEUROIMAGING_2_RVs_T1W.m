@@ -1,11 +1,11 @@
 %EXAMPLE_NEUROIMGING_2_ROI_T1W
 % Script example pipeline neuroimaing (T1w) conversion to
-% region-of-interest values (VOLUME)
+% regional values (VOLUME)
 clear variables %#ok<*NASGU>
 
 %% Load BrainAtlases
 im_ba = ImporterBrainAtlasXLS( ...
-    'FILE', [fileparts(which('SubjectNeuroimaging')) filesep 'Example atlases neuroimaging NIfTI' filesep 'aal120_atlas.xlsx'], ...
+    'FILE', [fileparts(which('ConverterNeuroimaging2RegionalValues')) filesep 'Example atlases neuroimaging NIfTI' filesep 'aal120_atlas.xlsx'], ...
     'WAITBAR', true ...
     );
 
@@ -13,7 +13,7 @@ ba_aal120 = im_ba.get('BA');
 
 %% Load Groups of SubjectNeuroimaging
 im_gr_gm = ImporterGroupSubjectNeuroimaging_NIfTI( ...
-    'DIRECTORY', [fileparts(which('SubjectNeuroimaging')) filesep 'Example data NIfTI'], ...
+    'DIRECTORY', [fileparts(which('ConverterNeuroimaging2RegionalValues')) filesep 'Example data NIfTI'], ...
     'MODALITY', 'anat', ...
     'TARGET', 'gmprob'
     'BA', ba_aal120, ...
@@ -24,13 +24,13 @@ gr_anat_gmprob = im_gr_gm.get('GR');
 
 %% Convert neuroimaging data to region-of-interest data
 ba_nifti_files = {
-    [fileparts(which('SubjectNeuroimaging')) filesep 'Example atlases neuroimaging NIfTI' filesep 'aal120_atlas.nii']
-    [fileparts(which('SubjectNeuroimaging')) filesep 'Example atlases neuroimaging NIfTI' filesep 'td_atlas.nii']
+    [fileparts(which('ConverterNeuroimaging2RegionalValues')) filesep 'Example atlases neuroimaging NIfTI' filesep 'aal120_atlas.nii']
+    [fileparts(which('ConverterNeuroimaging2RegionalValues')) filesep 'Example atlases neuroimaging NIfTI' filesep 'td_atlas.nii']
     };
 
 ba_mapping_files = {
-    [fileparts(which('SubjectNeuroimaging')) filesep 'Example atlases neuroimaging NIfTI' filesep 'aal120_atlas_mapping.csv']
-    [fileparts(which('SubjectNeuroimaging')) filesep 'Example atlases neuroimaging NIfTI' filesep 'td_atlas_mapping.csv']
+    [fileparts(which('ConverterNeuroimaging2RegionalValues')) filesep 'Example atlases neuroimaging NIfTI' filesep 'aal120_atlas_mapping.csv']
+    [fileparts(which('ConverterNeuroimaging2RegionalValues')) filesep 'Example atlases neuroimaging NIfTI' filesep 'td_atlas_mapping.csv']
     };
 
 brain_regions_to_convert = {};
@@ -45,13 +45,13 @@ cn = ConverterNeuroimaging2RegionalValues( ...
     'BA_MAPPING_FILES', ba_mapping_files, ...
     'REF_BR_LIST', {}, ...
     'CONVERT_BR', brain_regions_to_convert, ...
-    'GR_NEUROIMAGING', gr_pet);
+    'GR_NEUROIMAGING', gr_anat_gmprob);
 
 gr_st = cn.get('GR_ST')
 ba_st = cn.get('BA')
 
 %% Export data
-directory = [fileparts(which('SubjectNeuroimaging')) filesep 'Converted data'];
+directory = [fileparts(which('ConverterNeuroimaging2RegionalValues')) filesep 'Converted data T1w'];
 mkdir(directory);
 file = [directory filesep 'group_subjects_SUVR.xlsx'];
 ex = ExporterGroupSubjectST_XLS( ...
