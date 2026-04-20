@@ -90,7 +90,9 @@ This pipeline provides neural-network classification that incorporates both imag
 
 It is intended to support classification while also enabling meaningful interpretation of important brain regions, complementing the subject-level connectome analyses.
 
-
+> Spasov, S., Passamonti, L., Duggento, A., Liò, P., Toschi, N., & for the Alzheimer's Disease Neuroimaging Initiative. “A parameter-efficient deep learning approach to predict conversion from mild cognitive impairment to Alzheimer's disease.”
+> [NeuroImage*, 189, 276–287 (2019)](https://doi.org/10.1016/j.neuroimage.2019.01.031)
+  
 ## Software requirements
 
 To run **BRAPH 2 Individual Connectome**, you need:
