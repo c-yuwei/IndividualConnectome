@@ -278,7 +278,7 @@ classdef GraphWU < Graph
 			%
 			% See also subclasses.
 			
-			subclass_list = { 'GraphWU' }; %CET: Computational Efficiency Trick
+			subclass_list = { 'GraphWU'  'MultigraphBUD'  'MultigraphBUT' }; %CET: Computational Efficiency Trick
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of weighted undirected graph.
@@ -674,7 +674,7 @@ classdef GraphWU < Graph
 				case 9 % GraphWU.GRAPH_TYPE
 					prop_default = 1;
 				case 32 % GraphWU.COMPATIBLE_MEASURES
-					prop_default = { 'Degree'  'Strength' };
+					prop_default = { 'Clustering'  'CorePeriphery'  'Degree'  'Distance'  'GlobalEfficiency'  'LocalEfficiency'  'Richness'  'Strength'  'Triangles' };
 				otherwise
 					prop_default = getPropDefault@Graph(prop);
 			end

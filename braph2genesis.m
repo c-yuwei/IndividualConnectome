@@ -342,7 +342,4 @@ end
 eval([launcher '(false)'])
 
 %% Test compiled BRAPH2 distribution
-for i = 1:1:numel(pipeline_folders)
-    addpath(genpath(pipeline_folders{i}))
-end
 test_braph2

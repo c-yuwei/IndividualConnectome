@@ -324,7 +324,7 @@ classdef MeasurePF < PanelFig
 			%
 			% See also subclasses.
 			
-			subclass_list = { 'MeasurePF'  'MeasurePF_GU'  'MeasurePF_NU' }; %CET: Computational Efficiency Trick
+			subclass_list = { 'MeasurePF'  'MeasurePF_BU'  'MeasurePF_GU'  'MeasurePF_NU' }; %CET: Computational Efficiency Trick
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of panel figure for measure.
