@@ -1,10 +1,19 @@
-function create_data_NIfTI_PET(atlas_path, output_dir, group_names, num_files_per_group, seed)
+function create_data_NIfTI_PET(atlas_path, output_dir, group_names, num_files_per_group, seed, covarying_roi_indices)
 % CREATE_DATA_NIFTI_PET
 % Generate PET-specific simulated NIfTI data with ROI-level SUVR ground truth.
+%
+% Inputs:
+%   atlas_path            - path to atlas NIfTI file
+%   output_dir            - output directory
+%   group_names           - group names
+%   num_files_per_group   - number of subjects per group
+%   seed                  - random seed
+%   covarying_roi_indices - ROI indices designed to covary; if empty, the first 20 non-reference ROIs are used
 %
 % Default behavior:
 %   - 1 group
 %   - 10 subjects
+%   - first 20 non-reference ROIs are designed to covary
 %   - BIDS-like folder structure: sub-XXXX/ses-01/pet
 %   - 1 VOI Excel file with subject metadata only
 %   - 1 Excel file with subject-wise ROI SUVR means
@@ -42,7 +51,7 @@ function create_data_NIfTI_PET(atlas_path, output_dir, group_names, num_files_pe
     if nargin < 1 || isempty(atlas_path)
         atlas_path = fullfile( ...
             fileparts(which('create_data_NIfTI_PET')), ...
-            'example atlases neuroimaging NIfTI', ...
+            'example atlases NIfTI', ...
             'aal120_atlas.nii' ...
             );
     end
@@ -58,12 +67,22 @@ function create_data_NIfTI_PET(atlas_path, output_dir, group_names, num_files_pe
     if nargin < 5 || isempty(seed)
         seed = 42;
     end
+    if nargin < 6
+        covarying_roi_indices = [];
+    end
 
     rng(seed);
 
     %% Prepare output folders
     if ~isfolder(output_dir)
         mkdir(output_dir);
+    end
+
+    existing_pet_files = dir(fullfile(output_dir, 'sub-*', 'ses-*', 'pet', '*_pet.nii'));
+
+    if ~isempty(existing_pet_files)
+        fprintf('PET NIfTI files already exist. Skipping PET data generation in: %s\n', output_dir);
+        return
     end
 
     reference_dir = fullfile(output_dir, 'reference_data');
@@ -103,7 +122,7 @@ function create_data_NIfTI_PET(atlas_path, output_dir, group_names, num_files_pe
     mapping_labels      = mapping_table{:, 3};          % Var3 = atlas numeric code
     mapping_short_names = string(mapping_table{:, 4});  % Var4 = short ROI code
 
-    % Build ROI names aligned to atlas region_labels
+    %% Build ROI names aligned to atlas labels
     roi_names = strings(1, num_regions);       % short names for Excel headers
     roi_full_names = strings(1, num_regions);  % full names for logic
 
@@ -157,13 +176,31 @@ function create_data_NIfTI_PET(atlas_path, output_dir, group_names, num_files_pe
 
     fprintf('Number of whole-cerebellum reference ROIs: %d\n', numel(reference_roi_indices));
 
+    %% Validate or set covarying ROI indices
+    if isempty(covarying_roi_indices)
+        covarying_roi_indices = 1:min(20, num_regions);
+    else
+        covarying_roi_indices = unique(covarying_roi_indices(:))';
+
+        if any(covarying_roi_indices < 1) || any(covarying_roi_indices > num_regions)
+            error('covarying_roi_indices must contain ROI indices between 1 and %d.', num_regions);
+        end
+    end
+
+    % Reference ROIs should not be part of the covarying disease-like PET block
+    covarying_roi_indices = setdiff(covarying_roi_indices, reference_roi_indices);
+
+    if isempty(covarying_roi_indices)
+        error('No valid non-reference covarying ROIs remain after removing reference ROIs.');
+    end
+
+    fprintf('Number of covarying non-reference ROIs: %d\n', numel(covarying_roi_indices));
+
     %% Headers
     vois_headers = {'ID', 'Label', 'Notes', 'Age', 'Sex', 'Education'};
     roi_mean_headers = [{'ID', 'Label', 'Notes'}, cellstr(roi_names)];
 
     %% Simulation design
-    covarying_roi_indices = 1:min(20, num_regions);
-    covarying_roi_indices = setdiff(covarying_roi_indices, reference_roi_indices);
 
     % Raw uptake scale before SUVR normalization
     raw_ref_mean = 10.0;      % mean raw uptake in reference region
@@ -218,7 +255,7 @@ function create_data_NIfTI_PET(atlas_path, output_dir, group_names, num_files_pe
 
     %% Process each group
     for group_idx = 1:numel(group_names)
-        group_name = group_names{group_idx};
+        group_name = group_names{group_idx}; %#ok<NASGU>
 
         sex_options = {'Female', 'Male'};
         education_range = [8, 20];
@@ -242,7 +279,7 @@ function create_data_NIfTI_PET(atlas_path, output_dir, group_names, num_files_pe
 
             % Demographics
             age = randi([18, 90]);
-            sex = sex_options{randi(2)};
+            sex = sex_options{randi(numel(sex_options))};
             education = randi(education_range);
 
             % Initialize subject data in raw uptake space
@@ -331,10 +368,10 @@ function create_data_NIfTI_PET(atlas_path, output_dir, group_names, num_files_pe
             save_subject_pdf_xlsx(pet_pdf_matrix, pet_pdf_file);
             fprintf('Saved PET ROI PDF matrix to: %s\n', pet_pdf_file);
 
-            %% Add row to VOI table (metadata only)
+            %% Add row to VOI table
             all_vois_cell = [all_vois_cell; {subject_id, row_label, row_notes, age, sex, education}];
 
-            %% Add row to ROI means table (SUVR means)
+            %% Add row to ROI means table
             roi_means_row = num2cell(realized_means_all_regions);
             all_roi_means_cell = [all_roi_means_cell; {subject_id, row_label, row_notes, roi_means_row{:}}];
         end

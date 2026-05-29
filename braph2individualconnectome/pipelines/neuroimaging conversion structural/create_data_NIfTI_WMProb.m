@@ -1,10 +1,19 @@
-function create_data_NIfTI_WMProb(atlas_path, output_dir, group_names, num_files_per_group, seed)
+function create_data_NIfTI_WMProb(atlas_path, output_dir, group_names, num_files_per_group, seed, covarying_roi_indices)
 % CREATE_DATA_NIFTI_WMPROB
-% Generate white matter probability maps aligned with the simulated PET data.
+% Generate simulated white matter probability maps using the same atlas space as the PET data.
+%
+% Inputs:
+%   atlas_path            - path to atlas NIfTI file
+%   output_dir            - output directory
+%   group_names           - group names
+%   num_files_per_group   - number of subjects per group
+%   seed                  - random seed
+%   covarying_roi_indices - ROI indices designed to covary; if empty, the first 20 ROIs are used
 %
 % Default behavior:
 %   - 1 group
 %   - 10 subjects
+%   - first 20 ROIs are designed to covary
 %   - BIDS-like folder structure: sub-XXXX/ses-01/anat
 %   - 1 VOI Excel file with subject metadata only
 %   - 1 Excel file with subject-wise ROI mean WM probability
@@ -22,9 +31,11 @@ function create_data_NIfTI_WMProb(atlas_path, output_dir, group_names, num_files
 %   - sub-XXXX/ses-01/anat/sub-XXXX_ses-01_WMprob.nii
 %
 % Notes:
-%   - This file is a continuous white matter probability map in [0, 1].
-%   - Some ROIs additionally share a subject-level shift in mean WM probability,
-%     creating a covarying block across subjects.
+%   - Each saved image is a continuous white matter probability map in [0, 1].
+%   - Voxels near the ROI core receive higher WM probability.
+%   - Voxels near the ROI boundary receive lower WM probability.
+%   - Some ROIs share a subject-level shift in mean WM probability,
+%     creating a mean-level covarying block across subjects.
 %   - Per-subject PDF matrices are saved with:
 %       rows    = common PDF bins
 %       columns = ROIs in atlas order
@@ -33,7 +44,7 @@ function create_data_NIfTI_WMProb(atlas_path, output_dir, group_names, num_files
     if nargin < 1 || isempty(atlas_path)
         atlas_path = fullfile( ...
             fileparts(which('create_data_NIfTI_WMProb')), ...
-            'example atlases neuroimaging NIfTI', ...
+            'example atlases NIfTI', ...
             'td_atlas.nii' ...
             );
     end
@@ -49,12 +60,22 @@ function create_data_NIfTI_WMProb(atlas_path, output_dir, group_names, num_files
     if nargin < 5 || isempty(seed)
         seed = 42;
     end
+    if nargin < 6
+        covarying_roi_indices = [];
+    end
 
     rng(seed);
 
     %% Prepare output folders
     if ~isfolder(output_dir)
         mkdir(output_dir);
+    end
+
+    existing_wmprob_files = dir(fullfile(output_dir, 'sub-*', 'ses-*', 'anat', '*_WMprob.nii'));
+
+    if ~isempty(existing_wmprob_files)
+        fprintf('WM probability NIfTI files already exist. Skipping WM probability data generation in: %s\n', output_dir);
+        return
     end
 
     reference_dir = fullfile(output_dir, 'reference_data');
@@ -77,6 +98,19 @@ function create_data_NIfTI_WMProb(atlas_path, output_dir, group_names, num_files
     num_regions = numel(region_labels);
 
     fprintf('Number of brain regions: %d\n', num_regions);
+
+    %% Validate or set covarying ROI indices
+    if isempty(covarying_roi_indices)
+        covarying_roi_indices = 1:min(20, num_regions);
+    else
+        covarying_roi_indices = unique(covarying_roi_indices(:))';
+
+        if any(covarying_roi_indices < 1) || any(covarying_roi_indices > num_regions)
+            error('covarying_roi_indices must contain ROI indices between 1 and %d.', num_regions);
+        end
+    end
+
+    fprintf('Number of covarying ROIs: %d\n', numel(covarying_roi_indices));
 
     %% Load atlas mapping CSV
     mapping_csv = fullfile(fileparts(atlas_path), 'td_atlas_mapping.csv');
@@ -139,8 +173,6 @@ function create_data_NIfTI_WMProb(atlas_path, output_dir, group_names, num_files
     wmprob_headers = [{'ID', 'Label', 'Notes'}, cellstr(roi_names)];
 
     %% Simulation design
-    % Covarying block of ROIs
-    covarying_roi_indices = 1:min(20, num_regions);
 
     % White-matter-like probability profile
     % Here we keep probabilities generally high but not saturated.
@@ -156,13 +188,13 @@ function create_data_NIfTI_WMProb(atlas_path, output_dir, group_names, num_files
     indep_prob_shift_std  = 0.03;
 
     %% WM probability PDF settings
-    wm_pdf_edges = linspace(0, 1, 101);  % 100 bins across [0,1]
+    wm_pdf_edges = linspace(0, 1, 101);  % 100 bins across [0, 1]
     wm_pdf_bin_centers = (wm_pdf_edges(1:end-1) + wm_pdf_edges(2:end)) / 2;
 
-    %% Save WM PDF bin centres
+    %% Save WM probability PDF bin centres
     wm_pdf_bins_file = fullfile(reference_dir, 'group_pdf_bins_wmprob.xlsx');
     writecell([{'BinCenter'}; num2cell(wm_pdf_bin_centers(:))], wm_pdf_bins_file);
-    fprintf('Saved WM PDF bin centres to: %s\n', wm_pdf_bins_file);
+    fprintf('Saved WM probability PDF bin centres to: %s\n', wm_pdf_bins_file);
 
     %% Global tables
     all_vois_cell = vois_headers;
@@ -186,6 +218,8 @@ function create_data_NIfTI_WMProb(atlas_path, output_dir, group_names, num_files
 
     %% Process each group
     for group_idx = 1:numel(group_names)
+        group_name = group_names{group_idx}; %#ok<NASGU>
+
         sex_options = {'Female', 'Male'};
         education_range = [8, 20];
 
@@ -266,11 +300,11 @@ function create_data_NIfTI_WMProb(atlas_path, output_dir, group_names, num_files
             niftiwrite(single(wm_prob_data), wm_file, wm_info);
             fprintf('Saved WM probability NIfTI file: %s\n', wm_file);
 
-            %% Compute and save WM ROI PDFs
+            %% Compute and save WM probability ROI PDFs
             wm_pdf_matrix = compute_roi_pdf_matrix(wm_prob_data, atlas_data, region_labels, wm_pdf_edges);
             wm_pdf_file = fullfile(pdf_wmprob_dir, sprintf('%s_%s_WMprob_pdf.xlsx', subject_id, session_id));
             save_subject_pdf_xlsx(wm_pdf_matrix, wm_pdf_file);
-            fprintf('Saved WM ROI PDF matrix to: %s\n', wm_pdf_file);
+            fprintf('Saved WM probability ROI PDF matrix to: %s\n', wm_pdf_file);
 
             %% Add row to VOI table
             all_vois_cell = [all_vois_cell; {subject_id, row_label, row_notes, age, sex, education}];

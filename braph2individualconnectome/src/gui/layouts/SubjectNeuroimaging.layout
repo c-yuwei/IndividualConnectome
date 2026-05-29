@@ -11,10 +11,14 @@ Subject ID
 Subject LABEL
 2
 Subject NOTES
-4
+5
 TOSTRING
 NaN
 Variables of Interest
+4
+Subject NIfTI PATH
 3
-NIFTI_FILE
+BASE_DIR
+NaN
+ABSOLUTE_NIFTI_PATH
 NaN

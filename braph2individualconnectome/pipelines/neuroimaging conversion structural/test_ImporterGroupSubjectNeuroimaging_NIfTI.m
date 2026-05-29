@@ -475,7 +475,7 @@ if rand() >= (1 - .01) * BRAPH2TEST.RANDOM
 	for prop = 1:1:ImporterGroupSubjectNeuroimaging_NIfTI.getPropNumber()
 	 
 		% excluded props
-		if any(prop == [])
+		if any(prop == [ImporterGroupSubjectNeuroimaging_NIfTI.GET_DIR])
 			continue
 		end
 	 
@@ -591,7 +591,7 @@ if rand() >= (1 - .01) * BRAPH2TEST.RANDOM
 	for prop = 1:1:ImporterGroupSubjectNeuroimaging_NIfTI.getPropNumber()
 	 
 		% excluded props
-		if any(prop == [])
+		if any(prop == [ImporterGroupSubjectNeuroimaging_NIfTI.GET_DIR])
 			continue
 		end
 	 
@@ -694,7 +694,7 @@ if rand() >= (1 - .01) * BRAPH2TEST.RANDOM
 		for prop = 1:1:ImporterGroupSubjectNeuroimaging_NIfTI.getPropNumber()
 	 
 			% excluded props
-			if any(prop == [])
+			if any(prop == [ImporterGroupSubjectNeuroimaging_NIfTI.GET_DIR])
 				continue
 			end
 	 
@@ -1288,7 +1288,7 @@ if rand() >= (1 - .01) * BRAPH2TEST.RANDOM
 	for prop = 1:1:ImporterGroupSubjectNeuroimaging_NIfTI.getPropNumber()
 	 
 		% excluded props
-		if any(prop == [])
+		if any(prop == [ImporterGroupSubjectNeuroimaging_NIfTI.GET_DIR])
 			continue
 		end
 	 
@@ -1410,16 +1410,19 @@ end
 
 %% Test 12: Create example files
 if rand() >= (1 - 1) * BRAPH2TEST.RANDOM
-	create_example_NIfTI() % only creates files if the example folder doesn't already exist
+	create_data_NIfTI_GMProb(); % only creates files if the example folder doesn't already exist
+	create_data_NIfTI_WMProb(); % only creates files if the example folder doesn't already exist
+	create_data_NIfTI_PET(); % only creates files if the example folder doesn't already exist
 end
 
 %% Test 13: GUI
 if rand() >= (1 - .01) * BRAPH2TEST.RANDOM
-	example_data_dir = fullfile(fileparts(which('SUVRConstructor')), 'Example data NIfTI');
-	im_gr1 = ImporterGroupSubjectNeuroimaging_NIfTI('DIRECTORY',[example_data_dir filesep 'Group1'], ...
-	    'NIfTI_TYPE', {'T1'},...
-	    'WAITBAR', true);
-	gr = im_gr1.get('GR');
+	example_data_dir = fullfile(fileparts(which('ImporterGroupSubjectNeuroimaging_NIfTI')), 'Example data NIfTI');
+	im_gr = ImporterGroupSubjectNeuroimaging_NIfTI('DIRECTORY', example_data_dir, ...
+		    'MODALITY', 'anat', ...
+	        'TARGET', 'GMprob', ...
+		    'WAITBAR', true);
+	gr = im_gr.get('GR');
 	gui = GUIElement('PE', gr, 'CLOSEREQ', false);
 	gui.get('DRAW')
 	gui.get('SHOW')
@@ -1427,7 +1430,84 @@ if rand() >= (1 - .01) * BRAPH2TEST.RANDOM
 	gui.get('CLOSE')
 end
 
-%% Test 14: No Figures Left
+%% Test 14: Sanity check - file number for anatomical gray matter probability data
+if rand() >= (1 - .01) * BRAPH2TEST.RANDOM
+	example_data_dir = fullfile(fileparts(which('ImporterGroupSubjectNeuroimaging_NIfTI')), 'Example data NIfTI');
+	
+	im_gr = ImporterGroupSubjectNeuroimaging_NIfTI( ...
+	    'DIRECTORY', example_data_dir, ...
+	    'MODALITY', 'anat', ...
+	    'TARGET', 'GMprob', ...
+	    'WAITBAR', true ...
+	    );
+	
+	gr = im_gr.get('GR');
+	sub_num = gr.get('SUB_DICT').get('LENGTH');
+	
+	assert(isequal(sub_num, 10), ...
+	    'The imported group should contain 10 subjects, which is the default number in the simulated data.')
+	
+	sub_nifti_file = gr.get('SUB_DICT').get('IT', 1).get('ABSOLUTE_NIFTI_PATH');
+	
+	assert(contains(sub_nifti_file, 'GMprob'), ...
+	    'The imported anatomical file should contain "GMprob" in the file path.')
+	
+	assert(isfile(sub_nifti_file), ...
+	    'The imported GM probability NIfTI file does not exist.')
+end
+
+%% Test 15: Sanity check - file number for anatomical white matter probability data
+if rand() >= (1 - .01) * BRAPH2TEST.RANDOM
+	example_data_dir = fullfile(fileparts(which('ImporterGroupSubjectNeuroimaging_NIfTI')), 'Example data NIfTI');
+	
+	im_gr = ImporterGroupSubjectNeuroimaging_NIfTI( ...
+	    'DIRECTORY', example_data_dir, ...
+	    'MODALITY', 'anat', ...
+	    'TARGET', 'WMprob', ...
+	    'WAITBAR', true ...
+	    );
+	
+	gr = im_gr.get('GR');
+	sub_num = gr.get('SUB_DICT').get('LENGTH');
+	
+	assert(isequal(sub_num, 10), ...
+	    'The imported group should contain 10 subjects, which is the default number in the simulated data.')
+	
+	sub_nifti_file = gr.get('SUB_DICT').get('IT', 1).get('ABSOLUTE_NIFTI_PATH');
+	
+	assert(contains(sub_nifti_file, 'WMprob'), ...
+	    'The imported anatomical file should contain "WMprob" in the file path.')
+	
+	assert(isfile(sub_nifti_file), ...
+	    'The imported WM probability NIfTI file does not exist.')
+end
+
+%% Test 16: Sanity check - file number for PET data
+if rand() >= (1 - .01) * BRAPH2TEST.RANDOM
+	example_data_dir = fullfile(fileparts(which('ImporterGroupSubjectNeuroimaging_NIfTI')), 'Example data NIfTI');
+	
+	im_gr = ImporterGroupSubjectNeuroimaging_NIfTI( ...
+	    'DIRECTORY', example_data_dir, ...
+	    'MODALITY', 'pet', ...
+	    'WAITBAR', true ...
+	    );
+	
+	gr = im_gr.get('GR');
+	sub_num = gr.get('SUB_DICT').get('LENGTH');
+	
+	assert(isequal(sub_num, 10), ...
+	    'The imported group should contain 10 subjects, which is the default number in the simulated data.')
+	
+	sub_nifti_file = gr.get('SUB_DICT').get('IT', 1).get('ABSOLUTE_NIFTI_PATH');
+	
+	assert(contains(sub_nifti_file, '_pet.nii'), ...
+	    'The imported PET file should contain "_pet.nii" in the file path.')
+	
+	assert(isfile(sub_nifti_file), ...
+	    'The imported PET NIfTI file does not exist.')
+end
+
+%% Test 17: No Figures Left
 if rand() >= (1 - 1) * BRAPH2TEST.RANDOM
 	assert(isempty(findall(0, 'type', 'figure')), ...
 		[BRAPH2.STR ':ImporterGroupSubjectNeuroimaging_NIfTI:' BRAPH2.FAIL_TEST], ...
@@ -1436,7 +1516,7 @@ if rand() >= (1 - 1) * BRAPH2TEST.RANDOM
 		)
 end
 
-%% Test 15: Delete Figures
+%% Test 18: Delete Figures
 if rand() >= (1 - 1) * BRAPH2TEST.RANDOM
 	delete(findall(0, 'type', 'figure'))
 end
