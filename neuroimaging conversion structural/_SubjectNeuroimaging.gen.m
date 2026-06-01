@@ -120,6 +120,12 @@ Subject LABEL
 
 %%% ¡prop!
 %%%% ¡id!
+SubjectNeuroimaging.RELATIVE_NIFTI_PATH
+%%%% ¡title!
+Subject NIfTI PATH
+
+%%% ¡prop!
+%%%% ¡id!
 SubjectNeuroimaging.VOI_DICT
 %%%% ¡title!
 Variables of Interest
@@ -170,7 +176,28 @@ NOTES (metadata, string) are some specific notes about the subject.
 %% ¡props!
 
 %%% ¡prop!
-NIFTI_FILE (data, string) is direcotry to subject nifti data.
+RELATIVE_NIFTI_PATH (data, string) is the relative path to the subject NIfTI file.
+
+%%% ¡prop!
+BASE_DIR (data, string) is the base directory used to resolve the relative NIfTI file path.
+%%%% ¡default!
+fileparts(which('SubjectNeuroimaging'))
+
+%%% ¡prop!
+ABSOLUTE_NIFTI_PATH (query, string) is the absolute path to the subject NIfTI file, resolved from BASE_DIR and RELATIVE_NIFTI_PATH. This keeps the file location portable across different computers.
+%%%% ¡calculate!
+base_dir = sub.get('BASE_DIR');
+relative_path = sub.get('RELATIVE_NIFTI_PATH');
+
+if isempty(relative_path)
+    value = '';
+elseif isfolder(fileparts(relative_path)) || isfile(relative_path)
+    value = relative_path;
+elseif isempty(base_dir)
+    value = relative_path;
+else
+    value = fullfile(base_dir, relative_path);
+end
 
 %% ¡tests!
 
@@ -188,9 +215,7 @@ ba = im_ba.get('BA');
 gr = Group('SUB_CLASS', 'SubjectNeuroimaging', 'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectNeuroimaging'));
 for i = 1:1:50
     sub = SubjectNeuroimaging( ...
-        'ID', ['SUB Nifti ' int2str(i)]);
-    % Add the file path to the subject's nifty dictionary
-    sub.memorize('NIFTI_PATH_DICT').get('ADD', FILE_PATH('ID', convertStringsToChars(string(i)), 'PATH', convertStringsToChars('*/*')));
+        'ID', ['SUB NIfTI ' int2str(i)]);
     sub.memorize('VOI_DICT').get('ADD', VOINumeric('ID', 'Age', 'V', 100 * rand()));
     sub.memorize('VOI_DICT').get('ADD', VOICategoric('ID', 'Sex', 'CATEGORIES', {'Female', 'Male'}, 'V', randi(2, 1)));
     gr.get('SUB_DICT').get('ADD', sub);
@@ -200,9 +225,5 @@ end
 gui = GUIElement('PE', gr, 'CLOSEREQ', false);
 gui.get('DRAW');
 gui.get('SHOW');
-
-% Pause for visual confirmation
-disp('GUI is open. Closing in 3 seconds...');
-pause(3);
 
 gui.get('CLOSE');

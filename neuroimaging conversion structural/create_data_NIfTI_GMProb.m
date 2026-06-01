@@ -1,10 +1,19 @@
-function create_data_NIfTI_GMProb(atlas_path, output_dir, group_names, num_files_per_group, seed)
+function create_data_NIfTI_GMProb(atlas_path, output_dir, group_names, num_files_per_group, seed, covarying_roi_indices)
 % CREATE_DATA_NIFTI_GMPROB
 % Generate gray matter probability maps aligned with the simulated PET data.
+%
+% Inputs:
+%   atlas_path            - path to atlas NIfTI file
+%   output_dir            - output directory
+%   group_names           - group names
+%   num_files_per_group   - number of subjects per group
+%   seed                  - random seed
+%   covarying_roi_indices - ROI indices designed to covary; if empty, the first 20 ROIs are used
 %
 % Default behavior:
 %   - 1 group
 %   - 10 subjects
+%   - first 20 ROIs are designed to covary
 %   - BIDS-like folder structure: sub-XXXX/ses-01/anat
 %   - 1 VOI Excel file with subject metadata only
 %   - 1 Excel file with subject-wise ROI mean GM probability
@@ -35,7 +44,7 @@ function create_data_NIfTI_GMProb(atlas_path, output_dir, group_names, num_files
     if nargin < 1 || isempty(atlas_path)
         atlas_path = fullfile( ...
             fileparts(which('create_data_NIfTI_GMProb')), ...
-            'example atlases neuroimaging NIfTI', ...
+            'example atlases NIfTI', ...
             'aal120_atlas.nii' ...
             );
     end
@@ -51,12 +60,21 @@ function create_data_NIfTI_GMProb(atlas_path, output_dir, group_names, num_files
     if nargin < 5 || isempty(seed)
         seed = 42;
     end
+    if nargin < 6
+        covarying_roi_indices = [];
+    end
 
     rng(seed);
 
     %% Prepare output folders
     if ~isfolder(output_dir)
         mkdir(output_dir);
+    end
+
+    existing_gmprob_files = dir(fullfile(output_dir, 'sub-*', 'ses-*', 'anat', '*_GMprob.nii'));
+    if ~isempty(existing_gmprob_files)
+        fprintf('GM probability NIfTI files already exist. Skipping GM probability data generation in: %s\n', output_dir);
+        return
     end
 
     reference_dir = fullfile(output_dir, 'reference_data');
@@ -79,6 +97,19 @@ function create_data_NIfTI_GMProb(atlas_path, output_dir, group_names, num_files
     num_regions = numel(region_labels);
 
     fprintf('Number of brain regions: %d\n', num_regions);
+
+    %% Validate or set covarying ROI indices
+    if isempty(covarying_roi_indices)
+        covarying_roi_indices = 1:min(20, num_regions);
+    else
+        covarying_roi_indices = unique(covarying_roi_indices(:))';
+
+        if any(covarying_roi_indices < 1) || any(covarying_roi_indices > num_regions)
+            error('covarying_roi_indices must contain ROI indices between 1 and %d.', num_regions);
+        end
+    end
+
+    fprintf('Number of covarying ROIs: %d\n', numel(covarying_roi_indices));
 
     %% Load atlas mapping CSV
     mapping_csv = fullfile(fileparts(atlas_path), 'aal120_atlas_mapping.csv');
@@ -141,8 +172,6 @@ function create_data_NIfTI_GMProb(atlas_path, output_dir, group_names, num_files
     gmprob_headers = [{'ID', 'Label', 'Notes'}, cellstr(roi_names)];
 
     %% Simulation design
-    % Covarying block of ROIs
-    covarying_roi_indices = 1:min(20, num_regions);
 
     % Core-vs-boundary GM profile
     boundary_prob = 0.20;
@@ -157,7 +186,7 @@ function create_data_NIfTI_GMProb(atlas_path, output_dir, group_names, num_files
     indep_prob_shift_std  = 0.03;  % independent ROI mean shift
 
     %% GM probability PDF settings
-    gm_pdf_edges = linspace(0, 1, 101);  % 100 bins across [0,1]
+    gm_pdf_edges = linspace(0, 1, 101);  % 100 bins across [0, 1]
     gm_pdf_bin_centers = (gm_pdf_edges(1:end-1) + gm_pdf_edges(2:end)) / 2;
 
     %% Save GM PDF bin centres
@@ -187,7 +216,7 @@ function create_data_NIfTI_GMProb(atlas_path, output_dir, group_names, num_files
 
     %% Process each group
     for group_idx = 1:numel(group_names)
-        group_name = group_names{group_idx};
+        group_name = group_names{group_idx}; %#ok<NASGU>
 
         sex_options = {'Female', 'Male'};
         education_range = [8, 20];

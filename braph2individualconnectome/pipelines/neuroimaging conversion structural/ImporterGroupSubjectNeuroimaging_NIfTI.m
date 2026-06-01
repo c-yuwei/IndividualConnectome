@@ -739,7 +739,7 @@ classdef ImporterGroupSubjectNeuroimaging_NIfTI < Importer
 				case 15 % ImporterGroupSubjectNeuroimaging_NIfTI.GR
 					rng_settings_ = rng(); rng(im.getPropSeed(15), 'twister')
 					
-					% creates empty Group
+					% Creates empty Group
 					gr = Group( ...
 					    'SUB_CLASS', 'SubjectNeuroimaging', ...
 					    'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectNeuroimaging') ...
@@ -753,6 +753,7 @@ classdef ImporterGroupSubjectNeuroimaging_NIfTI < Importer
 					target = im.get('TARGET');        % e.g. 'FDG', mainly for pet
 					
 					if isfolder(directory)
+					
 					    wb = braph2waitbar(im.get('WAITBAR'), 0, 'Reading directory ...');
 					
 					    [~, gr_name] = fileparts(directory);
@@ -763,6 +764,7 @@ classdef ImporterGroupSubjectNeuroimaging_NIfTI < Importer
 					        );
 					
 					    try
+					
 					        braph2waitbar(wb, 0.05, 'Scanning subject folders ...')
 					
 					        % Find subject folders: sub-*
@@ -776,39 +778,52 @@ classdef ImporterGroupSubjectNeuroimaging_NIfTI < Importer
 					        sub_dict = gr.memorize('SUB_DICT');
 					
 					        for s = 1:numel(sub_folders)
-					            braph2waitbar(wb, .05 + .55 * s / max(numel(sub_folders), 1), ['Loading subject folder ' num2str(s) ' of ' num2str(numel(sub_folders)) ' ...'])
+					
+					            braph2waitbar( ...
+					                wb, ...
+					                .05 + .55 * s / max(numel(sub_folders), 1), ...
+					                ['Loading subject folder ' num2str(s) ' of ' num2str(numel(sub_folders)) ' ...'] ...
+					                )
 					
 					            sub_id = sub_folders(s).name;
 					            sub_root = fullfile(sub_folders(s).folder, sub_folders(s).name);
 					
-					            % Resolve session folder
+					            %% Resolve session folder
+					
 					            if ~isempty(session)
+					
 					                ses_dir = fullfile(sub_root, session);
+					
 					                if ~isfolder(ses_dir)
 					                    warning('%s does not contain session folder %s. Skipping.', sub_id, session);
 					                    continue;
 					                end
+					
 					            else
+					
 					                ses_candidates = dir(fullfile(sub_root, 'ses-*'));
 					                ses_candidates = ses_candidates([ses_candidates.isdir]);
 					
 					                if isempty(ses_candidates)
-					                    % allow no-session layout
+					                    % Allow no-session layout
 					                    ses_dir = sub_root;
 					                else
-					                    % default: first session found
+					                    % Default: first session found
 					                    ses_dir = fullfile(ses_candidates(1).folder, ses_candidates(1).name);
 					                end
 					            end
 					
-					            % Resolve modality folder
+					            %% Resolve modality folder
+					
 					            modality_dir = fullfile(ses_dir, modality);
+					
 					            if ~isfolder(modality_dir)
 					                warning('%s does not contain modality folder %s. Skipping.', sub_id, modality);
 					                continue;
 					            end
 					
-					            % Find NIfTI files
+					            %% Find NIfTI files
+					
 					            nii_files = [ ...
 					                dir(fullfile(modality_dir, '*.nii')); ...
 					                dir(fullfile(modality_dir, '*.nii.gz')) ...
@@ -819,15 +834,24 @@ classdef ImporterGroupSubjectNeuroimaging_NIfTI < Importer
 					                continue;
 					            end
 					
-					            % PET-specific target selection
+					            %% Target-specific file selection
+					
 					            chosen_file = [];
-					            if strcmpi(modality, 'pet') && ~isempty(target)
-					                match_idx = find(contains(upper({nii_files.name}), upper(target)), 1, 'first');
+					
+					            if ~isempty(target)
+					
+					                nii_names = {nii_files.name};
+					                match_idx = find(contains(upper(nii_names), upper(target)), 1, 'first');
+					
 					                if ~isempty(match_idx)
 					                    chosen_file = nii_files(match_idx);
 					                else
-					                    warning('%s: no PET file matched tracer %s in %s. Using first NIfTI found.', ...
-					                        sub_id, target, modality_dir);
+					                    warning( ...
+					                        '%s: no NIfTI file matched target %s in %s. Using first NIfTI found.', ...
+					                        sub_id, ...
+					                        target, ...
+					                        modality_dir ...
+					                        );
 					                end
 					            end
 					
@@ -838,54 +862,91 @@ classdef ImporterGroupSubjectNeuroimaging_NIfTI < Importer
 					
 					            chosen_path = fullfile(chosen_file.folder, chosen_file.name);
 					
-					            % Build subject
-					            sub = SubjectNeuroimaging();
+					            %% Convert absolute path to BASE_DIR + RELATIVE_NIFTI_PATH
 					
-					            % Save chosen file into NIfTI_PATH_DICT
-					            % Use modality or modality+tracer as file ID
-					            if strcmpi(modality, 'pet') && ~isempty(target)
-					                file_id = [upper(modality) '_' upper(target)];
+					            % The base directory is the root directory being imported.
+					            % This should normally be the BIDS-like dataset/group folder,
+					            % i.e. the level above sub-* folders.
+					            base_dir = directory;
+					
+					            % Store the selected NIfTI file as a path relative to base_dir.
+					            relative_nifti_path = chosen_path;
+					
+					            if startsWith(chosen_path, [base_dir filesep])
+					                relative_nifti_path = extractAfter(chosen_path, length(base_dir) + 1);
+					            elseif strcmp(chosen_path, base_dir)
+					                relative_nifti_path = '';
 					            else
-					                file_id = upper(modality);
+					                warning( ...
+					                    '%s: chosen NIfTI path is not inside BASE_DIR. Storing absolute path as RELATIVE_NIFTI_PATH.', ...
+					                    sub_id ...
+					                    );
 					            end
 					
-					            % % % % sub.memorize('NIfTI_PATH_DICT').get('ADD', ...
-					            % % % %     FILE_PATH( ...
-					            % % % %         'ID', file_id, ...
-					            % % % %         'PATH', chosen_path ...
-					            % % % %         ) ...
-					            % % % %     );
+					            relative_nifti_path = char(relative_nifti_path);
 					
-					            % Optional notes on subject
+					            %% Build subject
+					
+					            sub = SubjectNeuroimaging();
+					
+					            sub.set('ID', sub_id);
 					            sub.set('LABEL', sub_id);
-					            sub.set('NOTES', ['Loaded from ' modality_dir]);
+					            sub.set('NOTES', ['NIfTI file loaded from ' modality_dir]);
+					            sub.set('BASE_DIR', base_dir);
+					            sub.set('RELATIVE_NIFTI_PATH', relative_nifti_path);
 					
 					            sub_dict.get('ADD', sub);
 					        end
 					
-					        % Load variables of interest
+					        %% Load variables of interest
+					
 					        vois = [];
+					
 					        if isfile(fullfile(directory, 'reference_data', ['group_' modality '.vois.xls']))
 					            [~, ~, vois] = xlsread(fullfile(directory, 'reference_data', ['group_' modality '.vois.xls']));
+					
 					        elseif isfile(fullfile(directory, 'reference_data', ['group_' modality '.vois.xlsx']))
 					            [~, ~, vois] = xlsread(fullfile(directory, 'reference_data', ['group_' modality '.vois.xlsx']));
+					
 					        elseif isfile([directory '.vois.xls'])
 					            [~, ~, vois] = xlsread([directory '.vois.xls']);
+					
 					        elseif isfile([directory '.vois.xlsx'])
 					            [~, ~, vois] = xlsread([directory '.vois.xlsx']);
 					        end
 					
 					        if ~isempty(vois)
+					
 					            for i = 2:size(vois, 1)
-					                braph2waitbar(wb, .6 + .35 * (i-1) / max(size(vois, 1)-1, 1), ['Loading VOIs of subject ' num2str(i-1) ' of ' num2str(size(vois, 1)-1) ' ...'])
+					
+					                braph2waitbar( ...
+					                    wb, ...
+					                    .6 + .35 * (i - 1) / max(size(vois, 1) - 1, 1), ...
+					                    ['Loading VOIs of subject ' num2str(i - 1) ' of ' num2str(size(vois, 1) - 1) ' ...'] ...
+					                    )
 					
 					                target_id = vois{i, 1};
+					
+					                if isempty(target_id)
+					                    warning('Empty subject ID found in VOI row %d. Skipping.', i);
+					                    continue;
+					                end
+					
+					                if isstring(target_id)
+					                    target_id = char(target_id);
+					                end
+					
+					                if isnumeric(target_id)
+					                    target_id = num2str(target_id);
+					                end
 					
 					                IT_LIST = sub_dict.get('IT_LIST');
 					                sub_idx = [];
 					
 					                for j = 1:length(IT_LIST)
+					
 					                    current_id = IT_LIST{j}.get('ID');
+					
 					                    if strcmp(current_id, target_id)
 					                        sub_idx = j;
 					                        break;
@@ -900,28 +961,70 @@ classdef ImporterGroupSubjectNeuroimaging_NIfTI < Importer
 					                sub = sub_dict.get('IT', sub_idx);
 					
 					                for v = 2:size(vois, 2)
+					
 					                    voi_id = vois{1, v};
 					
-					                    if isnumeric(vois{i, v})
+					                    if isempty(voi_id)
+					                        continue;
+					                    end
+					
+					                    if isstring(voi_id)
+					                        voi_id = char(voi_id);
+					                    end
+					
+					                    if isnumeric(voi_id)
+					                        voi_id = num2str(voi_id);
+					                    end
+					
+					                    voi_value = vois{i, v};
+					
+					                    if isempty(voi_value)
+					                        continue;
+					                    end
+					
+					                    %% Numeric VOI
+					
+					                    if isnumeric(voi_value) && isscalar(voi_value) && ~isnan(voi_value)
+					
 					                        sub.memorize('VOI_DICT').get('ADD', ...
 					                            VOINumeric( ...
-					                                'ID', voi_id, ...
-					                                'V', vois{i, v} ...
-					                                ) ...
+					                            'ID', voi_id, ...
+					                            'V', voi_value ...
+					                            ) ...
 					                            );
-					                    elseif ischar(vois{i, v}) || isstring(vois{i, v})
+					
+					                    %% Categoric VOI
+					
+					                    elseif ischar(voi_value) || isstring(voi_value)
+					
+					                        voi_value = char(voi_value);
+					
 					                        categories = {};
-					                        if ischar(vois{2, v}) || isstring(vois{2, v})
+					
+					                        if size(vois, 1) >= 2 && (ischar(vois{2, v}) || isstring(vois{2, v}))
 					                            categories = str2cell(char(vois{2, v}));
 					                        end
 					
 					                        if ~isempty(categories)
+					
+					                            category_index = find(strcmp(voi_value, categories), 1, 'first');
+					
+					                            if isempty(category_index)
+					                                warning( ...
+					                                    'Value %s for VOI %s in subject %s is not listed in categories. Skipping.', ...
+					                                    voi_value, ...
+					                                    voi_id, ...
+					                                    target_id ...
+					                                    );
+					                                continue;
+					                            end
+					
 					                            sub.memorize('VOI_DICT').get('ADD', ...
 					                                VOICategoric( ...
-					                                    'ID', voi_id, ...
-					                                    'CATEGORIES', categories, ...
-					                                    'V', find(strcmp(char(vois{i, v}), categories), 1, 'first') ...
-					                                    ) ...
+					                                'ID', voi_id, ...
+					                                'CATEGORIES', categories, ...
+					                                'V', category_index ...
+					                                ) ...
 					                                );
 					                        end
 					                    end
@@ -930,13 +1033,16 @@ classdef ImporterGroupSubjectNeuroimaging_NIfTI < Importer
 					        end
 					
 					    catch e
+					
 					        braph2waitbar(wb, 'close')
 					        rethrow(e)
 					    end
 					
 					    braph2waitbar(wb, 'close')
+					
 					else
-					    error(['BRAPH2' ':ImporterGroupSubjectNIfTI:' 'ErrorIO'], ...
+					    error( ...
+					        ['BRAPH2' ':ImporterGroupSubjectNIfTI:' 'ErrorIO'], ...
 					        ['BRAPH2' ':ImporterGroupSubjectNIfTI:' 'ErrorIO' '\n' ...
 					        'The prop DIRECTORY must be an existing directory, but it is ''' directory '''.'] ...
 					        );

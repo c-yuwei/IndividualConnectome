@@ -1,6 +1,6 @@
-%EXAMPLE_NEUROIMGING_2_ROI_PET
+%EXAMPLE_NEUROIMGING_2_RVS_PET
 % Script example pipeline neuroimaing (PET) conversion to
-% region-of-interest values (SUVR)
+% regional values (SUVR)
 clear variables %#ok<*NASGU>
 
 %% Load BrainAtlases
@@ -49,6 +49,28 @@ im_gr_wm = ImporterGroupSubjectNeuroimaging_NIfTI( ...
 gr_anat_wmprob = im_gr_wm.get('GR');
 
 %% Convert neuroimaging data to region-of-interest data
+ba_nifti_files = {
+    [fileparts(which('SubjectNeuroimaging')) filesep 'Example atlases neuroimaging NIfTI' filesep 'aal120_atlas.nii']
+    [fileparts(which('SubjectNeuroimaging')) filesep 'Example atlases neuroimaging NIfTI' filesep 'td_atlas.nii']
+    };
+
+ba_mapping_files = {
+    [fileparts(which('SubjectNeuroimaging')) filesep 'Example atlases neuroimaging NIfTI' filesep 'aal120_atlas_mapping.csv']
+    [fileparts(which('SubjectNeuroimaging')) filesep 'Example atlases neuroimaging NIfTI' filesep 'td_atlas_mapping.csv']
+    };
+
+ref_brain_regions = {};
+ref_brain_regions_idx = 95:120; % cerebellum all regions in aal120
+for i = 1:length(ref_brain_regions_idx)
+    ref_brain_regions{i} = ba_aal120.get('BR_DICT').get('IT', ref_brain_regions_idx(i)).get('ID');
+end
+
+brain_regions_to_convert = {};
+convert_brain_regions_idx = 1:94; % cerebral all regions in aal120
+for i = 1:length(convert_brain_regions_idx)
+    brain_regions_to_convert{i} = ba_aal120.get('BR_DICT').get('IT', convert_brain_regions_idx(i)).get('ID');
+end 
+
 cn = ConverterNeuroimaging2RegionalValues( ...
     'BA_LIST', {ba_aal120, ba_td}, ...
     'BA_NIfTI_FILES', ba_nifti_files, ...
@@ -63,9 +85,18 @@ gr_st = cn.get('GR_ST')
 ba_st = cn.get('BA')
 
 %% Export data
-file = [fileparts(which('SubjectNeuroimaging')) filesep 'group_subjects_SUVR.xlsx'];
+directory = [fileparts(which('SubjectNeuroimaging')) filesep 'Converted data PET'];
+mkdir(directory);
+file = [directory filesep 'group_subjects_SUVR.xlsx'];
 ex = ExporterGroupSubjectST_XLS( ...
     'FILE', file, ...
     'GR', gr_st ...
+    );
+ex.get('SAVE');
+
+file = [directory filesep 'brain_atlas.xlsx'];
+ex = ExporterBrainAtlasXLS( ...
+    'FILE', file, ...
+    'BA', ba_st ...
     );
 ex.get('SAVE');

@@ -14,7 +14,9 @@ classdef SubjectNeuroimaging < Subject
 	%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the subject.
 	%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
 	%  <strong>9</strong> <strong>VOI_DICT</strong> 	VOI_DICT (data, idict) contains the variables of interest of the subject.
-	%  <strong>10</strong> <strong>NIFTI_FILE</strong> 	NIFTI_FILE (data, string) is direcotry to subject nifti data.
+	%  <strong>10</strong> <strong>RELATIVE_NIFTI_PATH</strong> 	RELATIVE_NIFTI_PATH (data, string) is the relative path to the subject NIfTI file.
+	%  <strong>11</strong> <strong>BASE_DIR</strong> 	BASE_DIR (data, string) is the base directory used to resolve the relative NIfTI file path.
+	%  <strong>12</strong> <strong>ABSOLUTE_NIFTI_PATH</strong> 	ABSOLUTE_NIFTI_PATH (query, string) is the absolute path to the subject NIfTI file, resolved from BASE_DIR and RELATIVE_NIFTI_PATH. This keeps the file location portable across different computers.
 	%
 	% SubjectNeuroimaging methods (constructor):
 	%  SubjectNeuroimaging - constructor
@@ -107,10 +109,20 @@ classdef SubjectNeuroimaging < Subject
 	% BUILD BRAPH2 7 class_name 1
 	
 	properties (Constant) % properties
-		NIFTI_FILE = 10; %CET: Computational Efficiency Trick
-		NIFTI_FILE_TAG = 'NIFTI_FILE';
-		NIFTI_FILE_CATEGORY = 4;
-		NIFTI_FILE_FORMAT = 2;
+		RELATIVE_NIFTI_PATH = 10; %CET: Computational Efficiency Trick
+		RELATIVE_NIFTI_PATH_TAG = 'RELATIVE_NIFTI_PATH';
+		RELATIVE_NIFTI_PATH_CATEGORY = 4;
+		RELATIVE_NIFTI_PATH_FORMAT = 2;
+		
+		BASE_DIR = 11; %CET: Computational Efficiency Trick
+		BASE_DIR_TAG = 'BASE_DIR';
+		BASE_DIR_CATEGORY = 4;
+		BASE_DIR_FORMAT = 2;
+		
+		ABSOLUTE_NIFTI_PATH = 12; %CET: Computational Efficiency Trick
+		ABSOLUTE_NIFTI_PATH_TAG = 'ABSOLUTE_NIFTI_PATH';
+		ABSOLUTE_NIFTI_PATH_CATEGORY = 6;
+		ABSOLUTE_NIFTI_PATH_FORMAT = 2;
 	end
 	methods % constructor
 		function sub = SubjectNeuroimaging(varargin)
@@ -133,7 +145,9 @@ classdef SubjectNeuroimaging < Subject
 			%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the subject.
 			%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
 			%  <strong>9</strong> <strong>VOI_DICT</strong> 	VOI_DICT (data, idict) contains the variables of interest of the subject.
-			%  <strong>10</strong> <strong>NIFTI_FILE</strong> 	NIFTI_FILE (data, string) is direcotry to subject nifti data.
+			%  <strong>10</strong> <strong>RELATIVE_NIFTI_PATH</strong> 	RELATIVE_NIFTI_PATH (data, string) is the relative path to the subject NIfTI file.
+			%  <strong>11</strong> <strong>BASE_DIR</strong> 	BASE_DIR (data, string) is the base directory used to resolve the relative NIfTI file path.
+			%  <strong>12</strong> <strong>ABSOLUTE_NIFTI_PATH</strong> 	ABSOLUTE_NIFTI_PATH (query, string) is the absolute path to the subject NIfTI file, resolved from BASE_DIR and RELATIVE_NIFTI_PATH. This keeps the file location portable across different computers.
 			%
 			% See also Category, Format.
 			
@@ -210,7 +224,7 @@ classdef SubjectNeuroimaging < Subject
 			%CET: Computational Efficiency Trick
 			
 			if nargin == 0
-				prop_list = [1 2 3 4 5 6 7 8 9 10];
+				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12];
 				return
 			end
 			
@@ -222,9 +236,9 @@ classdef SubjectNeuroimaging < Subject
 				case 3 % Category.PARAMETER
 					prop_list = 4;
 				case 4 % Category.DATA
-					prop_list = [5 9 10];
+					prop_list = [5 9 10 11];
 				case 6 % Category.QUERY
-					prop_list = 8;
+					prop_list = [8 12];
 				otherwise
 					prop_list = [];
 			end
@@ -250,7 +264,7 @@ classdef SubjectNeuroimaging < Subject
 			%CET: Computational Efficiency Trick
 			
 			if nargin == 0
-				prop_number = 10;
+				prop_number = 12;
 				return
 			end
 			
@@ -262,9 +276,9 @@ classdef SubjectNeuroimaging < Subject
 				case 3 % Category.PARAMETER
 					prop_number = 1;
 				case 4 % Category.DATA
-					prop_number = 3;
+					prop_number = 4;
 				case 6 % Category.QUERY
-					prop_number = 1;
+					prop_number = 2;
 				otherwise
 					prop_number = 0;
 			end
@@ -295,7 +309,7 @@ classdef SubjectNeuroimaging < Subject
 			%
 			% See also getProps, existsTag.
 			
-			check = prop >= 1 && prop <= 10 && round(prop) == prop; %CET: Computational Efficiency Trick
+			check = prop >= 1 && prop <= 12 && round(prop) == prop; %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
@@ -333,7 +347,7 @@ classdef SubjectNeuroimaging < Subject
 			%
 			% See also getProps, existsTag.
 			
-			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'VOI_DICT'  'NIFTI_FILE' })); %CET: Computational Efficiency Trick
+			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'VOI_DICT'  'RELATIVE_NIFTI_PATH'  'BASE_DIR'  'ABSOLUTE_NIFTI_PATH' })); %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
@@ -366,7 +380,7 @@ classdef SubjectNeuroimaging < Subject
 			%  getPropSettings, getPropDefault, checkProp.
 			
 			if ischar(pointer)
-				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'VOI_DICT'  'NIFTI_FILE' })); % tag = pointer %CET: Computational Efficiency Trick
+				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'VOI_DICT'  'RELATIVE_NIFTI_PATH'  'BASE_DIR'  'ABSOLUTE_NIFTI_PATH' })); % tag = pointer %CET: Computational Efficiency Trick
 			else % numeric
 				prop = pointer;
 			end
@@ -395,7 +409,7 @@ classdef SubjectNeuroimaging < Subject
 				tag = pointer;
 			else % numeric
 				%CET: Computational Efficiency Trick
-				subjectneuroimaging_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'VOI_DICT'  'NIFTI_FILE' };
+				subjectneuroimaging_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'VOI_DICT'  'RELATIVE_NIFTI_PATH'  'BASE_DIR'  'ABSOLUTE_NIFTI_PATH' };
 				tag = subjectneuroimaging_tag_list{pointer}; % prop = pointer
 			end
 		end
@@ -422,7 +436,7 @@ classdef SubjectNeuroimaging < Subject
 			prop = SubjectNeuroimaging.getPropProp(pointer);
 			
 			%CET: Computational Efficiency Trick
-			subjectneuroimaging_category_list = { 1  1  1  3  4  2  2  6  4  4 };
+			subjectneuroimaging_category_list = { 1  1  1  3  4  2  2  6  4  4  4  6 };
 			prop_category = subjectneuroimaging_category_list{prop};
 		end
 		function prop_format = getPropFormat(pointer)
@@ -448,7 +462,7 @@ classdef SubjectNeuroimaging < Subject
 			prop = SubjectNeuroimaging.getPropProp(pointer);
 			
 			%CET: Computational Efficiency Trick
-			subjectneuroimaging_format_list = { 2  2  2  8  2  2  2  2  10  2 };
+			subjectneuroimaging_format_list = { 2  2  2  8  2  2  2  2  10  2  2  2 };
 			prop_format = subjectneuroimaging_format_list{prop};
 		end
 		function prop_description = getPropDescription(pointer)
@@ -474,7 +488,7 @@ classdef SubjectNeuroimaging < Subject
 			prop = SubjectNeuroimaging.getPropProp(pointer);
 			
 			%CET: Computational Efficiency Trick
-			subjectneuroimaging_description_list = { 'ELCLASS (constant, string) is the class of the subject.'  'NAME (constant, string) is the name of the subject.'  'DESCRIPTION (constant, string) is the description of the subject.'  'TEMPLATE (parameter, item) is the template of the subject.'  'ID (data, string) is a few-letter code for the subject.'  'LABEL (metadata, string) is an extended label of the subject.'  'NOTES (metadata, string) are some specific notes about the subject.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'VOI_DICT (data, idict) contains the variables of interest of the subject.'  'NIFTI_FILE (data, string) is direcotry to subject nifti data.' };
+			subjectneuroimaging_description_list = { 'ELCLASS (constant, string) is the class of the subject.'  'NAME (constant, string) is the name of the subject.'  'DESCRIPTION (constant, string) is the description of the subject.'  'TEMPLATE (parameter, item) is the template of the subject.'  'ID (data, string) is a few-letter code for the subject.'  'LABEL (metadata, string) is an extended label of the subject.'  'NOTES (metadata, string) are some specific notes about the subject.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'VOI_DICT (data, idict) contains the variables of interest of the subject.'  'RELATIVE_NIFTI_PATH (data, string) is the relative path to the subject NIfTI file.'  'BASE_DIR (data, string) is the base directory used to resolve the relative NIfTI file path.'  'ABSOLUTE_NIFTI_PATH (query, string) is the absolute path to the subject NIfTI file, resolved from BASE_DIR and RELATIVE_NIFTI_PATH. This keeps the file location portable across different computers.' };
 			prop_description = subjectneuroimaging_description_list{prop};
 		end
 		function prop_settings = getPropSettings(pointer)
@@ -500,7 +514,11 @@ classdef SubjectNeuroimaging < Subject
 			prop = SubjectNeuroimaging.getPropProp(pointer);
 			
 			switch prop %CET: Computational Efficiency Trick
-				case 10 % SubjectNeuroimaging.NIFTI_FILE
+				case 10 % SubjectNeuroimaging.RELATIVE_NIFTI_PATH
+					prop_settings = Format.getFormatSettings(2);
+				case 11 % SubjectNeuroimaging.BASE_DIR
+					prop_settings = Format.getFormatSettings(2);
+				case 12 % SubjectNeuroimaging.ABSOLUTE_NIFTI_PATH
 					prop_settings = Format.getFormatSettings(2);
 				otherwise
 					prop_settings = getPropSettings@Subject(prop);
@@ -529,7 +547,11 @@ classdef SubjectNeuroimaging < Subject
 			prop = SubjectNeuroimaging.getPropProp(pointer);
 			
 			switch prop %CET: Computational Efficiency Trick
-				case 10 % SubjectNeuroimaging.NIFTI_FILE
+				case 10 % SubjectNeuroimaging.RELATIVE_NIFTI_PATH
+					prop_default = Format.getFormatDefault(2, SubjectNeuroimaging.getPropSettings(prop));
+				case 11 % SubjectNeuroimaging.BASE_DIR
+					prop_default = fileparts(which('SubjectNeuroimaging'));
+				case 12 % SubjectNeuroimaging.ABSOLUTE_NIFTI_PATH
 					prop_default = Format.getFormatDefault(2, SubjectNeuroimaging.getPropSettings(prop));
 				case 1 % SubjectNeuroimaging.ELCLASS
 					prop_default = 'SubjectNeuroimaging';
@@ -607,7 +629,11 @@ classdef SubjectNeuroimaging < Subject
 			prop = SubjectNeuroimaging.getPropProp(pointer);
 			
 			switch prop
-				case 10 % SubjectNeuroimaging.NIFTI_FILE
+				case 10 % SubjectNeuroimaging.RELATIVE_NIFTI_PATH
+					check = Format.checkFormat(2, value, SubjectNeuroimaging.getPropSettings(prop));
+				case 11 % SubjectNeuroimaging.BASE_DIR
+					check = Format.checkFormat(2, value, SubjectNeuroimaging.getPropSettings(prop));
+				case 12 % SubjectNeuroimaging.ABSOLUTE_NIFTI_PATH
 					check = Format.checkFormat(2, value, SubjectNeuroimaging.getPropSettings(prop));
 				otherwise
 					if prop <= 9
@@ -624,6 +650,47 @@ classdef SubjectNeuroimaging < Subject
 					'The value ' tostring(value, 100, ' ...') ' is not a valid property ' SubjectNeuroimaging.getPropTag(prop) ' (' SubjectNeuroimaging.getFormatTag(SubjectNeuroimaging.getPropFormat(prop)) ').'] ...
 					)
 			end
+		end
+	end
+	methods (Access=protected) % calculate value
+		function value = calculateValue(sub, prop, varargin)
+			%CALCULATEVALUE calculates the value of a property.
+			%
+			% VALUE = CALCULATEVALUE(EL, PROP) calculates the value of the property
+			%  PROP. It works only with properties with 5,
+			%  6, and 7. By default this function
+			%  returns the default value for the prop and should be implemented in the
+			%  subclasses of Element when needed.
+			%
+			% VALUE = CALCULATEVALUE(EL, PROP, VARARGIN) works with properties with
+			%  6.
+			%
+			% See also getPropDefaultConditioned, conditioning, preset, checkProp,
+			%  postset, postprocessing, checkValue.
+			
+			switch prop
+				case 12 % SubjectNeuroimaging.ABSOLUTE_NIFTI_PATH
+					base_dir = sub.get('BASE_DIR');
+					relative_path = sub.get('RELATIVE_NIFTI_PATH');
+					
+					if isempty(relative_path)
+					    value = '';
+					elseif isfolder(fileparts(relative_path)) || isfile(relative_path)
+					    value = relative_path;
+					elseif isempty(base_dir)
+					    value = relative_path;
+					else
+					    value = fullfile(base_dir, relative_path);
+					end
+					
+				otherwise
+					if prop <= 9
+						value = calculateValue@Subject(sub, prop, varargin{:});
+					else
+						value = calculateValue@Element(sub, prop, varargin{:});
+					end
+			end
+			
 		end
 	end
 	methods (Static) % GUI static methods
