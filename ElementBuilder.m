@@ -30,7 +30,7 @@ clear subclasses % clear the persisten cache so to update the subclasses list
 
 %%
 el_path = [filesep 'pipelines' filesep pipeline_folders{1}]
-el_class_list = {'ImporterGroupSubjectNeuroimaging_NIfTI'}
+el_class_list = {'ConverterNeuroimaging2RegionalValues'}
 add_elclasses_to_concreteelement(el_class_list)
 update_parent_subclasses_from_elclass_list(el_class_list, el_path)
 

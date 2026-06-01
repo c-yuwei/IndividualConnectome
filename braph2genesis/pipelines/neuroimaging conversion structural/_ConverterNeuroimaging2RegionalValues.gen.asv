@@ -57,13 +57,12 @@ BA_LIST (data, itemlist) is the list of brain atlases used to identify the brain
 %%% ¡prop!
 BA_NIFTI_FILES (data, stringlist) is the list of atlas NIfTI files aligned with BA_LIST.
 %%%% ¡default!
-{''}
+{}''
 
 %%% ¡prop!
 BA_MAPPING_FILES (data, stringlist) is the list of atlas mapping CSV files aligned with BA_LIST.
 %%%% ¡default!
-{''}
-
+''
 %%% ¡prop!
 GR_NEUROIMAGING (data, item) is the group of subject-level neuroimaging data to convert.
 %%%% ¡settings!

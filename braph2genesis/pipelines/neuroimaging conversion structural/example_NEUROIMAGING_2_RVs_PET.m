@@ -81,8 +81,8 @@ cn = ConverterNeuroimaging2RegionalValues( ...
     'GR_LIST_ANAT_REF', {gr_anat_gmprob, gr_anat_wmprob}, ...
     'THRESHOLD_ANAT_REF', 0.5);
 
-gr_st = cn.get('GR_ST')
-ba_st = cn.get('BA')
+gr_st = cn.get('GR_ST');
+ba_st = cn.get('BA');
 
 %% Export data
 directory = [fileparts(which('SubjectNeuroimaging')) filesep 'Converted data PET'];
