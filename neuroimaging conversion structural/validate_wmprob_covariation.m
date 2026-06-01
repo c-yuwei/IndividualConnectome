@@ -1,16 +1,20 @@
-%% validate_gmprob_covariation
-%  Validate the covariation mechanism of create_data_NIfTI_GMProb.
+%% validate_wmprob_covariation
+%  Validate the covariation mechanism of create_data_NIfTI_WMProb.
 %
-%  Approach: randomly pick 5 brain regions as covarying regions, generate data,
-%            binarize with corrcoef >= threshold, and check whether the
+%  Approach: randomly pick a few brain regions as covarying regions, generate
+%            data, binarize with corrcoef >= threshold, and check whether the
 %            covarying block is fully recovered.
+%
+%  Note: the WM generator is hardcoded to the td_atlas (~10 regions), which is
+%        much smaller than the aal120 atlas used by the GM validator. The
+%        covariation mechanism itself is identical to the GM case.
 %
 %  Usage: just run this script in MATLAB. No arguments needed.
 
 %% ---- Config ----
 NUM_REPEATS     = 5;        % Number of random trials (how many random trials)
 NUM_SUBJECTS    = 10;       % Subjects generated per trial (subjects per trial)
-NUM_COVARYING   = 5;        % Covarying ROIs selected per trial (covarying ROIs per trial)
+NUM_COVARYING   = 3;        % Covarying ROIs selected per trial (td_atlas is small, ~10 regions)
 BASE_SEED       = 42;       % Base seed; round r uses BASE_SEED + r - 1
 THRESHOLD       = 0.95;     % Correlation binarization threshold (correlation binarization)
 FAULT_TOLERANCE = 3;        % Max allowed spurious non-covarying regions (max spurious non-covarying regions)
@@ -25,7 +29,7 @@ this_dir = fileparts(mfilename('fullpath'));
 if isempty(this_dir); this_dir = pwd; end
 addpath(this_dir);
 
-atlas_path = fullfile(this_dir, 'Example atlases NIfTI', 'aal120_atlas.nii');
+atlas_path = fullfile(this_dir, 'Example atlases NIfTI', 'td_atlas.nii');
 assert(isfile(atlas_path), 'Atlas not found: %s', atlas_path);
 
 %% ---- Get the number of brain regions (same logic as the generation function) ----
@@ -35,7 +39,7 @@ region_labels(region_labels == 0) = [];     % Exclude background label = 0
 num_regions   = numel(region_labels);
 clear atlas_data                            % Free memory
 
-fprintf('=== GMProb covariation validation (threshold=%.2f, fault_tol=%d) ===\n', ...
+fprintf('=== WMProb covariation validation (threshold=%.2f, fault_tol=%d) ===\n', ...
     THRESHOLD, FAULT_TOLERANCE);
 fprintf('Regions: %d | subjects: %d | repeats: %d\n\n', ...
     num_regions, NUM_SUBJECTS, NUM_REPEATS);
@@ -46,7 +50,7 @@ pass_flags = false(1, NUM_REPEATS);
 for r = 1:NUM_REPEATS
     seed = BASE_SEED + r - 1;
 
-    % Use the seed to randomly select 5 regions as covarying regions
+    % Use the seed to randomly select the covarying regions
     rng(seed);
     covar_idx = sort(randperm(num_regions, NUM_COVARYING));
 
@@ -57,11 +61,11 @@ for r = 1:NUM_REPEATS
     mkdir(out_dir);
 
     % Call the generation function directly so all of its output is printed
-    fprintf('--- Generating GM data for seed %d ---\n', seed);
-    create_data_NIfTI_GMProb(atlas_path, out_dir, {'Group1'}, NUM_SUBJECTS, seed, covar_idx);
+    fprintf('--- Generating WM data for seed %d ---\n', seed);
+    create_data_NIfTI_WMProb(atlas_path, out_dir, {'Group1'}, NUM_SUBJECTS, seed, covar_idx);
 
     % Read the ROI mean matrix [subjects x regions]
-    means_xlsx = fullfile(out_dir, 'reference_data', 'group_roi_means_gmprob.xlsx');
+    means_xlsx = fullfile(out_dir, 'reference_data', 'group_roi_means_wmprob.xlsx');
     raw  = readcell(means_xlsx);
     M    = cell2mat(raw(2:end, 4:end));     % Skip the header row + ID/Label/Notes columns
 
@@ -76,8 +80,8 @@ for r = 1:NUM_REPEATS
     blockmask(covar_idx, covar_idx) = true;  % True inside the covarying block
     blockmask(logical(eye(n))) = false;      % Exclude the diagonal
 
-    % Check block recovery: are all C(5,2)=10 pairs in the covarying block >= threshold?
-    within_pairs = nchoosek(numel(covar_idx), 2);   % Should be 10
+    % Check block recovery: are all C(NUM_COVARYING,2) pairs in the block >= threshold?
+    within_pairs = nchoosek(numel(covar_idx), 2);   % C(3,2) = 3
     TP = nnz(B & offdiag & blockmask) / 2;          % Correctly detected high-correlation pairs
     FN = within_pairs - TP;                          % Missed pairs (must be 0)
 
@@ -88,7 +92,7 @@ for r = 1:NUM_REPEATS
     fault_count = nnz(touched & is_noncov);          % Number of spurious non-covarying regions
 
     % Echo check: do the covarying regions recorded in the groundtruth xlsx match the input?
-    gt = readtable(fullfile(out_dir, 'reference_data', 'groundtruth_covarying_rois_gmprob.xlsx'));
+    gt = readtable(fullfile(out_dir, 'reference_data', 'groundtruth_covarying_rois_wmprob.xlsx'));
     gt_idx = gt.RegionIndex(gt.IsCovarying ~= 0)';
     echo_ok = isequal(sort(gt_idx), sort(covar_idx));
 
