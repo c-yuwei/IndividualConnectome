@@ -10039,3 +10039,24 @@ Results/FDG PET/indiviudalConntome/mahala. distance distance meansure.png
 Results/Plotsforpaper/makeplots.m
 Results/SaveMeanandCI.m
 test.b2
+group_data/JiaWei Data/CamCAN/OneDrive_1_23-04-2026.zip
+group_data/JiaWei Data/CamCAN/camcan.zip
+braph2individualconnectome/pipelines/distance_suvr connectivity/SUVRDistanceConMx.m
+braph2individualconnectome/pipelines/divergence_suvr connectivity/check_diverSimulateData.m
+braph2individualconnectome/pipelines/divergence_suvr connectivity/example_Individual_DivergenceCon_WU.m
+braph2individualconnectome/pipelines/divergence_suvr connectivity/example_Individual_DivergenceCon_WU_diverse.asv
+braph2individualconnectome/pipelines/divergence_suvr connectivity/example_Individual_DivergenceCon_WU_diverse.m
+braph2individualconnectome/pipelines/divergence_suvr connectivity/example_Individual_DivergenceCon_WU_diverse_PDF.asv
+braph2individualconnectome/pipelines/divergence_suvr connectivity/example_Individual_DivergenceCon_WU_diverse_PDF.m
+braph2individualconnectome/pipelines/region-of-interest suvr/brain_sig_nodes.png
+braph2individualconnectome/pipelines/region-of-interest suvr/Example data Nifti diverse PDF/atlas.xlsx
+braph2individualconnectome/pipelines/region-of-interest suvr/Example data Nifti diverse PDF/Group1.vois.xlsx
+braph2individualconnectome/pipelines/region-of-interest suvr/Example data Nifti diverse PDF/Group2.vois.xlsx
+braph2individualconnectome/pipelines/region-of-interest suvr/Example data Nifti diverse SUVR for perturbation/atlas.xlsx
+braph2individualconnectome/pipelines/region-of-interest suvr/Example data Nifti diverse SUVR for perturbation/Group1.vois.xlsx
+braph2individualconnectome/pipelines/region-of-interest suvr/Example data Nifti diverse SUVR for perturbation/Group2.vois.xlsx
+braph2individualconnectome/pipelines/region-of-interest suvr/Example data Nifti diverse Test/atlas.xlsx
+braph2individualconnectome/pipelines/region-of-interest suvr/Example data Nifti diverse Test/Group1.vois.xlsx
+braph2individualconnectome/pipelines/region-of-interest suvr/Example data Nifti diverse Test/Group2.vois.xlsx
+braph2individualconnectome/pipelines/region-of-interest suvr/Example data Nifti/atlas.xlsx
+braph2individualconnectome/pipelines/region-of-interest suvr/example_SUVR_GroupComparison.asv
