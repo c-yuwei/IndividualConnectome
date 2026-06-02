@@ -401,5 +401,5 @@ for h = 1:length(tasks)
 end
 
 %% Save results
-save('classification_CombinedMultilayerConMx_SUVR_BalancedNewDistance.mat', 'results');
+save('Results/classification_CombinedMultilayerConMx_SUVR_BalancedNewDistance.mat', 'results');
 

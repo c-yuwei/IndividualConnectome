@@ -91,55 +91,42 @@ gr2_suvr = SUVRConstructor('GR_PET', gr2_PET, ...
     'REF_REGION_LIST', ref_region_list, ...
     'SUVR_REGION_SELECTION', selected_br_dict);
 SUVR_gr2 = gr2_suvr.get('GR');
+%% SUVR
+a_WU1_SUVR = AnalyzeGroup_ST_WU( ...
+    'GR', SUVR_gr1, ...
+    'CORRELATION_RULE', Correlation.PEARSON ...
+    );
 
+a_WU2_SUVR = AnalyzeGroup_ST_WU( ...
+    'TEMPLATE', a_WU1_SUVR, ...
+    'GR', SUVR_gr2 ...
+    );
+c_WU_SUVR = CompareGroup( ...
+    'P', 100, ...
+    'A1', a_WU1_SUVR, ...
+    'A2', a_WU2_SUVR, ...
+    'WAITBAR', true, ...
+    'VERBOSE', false, ...
+    'MEMORIZE', true ...
+    );
+warn_id = 'BRAPH2:ComparisonEnsembleBrainPF_NU';
+warn_state = warning('query', warn_id);
+warning('off', warn_id);
 
-%% comparison on SUVR
-% a_WU1_SUVR = AnalyzeGroup_ST_WU( ...
-%     'GR', SUVR_gr1, ...
-%     'CORRELATION_RULE', Correlation.PEARSON ...
-%     );
-% 
-% a_WU2_SUVR = AnalyzeGroup_ST_WU( ...
-%     'TEMPLATE', a_WU1_SUVR, ...
-%     'GR', SUVR_gr2 ...
-%     );
-% c_WU_SUVR = CompareGroup( ...
-%     'P', 100, ...
-%     'A1', a_WU1_SUVR, ...
-%     'A2', a_WU2_SUVR, ...
-%     'WAITBAR', true, ...
-%     'VERBOSE', false, ...
-%     'MEMORIZE', true ...
-%     );
-% c_WU_SUVR.get('COMPARISON', 'Clustering').get('PFBG').set('FDR','on');
-% 
-% Clustering_WU_diff_SUVR = c_WU_SUVR.get('COMPARISON', 'Clustering').get('DIFF');
-% Clustering_WU_p1_SUVR = c_WU_SUVR.get('COMPARISON', 'Clustering').get('P1');
-% Clustering_WU_p2_SUVR = c_WU_SUVR.get('COMPARISON', 'Clustering').get('P2');
-% Clustering_WU_cil_SUVR = c_WU_SUVR.get('COMPARISON', 'Clustering').get('CIL');
-% Clustering_WU_ciu_SUVR = c_WU_SUVR.get('COMPARISON', 'Clustering').get('CIU');
-% 
-% GlobalEfficiency_av_WU_diff_SUVR = c_WU_SUVR.get('COMPARISON', 'GlobalEfficiency').get('DIFF');
-% GlobalEfficiency_av_WU_p1_SUVR = c_WU_SUVR.get('COMPARISON', 'GlobalEfficiency').get('P1');
-% GlobalEfficiency_av_WU_p2_SUVR = c_WU_SUVR.get('COMPARISON', 'GlobalEfficiency').get('P2');
-% GlobalEfficiency_av_WU_cil_SUVR = c_WU_SUVR.get('COMPARISON', 'GlobalEfficiency').get('CIL');
-% GlobalEfficiency_av_WU_ciu_SUVR = c_WU_SUVR.get('COMPARISON', 'GlobalEfficiency').get('CIU');
-% 
-% distance_WU_diff_SUVR = c_WU_SUVR.get('COMPARISON', 'Distance').get('DIFF');
-% distance_WU_p1_SUVR = c_WU_SUVR.get('COMPARISON', 'Distance').get('P1');
-% distance_WU_p2_SUVR = c_WU_SUVR.get('COMPARISON', 'Distance').get('P2');
-% distance_WU_cil_SUVR = c_WU_SUVR.get('COMPARISON', 'Distance').get('CIL');
-% distance_WU_ciu_SUVR = c_WU_SUVR.get('COMPARISON', 'Distance').get('CIU');
-% % % 
-% fun10 = PDF_gr1.get('SUB_DICT').get('IT',10).get('FUN');
-% fun10_2 = PDF_gr2.get('SUB_DICT').get('IT',10).get('FUN');
-% fun10_1 = PDF_gr1.get('SUB_DICT').get('IT',10).get('FUN');
-% region25_fun10_2 = fun10_2(:,21);region25_fun10_1 = fun10_1(:,21);
-% figure;
-% plot(region25_fun10_2);
-% hold on;
-% plot(region25_fun10_1);legend('region 21 group 2','region 21 group 1');
-% hold off
+for m = 1:numel(measures)
+    meas = measures{m};
+
+    % --- get PFBs ---
+    pfb_SUVR = c_WU_SUVR.get('COMPARISON', meas).get('PFBG');
+
+    % --- copy SPH_DICT from the reference comparison ---
+    pfb_SUVR.set('SPH_DICT', pfb_SUVR.get('SPH_DICT'));
+
+    % --- enable FDR ---
+    pfb_SUVR.set('FDR', 'on');
+
+end
+warning(warn_state.state, warn_id);
 
 %% divergence
 g_temp  = GraphWU('STANDARDIZE_RULE', 'range');
@@ -177,12 +164,27 @@ a_WU2_correlation = AnalyzeEnsemble_FUN_WU( ...
     );
 gr2_corr = a_WU2_correlation.get('G_DICT');
 %% perturbation
-im_gr1_pert = IndividualPerturbationConConstructor('GR_SUVR', SUVR_gr1,'GR_SUVR_REF',SUVR_gr1);
+% im_gr1_pert = IndividualPerturbationConConstructor('GR_SUVR', SUVR_gr1,'GR_SUVR_REF',SUVR_gr1);
+% Con_gr1_Perturbation = im_gr1_pert.get('GR');
+% im_gr2_pert = IndividualPerturbationConConstructor('GR_SUVR', SUVR_gr2,'GR_SUVR_REF',SUVR_gr1);
+% Con_gr2_Perturbation = im_gr2_pert.get('GR');
+% a_WU1_pert = AnalyzeEnsemble_CON_WU('GR', Con_gr1_Perturbation); % Analyze Group 1 % Group 1 Analysis
+% a_WU2_pert = AnalyzeEnsemble_CON_WU('TEMPLATE', a_WU1_pert,'GR', Con_gr2_Perturbation); % Analyze Group 2 % Group 2 Analysis
+
+% --- build perturbation groups (as you already do) ---
+im_gr1_pert = IndividualPerturbationConConstructor('GR_SUVR', SUVR_gr1, 'GR_SUVR_REF', SUVR_gr1);
 Con_gr1_Perturbation = im_gr1_pert.get('GR');
-im_gr2_pert = IndividualPerturbationConConstructor('GR_SUVR', SUVR_gr2,'GR_SUVR_REF',SUVR_gr1);
+
+im_gr2_pert = IndividualPerturbationConConstructor('GR_SUVR', SUVR_gr2, 'GR_SUVR_REF', SUVR_gr1);
 Con_gr2_Perturbation = im_gr2_pert.get('GR');
-a_WU1_pert = AnalyzeEnsemble_CON_WU('GR', Con_gr1_Perturbation); % Analyze Group 1 % Group 1 Analysis
-a_WU2_pert = AnalyzeEnsemble_CON_WU('TEMPLATE', a_WU1_pert,'GR', Con_gr2_Perturbation); % Analyze Group 2 % Group 2 Analysis
+
+% ========= MINIMAL ADDITION: set negative weights to 0 =========
+Con_gr1_Perturbation = clamp_group_con_neg_to_zero(Con_gr1_Perturbation);
+Con_gr2_Perturbation = clamp_group_con_neg_to_zero(Con_gr2_Perturbation);
+
+% --- then analyse as usual ---
+a_WU1_pert = AnalyzeEnsemble_CON_WU('GR', Con_gr1_Perturbation);
+a_WU2_pert = AnalyzeEnsemble_CON_WU('TEMPLATE', a_WU1_pert, 'GR', Con_gr2_Perturbation);
 
 
 %% comparison
@@ -191,7 +193,7 @@ c_WU_div = CompareEnsemble('P', 100, 'A1', a_WU1_div, 'A2', a_WU2_div); % Compar
 
 c_WU_pert = CompareEnsemble('P', 100, 'A1', a_WU1_pert, 'A2', a_WU2_pert, 'MEMORIZE', true); % Compare Groups % Group Comparison
 c_WU_dist = CompareEnsemble('P', 100, 'A1', a_WU1_dist, 'A2', a_WU2_dist, 'MEMORIZE', true); % Compare Groups % Group Comparison
-%% 
+%% correlation
 measures = {'Strength', 'GlobalEfficiency', 'Clustering'};
 warn_id = 'BRAPH2:ComparisonEnsembleBrainPF_NU';
 warn_state = warning('query', warn_id);
@@ -213,7 +215,7 @@ for m = 1:numel(measures)
 end
 warning(warn_state.state, warn_id);
 
-%%
+%% divergence
 
 
 for m = 1:numel(measures)
@@ -234,8 +236,6 @@ warning(warn_state.state, warn_id);
 
 %% distance connectome
 
-
-
 for m = 1:numel(measures)
     meas = measures{m};
 
@@ -251,8 +251,36 @@ for m = 1:numel(measures)
 end
 warning(warn_state.state, warn_id);
 
+%% perturbation connectome
 
-%%
+for m = 1:numel(measures)
+    meas = measures{m};
+
+    % --- get PFBs ---
+    pfb_pert = c_WU_pert.get('COMPARISON', meas).get('PFB');
+
+    % --- copy SPH_DICT from the reference comparison ---
+    pfb_pert.set('SPH_DICT', pfb_pert.get('SPH_DICT'));
+
+    % --- enable FDR ---
+    pfb_pert.set('FDR', 'on');
+
+end
+warning(warn_state.state, warn_id);
+%% suvr
+c_WU_SUVR.get('COMPARISON', 'Clustering').get('PFBG').get('DRAWN')
+c_WU_SUVR.get('COMPARISON', 'Clustering').get('PFBG').get('DRAW')
+c_WU_SUVR.get('COMPARISON', 'Clustering').get('PFBG').get('SHOW')
+
+c_WU_SUVR.get('COMPARISON', 'GlobalEfficiency').get('PFBG').get('DRAWN')
+c_WU_SUVR.get('COMPARISON', 'GlobalEfficiency').get('PFBG').get('DRAW')
+c_WU_SUVR.get('COMPARISON', 'GlobalEfficiency').get('PFBG').get('SHOW')
+
+c_WU_SUVR.get('COMPARISON', 'Strength').get('PFBG').get('DRAWN')
+c_WU_SUVR.get('COMPARISON', 'Strength').get('PFBG').get('DRAW')
+c_WU_SUVR.get('COMPARISON', 'Strength').get('PFBG').get('SHOW')
+
+%% clustering
 c_WU_div.get('COMPARISON', 'Clustering').get('PFB').get('DRAWN')
 c_WU_div.get('COMPARISON', 'Clustering').get('PFB').get('DRAW')
 c_WU_div.get('COMPARISON', 'Clustering').get('PFB').get('SHOW')
@@ -261,3 +289,65 @@ c_WU_dist.get('COMPARISON', 'Clustering').get('PFB').get('DRAWN')
 c_WU_dist.get('COMPARISON', 'Clustering').get('PFB').get('DRAW')
 c_WU_dist.get('COMPARISON', 'Clustering').get('PFB').get('SHOW')
 
+c_WU_corr.get('COMPARISON', 'Clustering').get('PFB').get('DRAWN')
+c_WU_corr.get('COMPARISON', 'Clustering').get('PFB').get('DRAW')
+c_WU_corr.get('COMPARISON', 'Clustering').get('PFB').get('SHOW')
+
+c_WU_pert.get('COMPARISON', 'Clustering').get('PFB').get('DRAWN')
+c_WU_pert.get('COMPARISON', 'Clustering').get('PFB').get('DRAW')
+c_WU_pert.get('COMPARISON', 'Clustering').get('PFB').get('SHOW')
+%% GlobalEfficiancy
+c_WU_div.get('COMPARISON', 'GlobalEfficiency').get('PFB').get('DRAWN')
+c_WU_div.get('COMPARISON', 'GlobalEfficiency').get('PFB').get('DRAW')
+c_WU_div.get('COMPARISON', 'GlobalEfficiency').get('PFB').get('SHOW')
+
+c_WU_dist.get('COMPARISON', 'GlobalEfficiency').get('PFB').get('DRAWN')
+c_WU_dist.get('COMPARISON', 'GlobalEfficiency').get('PFB').get('DRAW')
+c_WU_dist.get('COMPARISON', 'GlobalEfficiency').get('PFB').get('SHOW')
+
+c_WU_corr.get('COMPARISON', 'GlobalEfficiency').get('PFB').get('DRAWN')
+c_WU_corr.get('COMPARISON', 'GlobalEfficiency').get('PFB').get('DRAW')
+c_WU_corr.get('COMPARISON', 'GlobalEfficiency').get('PFB').get('SHOW')
+
+c_WU_pert.get('COMPARISON', 'GlobalEfficiency').get('PFB').get('DRAWN')
+c_WU_pert.get('COMPARISON', 'GlobalEfficiency').get('PFB').get('DRAW')
+c_WU_pert.get('COMPARISON', 'GlobalEfficiency').get('PFB').get('SHOW')
+%% Strength
+c_WU_div.get('COMPARISON', 'Strength').get('PFB').get('DRAWN')
+c_WU_div.get('COMPARISON', 'Strength').get('PFB').get('DRAW')
+c_WU_div.get('COMPARISON', 'Strength').get('PFB').get('SHOW')
+
+c_WU_dist.get('COMPARISON', 'Strength').get('PFB').get('DRAWN')
+c_WU_dist.get('COMPARISON', 'Strength').get('PFB').get('DRAW')
+c_WU_dist.get('COMPARISON', 'Strength').get('PFB').get('SHOW')
+
+c_WU_corr.get('COMPARISON', 'Strength').get('PFB').get('DRAWN')
+c_WU_corr.get('COMPARISON', 'Strength').get('PFB').get('DRAW')
+c_WU_corr.get('COMPARISON', 'Strength').get('PFB').get('SHOW')
+
+c_WU_pert.get('COMPARISON', 'Strength').get('PFB').get('DRAWN')
+c_WU_pert.get('COMPARISON', 'Strength').get('PFB').get('DRAW')
+c_WU_pert.get('COMPARISON', 'Strength').get('PFB').get('SHOW')
+
+
+% ===== helper (put at end of the same .m file, or separate file on path) =====
+function GR = clamp_group_con_neg_to_zero(GR)
+    sub_dict = GR.get('SUB_DICT');
+    nSub = sub_dict.get('LENGTH');
+
+    for i = 1:nSub
+        sub = sub_dict.get('IT', i);
+
+        % Most BRAPH2 CON subjects store connectivity in property 'CON'
+        con = sub.get('CON');
+
+        % single-layer case: one matrix
+        A = con;
+        A(A < 0) = 0;
+        A(1:size(A,1)+1:end) = 0;
+        A = (A + A.')/2;
+        con = A;
+
+        sub.set('CON', con);
+    end
+end

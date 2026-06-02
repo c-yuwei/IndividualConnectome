@@ -2,13 +2,14 @@
 % 
 % 
 mat_files  = {'Classification_SUVRVectorWithoutStandardizeAndSemipositiveBalanced(CNpos)WithVOI.mat',
-    'classification_SingleLayer_SUVR_Balanced(CN pos).mat'
+    'classification_SingleLayer_SUVR_Balanced(CN pos).mat',
+    'classification_DistanceSingleLayer_Balanced(CN pos)NEW_ref_distance.mat',
     'classification_DistanceSUVRDoubleLayer_Balanced(CN pos)NEW_ref_distance.mat',
     'CorrelationSUVRDoubleLayer_Balanced(CN pos).mat',
     'PerturbationSUVRDoubleLayer_Balanced(CN_pos).mat',
     'DivergenceSUVRDoubleLayer_Balanced(CN pos).mat',
     'classification_CombinedMultilayerConMx_SUVR_BalancedNewDistance.mat'};
-methods = {'SUVR Vector' 'SUVR Matrix'  'Distance' 'correlation' 'Perturbation' 'divergence' 'Multilayer' };
+methods = {'SUVR Vector' 'SUVR Matrix'  'Distance Single' 'Distance Double' 'correlation' 'Perturbation' 'divergence' 'Multilayer' };
 
 % 
 % mat_files  = {'Classification_SUVRVectorWithoutStandardizeAndSemipositiveBalanced(CNpos)WithVOI.mat',

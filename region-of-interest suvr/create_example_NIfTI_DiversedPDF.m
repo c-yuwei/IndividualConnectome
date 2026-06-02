@@ -64,13 +64,6 @@ function create_example_NIfTI(atlas_path, output_dir, group_names, num_files_per
     special_range = special_range(special_range >= 1 & special_range <= num_regions);
 
     % ==========================
-    % Simulation controls
-    % ==========================
-    % Mixture controls (Group2, special ROIs)
-    w1_fixed = 0.25;         % side weight (0.15~0.25 also ok)
-    small_sd_ratio = 0.35;   % component std ratio
-
-    % ==========================
     % Precompute subject-level ROI mean vectors with shared covariance
     % ==========================
     mu_vec = global_mean * ones(1, num_regions);
@@ -156,28 +149,12 @@ function create_example_NIfTI(atlas_path, output_dir, group_names, num_files_per
                         simulated_values = zeros(n_vox, 1);
                         simulated_values(comp_choice)  = (mu - delta) + small_std * randn(sum(comp_choice), 1);
                         simulated_values(~comp_choice) = (mu + delta) + small_std * randn(sum(~comp_choice), 1);
-                        % % Group2: trimodal symmetric mixture (different PDF shape)
-                        % w1 = w1_fixed;
-                        % w2 = 1 - 2*w1;
-                        % weights = [w1, w2, w1];
-                        % 
-                        % small_sd = min(small_sd_ratio * sd, 0.95 * sd);
-                        % 
-                        % % Match theoretical variance BEFORE clipping:
-                        % % Var = small_sd^2 + 2*w1*delta^2 => delta = sqrt((sd^2-small_sd^2)/(2*w1))
-                        % delta = sqrt(max((sd^2 - small_sd^2) / (2*w1), 0));
-                        % 
-                        % comp_id = randsample(1:3, n_vox, true, weights);
-                        % simulated_values = zeros(n_vox, 1);
-                        % simulated_values(comp_id == 1) = (mu - delta) + small_sd * randn(sum(comp_id == 1), 1);
-                        % simulated_values(comp_id == 2) = mu           + small_sd * randn(sum(comp_id == 2), 1);
-                        % simulated_values(comp_id == 3) = (mu + delta) + small_sd * randn(sum(comp_id == 3), 1);
+
                     end
                 else
                     % Non-special: identical unimodal Gaussian in both groups
                     simulated_values = mu + sd * randn(n_vox, 1);
                 end
-
 
 
                 % Force sample mean = mu (critical for null mean/distance baseline)

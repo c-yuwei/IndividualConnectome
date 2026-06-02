@@ -270,12 +270,10 @@ end
 warning(warn_state.state, warn_id);
 
 %% suvr
-c_WU_SUVR.get('COMPARISON', 'Clustering').get('PFBG').set('VIEW',[0 90])
 c_WU_SUVR.get('COMPARISON', 'Clustering').get('PFBG').get('DRAWN')
 c_WU_SUVR.get('COMPARISON', 'Clustering').get('PFBG').get('DRAW')
 c_WU_SUVR.get('COMPARISON', 'Clustering').get('PFBG').get('SHOW')
 % 
-c_WU_SUVR.get('COMPARISON', 'GlobalEfficiency').get('PFBG').set('VIEW',[0 90])
 c_WU_SUVR.get('COMPARISON', 'GlobalEfficiency').get('PFBG').get('DRAWN')
 c_WU_SUVR.get('COMPARISON', 'GlobalEfficiency').get('PFBG').get('DRAW')
 c_WU_SUVR.get('COMPARISON', 'GlobalEfficiency').get('PFBG').get('SHOW')

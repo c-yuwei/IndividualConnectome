@@ -44,6 +44,15 @@ function create_example_NIfTI(atlas_path, output_dir, group_names, num_files_per
     region_std_headers = strcat("Region_", string(region_labels), "_Std");
     vois_headers = [{'Subject ID', 'Age', 'Sex', 'Education'}, region_mean_headers{:}, region_std_headers{:}];
 
+    shared_means = zeros(num_files_per_group, num_regions);
+    shared_stds  = zeros(num_files_per_group, num_regions);
+
+    for file_idx = 1:num_files_per_group
+        for region_idx = 1:num_regions
+            shared_means(file_idx, region_idx) = abs((rand + 1) * 10);
+            shared_stds(file_idx, region_idx)  = abs(1 + rand * 9);
+        end
+    end
     for group_idx = 1:length(group_names)
         group_name = group_names{group_idx};
         group_dir = fullfile(output_dir, group_name);
@@ -105,8 +114,10 @@ function create_example_NIfTI(atlas_path, output_dir, group_names, num_files_per
             % Non-special: Independent as before
             non_special_idxs = setdiff(1:num_regions, special_idxs);
             for region_idx = non_special_idxs
-                mean_val = abs((rand + 1) * 10);  % Your original
-                std_val = abs(1 + rand * 9);
+                % mean_val = abs((rand + 1) * 10);  % Your original
+                % std_val = abs(1 + rand * 9);
+                mean_val = shared_means(file_idx, region_idx);
+                std_val  = shared_stds(file_idx, region_idx);
                 means_all_regions(region_idx) = mean_val;
                 stds_all_regions(region_idx) = std_val;
             end

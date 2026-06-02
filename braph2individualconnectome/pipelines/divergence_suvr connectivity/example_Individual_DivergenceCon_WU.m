@@ -47,11 +47,11 @@ mapping_path_dict = IndexedDictionary( ...
     'IT_LIST', {FILE_PATH('PATH', which('AAL2_Atlas_Labels.csv'))} ...
     );
 
-ref_region_list = {2001}; % Reference region label
+ref_region_list = {2611}; % Reference region label
 
 atlas = ba;
 br_dict = atlas.get('BR_DICT');
-selected_ids = num2cell(1:94);
+selected_ids = num2cell(21:40);
 selected_br = cellfun(@(id) br_dict.get('IT', id), selected_ids, 'UniformOutput', false);
 selected_br_dict = IndexedDictionary('IT_CLASS', 'BrainRegion', 'IT_LIST', selected_br);
 
@@ -73,6 +73,8 @@ gr2 = PDFConstructor('GR_PET', gr2_PET, ...
     'REF_REGION_LIST', ref_region_list, ...
     'PDF_REGION_SELECTION', selected_br_dict);
 PDF_gr2 = gr2.get('GR');
+
+
 
 
 %% Load Groups of SubjectCON Correlation based
