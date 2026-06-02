@@ -9379,3 +9379,580 @@ recyclle/SVMPerturbation.m
 *.pdf
 >>>>>>> Stashed changes
 *.nii
+Results/zhilei/spe_classification_binary.eps
+Results/zhilei/sen_classification_binary.eps
+Results/zhilei/baseline CN AD.jpg
+Results/zhilei/AUC_classification_binary_zhile.eps
+Results/ROI_ploting.m
+Results/Plotsforpaper/svg_per_subject/subject_006.svg
+Results/Plotsforpaper/svg_per_subject/subject_005.svg
+Results/Plotsforpaper/svg_per_subject/subject_004.svg
+Results/Plotsforpaper/svg_per_subject/subject_003.svg
+Results/Plotsforpaper/svg_per_subject/subject_002.svg
+Results/Plotsforpaper/svg_per_subject/subject_001.svg
+Results/Plotsforpaper/suvr4.svg
+Results/Plotsforpaper/suvr3.svg
+Results/Plotsforpaper/suvr2.svg
+Results/Plotsforpaper/suvr.svg
+Results/Plotsforpaper/schemetic pipeline of Braph2IndiviudualConnectome.drawio4.svg
+Results/Plotsforpaper/schemetic pipeline of Braph2IndiviudualConnectome.drawio3.svg.2025_11_29_10_22_11.0.svg
+Results/Plotsforpaper/schemetic pipeline of Braph2IndiviudualConnectome.drawio3.svg
+Results/Plotsforpaper/schemetic pipeline of Braph2IndiviudualConnectome.drawio3.pdf
+Results/Plotsforpaper/schemetic pipeline of Braph2IndiviudualConnectome.drawio2.svg
+Results/Plotsforpaper/schemetic pipeline of Braph2IndiviudualConnectome.drawio2.pdf
+Results/Plotsforpaper/schemetic pipeline of Braph2IndiviudualConnectome.drawio.svg
+Results/Plotsforpaper/schemetic pipeline of Braph2IndiviudualConnectome.drawio.pdf
+Results/Plotsforpaper/schematic plots/perturbation schemetic.svg
+Results/Plotsforpaper/schematic plots/distance schemetic.svg
+Results/Plotsforpaper/schematic plots/corr.svg
+Results/Plotsforpaper/reference network.svg
+Results/Plotsforpaper/pipeline_Elisa.svg
+Results/Plotsforpaper/perturbed network.svg
+Results/Plotsforpaper/pert connectome.svg
+Results/Plotsforpaper/pdf3.svg
+Results/Plotsforpaper/pdf2.svg
+Results/Plotsforpaper/pdf.svg
+Results/Plotsforpaper/js_divergence_illustration.svg
+Results/Plotsforpaper/JS divergence2.svg
+Results/Plotsforpaper/JS divergence.svg
+Results/Plotsforpaper/div connectome.svg
+Results/Plotsforpaper/distance.svg
+Results/Plotsforpaper/dist connectome.svg
+Results/Plotsforpaper/deviation network.svg
+Results/Plotsforpaper/correlation.svg
+Results/Plotsforpaper/correlation r.svg
+Results/Plotsforpaper/correlation pdf.svg
+Results/Plotsforpaper/correlation curve.svg
+Results/Plotsforpaper/corr connectome.svg
+Results/Plotsforpaper/cnref_mahalanobis_mu_sigma.svg
+Results/group_ttest2_connectivity.m
+Results/group_ttest2.m
+Results/FDG PET/statistical analysis/tt2.m
+Results/FDG PET/matrix/withConverters/.~lock.results_CN_vs_MCI SUVR.xlsx\#
+Results/FDG PET/matrix/withConverters/.~lock.results_CN_vs_CN_POS SUVR.xlsx\#
+Results/FDG PET/matrix/withConverters/.~lock.results_CN_vs_AD SUVR.xlsx\#
+Results/FDG PET/matrix/nonconverters/suvr.png
+Results/FDG PET/matrix/nonconverters/Spe_Boxplots_CN_vs_MCI.jpeg bl-globaleffi.jpeg
+Results/FDG PET/matrix/nonconverters/Spe_Boxplots_CN_vs_MCI matrix.jpeg
+Results/FDG PET/matrix/nonconverters/Spe_Boxplots_CN_vs_AD.jpeg bl-globaleffi.jpeg
+Results/FDG PET/matrix/nonconverters/Spe_Boxplots_CN_vs_AD matrix.jpeg
+Results/FDG PET/matrix/nonconverters/Sen_Boxplots_CN_vs_MCI.jpeg bl-globaleffi.jpeg
+Results/FDG PET/matrix/nonconverters/Sen_Boxplots_CN_vs_MCI matrix.jpeg
+Results/FDG PET/matrix/nonconverters/Sen_Boxplots_CN_vs_AD.jpeg bl-globaleffi.jpeg
+Results/FDG PET/matrix/nonconverters/Sen_Boxplots_CN_vs_AD matrix.jpeg
+Results/FDG PET/matrix/nonconverters/perturbation connectivitymean boxplot.png
+Results/FDG PET/matrix/nonconverters/log
+Results/FDG PET/matrix/nonconverters/distance connectivitymean boxplot.png
+Results/FDG PET/matrix/nonconverters/deviation connectivitymean boxplot.png
+Results/FDG PET/matrix/nonconverters/correlation connectivitymean boxplot.png
+Results/FDG PET/matrix/nonconverters/AUC_Boxplots_CN_vs_MCI.jpeg bl-globaleffi.jpeg
+Results/FDG PET/matrix/nonconverters/AUC_Boxplots_CN_vs_MCI matrix.jpeg
+Results/FDG PET/matrix/nonconverters/AUC_Boxplots_CN_vs_AD matrix.jpeg
+Results/FDG PET/matrix/nonconverters/AUC_Boxplots_CN_vs_AD bl-globaleffi.jpeg
+Results/FDG PET/matrix/diagnosisConverter/spes comparison.jpg
+Results/FDG PET/matrix/diagnosisConverter/sens comparison.jpg
+Results/FDG PET/matrix/diagnosisConverter/perturbation matrix cn vs mci.jpg
+Results/FDG PET/matrix/diagnosisConverter/perturbation matrix cn vs ad.jpg
+Results/FDG PET/matrix/diagnosisConverter/divergence matrix cn_mci.jpg
+Results/FDG PET/matrix/diagnosisConverter/divergence matrix cn_ad.jpg
+Results/FDG PET/matrix/diagnosisConverter/distance matrix cn_mci.jpg
+Results/FDG PET/matrix/diagnosisConverter/distance matrix cn_ad.jpg
+Results/FDG PET/matrix/diagnosisConverter/deviation matrix CN vs MCI.jpg
+Results/FDG PET/matrix/diagnosisConverter/deviation matrix CN vs AD.jpg
+Results/FDG PET/matrix/diagnosisConverter/correlation matrix cn_mci.jpg
+Results/FDG PET/matrix/diagnosisConverter/correlation matrix cn_ad.jpg
+Results/FDG PET/matrix/diagnosisConverter/auc comparison.jpg
+Results/FDG PET/matrix/diagnosisConverter/3 class spe.jpg
+Results/FDG PET/matrix/diagnosisConverter/3 class sen.jpg
+Results/FDG PET/matrix/diagnosisConverter/3 class auc.jpg
+Results/FDG PET/graph measures/withConverters/ROC_CN_vs_MCIglobalefficiency.png
+Results/FDG PET/graph measures/withConverters/ROC_CN_VS_CNposglobalefficiency.png
+Results/FDG PET/graph measures/withConverters/ROC_CN_vs_ADglobalefficiency.png
+Results/FDG PET/graph measures/withConverters/results_CN_vs_MCI SUVR.xlsx
+Results/FDG PET/graph measures/withConverters/results_CN_vs_MCI hybirdMatrix.xlsx
+Results/FDG PET/graph measures/withConverters/results_CN_vs_MCI global efficiency.xlsx
+Results/FDG PET/graph measures/withConverters/results_CN_VS_CNpos global efficiency.xlsx
+Results/FDG PET/graph measures/withConverters/results_CN_vs_CN_POS SUVR.xlsx
+Results/FDG PET/graph measures/withConverters/results_CN_vs_CN_POS hybirdMatrix.xlsx
+Results/FDG PET/graph measures/withConverters/results_CN_vs_AD SUVR.xlsx
+Results/FDG PET/graph measures/withConverters/results_CN_vs_AD hybirdMatrix.xlsx
+Results/FDG PET/graph measures/withConverters/results_CN_vs_AD global efficiency.xlsx
+Results/FDG PET/graph measures/withConverters/AUC_Boxplots_CN_vs_MCI globalefficiency.jpeg
+Results/FDG PET/graph measures/withConverters/AUC_Boxplots_CN_vs_CN+ globalefficiency.jpeg
+Results/FDG PET/graph measures/withConverters/AUC_Boxplots_CN_vs_AD globalefficiency.jpeg
+Results/FDG PET/graph measures/distance cn mci.jpg
+Results/FDG PET/graph measures/distance cn ad.jpg
+Results/FDG PET/graph measures/correlation measures cn vs mci.jpg
+Results/FDG PET/graph measures/correlation measures cn vs ad.jpg
+Results/FDG PET/bl/metaROI.jpg
+Results/FDG PET/bl/baseline_FDG.jpg
+Results/FDG PET/bl/baseline CN MCI.jpg
+Results/boxploting.m
+recyclle/SVMPerturbation.m
+recyclle/SUVRSinglelayerREG.m
+recyclle/SUVRSinglelayerCLA.m
+recyclle/SUVRPerturbationConMxRegJiawei.m
+recyclle/SUVRPerturbationConMxReg.m
+recyclle/SUVRPerturbationConMx_JiaWeiCamcan.m
+recyclle/SUVRPerturbationConMx_BlancaLEMONByGender.m
+recyclle/SUVRPerturbationConMx_BlancaLEMON.m
+recyclle/SUVRPerturbationConMx_BlancaCamcanByGender.m
+recyclle/SUVRPerturbationConMx_BlancaCamcanByAge.m
+recyclle/SUVRPerturbationConMx_BlancaCamcan3Classes.m
+recyclle/SUVRDivergenceConMxREG.m
+recyclle/SUVRDistanceConMxReg.m
+recyclle/SUVRDistanceConMx_BlancaCamcanByAge.m
+recyclle/SUVRDeviationConMxREG.m
+recyclle/SUVRCorrelationConMxREG.m
+recyclle/SUVRAsLowerMatrixPerturbation.m
+recyclle/SUVRAsLowerMatrixDivergence.m
+recyclle/SUVRAsLowerMatrixDistance.m
+recyclle/SUVRAsLowerMatrixDeviation.m
+recyclle/SUVRAsLowerMatrixCorrelation.m
+recyclle/run_matlab.sh
+recyclle/PerturbationZhilei/Manuscript-Xu-20250127.pdf
+recyclle/PerturbationZhilei/GetScanOrder.m
+recyclle/perturbationZhilei.m
+recyclle/perturbationSVM.m
+recyclle/perturbationHang.m
+recyclle/PerturbationBlancaByGenderAllAges.sh
+recyclle/Perturbation3_class_perturbationFeatureimportance.m
+recyclle/example_Volume_GroupComparison.m
+recyclle/example_SUVR_GroupComparison_zhilei.m
+recyclle/example_Individual_PerturbationCon_WU_zhilei.m
+recyclle/example_Individual_PerturbationCon_WU_M.m
+recyclle/example_Individual_PerturbationCon_WU3Class.m
+recyclle/example_Individual_DivergenceCon_WU_M.m
+recyclle/example_Individual_DivergenceCon_WU_composites.m
+recyclle/example_Individual_DivergenceCon_WU_Byedges.m
+recyclle/example_Individual_DistanceCon_WUD.m
+recyclle/example_Individual_DistanceCon_WUCom_byPCA.m
+recyclle/example_Individual_DistanceCon_WUCom.m
+recyclle/example_Individual_DistanceCon_WU_Zhilei.m
+recyclle/example_Individual_DistanceCon_WU_M.m
+recyclle/example_Individual_DistanceCon_WU_Byedges.m
+recyclle/example_Individual_DistanceCon_WU3Class.m
+recyclle/example_Individual_DistanceCon_BUD.m
+recyclle/example_Individual_DeviationCon_WU_zhilei.m
+recyclle/example_Individual_DeviationCon_WU_M_zhilei.m
+recyclle/example_Individual_DeviationCon_WU_M.m
+recyclle/example_Individual_DeviationCon_WU_composite.m
+recyclle/example_Individual_DeviationCon_WU3Class.m
+recyclle/example_Individual_DeviationCon_BUD.m
+recyclle/example_Individual_CorrelationCon_WUD.m
+recyclle/example_Individual_CorrelationCon_WU_M.m
+recyclle/example_Individual_CorrelationCon_WU_Composites.m
+recyclle/deviation_suvr connectivity/SUVRDeviationConMx.m
+recyclle/deviation_suvr connectivity/Pipeline Individual Deviation Connectome Comparison WU.braph2
+recyclle/deviation_suvr connectivity/Pipeline Individual Deviation Connectome Analysis WU.braph2
+recyclle/deviation_suvr connectivity/example_Individual_DeviationCon_WU.m
+recyclle/deviation_suvr connectivity/_IndividualDeviationConConstructor.gen.m
+recyclle/desikan_atlas_zhilei.xlsx
+recyclle/desikan_atlas34_left_only.xlsx
+recyclle/create_data_NN_REG_CON_XLS_VOIs.m
+recyclle/baselineWithConnectome_balanced.m
+recyclle/BaselinePerturbationConMx.m
+recyclle/baselineDivergenceConMx.m
+recyclle/BaselineDistanceConMx.m
+recyclle/BaselineDeviationConMx.m
+recyclle/baselineCorrelationConMx.m
+recyclle/baselineAsWholeMatrix.m
+recyclle/baselineAsLowerMatrixPerturbation.m
+recyclle/baselineAsLowerMatrixDivergence.m
+recyclle/baselineAsLowerMatrixDistance.m
+recyclle/baselineAsLowerMatrixDeviation.m
+recyclle/baselineAsLowerMatrixCorrelation.m
+recyclle/baseline.m
+recyclle/_NNxMLP_FeatureImportance_VOIs_CV.gen.m
+recyclle/_NNxMLP_FeatureImportance_VOIs.gen.m
+recyclle/_NNRegressorMLP_VOIs.gen.m
+recyclle/_NNRegressorMLP_EvaluatorPF_Scatter_VOIs.gen.m
+recyclle/_NNRegressorMLP_Evaluator_VOIs.gen.m
+recyclle/_NNRegressorMLP_CrossValidationPF_Scatter_VOIs.gen.m
+recyclle/_NNRegressorMLP_CrossValidation_VOIs.gen.m
+recyclle/_MultigraphWUD.gen.m
+Results/zhilei/spe_classification_binary.eps
+Results/zhilei/sen_classification_binary.eps
+Results/zhilei/baseline CN AD.jpg
+Results/zhilei/AUC_classification_binary_zhile.eps
+Results/ROI_ploting.m
+Results/Plotsforpaper/svg_per_subject/subject_006.svg
+Results/Plotsforpaper/svg_per_subject/subject_005.svg
+Results/Plotsforpaper/svg_per_subject/subject_004.svg
+Results/Plotsforpaper/svg_per_subject/subject_003.svg
+Results/Plotsforpaper/svg_per_subject/subject_002.svg
+Results/Plotsforpaper/svg_per_subject/subject_001.svg
+Results/Plotsforpaper/suvr4.svg
+Results/Plotsforpaper/suvr3.svg
+Results/Plotsforpaper/suvr2.svg
+Results/Plotsforpaper/suvr.svg
+Results/Plotsforpaper/schemetic pipeline of Braph2IndiviudualConnectome.drawio4.svg
+Results/Plotsforpaper/schemetic pipeline of Braph2IndiviudualConnectome.drawio3.svg.2025_11_29_10_22_11.0.svg
+Results/Plotsforpaper/schemetic pipeline of Braph2IndiviudualConnectome.drawio3.svg
+Results/Plotsforpaper/schemetic pipeline of Braph2IndiviudualConnectome.drawio3.pdf
+Results/Plotsforpaper/schemetic pipeline of Braph2IndiviudualConnectome.drawio2.svg
+Results/Plotsforpaper/schemetic pipeline of Braph2IndiviudualConnectome.drawio2.pdf
+Results/Plotsforpaper/schemetic pipeline of Braph2IndiviudualConnectome.drawio.svg
+Results/Plotsforpaper/schemetic pipeline of Braph2IndiviudualConnectome.drawio.pdf
+Results/Plotsforpaper/schematic plots/perturbation schemetic.svg
+Results/Plotsforpaper/schematic plots/distance schemetic.svg
+Results/Plotsforpaper/schematic plots/corr.svg
+Results/Plotsforpaper/reference network.svg
+Results/Plotsforpaper/pipeline_Elisa.svg
+Results/Plotsforpaper/perturbed network.svg
+Results/Plotsforpaper/pert connectome.svg
+Results/Plotsforpaper/pdf3.svg
+Results/Plotsforpaper/pdf2.svg
+Results/Plotsforpaper/pdf.svg
+Results/Plotsforpaper/js_divergence_illustration.svg
+Results/Plotsforpaper/JS divergence2.svg
+Results/Plotsforpaper/JS divergence.svg
+Results/Plotsforpaper/div connectome.svg
+Results/Plotsforpaper/distance.svg
+Results/Plotsforpaper/dist connectome.svg
+Results/Plotsforpaper/deviation network.svg
+Results/Plotsforpaper/correlation.svg
+Results/Plotsforpaper/correlation r.svg
+Results/Plotsforpaper/correlation pdf.svg
+Results/Plotsforpaper/correlation curve.svg
+Results/Plotsforpaper/corr connectome.svg
+Results/Plotsforpaper/cnref_mahalanobis_mu_sigma.svg
+Results/group_ttest2_connectivity.m
+Results/group_ttest2.m
+Results/FDG PET/statistical analysis/tt2.m
+Results/FDG PET/matrix/withConverters/.~lock.results_CN_vs_MCI SUVR.xlsx\#
+Results/FDG PET/matrix/withConverters/.~lock.results_CN_vs_CN_POS SUVR.xlsx\#
+Results/FDG PET/matrix/withConverters/.~lock.results_CN_vs_AD SUVR.xlsx\#
+Results/FDG PET/matrix/nonconverters/suvr.png
+Results/FDG PET/matrix/nonconverters/Spe_Boxplots_CN_vs_MCI.jpeg bl-globaleffi.jpeg
+Results/FDG PET/matrix/nonconverters/Spe_Boxplots_CN_vs_MCI matrix.jpeg
+Results/FDG PET/matrix/nonconverters/Spe_Boxplots_CN_vs_AD.jpeg bl-globaleffi.jpeg
+Results/FDG PET/matrix/nonconverters/Spe_Boxplots_CN_vs_AD matrix.jpeg
+Results/FDG PET/matrix/nonconverters/Sen_Boxplots_CN_vs_MCI.jpeg bl-globaleffi.jpeg
+Results/FDG PET/matrix/nonconverters/Sen_Boxplots_CN_vs_MCI matrix.jpeg
+Results/FDG PET/matrix/nonconverters/Sen_Boxplots_CN_vs_AD.jpeg bl-globaleffi.jpeg
+Results/FDG PET/matrix/nonconverters/Sen_Boxplots_CN_vs_AD matrix.jpeg
+Results/FDG PET/matrix/nonconverters/perturbation connectivitymean boxplot.png
+Results/FDG PET/matrix/nonconverters/log
+Results/FDG PET/matrix/nonconverters/distance connectivitymean boxplot.png
+Results/FDG PET/matrix/nonconverters/deviation connectivitymean boxplot.png
+Results/FDG PET/matrix/nonconverters/correlation connectivitymean boxplot.png
+Results/FDG PET/matrix/nonconverters/AUC_Boxplots_CN_vs_MCI.jpeg bl-globaleffi.jpeg
+Results/FDG PET/matrix/nonconverters/AUC_Boxplots_CN_vs_MCI matrix.jpeg
+Results/FDG PET/matrix/nonconverters/AUC_Boxplots_CN_vs_AD matrix.jpeg
+Results/FDG PET/matrix/nonconverters/AUC_Boxplots_CN_vs_AD bl-globaleffi.jpeg
+Results/FDG PET/matrix/diagnosisConverter/spes comparison.jpg
+Results/FDG PET/matrix/diagnosisConverter/sens comparison.jpg
+Results/FDG PET/matrix/diagnosisConverter/perturbation matrix cn vs mci.jpg
+Results/FDG PET/matrix/diagnosisConverter/perturbation matrix cn vs ad.jpg
+Results/FDG PET/matrix/diagnosisConverter/divergence matrix cn_mci.jpg
+Results/FDG PET/matrix/diagnosisConverter/divergence matrix cn_ad.jpg
+Results/FDG PET/matrix/diagnosisConverter/distance matrix cn_mci.jpg
+Results/FDG PET/matrix/diagnosisConverter/distance matrix cn_ad.jpg
+Results/FDG PET/matrix/diagnosisConverter/deviation matrix CN vs MCI.jpg
+Results/FDG PET/matrix/diagnosisConverter/deviation matrix CN vs AD.jpg
+Results/FDG PET/matrix/diagnosisConverter/correlation matrix cn_mci.jpg
+Results/FDG PET/matrix/diagnosisConverter/correlation matrix cn_ad.jpg
+Results/FDG PET/matrix/diagnosisConverter/auc comparison.jpg
+Results/FDG PET/matrix/diagnosisConverter/3 class spe.jpg
+Results/FDG PET/matrix/diagnosisConverter/3 class sen.jpg
+Results/FDG PET/matrix/diagnosisConverter/3 class auc.jpg
+Results/FDG PET/graph measures/withConverters/ROC_CN_vs_MCIglobalefficiency.png
+Results/FDG PET/graph measures/withConverters/ROC_CN_VS_CNposglobalefficiency.png
+Results/FDG PET/graph measures/withConverters/ROC_CN_vs_ADglobalefficiency.png
+Results/FDG PET/graph measures/withConverters/results_CN_vs_MCI SUVR.xlsx
+Results/FDG PET/graph measures/withConverters/results_CN_vs_MCI hybirdMatrix.xlsx
+Results/FDG PET/graph measures/withConverters/results_CN_vs_MCI global efficiency.xlsx
+Results/FDG PET/graph measures/withConverters/results_CN_VS_CNpos global efficiency.xlsx
+Results/FDG PET/graph measures/withConverters/results_CN_vs_CN_POS SUVR.xlsx
+Results/FDG PET/graph measures/withConverters/results_CN_vs_CN_POS hybirdMatrix.xlsx
+Results/FDG PET/graph measures/withConverters/results_CN_vs_AD SUVR.xlsx
+Results/FDG PET/graph measures/withConverters/results_CN_vs_AD hybirdMatrix.xlsx
+Results/FDG PET/graph measures/withConverters/results_CN_vs_AD global efficiency.xlsx
+Results/FDG PET/graph measures/withConverters/AUC_Boxplots_CN_vs_MCI globalefficiency.jpeg
+Results/FDG PET/graph measures/withConverters/AUC_Boxplots_CN_vs_CN+ globalefficiency.jpeg
+Results/FDG PET/graph measures/withConverters/AUC_Boxplots_CN_vs_AD globalefficiency.jpeg
+Results/FDG PET/graph measures/distance cn mci.jpg
+Results/FDG PET/graph measures/distance cn ad.jpg
+Results/FDG PET/graph measures/correlation measures cn vs mci.jpg
+Results/FDG PET/graph measures/correlation measures cn vs ad.jpg
+Results/FDG PET/bl/metaROI.jpg
+Results/FDG PET/bl/baseline_FDG.jpg
+Results/FDG PET/bl/baseline CN MCI.jpg
+Results/boxploting.m
+recyclle/SVMPerturbation.m
+recyclle/SUVRSinglelayerREG.m
+recyclle/SUVRSinglelayerCLA.m
+recyclle/SUVRPerturbationConMxRegJiawei.m
+recyclle/SUVRPerturbationConMxReg.m
+recyclle/SUVRPerturbationConMx_JiaWeiCamcan.m
+recyclle/SUVRPerturbationConMx_BlancaLEMONByGender.m
+recyclle/SUVRPerturbationConMx_BlancaLEMON.m
+recyclle/SUVRPerturbationConMx_BlancaCamcanByGender.m
+recyclle/SUVRPerturbationConMx_BlancaCamcanByAge.m
+recyclle/SUVRPerturbationConMx_BlancaCamcan3Classes.m
+recyclle/SUVRDivergenceConMxREG.m
+recyclle/SUVRDistanceConMxReg.m
+recyclle/SUVRDistanceConMx_BlancaCamcanByAge.m
+recyclle/SUVRDeviationConMxREG.m
+recyclle/SUVRCorrelationConMxREG.m
+recyclle/SUVRAsLowerMatrixPerturbation.m
+recyclle/SUVRAsLowerMatrixDivergence.m
+recyclle/SUVRAsLowerMatrixDistance.m
+recyclle/SUVRAsLowerMatrixDeviation.m
+recyclle/SUVRAsLowerMatrixCorrelation.m
+recyclle/run_matlab.sh
+recyclle/PerturbationZhilei/Manuscript-Xu-20250127.pdf
+recyclle/PerturbationZhilei/GetScanOrder.m
+recyclle/perturbationZhilei.m
+recyclle/perturbationSVM.m
+recyclle/perturbationHang.m
+recyclle/PerturbationBlancaByGenderAllAges.sh
+recyclle/Perturbation3_class_perturbationFeatureimportance.m
+recyclle/example_Volume_GroupComparison.m
+recyclle/example_SUVR_GroupComparison_zhilei.m
+recyclle/example_Individual_PerturbationCon_WU_zhilei.m
+recyclle/example_Individual_PerturbationCon_WU_M.m
+recyclle/example_Individual_PerturbationCon_WU3Class.m
+recyclle/example_Individual_DivergenceCon_WU_M.m
+recyclle/example_Individual_DivergenceCon_WU_composites.m
+recyclle/example_Individual_DivergenceCon_WU_Byedges.m
+recyclle/example_Individual_DistanceCon_WUD.m
+recyclle/example_Individual_DistanceCon_WUCom_byPCA.m
+recyclle/example_Individual_DistanceCon_WUCom.m
+recyclle/example_Individual_DistanceCon_WU_Zhilei.m
+recyclle/example_Individual_DistanceCon_WU_M.m
+recyclle/example_Individual_DistanceCon_WU_Byedges.m
+recyclle/example_Individual_DistanceCon_WU3Class.m
+recyclle/example_Individual_DistanceCon_BUD.m
+recyclle/example_Individual_DeviationCon_WU_zhilei.m
+recyclle/example_Individual_DeviationCon_WU_M_zhilei.m
+recyclle/example_Individual_DeviationCon_WU_M.m
+recyclle/example_Individual_DeviationCon_WU_composite.m
+recyclle/example_Individual_DeviationCon_WU3Class.m
+recyclle/example_Individual_DeviationCon_BUD.m
+recyclle/example_Individual_CorrelationCon_WUD.m
+recyclle/example_Individual_CorrelationCon_WU_M.m
+recyclle/example_Individual_CorrelationCon_WU_Composites.m
+recyclle/deviation_suvr connectivity/SUVRDeviationConMx.m
+recyclle/deviation_suvr connectivity/Pipeline Individual Deviation Connectome Comparison WU.braph2
+recyclle/deviation_suvr connectivity/Pipeline Individual Deviation Connectome Analysis WU.braph2
+recyclle/deviation_suvr connectivity/example_Individual_DeviationCon_WU.m
+recyclle/deviation_suvr connectivity/_IndividualDeviationConConstructor.gen.m
+recyclle/desikan_atlas_zhilei.xlsx
+recyclle/desikan_atlas34_left_only.xlsx
+recyclle/create_data_NN_REG_CON_XLS_VOIs.m
+recyclle/baselineWithConnectome_balanced.m
+recyclle/BaselinePerturbationConMx.m
+recyclle/baselineDivergenceConMx.m
+recyclle/BaselineDistanceConMx.m
+recyclle/BaselineDeviationConMx.m
+recyclle/baselineCorrelationConMx.m
+recyclle/baselineAsWholeMatrix.m
+recyclle/baselineAsLowerMatrixPerturbation.m
+recyclle/baselineAsLowerMatrixDivergence.m
+recyclle/baselineAsLowerMatrixDistance.m
+recyclle/baselineAsLowerMatrixDeviation.m
+recyclle/baselineAsLowerMatrixCorrelation.m
+recyclle/baseline.m
+recyclle/_NNxMLP_FeatureImportance_VOIs_CV.gen.m
+recyclle/_NNxMLP_FeatureImportance_VOIs.gen.m
+recyclle/_NNRegressorMLP_VOIs.gen.m
+recyclle/_NNRegressorMLP_EvaluatorPF_Scatter_VOIs.gen.m
+recyclle/_NNRegressorMLP_Evaluator_VOIs.gen.m
+recyclle/_NNRegressorMLP_CrossValidationPF_Scatter_VOIs.gen.m
+recyclle/_NNRegressorMLP_CrossValidation_VOIs.gen.m
+recyclle/_MultigraphWUD.gen.m
+Results/zhilei/spe_classification_binary.eps
+Results/zhilei/sen_classification_binary.eps
+Results/zhilei/baseline CN AD.jpg
+Results/zhilei/AUC_classification_binary_zhile.eps
+Results/ROI_ploting.m
+Results/Plotsforpaper/svg_per_subject/subject_006.svg
+Results/Plotsforpaper/svg_per_subject/subject_005.svg
+Results/Plotsforpaper/svg_per_subject/subject_004.svg
+Results/Plotsforpaper/svg_per_subject/subject_003.svg
+Results/Plotsforpaper/svg_per_subject/subject_002.svg
+Results/Plotsforpaper/svg_per_subject/subject_001.svg
+Results/Plotsforpaper/suvr4.svg
+Results/Plotsforpaper/suvr3.svg
+Results/Plotsforpaper/suvr2.svg
+Results/Plotsforpaper/suvr.svg
+Results/Plotsforpaper/schemetic pipeline of Braph2IndiviudualConnectome.drawio4.svg
+Results/Plotsforpaper/schemetic pipeline of Braph2IndiviudualConnectome.drawio3.svg.2025_11_29_10_22_11.0.svg
+Results/Plotsforpaper/schemetic pipeline of Braph2IndiviudualConnectome.drawio3.svg
+Results/Plotsforpaper/schemetic pipeline of Braph2IndiviudualConnectome.drawio3.pdf
+Results/Plotsforpaper/schemetic pipeline of Braph2IndiviudualConnectome.drawio2.svg
+Results/Plotsforpaper/schemetic pipeline of Braph2IndiviudualConnectome.drawio2.pdf
+Results/Plotsforpaper/schemetic pipeline of Braph2IndiviudualConnectome.drawio.svg
+Results/Plotsforpaper/schemetic pipeline of Braph2IndiviudualConnectome.drawio.pdf
+Results/Plotsforpaper/schematic plots/perturbation schemetic.svg
+Results/Plotsforpaper/schematic plots/distance schemetic.svg
+Results/Plotsforpaper/schematic plots/corr.svg
+Results/Plotsforpaper/reference network.svg
+Results/Plotsforpaper/pipeline_Elisa.svg
+Results/Plotsforpaper/perturbed network.svg
+Results/Plotsforpaper/pert connectome.svg
+Results/Plotsforpaper/pdf3.svg
+Results/Plotsforpaper/pdf2.svg
+Results/Plotsforpaper/pdf.svg
+Results/Plotsforpaper/js_divergence_illustration.svg
+Results/Plotsforpaper/JS divergence2.svg
+Results/Plotsforpaper/JS divergence.svg
+Results/Plotsforpaper/div connectome.svg
+Results/Plotsforpaper/distance.svg
+Results/Plotsforpaper/dist connectome.svg
+Results/Plotsforpaper/deviation network.svg
+Results/Plotsforpaper/correlation.svg
+Results/Plotsforpaper/correlation r.svg
+Results/Plotsforpaper/correlation pdf.svg
+Results/Plotsforpaper/correlation curve.svg
+Results/Plotsforpaper/corr connectome.svg
+Results/Plotsforpaper/cnref_mahalanobis_mu_sigma.svg
+Results/group_ttest2_connectivity.m
+Results/group_ttest2.m
+Results/FDG PET/statistical analysis/tt2.m
+Results/FDG PET/matrix/withConverters/.~lock.results_CN_vs_MCI SUVR.xlsx\#
+Results/FDG PET/matrix/withConverters/.~lock.results_CN_vs_CN_POS SUVR.xlsx\#
+Results/FDG PET/matrix/withConverters/.~lock.results_CN_vs_AD SUVR.xlsx\#
+Results/FDG PET/matrix/nonconverters/suvr.png
+Results/FDG PET/matrix/nonconverters/Spe_Boxplots_CN_vs_MCI.jpeg bl-globaleffi.jpeg
+Results/FDG PET/matrix/nonconverters/Spe_Boxplots_CN_vs_MCI matrix.jpeg
+Results/FDG PET/matrix/nonconverters/Spe_Boxplots_CN_vs_AD.jpeg bl-globaleffi.jpeg
+Results/FDG PET/matrix/nonconverters/Spe_Boxplots_CN_vs_AD matrix.jpeg
+Results/FDG PET/matrix/nonconverters/Sen_Boxplots_CN_vs_MCI.jpeg bl-globaleffi.jpeg
+Results/FDG PET/matrix/nonconverters/Sen_Boxplots_CN_vs_MCI matrix.jpeg
+Results/FDG PET/matrix/nonconverters/Sen_Boxplots_CN_vs_AD.jpeg bl-globaleffi.jpeg
+Results/FDG PET/matrix/nonconverters/Sen_Boxplots_CN_vs_AD matrix.jpeg
+Results/FDG PET/matrix/nonconverters/perturbation connectivitymean boxplot.png
+Results/FDG PET/matrix/nonconverters/log
+Results/FDG PET/matrix/nonconverters/distance connectivitymean boxplot.png
+Results/FDG PET/matrix/nonconverters/deviation connectivitymean boxplot.png
+Results/FDG PET/matrix/nonconverters/correlation connectivitymean boxplot.png
+Results/FDG PET/matrix/nonconverters/AUC_Boxplots_CN_vs_MCI.jpeg bl-globaleffi.jpeg
+Results/FDG PET/matrix/nonconverters/AUC_Boxplots_CN_vs_MCI matrix.jpeg
+Results/FDG PET/matrix/nonconverters/AUC_Boxplots_CN_vs_AD matrix.jpeg
+Results/FDG PET/matrix/nonconverters/AUC_Boxplots_CN_vs_AD bl-globaleffi.jpeg
+Results/FDG PET/matrix/diagnosisConverter/spes comparison.jpg
+Results/FDG PET/matrix/diagnosisConverter/sens comparison.jpg
+Results/FDG PET/matrix/diagnosisConverter/perturbation matrix cn vs mci.jpg
+Results/FDG PET/matrix/diagnosisConverter/perturbation matrix cn vs ad.jpg
+Results/FDG PET/matrix/diagnosisConverter/divergence matrix cn_mci.jpg
+Results/FDG PET/matrix/diagnosisConverter/divergence matrix cn_ad.jpg
+Results/FDG PET/matrix/diagnosisConverter/distance matrix cn_mci.jpg
+Results/FDG PET/matrix/diagnosisConverter/distance matrix cn_ad.jpg
+Results/FDG PET/matrix/diagnosisConverter/deviation matrix CN vs MCI.jpg
+Results/FDG PET/matrix/diagnosisConverter/deviation matrix CN vs AD.jpg
+Results/FDG PET/matrix/diagnosisConverter/correlation matrix cn_mci.jpg
+Results/FDG PET/matrix/diagnosisConverter/correlation matrix cn_ad.jpg
+Results/FDG PET/matrix/diagnosisConverter/auc comparison.jpg
+Results/FDG PET/matrix/diagnosisConverter/3 class spe.jpg
+Results/FDG PET/matrix/diagnosisConverter/3 class sen.jpg
+Results/FDG PET/matrix/diagnosisConverter/3 class auc.jpg
+Results/FDG PET/graph measures/withConverters/ROC_CN_vs_MCIglobalefficiency.png
+Results/FDG PET/graph measures/withConverters/ROC_CN_VS_CNposglobalefficiency.png
+Results/FDG PET/graph measures/withConverters/ROC_CN_vs_ADglobalefficiency.png
+Results/FDG PET/graph measures/withConverters/results_CN_vs_MCI SUVR.xlsx
+Results/FDG PET/graph measures/withConverters/results_CN_vs_MCI hybirdMatrix.xlsx
+Results/FDG PET/graph measures/withConverters/results_CN_vs_MCI global efficiency.xlsx
+Results/FDG PET/graph measures/withConverters/results_CN_VS_CNpos global efficiency.xlsx
+Results/FDG PET/graph measures/withConverters/results_CN_vs_CN_POS SUVR.xlsx
+Results/FDG PET/graph measures/withConverters/results_CN_vs_CN_POS hybirdMatrix.xlsx
+Results/FDG PET/graph measures/withConverters/results_CN_vs_AD SUVR.xlsx
+Results/FDG PET/graph measures/withConverters/results_CN_vs_AD hybirdMatrix.xlsx
+Results/FDG PET/graph measures/withConverters/results_CN_vs_AD global efficiency.xlsx
+Results/FDG PET/graph measures/withConverters/AUC_Boxplots_CN_vs_MCI globalefficiency.jpeg
+Results/FDG PET/graph measures/withConverters/AUC_Boxplots_CN_vs_CN+ globalefficiency.jpeg
+Results/FDG PET/graph measures/withConverters/AUC_Boxplots_CN_vs_AD globalefficiency.jpeg
+Results/FDG PET/graph measures/distance cn mci.jpg
+Results/FDG PET/graph measures/distance cn ad.jpg
+Results/FDG PET/graph measures/correlation measures cn vs mci.jpg
+Results/FDG PET/graph measures/correlation measures cn vs ad.jpg
+Results/FDG PET/bl/metaROI.jpg
+Results/FDG PET/bl/baseline_FDG.jpg
+Results/FDG PET/bl/baseline CN MCI.jpg
+Results/boxploting.m
+recyclle/SVMPerturbation.m
+recyclle/SUVRSinglelayerREG.m
+recyclle/SUVRSinglelayerCLA.m
+recyclle/SUVRPerturbationConMxRegJiawei.m
+recyclle/SUVRPerturbationConMxReg.m
+recyclle/SUVRPerturbationConMx_JiaWeiCamcan.m
+recyclle/SUVRPerturbationConMx_BlancaLEMONByGender.m
+recyclle/SUVRPerturbationConMx_BlancaLEMON.m
+recyclle/SUVRPerturbationConMx_BlancaCamcanByGender.m
+recyclle/SUVRPerturbationConMx_BlancaCamcanByAge.m
+recyclle/SUVRPerturbationConMx_BlancaCamcan3Classes.m
+recyclle/SUVRDivergenceConMxREG.m
+recyclle/SUVRDistanceConMxReg.m
+recyclle/SUVRDistanceConMx_BlancaCamcanByAge.m
+recyclle/SUVRDeviationConMxREG.m
+recyclle/SUVRCorrelationConMxREG.m
+recyclle/SUVRAsLowerMatrixPerturbation.m
+recyclle/SUVRAsLowerMatrixDivergence.m
+recyclle/SUVRAsLowerMatrixDistance.m
+recyclle/SUVRAsLowerMatrixDeviation.m
+recyclle/SUVRAsLowerMatrixCorrelation.m
+recyclle/run_matlab.sh
+recyclle/PerturbationZhilei/Manuscript-Xu-20250127.pdf
+recyclle/PerturbationZhilei/GetScanOrder.m
+recyclle/perturbationZhilei.m
+recyclle/perturbationSVM.m
+recyclle/perturbationHang.m
+recyclle/PerturbationBlancaByGenderAllAges.sh
+recyclle/Perturbation3_class_perturbationFeatureimportance.m
+recyclle/example_Volume_GroupComparison.m
+recyclle/example_SUVR_GroupComparison_zhilei.m
+recyclle/example_Individual_PerturbationCon_WU_zhilei.m
+recyclle/example_Individual_PerturbationCon_WU_M.m
+recyclle/example_Individual_PerturbationCon_WU3Class.m
+recyclle/example_Individual_DivergenceCon_WU_M.m
+recyclle/example_Individual_DivergenceCon_WU_composites.m
+recyclle/example_Individual_DivergenceCon_WU_Byedges.m
+recyclle/example_Individual_DistanceCon_WUD.m
+recyclle/example_Individual_DistanceCon_WUCom_byPCA.m
+recyclle/example_Individual_DistanceCon_WUCom.m
+recyclle/example_Individual_DistanceCon_WU_Zhilei.m
+recyclle/example_Individual_DistanceCon_WU_M.m
+recyclle/example_Individual_DistanceCon_WU_Byedges.m
+recyclle/example_Individual_DistanceCon_WU3Class.m
+recyclle/example_Individual_DistanceCon_BUD.m
+recyclle/example_Individual_DeviationCon_WU_zhilei.m
+recyclle/example_Individual_DeviationCon_WU_M_zhilei.m
+recyclle/example_Individual_DeviationCon_WU_M.m
+recyclle/example_Individual_DeviationCon_WU_composite.m
+recyclle/example_Individual_DeviationCon_WU3Class.m
+recyclle/example_Individual_DeviationCon_BUD.m
+recyclle/example_Individual_CorrelationCon_WUD.m
+recyclle/example_Individual_CorrelationCon_WU_M.m
+recyclle/example_Individual_CorrelationCon_WU_Composites.m
+recyclle/deviation_suvr connectivity/SUVRDeviationConMx.m
+recyclle/deviation_suvr connectivity/Pipeline Individual Deviation Connectome Comparison WU.braph2
+recyclle/deviation_suvr connectivity/Pipeline Individual Deviation Connectome Analysis WU.braph2
+recyclle/deviation_suvr connectivity/example_Individual_DeviationCon_WU.m
+recyclle/deviation_suvr connectivity/_IndividualDeviationConConstructor.gen.m
+recyclle/desikan_atlas_zhilei.xlsx
+recyclle/desikan_atlas34_left_only.xlsx
+recyclle/create_data_NN_REG_CON_XLS_VOIs.m
+recyclle/baselineWithConnectome_balanced.m
+recyclle/BaselinePerturbationConMx.m
+recyclle/baselineDivergenceConMx.m
+recyclle/BaselineDistanceConMx.m
+recyclle/BaselineDeviationConMx.m
+recyclle/baselineCorrelationConMx.m
+recyclle/baselineAsWholeMatrix.m
+recyclle/baselineAsLowerMatrixPerturbation.m
+recyclle/baselineAsLowerMatrixDivergence.m
+recyclle/baselineAsLowerMatrixDistance.m
+recyclle/baselineAsLowerMatrixDeviation.m
+recyclle/baselineAsLowerMatrixCorrelation.m
+recyclle/baseline.m
+recyclle/_NNxMLP_FeatureImportance_VOIs_CV.gen.m
+recyclle/_NNxMLP_FeatureImportance_VOIs.gen.m
+recyclle/_NNRegressorMLP_VOIs.gen.m
+recyclle/_NNRegressorMLP_EvaluatorPF_Scatter_VOIs.gen.m
+recyclle/_NNRegressorMLP_Evaluator_VOIs.gen.m
+recyclle/_NNRegressorMLP_CrossValidationPF_Scatter_VOIs.gen.m
+recyclle/_NNRegressorMLP_CrossValidation_VOIs.gen.m
+recyclle/_MultigraphWUD.gen.m
+*.nii
