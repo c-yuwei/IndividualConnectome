@@ -17,14 +17,15 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 	%  <strong>10</strong> <strong>BA_NIFTI_FILES</strong> 	BA_NIFTI_FILES (data, stringlist) is the list of atlas NIfTI files aligned with BA_LIST.
 	%  <strong>11</strong> <strong>BA_MAPPING_FILES</strong> 	BA_MAPPING_FILES (data, stringlist) is the list of atlas mapping CSV files aligned with BA_LIST.
 	%  <strong>12</strong> <strong>GR_NEUROIMAGING</strong> 	GR_NEUROIMAGING (data, item) is the group of subject-level neuroimaging data to convert.
-	%  <strong>13</strong> <strong>GR_LIST_ANAT_REF</strong> 	GR_LIST_ANAT_REF (data, cell) is the list of anatomical reference groups used to restrict voxel averaging.
+	%  <strong>13</strong> <strong>GR_LIST_ANAT_REF</strong> 	GR_LIST_ANAT_REF (data, itemlist) is the list of anatomical reference groups used to restrict voxel averaging.
 	%  <strong>14</strong> <strong>THRESHOLD_ANAT_REF</strong> 	THRESHOLD_ANAT_REF (parameter, scalar) is the threshold applied to anatomical reference images.
 	%  <strong>15</strong> <strong>ANAT_REF_COMBINE_RULE</strong> 	ANAT_REF_COMBINE_RULE (parameter, option) is the rule used to combine multiple anatomical reference masks.
 	%  <strong>16</strong> <strong>REF_BR</strong> 	REF_BR (data, stringlist) is the list of reference brain-region IDs used for optional normalization.
 	%  <strong>17</strong> <strong>CONVERT_BR</strong> 	CONVERT_BR (data, stringlist) is the list of brain-region IDs to convert into regional values.
-	%  <strong>18</strong> <strong>BA</strong> 	BA (result, item) is the brain atlas containing the converted brain regions.
-	%  <strong>19</strong> <strong>GR_ST</strong> 	GR_ST (result, item) is the group of subjects with regional values.
-	%  <strong>20</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) determines whether to show the waitbar.
+	%  <strong>18</strong> <strong>BR_LABEL_IN_MAPS</strong> 	BR_LABEL_IN_MAPS (query, cell) finds the atlas index and numeric atlas label for a brain-region ID.
+	%  <strong>19</strong> <strong>BA</strong> 	BA (result, item) is the brain atlas containing the converted brain regions.
+	%  <strong>20</strong> <strong>GR_ST</strong> 	GR_ST (result, item) is the group of subjects with regional values.
+	%  <strong>21</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) determines whether to show the waitbar.
 	%
 	% ConverterNeuroimaging2RegionalValues methods (constructor):
 	%  ConverterNeuroimaging2RegionalValues - constructor
@@ -140,7 +141,7 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 		GR_LIST_ANAT_REF = 13; %CET: Computational Efficiency Trick
 		GR_LIST_ANAT_REF_TAG = 'GR_LIST_ANAT_REF';
 		GR_LIST_ANAT_REF_CATEGORY = 4;
-		GR_LIST_ANAT_REF_FORMAT = 16;
+		GR_LIST_ANAT_REF_FORMAT = 9;
 		
 		THRESHOLD_ANAT_REF = 14; %CET: Computational Efficiency Trick
 		THRESHOLD_ANAT_REF_TAG = 'THRESHOLD_ANAT_REF';
@@ -162,17 +163,22 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 		CONVERT_BR_CATEGORY = 4;
 		CONVERT_BR_FORMAT = 3;
 		
-		BA = 18; %CET: Computational Efficiency Trick
+		BR_LABEL_IN_MAPS = 18; %CET: Computational Efficiency Trick
+		BR_LABEL_IN_MAPS_TAG = 'BR_LABEL_IN_MAPS';
+		BR_LABEL_IN_MAPS_CATEGORY = 6;
+		BR_LABEL_IN_MAPS_FORMAT = 16;
+		
+		BA = 19; %CET: Computational Efficiency Trick
 		BA_TAG = 'BA';
 		BA_CATEGORY = 5;
 		BA_FORMAT = 8;
 		
-		GR_ST = 19; %CET: Computational Efficiency Trick
+		GR_ST = 20; %CET: Computational Efficiency Trick
 		GR_ST_TAG = 'GR_ST';
 		GR_ST_CATEGORY = 5;
 		GR_ST_FORMAT = 8;
 		
-		WAITBAR = 20; %CET: Computational Efficiency Trick
+		WAITBAR = 21; %CET: Computational Efficiency Trick
 		WAITBAR_TAG = 'WAITBAR';
 		WAITBAR_CATEGORY = 9;
 		WAITBAR_FORMAT = 4;
@@ -201,14 +207,15 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 			%  <strong>10</strong> <strong>BA_NIFTI_FILES</strong> 	BA_NIFTI_FILES (data, stringlist) is the list of atlas NIfTI files aligned with BA_LIST.
 			%  <strong>11</strong> <strong>BA_MAPPING_FILES</strong> 	BA_MAPPING_FILES (data, stringlist) is the list of atlas mapping CSV files aligned with BA_LIST.
 			%  <strong>12</strong> <strong>GR_NEUROIMAGING</strong> 	GR_NEUROIMAGING (data, item) is the group of subject-level neuroimaging data to convert.
-			%  <strong>13</strong> <strong>GR_LIST_ANAT_REF</strong> 	GR_LIST_ANAT_REF (data, cell) is the list of anatomical reference groups used to restrict voxel averaging.
+			%  <strong>13</strong> <strong>GR_LIST_ANAT_REF</strong> 	GR_LIST_ANAT_REF (data, itemlist) is the list of anatomical reference groups used to restrict voxel averaging.
 			%  <strong>14</strong> <strong>THRESHOLD_ANAT_REF</strong> 	THRESHOLD_ANAT_REF (parameter, scalar) is the threshold applied to anatomical reference images.
 			%  <strong>15</strong> <strong>ANAT_REF_COMBINE_RULE</strong> 	ANAT_REF_COMBINE_RULE (parameter, option) is the rule used to combine multiple anatomical reference masks.
 			%  <strong>16</strong> <strong>REF_BR</strong> 	REF_BR (data, stringlist) is the list of reference brain-region IDs used for optional normalization.
 			%  <strong>17</strong> <strong>CONVERT_BR</strong> 	CONVERT_BR (data, stringlist) is the list of brain-region IDs to convert into regional values.
-			%  <strong>18</strong> <strong>BA</strong> 	BA (result, item) is the brain atlas containing the converted brain regions.
-			%  <strong>19</strong> <strong>GR_ST</strong> 	GR_ST (result, item) is the group of subjects with regional values.
-			%  <strong>20</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) determines whether to show the waitbar.
+			%  <strong>18</strong> <strong>BR_LABEL_IN_MAPS</strong> 	BR_LABEL_IN_MAPS (query, cell) finds the atlas index and numeric atlas label for a brain-region ID.
+			%  <strong>19</strong> <strong>BA</strong> 	BA (result, item) is the brain atlas containing the converted brain regions.
+			%  <strong>20</strong> <strong>GR_ST</strong> 	GR_ST (result, item) is the group of subjects with regional values.
+			%  <strong>21</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) determines whether to show the waitbar.
 			%
 			% See also Category, Format.
 			
@@ -285,7 +292,7 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 			%CET: Computational Efficiency Trick
 			
 			if nargin == 0
-				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20];
+				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21];
 				return
 			end
 			
@@ -299,11 +306,11 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 				case 4 % Category.DATA
 					prop_list = [5 9 10 11 12 13 16 17];
 				case 5 % Category.RESULT
-					prop_list = [18 19];
+					prop_list = [19 20];
 				case 6 % Category.QUERY
-					prop_list = 8;
+					prop_list = [8 18];
 				case 9 % Category.GUI
-					prop_list = 20;
+					prop_list = 21;
 				otherwise
 					prop_list = [];
 			end
@@ -329,7 +336,7 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 			%CET: Computational Efficiency Trick
 			
 			if nargin == 0
-				prop_number = 20;
+				prop_number = 21;
 				return
 			end
 			
@@ -345,7 +352,7 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 				case 5 % Category.RESULT
 					prop_number = 2;
 				case 6 % Category.QUERY
-					prop_number = 1;
+					prop_number = 2;
 				case 9 % Category.GUI
 					prop_number = 1;
 				otherwise
@@ -378,7 +385,7 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 			%
 			% See also getProps, existsTag.
 			
-			check = prop >= 1 && prop <= 20 && round(prop) == prop; %CET: Computational Efficiency Trick
+			check = prop >= 1 && prop <= 21 && round(prop) == prop; %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
@@ -416,7 +423,7 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 			%
 			% See also getProps, existsTag.
 			
-			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'BA_LIST'  'BA_NIFTI_FILES'  'BA_MAPPING_FILES'  'GR_NEUROIMAGING'  'GR_LIST_ANAT_REF'  'THRESHOLD_ANAT_REF'  'ANAT_REF_COMBINE_RULE'  'REF_BR'  'CONVERT_BR'  'BA'  'GR_ST'  'WAITBAR' })); %CET: Computational Efficiency Trick
+			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'BA_LIST'  'BA_NIFTI_FILES'  'BA_MAPPING_FILES'  'GR_NEUROIMAGING'  'GR_LIST_ANAT_REF'  'THRESHOLD_ANAT_REF'  'ANAT_REF_COMBINE_RULE'  'REF_BR'  'CONVERT_BR'  'BR_LABEL_IN_MAPS'  'BA'  'GR_ST'  'WAITBAR' })); %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
@@ -449,7 +456,7 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 			%  getPropSettings, getPropDefault, checkProp.
 			
 			if ischar(pointer)
-				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'BA_LIST'  'BA_NIFTI_FILES'  'BA_MAPPING_FILES'  'GR_NEUROIMAGING'  'GR_LIST_ANAT_REF'  'THRESHOLD_ANAT_REF'  'ANAT_REF_COMBINE_RULE'  'REF_BR'  'CONVERT_BR'  'BA'  'GR_ST'  'WAITBAR' })); % tag = pointer %CET: Computational Efficiency Trick
+				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'BA_LIST'  'BA_NIFTI_FILES'  'BA_MAPPING_FILES'  'GR_NEUROIMAGING'  'GR_LIST_ANAT_REF'  'THRESHOLD_ANAT_REF'  'ANAT_REF_COMBINE_RULE'  'REF_BR'  'CONVERT_BR'  'BR_LABEL_IN_MAPS'  'BA'  'GR_ST'  'WAITBAR' })); % tag = pointer %CET: Computational Efficiency Trick
 			else % numeric
 				prop = pointer;
 			end
@@ -478,7 +485,7 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 				tag = pointer;
 			else % numeric
 				%CET: Computational Efficiency Trick
-				converterneuroimaging2regionalvalues_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'BA_LIST'  'BA_NIFTI_FILES'  'BA_MAPPING_FILES'  'GR_NEUROIMAGING'  'GR_LIST_ANAT_REF'  'THRESHOLD_ANAT_REF'  'ANAT_REF_COMBINE_RULE'  'REF_BR'  'CONVERT_BR'  'BA'  'GR_ST'  'WAITBAR' };
+				converterneuroimaging2regionalvalues_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'BA_LIST'  'BA_NIFTI_FILES'  'BA_MAPPING_FILES'  'GR_NEUROIMAGING'  'GR_LIST_ANAT_REF'  'THRESHOLD_ANAT_REF'  'ANAT_REF_COMBINE_RULE'  'REF_BR'  'CONVERT_BR'  'BR_LABEL_IN_MAPS'  'BA'  'GR_ST'  'WAITBAR' };
 				tag = converterneuroimaging2regionalvalues_tag_list{pointer}; % prop = pointer
 			end
 		end
@@ -505,7 +512,7 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 			prop = ConverterNeuroimaging2RegionalValues.getPropProp(pointer);
 			
 			%CET: Computational Efficiency Trick
-			converterneuroimaging2regionalvalues_category_list = { 1  1  1  3  4  2  2  6  4  4  4  4  4  3  3  4  4  5  5  9 };
+			converterneuroimaging2regionalvalues_category_list = { 1  1  1  3  4  2  2  6  4  4  4  4  4  3  3  4  4  6  5  5  9 };
 			prop_category = converterneuroimaging2regionalvalues_category_list{prop};
 		end
 		function prop_format = getPropFormat(pointer)
@@ -531,7 +538,7 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 			prop = ConverterNeuroimaging2RegionalValues.getPropProp(pointer);
 			
 			%CET: Computational Efficiency Trick
-			converterneuroimaging2regionalvalues_format_list = { 2  2  2  8  2  2  2  2  9  3  3  8  16  11  5  3  3  8  8  4 };
+			converterneuroimaging2regionalvalues_format_list = { 2  2  2  8  2  2  2  2  9  3  3  8  9  11  5  3  3  16  8  8  4 };
 			prop_format = converterneuroimaging2regionalvalues_format_list{prop};
 		end
 		function prop_description = getPropDescription(pointer)
@@ -557,7 +564,7 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 			prop = ConverterNeuroimaging2RegionalValues.getPropProp(pointer);
 			
 			%CET: Computational Efficiency Trick
-			converterneuroimaging2regionalvalues_description_list = { 'ELCLASS (constant, string) is the class of the converter of neuroimaging data to regional values.'  'NAME (constant, string) is the name of the converter of neuroimaging data to regional values.'  'DESCRIPTION (constant, string) is the description of the converter of neuroimaging data to regional values.'  'TEMPLATE (parameter, item) is the template of the converter of neuroimaging data to regional values.'  'ID (data, string) is a few-letter code for the converter of neuroimaging data to regional values.'  'LABEL (metadata, string) is an extended label of the converter of neuroimaging data to regional values.'  'NOTES (metadata, string) are some specific notes about the converter of neuroimaging data to regional values.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'BA_LIST (data, itemlist) is the list of brain atlases used to identify the brain regions.'  'BA_NIFTI_FILES (data, stringlist) is the list of atlas NIfTI files aligned with BA_LIST.'  'BA_MAPPING_FILES (data, stringlist) is the list of atlas mapping CSV files aligned with BA_LIST.'  'GR_NEUROIMAGING (data, item) is the group of subject-level neuroimaging data to convert.'  'GR_LIST_ANAT_REF (data, cell) is the list of anatomical reference groups used to restrict voxel averaging.'  'THRESHOLD_ANAT_REF (parameter, scalar) is the threshold applied to anatomical reference images.'  'ANAT_REF_COMBINE_RULE (parameter, option) is the rule used to combine multiple anatomical reference masks.'  'REF_BR (data, stringlist) is the list of reference brain-region IDs used for optional normalization.'  'CONVERT_BR (data, stringlist) is the list of brain-region IDs to convert into regional values.'  'BA (result, item) is the brain atlas containing the converted brain regions.'  'GR_ST (result, item) is the group of subjects with regional values.'  'WAITBAR (gui, logical) determines whether to show the waitbar.' };
+			converterneuroimaging2regionalvalues_description_list = { 'ELCLASS (constant, string) is the class of the converter of neuroimaging data to regional values.'  'NAME (constant, string) is the name of the converter of neuroimaging data to regional values.'  'DESCRIPTION (constant, string) is the description of the converter of neuroimaging data to regional values.'  'TEMPLATE (parameter, item) is the template of the converter of neuroimaging data to regional values.'  'ID (data, string) is a few-letter code for the converter of neuroimaging data to regional values.'  'LABEL (metadata, string) is an extended label of the converter of neuroimaging data to regional values.'  'NOTES (metadata, string) are some specific notes about the converter of neuroimaging data to regional values.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'BA_LIST (data, itemlist) is the list of brain atlases used to identify the brain regions.'  'BA_NIFTI_FILES (data, stringlist) is the list of atlas NIfTI files aligned with BA_LIST.'  'BA_MAPPING_FILES (data, stringlist) is the list of atlas mapping CSV files aligned with BA_LIST.'  'GR_NEUROIMAGING (data, item) is the group of subject-level neuroimaging data to convert.'  'GR_LIST_ANAT_REF (data, itemlist) is the list of anatomical reference groups used to restrict voxel averaging.'  'THRESHOLD_ANAT_REF (parameter, scalar) is the threshold applied to anatomical reference images.'  'ANAT_REF_COMBINE_RULE (parameter, option) is the rule used to combine multiple anatomical reference masks.'  'REF_BR (data, stringlist) is the list of reference brain-region IDs used for optional normalization.'  'CONVERT_BR (data, stringlist) is the list of brain-region IDs to convert into regional values.'  'BR_LABEL_IN_MAPS (query, cell) finds the atlas index and numeric atlas label for a brain-region ID.'  'BA (result, item) is the brain atlas containing the converted brain regions.'  'GR_ST (result, item) is the group of subjects with regional values.'  'WAITBAR (gui, logical) determines whether to show the waitbar.' };
 			prop_description = converterneuroimaging2regionalvalues_description_list{prop};
 		end
 		function prop_settings = getPropSettings(pointer)
@@ -592,7 +599,7 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 				case 12 % ConverterNeuroimaging2RegionalValues.GR_NEUROIMAGING
 					prop_settings = 'Group';
 				case 13 % ConverterNeuroimaging2RegionalValues.GR_LIST_ANAT_REF
-					prop_settings = Format.getFormatSettings(16);
+					prop_settings = Format.getFormatSettings(9);
 				case 14 % ConverterNeuroimaging2RegionalValues.THRESHOLD_ANAT_REF
 					prop_settings = Format.getFormatSettings(11);
 				case 15 % ConverterNeuroimaging2RegionalValues.ANAT_REF_COMBINE_RULE
@@ -601,11 +608,13 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 					prop_settings = Format.getFormatSettings(3);
 				case 17 % ConverterNeuroimaging2RegionalValues.CONVERT_BR
 					prop_settings = Format.getFormatSettings(3);
-				case 18 % ConverterNeuroimaging2RegionalValues.BA
+				case 18 % ConverterNeuroimaging2RegionalValues.BR_LABEL_IN_MAPS
+					prop_settings = Format.getFormatSettings(16);
+				case 19 % ConverterNeuroimaging2RegionalValues.BA
 					prop_settings = 'BrainAtlas';
-				case 19 % ConverterNeuroimaging2RegionalValues.GR_ST
+				case 20 % ConverterNeuroimaging2RegionalValues.GR_ST
 					prop_settings = 'Group';
-				case 20 % ConverterNeuroimaging2RegionalValues.WAITBAR
+				case 21 % ConverterNeuroimaging2RegionalValues.WAITBAR
 					prop_settings = Format.getFormatSettings(4);
 				case 4 % ConverterNeuroimaging2RegionalValues.TEMPLATE
 					prop_settings = 'ConverterNeuroimaging2RegionalValues';
@@ -637,7 +646,7 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 			
 			switch prop %CET: Computational Efficiency Trick
 				case 9 % ConverterNeuroimaging2RegionalValues.BA_LIST
-					prop_default = {BrainAtlas()};
+					prop_default = Format.getFormatDefault(9, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
 				case 10 % ConverterNeuroimaging2RegionalValues.BA_NIFTI_FILES
 					prop_default = {''};
 				case 11 % ConverterNeuroimaging2RegionalValues.BA_MAPPING_FILES
@@ -651,14 +660,16 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 				case 15 % ConverterNeuroimaging2RegionalValues.ANAT_REF_COMBINE_RULE
 					prop_default = 'or';
 				case 16 % ConverterNeuroimaging2RegionalValues.REF_BR
-					prop_default = Format.getFormatDefault(3, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
+					prop_default = {''};
 				case 17 % ConverterNeuroimaging2RegionalValues.CONVERT_BR
-					prop_default = Format.getFormatDefault(3, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
-				case 18 % ConverterNeuroimaging2RegionalValues.BA
+					prop_default = {''};
+				case 18 % ConverterNeuroimaging2RegionalValues.BR_LABEL_IN_MAPS
+					prop_default = Format.getFormatDefault(16, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
+				case 19 % ConverterNeuroimaging2RegionalValues.BA
 					prop_default = Format.getFormatDefault(8, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
-				case 19 % ConverterNeuroimaging2RegionalValues.GR_ST
+				case 20 % ConverterNeuroimaging2RegionalValues.GR_ST
 					prop_default = Format.getFormatDefault(8, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
-				case 20 % ConverterNeuroimaging2RegionalValues.WAITBAR
+				case 21 % ConverterNeuroimaging2RegionalValues.WAITBAR
 					prop_default = true;
 				case 1 % ConverterNeuroimaging2RegionalValues.ELCLASS
 					prop_default = 'ConverterNeuroimaging2RegionalValues';
@@ -747,7 +758,7 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 				case 12 % ConverterNeuroimaging2RegionalValues.GR_NEUROIMAGING
 					check = Format.checkFormat(8, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
 				case 13 % ConverterNeuroimaging2RegionalValues.GR_LIST_ANAT_REF
-					check = Format.checkFormat(16, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
+					check = Format.checkFormat(9, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
 				case 14 % ConverterNeuroimaging2RegionalValues.THRESHOLD_ANAT_REF
 					check = Format.checkFormat(11, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
 				case 15 % ConverterNeuroimaging2RegionalValues.ANAT_REF_COMBINE_RULE
@@ -756,11 +767,13 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 					check = Format.checkFormat(3, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
 				case 17 % ConverterNeuroimaging2RegionalValues.CONVERT_BR
 					check = Format.checkFormat(3, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
-				case 18 % ConverterNeuroimaging2RegionalValues.BA
+				case 18 % ConverterNeuroimaging2RegionalValues.BR_LABEL_IN_MAPS
+					check = Format.checkFormat(16, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
+				case 19 % ConverterNeuroimaging2RegionalValues.BA
 					check = Format.checkFormat(8, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
-				case 19 % ConverterNeuroimaging2RegionalValues.GR_ST
+				case 20 % ConverterNeuroimaging2RegionalValues.GR_ST
 					check = Format.checkFormat(8, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
-				case 20 % ConverterNeuroimaging2RegionalValues.WAITBAR
+				case 21 % ConverterNeuroimaging2RegionalValues.WAITBAR
 					check = Format.checkFormat(4, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
 				case 4 % ConverterNeuroimaging2RegionalValues.TEMPLATE
 					check = Format.checkFormat(8, value, ConverterNeuroimaging2RegionalValues.getPropSettings(prop));
@@ -798,8 +811,26 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 			%  postset, postprocessing, checkValue.
 			
 			switch prop
-				case 18 % ConverterNeuroimaging2RegionalValues.BA
-					rng_settings_ = rng(); rng(cn.getPropSeed(18), 'twister')
+				case 18 % ConverterNeuroimaging2RegionalValues.BR_LABEL_IN_MAPS
+					br_id = varargin{1};
+					region_label_map_list = varargin{2};
+					
+					atlas_idx = [];
+					region_label = [];
+					
+					for i = 1:numel(region_label_map_list)
+					    region_label_map = region_label_map_list{i};
+					
+					    if isKey(region_label_map, br_id)
+					        atlas_idx = i;
+					        region_label = region_label_map(br_id);
+					        value = {atlas_idx, region_label};
+					        return
+					    end
+					end
+					
+				case 19 % ConverterNeuroimaging2RegionalValues.BA
+					rng_settings_ = rng(); rng(cn.getPropSeed(19), 'twister')
 					
 					ba_list = cn.get('BA_LIST');
 					convert_br = cn.get('CONVERT_BR');
@@ -857,8 +888,8 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 					
 					rng(rng_settings_)
 					
-				case 19 % ConverterNeuroimaging2RegionalValues.GR_ST
-					rng_settings_ = rng(); rng(cn.getPropSeed(19), 'twister')
+				case 20 % ConverterNeuroimaging2RegionalValues.GR_ST
+					rng_settings_ = rng(); rng(cn.getPropSeed(20), 'twister')
 					
 					ba_list = cn.get('BA_LIST');
 					ba_nifti_files = cn.get('BA_NIFTI_FILES');
@@ -869,6 +900,11 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 					anat_ref_combine_rule = cn.get('ANAT_REF_COMBINE_RULE');
 					ref_br = cn.get('REF_BR');
 					convert_br = cn.get('CONVERT_BR');
+					
+					if gr_neuroimaging.get('SUB_DICT').get('LENGTH') == 0
+					    value = Group();
+					    return
+					end
 					
 					if isempty(ba_list)
 					    error('BA_LIST must not be empty.')
@@ -955,7 +991,7 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 					    sub_neuroimaging = sub_dict_neuroimaging.get('IT', sub_i);
 					    subject_id = sub_neuroimaging.get('ID');
 					
-					    neuroimaging_file = sub_neuroimaging.get('ABSOLUTE_FILE_PATH');
+					    neuroimaging_file = sub_neuroimaging.get('ABSOLUTE_NIFTI_PATH');
 					
 					    if ~isfile(neuroimaging_file)
 					        error('Subject neuroimaging file not found: %s', neuroimaging_file)
@@ -982,7 +1018,7 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 					                    anat_i, subject_id, sub_anat.get('ID'))
 					            end
 					
-					            anat_file = sub_anat.get('ABSOLUTE_FILE_PATH');
+					            anat_file = sub_anat.get('ABSOLUTE_NIFTI_PATH');
 					
 					            if ~isfile(anat_file)
 					                error('Anatomical reference file not found: %s', anat_file)
@@ -1006,7 +1042,9 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 					    if use_reference_normalization
 					        for ref_i = 1:numel(ref_br)
 					            br_id = ref_br{ref_i};
-					            [atlas_idx, region_label] = find_region_label_in_maps(br_id, region_label_map_list);
+					            br_label_info = cn.get('BR_LABEL_IN_MAPS', br_id, region_label_map_list);
+					            atlas_idx = br_label_info{1};
+					            region_label = br_label_info{2};
 					
 					            if isempty(atlas_idx)
 					                error('Reference brain region "%s" was not found in BA_MAPPING_FILES.', br_id)
@@ -1037,8 +1075,10 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 					
 					    for br_i = 1:numel(convert_br)
 					        br_id = convert_br{br_i};
-					        [atlas_idx, region_label] = find_region_label_in_maps(br_id, region_label_map_list);
-					
+					        br_label_info = cn.get('BR_LABEL_IN_MAPS', br_id, region_label_map_list);
+					        atlas_idx = br_label_info{1};
+					        region_label = br_label_info{2};
+					        
 					        if isempty(atlas_idx)
 					            warning('Converted brain region "%s" was not found in BA_MAPPING_FILES. Setting value to NaN.', br_id)
 					            regional_values(br_i) = NaN;
@@ -1063,7 +1103,7 @@ classdef ConverterNeuroimaging2RegionalValues < ConcreteElement
 					        'LABEL', sub_neuroimaging.get('LABEL'), ...
 					        'NOTES', sub_neuroimaging.get('NOTES'), ...
 					        'BA', ba_st, ...
-					        'ST', regional_values, ...
+					        'ST', regional_values', ...
 					        'VOI_DICT', sub_neuroimaging.get('VOI_DICT') ...
 					        );
 					

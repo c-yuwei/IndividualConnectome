@@ -1,50 +1,34 @@
-classdef ConverterNeuroimaging2PDFs < PanelProp
-	%ConverterNeuroimaging2PDFs plots the panel to manage the graph and measures of an ensemble analysis.
-	% It is a subclass of <a href="matlab:help PanelProp">PanelProp</a>.
+classdef ConverterNeuroimaging2PDFs < ConcreteElement
+	%ConverterNeuroimaging2PDFs converts subject-level NIfTI neuroimaging data into regional probability density functions.
+	% It is a subclass of <a href="matlab:help ConcreteElement">ConcreteElement</a>.
 	%
-	% SUVRConstructorPP_BR_DICT plots the panel to manage the graph and measures of an ensemble analysis.
-	% It is intended to be used only with the property ME_DICT of AnalyzeEnsemble.
+	% ConverterNeuroimaging2PDFs converts subject-level NIfTI neuroimaging data into regional probability density functions using one or more atlas NIfTI files and atlas mapping files. 
+	%  It can optionally restrict voxel extraction with anatomical reference images, such as GM or WM probability maps. The output is a group of SubjectFUN objects, 
+	%  where each subject contains a matrix whose rows are PDF bins and whose columns are converted brain regions.
 	%
 	% The list of ConverterNeuroimaging2PDFs properties is:
-	%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the % % % .
-	%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the graph and measure panel.
-	%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the graph and measure panel.
-	%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the graph and measure panel.
-	%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the graph and measure panel.
-	%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the graph and measure panel.
-	%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the graph and measure panel.
+	%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the converter of neuroimaging data to PDFs.
+	%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the converter of neuroimaging data to PDFs.
+	%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the converter of neuroimaging data to PDFs.
+	%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the converter of neuroimaging data to PDFs.
+	%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the converter of neuroimaging data to PDFs.
+	%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the converter of neuroimaging data to PDFs.
+	%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the converter of neuroimaging data to PDFs.
 	%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
-	%  <strong>9</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) detemines whether to show the waitbar.
-	%  <strong>10</strong> <strong>H_WAITBAR</strong> 	H_WAITBAR (evanescent, handle) is the waitbar handle.
-	%  <strong>11</strong> <strong>DRAW</strong> 	DRAW (query, logical) draws the property panel.
-	%  <strong>12</strong> <strong>DRAWN</strong> 	DRAWN (query, logical) returns whether the panel has been drawn.
-	%  <strong>13</strong> <strong>PARENT</strong> 	PARENT (gui, item) is the panel parent.
-	%  <strong>14</strong> <strong>BKGCOLOR</strong> 	BKGCOLOR (figure, color) is the panel background color.
-	%  <strong>15</strong> <strong>H</strong> 	H (evanescent, handle) is the panel handle.
-	%  <strong>16</strong> <strong>SHOW</strong> 	SHOW (query, logical) shows the figure containing the panel and, possibly, the item figures.
-	%  <strong>17</strong> <strong>HIDE</strong> 	HIDE (query, logical) hides the figure containing the panel and, possibly, the item figures.
-	%  <strong>18</strong> <strong>DELETE</strong> 	DELETE (query, logical) resets the handles when the panel is deleted.
-	%  <strong>19</strong> <strong>CLOSE</strong> 	CLOSE (query, logical) closes the figure containing the panel and, possibly, the item figures.
-	%  <strong>20</strong> <strong>X_DRAW</strong> 	X_DRAW (query, logical) draws the property panel.
-	%  <strong>21</strong> <strong>UPDATE</strong> 	UPDATE (query, logical) updates the content and permissions of the table.
-	%  <strong>22</strong> <strong>REDRAW</strong> 	REDRAW (query, logical) resizes the property panel and repositions its graphical objects.
-	%  <strong>23</strong> <strong>EL</strong> 	EL (data, item) is the element.
-	%  <strong>24</strong> <strong>PROP</strong> 	PROP (data, scalar) is the property number.
-	%  <strong>25</strong> <strong>HEIGHT</strong> 	HEIGHT (gui, size) is the pixel height of the prop panel.
-	%  <strong>26</strong> <strong>TITLE</strong> 	TITLE (gui, string) is the property title.
-	%  <strong>27</strong> <strong>LABEL_TITLE</strong> 	LABEL_TITLE (evanescent, handle) is the handle for the title uilabel.
-	%  <strong>28</strong> <strong>BUTTON_CB</strong> 	BUTTON_CB (evanescent, handle) is the handle for the callback button [only for PARAMETER, DATA, FIGURE and GUI].
-	%  <strong>29</strong> <strong>GUI_CB</strong> 	GUI_CB (data, item) is the handle to the item figure.
-	%  <strong>30</strong> <strong>LISTENER_CB</strong> 	LISTENER_CB (evanescent, handle) contains the listener to the updates in the property callback.
-	%  <strong>31</strong> <strong>BUTTON_CALC</strong> 	BUTTON_CALC (evanescent, handle) is the handle for the calculate button [only for RESULT, QUERY and EVANESCENT].
-	%  <strong>32</strong> <strong>BUTTON_DEL</strong> 	BUTTON_DEL (evanescent, handle) is the handle for the delete button [only for RESULT, QUERY and EVANESCENT].
-	%  <strong>33</strong> <strong>LISTENER_SET</strong> 	LISTENER_SET (evanescent, handlelist) contains the listeners to the PropSet events.
-	%  <strong>34</strong> <strong>LISTENER_MEMORIZED</strong> 	LISTENER_MEMORIZED (evanescent, handlelist) contains the listeners to the PropMemorized events.
-	%  <strong>35</strong> <strong>LISTENER_LOCKED</strong> 	LISTENER_LOCKED (evanescent, handlelist) contains the listeners to the PropLocked events.
-	%  <strong>36</strong> <strong>TABLE_HEIGHT</strong> 	TABLE_HEIGHT (gui, size) is the pixel height of the property panel when the table is shown.
-	%  <strong>37</strong> <strong>SELECTED</strong> 	SELECTED (gui, cvector) is the list of selected items.
-	%  <strong>38</strong> <strong>TABLE</strong> 	TABLE (evanescent, handle) is the table.
-	%  <strong>39</strong> <strong>CONTEXTMENU</strong> 	CONTEXTMENU (evanescent, handle) is the context menu.
+	%  <strong>9</strong> <strong>BA_LIST</strong> 	BA_LIST (data, itemlist) is the list of brain atlases used to identify the brain regions.
+	%  <strong>10</strong> <strong>BA_NIFTI_FILES</strong> 	BA_NIFTI_FILES (data, stringlist) is the list of atlas NIfTI files aligned with BA_LIST.
+	%  <strong>11</strong> <strong>BA_MAPPING_FILES</strong> 	BA_MAPPING_FILES (data, stringlist) is the list of atlas mapping CSV files aligned with BA_LIST.
+	%  <strong>12</strong> <strong>GR_NEUROIMAGING</strong> 	GR_NEUROIMAGING (data, item) is the group of subject-level neuroimaging data to convert.
+	%  <strong>13</strong> <strong>GR_LIST_ANAT_REF</strong> 	GR_LIST_ANAT_REF (data, itemlist) is the list of anatomical reference groups used to restrict voxel extraction.
+	%  <strong>14</strong> <strong>THRESHOLD_ANAT_REF</strong> 	THRESHOLD_ANAT_REF (parameter, scalar) is the threshold applied to anatomical reference images.
+	%  <strong>15</strong> <strong>ANAT_REF_COMBINE_RULE</strong> 	ANAT_REF_COMBINE_RULE (parameter, option) is the rule used to combine multiple anatomical reference masks.
+	%  <strong>16</strong> <strong>CONVERT_BR</strong> 	CONVERT_BR (data, stringlist) is the list of brain-region IDs to convert into regional PDFs.
+	%  <strong>17</strong> <strong>BIN_EDGES</strong> 	BIN_EDGES (parameter, rvector) is the bin edges used to calculate regional PDFs.
+	%  <strong>18</strong> <strong>BIN_CENTERS</strong> 	BIN_CENTERS (query, rvector) is the bin centers corresponding to BIN_EDGES.
+	%  <strong>19</strong> <strong>BR_LABEL_IN_MAPS</strong> 	BR_LABEL_IN_MAPS (query, cell) finds the atlas index and numeric atlas label for a brain-region ID.
+	%  <strong>20</strong> <strong>BA</strong> 	BA (result, item) is the brain atlas containing the converted brain regions.
+	%  <strong>21</strong> <strong>GR_FUN</strong> 	GR_FUN (result, item) is the group of subjects with regional PDFs.
+	%  <strong>22</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) determines whether to show the waitbar.
 	%
 	% ConverterNeuroimaging2PDFs methods (constructor):
 	%  ConverterNeuroimaging2PDFs - constructor
@@ -64,33 +48,33 @@ classdef ConverterNeuroimaging2PDFs < PanelProp
 	%  unchecked - sets a property to NOT checked
 	%
 	% ConverterNeuroimaging2PDFs methods (display):
-	%  tostring - string with information about the graph and measure plot
-	%  disp - displays information about the graph and measure plot
-	%  tree - displays the tree of the graph and measure plot
+	%  tostring - string with information about the converter of neuroimaging data to PDFs
+	%  disp - displays information about the converter of neuroimaging data to PDFs
+	%  tree - displays the tree of the converter of neuroimaging data to PDFs
 	%
 	% ConverterNeuroimaging2PDFs methods (miscellanea):
 	%  getNoValue - returns a pointer to a persistent instance of NoValue
 	%               Use it as Element.getNoValue()
 	%  getCallback - returns the callback to a property
-	%  isequal - determines whether two graph and measure plot are equal (values, locked)
+	%  isequal - determines whether two converter of neuroimaging data to PDFs are equal (values, locked)
 	%  getElementList - returns a list with all subelements
-	%  copy - copies the graph and measure plot
+	%  copy - copies the converter of neuroimaging data to PDFs
 	%
 	% ConverterNeuroimaging2PDFs methods (save/load, Static):
-	%  save - saves BRAPH2 graph and measure plot as b2 file
-	%  load - loads a BRAPH2 graph and measure plot from a b2 file
+	%  save - saves BRAPH2 converter of neuroimaging data to PDFs as b2 file
+	%  load - loads a BRAPH2 converter of neuroimaging data to PDFs from a b2 file
 	%
 	% ConverterNeuroimaging2PDFs method (JSON encode):
-	%  encodeJSON - returns a JSON string encoding the graph and measure plot
+	%  encodeJSON - returns a JSON string encoding the converter of neuroimaging data to PDFs
 	%
 	% ConverterNeuroimaging2PDFs method (JSON decode, Static):
-	%   decodeJSON - returns a JSON string encoding the graph and measure plot
+	%   decodeJSON - returns a JSON string encoding the converter of neuroimaging data to PDFs
 	%
 	% ConverterNeuroimaging2PDFs methods (inspection, Static):
-	%  getClass - returns the class of the graph and measure plot
+	%  getClass - returns the class of the converter of neuroimaging data to PDFs
 	%  getSubclasses - returns all subclasses of ConverterNeuroimaging2PDFs
-	%  getProps - returns the property list of the graph and measure plot
-	%  getPropNumber - returns the property number of the graph and measure plot
+	%  getProps - returns the property list of the converter of neuroimaging data to PDFs
+	%  getPropNumber - returns the property number of the converter of neuroimaging data to PDFs
 	%  existsProp - checks whether property exists/error
 	%  existsTag - checks whether tag exists/error
 	%  getPropProp - returns the property number of a property
@@ -132,34 +116,84 @@ classdef ConverterNeuroimaging2PDFs < PanelProp
 	% To print full list of constants, click here <a href="matlab:metaclass = ?ConverterNeuroimaging2PDFs; properties = metaclass.PropertyList;for i = 1:1:length(properties), if properties(i).Constant, disp([properties(i).Name newline() tostring(properties(i).DefaultValue) newline()]), end, end">ConverterNeuroimaging2PDFs constants</a>.
 	%
 	%
-	% See also uitable, AnalyzeEnsemble, Graph, Measure.
+	% See also ConverterNeuroimaging2RegionalValues, Group, SubjectNeuroimaging, SubjectFUN, BrainAtlas, BrainRegion, ImporterGroupSubjectNeuroimaging_NIfTI, ExporterGroupSubjectFUN_XLS, ExporterBrainAtlasXLS.
 	%
 	% BUILD BRAPH2 7 class_name 1
 	
 	properties (Constant) % properties
-		TABLE_HEIGHT = 36; %CET: Computational Efficiency Trick
-		TABLE_HEIGHT_TAG = 'TABLE_HEIGHT';
-		TABLE_HEIGHT_CATEGORY = 9;
-		TABLE_HEIGHT_FORMAT = 22;
+		BA_LIST = 9; %CET: Computational Efficiency Trick
+		BA_LIST_TAG = 'BA_LIST';
+		BA_LIST_CATEGORY = 4;
+		BA_LIST_FORMAT = 9;
 		
-		SELECTED = 37; %CET: Computational Efficiency Trick
-		SELECTED_TAG = 'SELECTED';
-		SELECTED_CATEGORY = 9;
-		SELECTED_FORMAT = 13;
+		BA_NIFTI_FILES = 10; %CET: Computational Efficiency Trick
+		BA_NIFTI_FILES_TAG = 'BA_NIFTI_FILES';
+		BA_NIFTI_FILES_CATEGORY = 4;
+		BA_NIFTI_FILES_FORMAT = 3;
 		
-		TABLE = 38; %CET: Computational Efficiency Trick
-		TABLE_TAG = 'TABLE';
-		TABLE_CATEGORY = 7;
-		TABLE_FORMAT = 18;
+		BA_MAPPING_FILES = 11; %CET: Computational Efficiency Trick
+		BA_MAPPING_FILES_TAG = 'BA_MAPPING_FILES';
+		BA_MAPPING_FILES_CATEGORY = 4;
+		BA_MAPPING_FILES_FORMAT = 3;
 		
-		CONTEXTMENU = 39; %CET: Computational Efficiency Trick
-		CONTEXTMENU_TAG = 'CONTEXTMENU';
-		CONTEXTMENU_CATEGORY = 7;
-		CONTEXTMENU_FORMAT = 18;
+		GR_NEUROIMAGING = 12; %CET: Computational Efficiency Trick
+		GR_NEUROIMAGING_TAG = 'GR_NEUROIMAGING';
+		GR_NEUROIMAGING_CATEGORY = 4;
+		GR_NEUROIMAGING_FORMAT = 8;
+		
+		GR_LIST_ANAT_REF = 13; %CET: Computational Efficiency Trick
+		GR_LIST_ANAT_REF_TAG = 'GR_LIST_ANAT_REF';
+		GR_LIST_ANAT_REF_CATEGORY = 4;
+		GR_LIST_ANAT_REF_FORMAT = 9;
+		
+		THRESHOLD_ANAT_REF = 14; %CET: Computational Efficiency Trick
+		THRESHOLD_ANAT_REF_TAG = 'THRESHOLD_ANAT_REF';
+		THRESHOLD_ANAT_REF_CATEGORY = 3;
+		THRESHOLD_ANAT_REF_FORMAT = 11;
+		
+		ANAT_REF_COMBINE_RULE = 15; %CET: Computational Efficiency Trick
+		ANAT_REF_COMBINE_RULE_TAG = 'ANAT_REF_COMBINE_RULE';
+		ANAT_REF_COMBINE_RULE_CATEGORY = 3;
+		ANAT_REF_COMBINE_RULE_FORMAT = 5;
+		
+		CONVERT_BR = 16; %CET: Computational Efficiency Trick
+		CONVERT_BR_TAG = 'CONVERT_BR';
+		CONVERT_BR_CATEGORY = 4;
+		CONVERT_BR_FORMAT = 3;
+		
+		BIN_EDGES = 17; %CET: Computational Efficiency Trick
+		BIN_EDGES_TAG = 'BIN_EDGES';
+		BIN_EDGES_CATEGORY = 3;
+		BIN_EDGES_FORMAT = 12;
+		
+		BIN_CENTERS = 18; %CET: Computational Efficiency Trick
+		BIN_CENTERS_TAG = 'BIN_CENTERS';
+		BIN_CENTERS_CATEGORY = 6;
+		BIN_CENTERS_FORMAT = 12;
+		
+		BR_LABEL_IN_MAPS = 19; %CET: Computational Efficiency Trick
+		BR_LABEL_IN_MAPS_TAG = 'BR_LABEL_IN_MAPS';
+		BR_LABEL_IN_MAPS_CATEGORY = 6;
+		BR_LABEL_IN_MAPS_FORMAT = 16;
+		
+		BA = 20; %CET: Computational Efficiency Trick
+		BA_TAG = 'BA';
+		BA_CATEGORY = 5;
+		BA_FORMAT = 8;
+		
+		GR_FUN = 21; %CET: Computational Efficiency Trick
+		GR_FUN_TAG = 'GR_FUN';
+		GR_FUN_CATEGORY = 5;
+		GR_FUN_FORMAT = 8;
+		
+		WAITBAR = 22; %CET: Computational Efficiency Trick
+		WAITBAR_TAG = 'WAITBAR';
+		WAITBAR_CATEGORY = 9;
+		WAITBAR_FORMAT = 4;
 	end
 	methods % constructor
-		function pr = ConverterNeuroimaging2PDFs(varargin)
-			%ConverterNeuroimaging2PDFs() creates a graph and measure plot.
+		function cn = ConverterNeuroimaging2PDFs(varargin)
+			%ConverterNeuroimaging2PDFs() creates a converter of neuroimaging data to PDFs.
 			%
 			% ConverterNeuroimaging2PDFs(PROP, VALUE, ...) with property PROP initialized to VALUE.
 			%
@@ -169,93 +203,76 @@ classdef ConverterNeuroimaging2PDFs < PanelProp
 			%  them with either property numbers (PROP) or tags (TAG).
 			%
 			% The list of ConverterNeuroimaging2PDFs properties is:
-			%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the % % % .
-			%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the graph and measure panel.
-			%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the graph and measure panel.
-			%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the graph and measure panel.
-			%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the graph and measure panel.
-			%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the graph and measure panel.
-			%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the graph and measure panel.
+			%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the converter of neuroimaging data to PDFs.
+			%  <strong>2</strong> <strong>NAME</strong> 	NAME (constant, string) is the name of the converter of neuroimaging data to PDFs.
+			%  <strong>3</strong> <strong>DESCRIPTION</strong> 	DESCRIPTION (constant, string) is the description of the converter of neuroimaging data to PDFs.
+			%  <strong>4</strong> <strong>TEMPLATE</strong> 	TEMPLATE (parameter, item) is the template of the converter of neuroimaging data to PDFs.
+			%  <strong>5</strong> <strong>ID</strong> 	ID (data, string) is a few-letter code for the converter of neuroimaging data to PDFs.
+			%  <strong>6</strong> <strong>LABEL</strong> 	LABEL (metadata, string) is an extended label of the converter of neuroimaging data to PDFs.
+			%  <strong>7</strong> <strong>NOTES</strong> 	NOTES (metadata, string) are some specific notes about the converter of neuroimaging data to PDFs.
 			%  <strong>8</strong> <strong>TOSTRING</strong> 	TOSTRING (query, string) returns a string that represents the concrete element.
-			%  <strong>9</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) detemines whether to show the waitbar.
-			%  <strong>10</strong> <strong>H_WAITBAR</strong> 	H_WAITBAR (evanescent, handle) is the waitbar handle.
-			%  <strong>11</strong> <strong>DRAW</strong> 	DRAW (query, logical) draws the property panel.
-			%  <strong>12</strong> <strong>DRAWN</strong> 	DRAWN (query, logical) returns whether the panel has been drawn.
-			%  <strong>13</strong> <strong>PARENT</strong> 	PARENT (gui, item) is the panel parent.
-			%  <strong>14</strong> <strong>BKGCOLOR</strong> 	BKGCOLOR (figure, color) is the panel background color.
-			%  <strong>15</strong> <strong>H</strong> 	H (evanescent, handle) is the panel handle.
-			%  <strong>16</strong> <strong>SHOW</strong> 	SHOW (query, logical) shows the figure containing the panel and, possibly, the item figures.
-			%  <strong>17</strong> <strong>HIDE</strong> 	HIDE (query, logical) hides the figure containing the panel and, possibly, the item figures.
-			%  <strong>18</strong> <strong>DELETE</strong> 	DELETE (query, logical) resets the handles when the panel is deleted.
-			%  <strong>19</strong> <strong>CLOSE</strong> 	CLOSE (query, logical) closes the figure containing the panel and, possibly, the item figures.
-			%  <strong>20</strong> <strong>X_DRAW</strong> 	X_DRAW (query, logical) draws the property panel.
-			%  <strong>21</strong> <strong>UPDATE</strong> 	UPDATE (query, logical) updates the content and permissions of the table.
-			%  <strong>22</strong> <strong>REDRAW</strong> 	REDRAW (query, logical) resizes the property panel and repositions its graphical objects.
-			%  <strong>23</strong> <strong>EL</strong> 	EL (data, item) is the element.
-			%  <strong>24</strong> <strong>PROP</strong> 	PROP (data, scalar) is the property number.
-			%  <strong>25</strong> <strong>HEIGHT</strong> 	HEIGHT (gui, size) is the pixel height of the prop panel.
-			%  <strong>26</strong> <strong>TITLE</strong> 	TITLE (gui, string) is the property title.
-			%  <strong>27</strong> <strong>LABEL_TITLE</strong> 	LABEL_TITLE (evanescent, handle) is the handle for the title uilabel.
-			%  <strong>28</strong> <strong>BUTTON_CB</strong> 	BUTTON_CB (evanescent, handle) is the handle for the callback button [only for PARAMETER, DATA, FIGURE and GUI].
-			%  <strong>29</strong> <strong>GUI_CB</strong> 	GUI_CB (data, item) is the handle to the item figure.
-			%  <strong>30</strong> <strong>LISTENER_CB</strong> 	LISTENER_CB (evanescent, handle) contains the listener to the updates in the property callback.
-			%  <strong>31</strong> <strong>BUTTON_CALC</strong> 	BUTTON_CALC (evanescent, handle) is the handle for the calculate button [only for RESULT, QUERY and EVANESCENT].
-			%  <strong>32</strong> <strong>BUTTON_DEL</strong> 	BUTTON_DEL (evanescent, handle) is the handle for the delete button [only for RESULT, QUERY and EVANESCENT].
-			%  <strong>33</strong> <strong>LISTENER_SET</strong> 	LISTENER_SET (evanescent, handlelist) contains the listeners to the PropSet events.
-			%  <strong>34</strong> <strong>LISTENER_MEMORIZED</strong> 	LISTENER_MEMORIZED (evanescent, handlelist) contains the listeners to the PropMemorized events.
-			%  <strong>35</strong> <strong>LISTENER_LOCKED</strong> 	LISTENER_LOCKED (evanescent, handlelist) contains the listeners to the PropLocked events.
-			%  <strong>36</strong> <strong>TABLE_HEIGHT</strong> 	TABLE_HEIGHT (gui, size) is the pixel height of the property panel when the table is shown.
-			%  <strong>37</strong> <strong>SELECTED</strong> 	SELECTED (gui, cvector) is the list of selected items.
-			%  <strong>38</strong> <strong>TABLE</strong> 	TABLE (evanescent, handle) is the table.
-			%  <strong>39</strong> <strong>CONTEXTMENU</strong> 	CONTEXTMENU (evanescent, handle) is the context menu.
+			%  <strong>9</strong> <strong>BA_LIST</strong> 	BA_LIST (data, itemlist) is the list of brain atlases used to identify the brain regions.
+			%  <strong>10</strong> <strong>BA_NIFTI_FILES</strong> 	BA_NIFTI_FILES (data, stringlist) is the list of atlas NIfTI files aligned with BA_LIST.
+			%  <strong>11</strong> <strong>BA_MAPPING_FILES</strong> 	BA_MAPPING_FILES (data, stringlist) is the list of atlas mapping CSV files aligned with BA_LIST.
+			%  <strong>12</strong> <strong>GR_NEUROIMAGING</strong> 	GR_NEUROIMAGING (data, item) is the group of subject-level neuroimaging data to convert.
+			%  <strong>13</strong> <strong>GR_LIST_ANAT_REF</strong> 	GR_LIST_ANAT_REF (data, itemlist) is the list of anatomical reference groups used to restrict voxel extraction.
+			%  <strong>14</strong> <strong>THRESHOLD_ANAT_REF</strong> 	THRESHOLD_ANAT_REF (parameter, scalar) is the threshold applied to anatomical reference images.
+			%  <strong>15</strong> <strong>ANAT_REF_COMBINE_RULE</strong> 	ANAT_REF_COMBINE_RULE (parameter, option) is the rule used to combine multiple anatomical reference masks.
+			%  <strong>16</strong> <strong>CONVERT_BR</strong> 	CONVERT_BR (data, stringlist) is the list of brain-region IDs to convert into regional PDFs.
+			%  <strong>17</strong> <strong>BIN_EDGES</strong> 	BIN_EDGES (parameter, rvector) is the bin edges used to calculate regional PDFs.
+			%  <strong>18</strong> <strong>BIN_CENTERS</strong> 	BIN_CENTERS (query, rvector) is the bin centers corresponding to BIN_EDGES.
+			%  <strong>19</strong> <strong>BR_LABEL_IN_MAPS</strong> 	BR_LABEL_IN_MAPS (query, cell) finds the atlas index and numeric atlas label for a brain-region ID.
+			%  <strong>20</strong> <strong>BA</strong> 	BA (result, item) is the brain atlas containing the converted brain regions.
+			%  <strong>21</strong> <strong>GR_FUN</strong> 	GR_FUN (result, item) is the group of subjects with regional PDFs.
+			%  <strong>22</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) determines whether to show the waitbar.
 			%
 			% See also Category, Format.
 			
-			pr = pr@PanelProp(varargin{:});
+			cn = cn@ConcreteElement(varargin{:});
 		end
 	end
 	methods (Static) % inspection
 		function build = getBuild()
-			%GETBUILD returns the build of the graph and measure plot.
+			%GETBUILD returns the build of the converter of neuroimaging data to PDFs.
 			%
 			% BUILD = ConverterNeuroimaging2PDFs.GETBUILD() returns the build of 'ConverterNeuroimaging2PDFs'.
 			%
 			% Alternative forms to call this method are:
-			%  BUILD = PR.GETBUILD() returns the build of the graph and measure plot PR.
-			%  BUILD = Element.GETBUILD(PR) returns the build of 'PR'.
+			%  BUILD = CN.GETBUILD() returns the build of the converter of neuroimaging data to PDFs CN.
+			%  BUILD = Element.GETBUILD(CN) returns the build of 'CN'.
 			%  BUILD = Element.GETBUILD('ConverterNeuroimaging2PDFs') returns the build of 'ConverterNeuroimaging2PDFs'.
 			%
-			% Note that the Element.GETBUILD(PR) and Element.GETBUILD('ConverterNeuroimaging2PDFs')
+			% Note that the Element.GETBUILD(CN) and Element.GETBUILD('ConverterNeuroimaging2PDFs')
 			%  are less computationally efficient.
 			
 			build = 1;
 		end
-		function pr_class = getClass()
-			%GETCLASS returns the class of the graph and measure plot.
+		function cn_class = getClass()
+			%GETCLASS returns the class of the converter of neuroimaging data to PDFs.
 			%
 			% CLASS = ConverterNeuroimaging2PDFs.GETCLASS() returns the class 'ConverterNeuroimaging2PDFs'.
 			%
 			% Alternative forms to call this method are:
-			%  CLASS = PR.GETCLASS() returns the class of the graph and measure plot PR.
-			%  CLASS = Element.GETCLASS(PR) returns the class of 'PR'.
+			%  CLASS = CN.GETCLASS() returns the class of the converter of neuroimaging data to PDFs CN.
+			%  CLASS = Element.GETCLASS(CN) returns the class of 'CN'.
 			%  CLASS = Element.GETCLASS('ConverterNeuroimaging2PDFs') returns 'ConverterNeuroimaging2PDFs'.
 			%
-			% Note that the Element.GETCLASS(PR) and Element.GETCLASS('ConverterNeuroimaging2PDFs')
+			% Note that the Element.GETCLASS(CN) and Element.GETCLASS('ConverterNeuroimaging2PDFs')
 			%  are less computationally efficient.
 			
-			pr_class = 'ConverterNeuroimaging2PDFs';
+			cn_class = 'ConverterNeuroimaging2PDFs';
 		end
 		function subclass_list = getSubclasses()
-			%GETSUBCLASSES returns all subclasses of the graph and measure plot.
+			%GETSUBCLASSES returns all subclasses of the converter of neuroimaging data to PDFs.
 			%
 			% LIST = ConverterNeuroimaging2PDFs.GETSUBCLASSES() returns all subclasses of 'ConverterNeuroimaging2PDFs'.
 			%
 			% Alternative forms to call this method are:
-			%  LIST = PR.GETSUBCLASSES() returns all subclasses of the graph and measure plot PR.
-			%  LIST = Element.GETSUBCLASSES(PR) returns all subclasses of 'PR'.
+			%  LIST = CN.GETSUBCLASSES() returns all subclasses of the converter of neuroimaging data to PDFs CN.
+			%  LIST = Element.GETSUBCLASSES(CN) returns all subclasses of 'CN'.
 			%  LIST = Element.GETSUBCLASSES('ConverterNeuroimaging2PDFs') returns all subclasses of 'ConverterNeuroimaging2PDFs'.
 			%
-			% Note that the Element.GETSUBCLASSES(PR) and Element.GETSUBCLASSES('ConverterNeuroimaging2PDFs')
+			% Note that the Element.GETSUBCLASSES(CN) and Element.GETSUBCLASSES('ConverterNeuroimaging2PDFs')
 			%  are less computationally efficient.
 			%
 			% See also subclasses.
@@ -263,20 +280,20 @@ classdef ConverterNeuroimaging2PDFs < PanelProp
 			subclass_list = { 'ConverterNeuroimaging2PDFs' }; %CET: Computational Efficiency Trick
 		end
 		function prop_list = getProps(category)
-			%GETPROPS returns the property list of graph and measure plot.
+			%GETPROPS returns the property list of converter of neuroimaging data to PDFs.
 			%
-			% PROPS = ConverterNeuroimaging2PDFs.GETPROPS() returns the property list of graph and measure plot
+			% PROPS = ConverterNeuroimaging2PDFs.GETPROPS() returns the property list of converter of neuroimaging data to PDFs
 			%  as a row vector.
 			%
 			% PROPS = ConverterNeuroimaging2PDFs.GETPROPS(CATEGORY) returns the property list 
 			%  of category CATEGORY.
 			%
 			% Alternative forms to call this method are:
-			%  PROPS = PR.GETPROPS([CATEGORY]) returns the property list of the graph and measure plot PR.
-			%  PROPS = Element.GETPROPS(PR[, CATEGORY]) returns the property list of 'PR'.
+			%  PROPS = CN.GETPROPS([CATEGORY]) returns the property list of the converter of neuroimaging data to PDFs CN.
+			%  PROPS = Element.GETPROPS(CN[, CATEGORY]) returns the property list of 'CN'.
 			%  PROPS = Element.GETPROPS('ConverterNeuroimaging2PDFs'[, CATEGORY]) returns the property list of 'ConverterNeuroimaging2PDFs'.
 			%
-			% Note that the Element.GETPROPS(PR) and Element.GETPROPS('ConverterNeuroimaging2PDFs')
+			% Note that the Element.GETPROPS(CN) and Element.GETPROPS('ConverterNeuroimaging2PDFs')
 			%  are less computationally efficient.
 			%
 			% See also getPropNumber, Category.
@@ -284,7 +301,7 @@ classdef ConverterNeuroimaging2PDFs < PanelProp
 			%CET: Computational Efficiency Trick
 			
 			if nargin == 0
-				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39];
+				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22];
 				return
 			end
 			
@@ -294,35 +311,33 @@ classdef ConverterNeuroimaging2PDFs < PanelProp
 				case 2 % Category.METADATA
 					prop_list = [6 7];
 				case 3 % Category.PARAMETER
-					prop_list = 4;
+					prop_list = [4 14 15 17];
 				case 4 % Category.DATA
-					prop_list = [5 23 24 29];
+					prop_list = [5 9 10 11 12 13 16];
+				case 5 % Category.RESULT
+					prop_list = [20 21];
 				case 6 % Category.QUERY
-					prop_list = [8 11 12 16 17 18 19 20 21 22];
-				case 7 % Category.EVANESCENT
-					prop_list = [10 15 27 28 30 31 32 33 34 35 38 39];
-				case 8 % Category.FIGURE
-					prop_list = 14;
+					prop_list = [8 18 19];
 				case 9 % Category.GUI
-					prop_list = [9 13 25 26 36 37];
+					prop_list = 22;
 				otherwise
 					prop_list = [];
 			end
 		end
 		function prop_number = getPropNumber(varargin)
-			%GETPROPNUMBER returns the property number of graph and measure plot.
+			%GETPROPNUMBER returns the property number of converter of neuroimaging data to PDFs.
 			%
-			% N = ConverterNeuroimaging2PDFs.GETPROPNUMBER() returns the property number of graph and measure plot.
+			% N = ConverterNeuroimaging2PDFs.GETPROPNUMBER() returns the property number of converter of neuroimaging data to PDFs.
 			%
-			% N = ConverterNeuroimaging2PDFs.GETPROPNUMBER(CATEGORY) returns the property number of graph and measure plot
+			% N = ConverterNeuroimaging2PDFs.GETPROPNUMBER(CATEGORY) returns the property number of converter of neuroimaging data to PDFs
 			%  of category CATEGORY
 			%
 			% Alternative forms to call this method are:
-			%  N = PR.GETPROPNUMBER([CATEGORY]) returns the property number of the graph and measure plot PR.
-			%  N = Element.GETPROPNUMBER(PR) returns the property number of 'PR'.
+			%  N = CN.GETPROPNUMBER([CATEGORY]) returns the property number of the converter of neuroimaging data to PDFs CN.
+			%  N = Element.GETPROPNUMBER(CN) returns the property number of 'CN'.
 			%  N = Element.GETPROPNUMBER('ConverterNeuroimaging2PDFs') returns the property number of 'ConverterNeuroimaging2PDFs'.
 			%
-			% Note that the Element.GETPROPNUMBER(PR) and Element.GETPROPNUMBER('ConverterNeuroimaging2PDFs')
+			% Note that the Element.GETPROPNUMBER(CN) and Element.GETPROPNUMBER('ConverterNeuroimaging2PDFs')
 			%  are less computationally efficient.
 			%
 			% See also getProps, Category.
@@ -330,7 +345,7 @@ classdef ConverterNeuroimaging2PDFs < PanelProp
 			%CET: Computational Efficiency Trick
 			
 			if nargin == 0
-				prop_number = 39;
+				prop_number = 22;
 				return
 			end
 			
@@ -340,48 +355,46 @@ classdef ConverterNeuroimaging2PDFs < PanelProp
 				case 2 % Category.METADATA
 					prop_number = 2;
 				case 3 % Category.PARAMETER
-					prop_number = 1;
-				case 4 % Category.DATA
 					prop_number = 4;
+				case 4 % Category.DATA
+					prop_number = 7;
+				case 5 % Category.RESULT
+					prop_number = 2;
 				case 6 % Category.QUERY
-					prop_number = 10;
-				case 7 % Category.EVANESCENT
-					prop_number = 12;
-				case 8 % Category.FIGURE
-					prop_number = 1;
+					prop_number = 3;
 				case 9 % Category.GUI
-					prop_number = 6;
+					prop_number = 1;
 				otherwise
 					prop_number = 0;
 			end
 		end
 		function check_out = existsProp(prop)
-			%EXISTSPROP checks whether property exists in graph and measure plot/error.
+			%EXISTSPROP checks whether property exists in converter of neuroimaging data to PDFs/error.
 			%
 			% CHECK = ConverterNeuroimaging2PDFs.EXISTSPROP(PROP) checks whether the property PROP exists.
 			%
 			% Alternative forms to call this method are:
-			%  CHECK = PR.EXISTSPROP(PROP) checks whether PROP exists for PR.
-			%  CHECK = Element.EXISTSPROP(PR, PROP) checks whether PROP exists for PR.
+			%  CHECK = CN.EXISTSPROP(PROP) checks whether PROP exists for CN.
+			%  CHECK = Element.EXISTSPROP(CN, PROP) checks whether PROP exists for CN.
 			%  CHECK = Element.EXISTSPROP(ConverterNeuroimaging2PDFs, PROP) checks whether PROP exists for ConverterNeuroimaging2PDFs.
 			%
 			% Element.EXISTSPROP(PROP) throws an error if the PROP does NOT exist.
 			%  Error id: [BRAPH2:ConverterNeuroimaging2PDFs:WrongInput]
 			%
 			% Alternative forms to call this method are:
-			%  PR.EXISTSPROP(PROP) throws error if PROP does NOT exist for PR.
+			%  CN.EXISTSPROP(PROP) throws error if PROP does NOT exist for CN.
 			%   Error id: [BRAPH2:ConverterNeuroimaging2PDFs:WrongInput]
-			%  Element.EXISTSPROP(PR, PROP) throws error if PROP does NOT exist for PR.
+			%  Element.EXISTSPROP(CN, PROP) throws error if PROP does NOT exist for CN.
 			%   Error id: [BRAPH2:ConverterNeuroimaging2PDFs:WrongInput]
 			%  Element.EXISTSPROP(ConverterNeuroimaging2PDFs, PROP) throws error if PROP does NOT exist for ConverterNeuroimaging2PDFs.
 			%   Error id: [BRAPH2:ConverterNeuroimaging2PDFs:WrongInput]
 			%
-			% Note that the Element.EXISTSPROP(PR) and Element.EXISTSPROP('ConverterNeuroimaging2PDFs')
+			% Note that the Element.EXISTSPROP(CN) and Element.EXISTSPROP('ConverterNeuroimaging2PDFs')
 			%  are less computationally efficient.
 			%
 			% See also getProps, existsTag.
 			
-			check = prop >= 1 && prop <= 39 && round(prop) == prop; %CET: Computational Efficiency Trick
+			check = prop >= 1 && prop <= 22 && round(prop) == prop; %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
@@ -394,32 +407,32 @@ classdef ConverterNeuroimaging2PDFs < PanelProp
 			end
 		end
 		function check_out = existsTag(tag)
-			%EXISTSTAG checks whether tag exists in graph and measure plot/error.
+			%EXISTSTAG checks whether tag exists in converter of neuroimaging data to PDFs/error.
 			%
 			% CHECK = ConverterNeuroimaging2PDFs.EXISTSTAG(TAG) checks whether a property with tag TAG exists.
 			%
 			% Alternative forms to call this method are:
-			%  CHECK = PR.EXISTSTAG(TAG) checks whether TAG exists for PR.
-			%  CHECK = Element.EXISTSTAG(PR, TAG) checks whether TAG exists for PR.
+			%  CHECK = CN.EXISTSTAG(TAG) checks whether TAG exists for CN.
+			%  CHECK = Element.EXISTSTAG(CN, TAG) checks whether TAG exists for CN.
 			%  CHECK = Element.EXISTSTAG(ConverterNeuroimaging2PDFs, TAG) checks whether TAG exists for ConverterNeuroimaging2PDFs.
 			%
 			% Element.EXISTSTAG(TAG) throws an error if the TAG does NOT exist.
 			%  Error id: [BRAPH2:ConverterNeuroimaging2PDFs:WrongInput]
 			%
 			% Alternative forms to call this method are:
-			%  PR.EXISTSTAG(TAG) throws error if TAG does NOT exist for PR.
+			%  CN.EXISTSTAG(TAG) throws error if TAG does NOT exist for CN.
 			%   Error id: [BRAPH2:ConverterNeuroimaging2PDFs:WrongInput]
-			%  Element.EXISTSTAG(PR, TAG) throws error if TAG does NOT exist for PR.
+			%  Element.EXISTSTAG(CN, TAG) throws error if TAG does NOT exist for CN.
 			%   Error id: [BRAPH2:ConverterNeuroimaging2PDFs:WrongInput]
 			%  Element.EXISTSTAG(ConverterNeuroimaging2PDFs, TAG) throws error if TAG does NOT exist for ConverterNeuroimaging2PDFs.
 			%   Error id: [BRAPH2:ConverterNeuroimaging2PDFs:WrongInput]
 			%
-			% Note that the Element.EXISTSTAG(PR) and Element.EXISTSTAG('ConverterNeuroimaging2PDFs')
+			% Note that the Element.EXISTSTAG(CN) and Element.EXISTSTAG('ConverterNeuroimaging2PDFs')
 			%  are less computationally efficient.
 			%
 			% See also getProps, existsTag.
 			
-			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'H_WAITBAR'  'DRAW'  'DRAWN'  'PARENT'  'BKGCOLOR'  'H'  'SHOW'  'HIDE'  'DELETE'  'CLOSE'  'X_DRAW'  'UPDATE'  'REDRAW'  'EL'  'PROP'  'HEIGHT'  'TITLE'  'LABEL_TITLE'  'BUTTON_CB'  'GUI_CB'  'LISTENER_CB'  'BUTTON_CALC'  'BUTTON_DEL'  'LISTENER_SET'  'LISTENER_MEMORIZED'  'LISTENER_LOCKED'  'TABLE_HEIGHT'  'SELECTED'  'TABLE'  'CONTEXTMENU' })); %CET: Computational Efficiency Trick
+			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'BA_LIST'  'BA_NIFTI_FILES'  'BA_MAPPING_FILES'  'GR_NEUROIMAGING'  'GR_LIST_ANAT_REF'  'THRESHOLD_ANAT_REF'  'ANAT_REF_COMBINE_RULE'  'CONVERT_BR'  'BIN_EDGES'  'BIN_CENTERS'  'BR_LABEL_IN_MAPS'  'BA'  'GR_FUN'  'WAITBAR' })); %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
@@ -441,18 +454,18 @@ classdef ConverterNeuroimaging2PDFs < PanelProp
 			%  of the property with tag TAG.
 			%
 			% Alternative forms to call this method are (POINTER = PROP or TAG):
-			%  PROPERTY = PR.GETPROPPROP(POINTER) returns property number of POINTER of PR.
+			%  PROPERTY = CN.GETPROPPROP(POINTER) returns property number of POINTER of CN.
 			%  PROPERTY = Element.GETPROPPROP(ConverterNeuroimaging2PDFs, POINTER) returns property number of POINTER of ConverterNeuroimaging2PDFs.
-			%  PROPERTY = PR.GETPROPPROP(ConverterNeuroimaging2PDFs, POINTER) returns property number of POINTER of ConverterNeuroimaging2PDFs.
+			%  PROPERTY = CN.GETPROPPROP(ConverterNeuroimaging2PDFs, POINTER) returns property number of POINTER of ConverterNeuroimaging2PDFs.
 			%
-			% Note that the Element.GETPROPPROP(PR) and Element.GETPROPPROP('ConverterNeuroimaging2PDFs')
+			% Note that the Element.GETPROPPROP(CN) and Element.GETPROPPROP('ConverterNeuroimaging2PDFs')
 			%  are less computationally efficient.
 			%
 			% See also getPropFormat, getPropTag, getPropCategory, getPropDescription,
 			%  getPropSettings, getPropDefault, checkProp.
 			
 			if ischar(pointer)
-				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'H_WAITBAR'  'DRAW'  'DRAWN'  'PARENT'  'BKGCOLOR'  'H'  'SHOW'  'HIDE'  'DELETE'  'CLOSE'  'X_DRAW'  'UPDATE'  'REDRAW'  'EL'  'PROP'  'HEIGHT'  'TITLE'  'LABEL_TITLE'  'BUTTON_CB'  'GUI_CB'  'LISTENER_CB'  'BUTTON_CALC'  'BUTTON_DEL'  'LISTENER_SET'  'LISTENER_MEMORIZED'  'LISTENER_LOCKED'  'TABLE_HEIGHT'  'SELECTED'  'TABLE'  'CONTEXTMENU' })); % tag = pointer %CET: Computational Efficiency Trick
+				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'BA_LIST'  'BA_NIFTI_FILES'  'BA_MAPPING_FILES'  'GR_NEUROIMAGING'  'GR_LIST_ANAT_REF'  'THRESHOLD_ANAT_REF'  'ANAT_REF_COMBINE_RULE'  'CONVERT_BR'  'BIN_EDGES'  'BIN_CENTERS'  'BR_LABEL_IN_MAPS'  'BA'  'GR_FUN'  'WAITBAR' })); % tag = pointer %CET: Computational Efficiency Trick
 			else % numeric
 				prop = pointer;
 			end
@@ -467,11 +480,11 @@ classdef ConverterNeuroimaging2PDFs < PanelProp
 			%  the property with tag TAG.
 			%
 			% Alternative forms to call this method are (POINTER = PROP or TAG):
-			%  TAG = PR.GETPROPTAG(POINTER) returns tag of POINTER of PR.
+			%  TAG = CN.GETPROPTAG(POINTER) returns tag of POINTER of CN.
 			%  TAG = Element.GETPROPTAG(ConverterNeuroimaging2PDFs, POINTER) returns tag of POINTER of ConverterNeuroimaging2PDFs.
-			%  TAG = PR.GETPROPTAG(ConverterNeuroimaging2PDFs, POINTER) returns tag of POINTER of ConverterNeuroimaging2PDFs.
+			%  TAG = CN.GETPROPTAG(ConverterNeuroimaging2PDFs, POINTER) returns tag of POINTER of ConverterNeuroimaging2PDFs.
 			%
-			% Note that the Element.GETPROPTAG(PR) and Element.GETPROPTAG('ConverterNeuroimaging2PDFs')
+			% Note that the Element.GETPROPTAG(CN) and Element.GETPROPTAG('ConverterNeuroimaging2PDFs')
 			%  are less computationally efficient.
 			%
 			% See also getPropProp, getPropSettings, getPropCategory, getPropFormat,
@@ -481,7 +494,7 @@ classdef ConverterNeuroimaging2PDFs < PanelProp
 				tag = pointer;
 			else % numeric
 				%CET: Computational Efficiency Trick
-				converterneuroimaging2pdfs_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'WAITBAR'  'H_WAITBAR'  'DRAW'  'DRAWN'  'PARENT'  'BKGCOLOR'  'H'  'SHOW'  'HIDE'  'DELETE'  'CLOSE'  'X_DRAW'  'UPDATE'  'REDRAW'  'EL'  'PROP'  'HEIGHT'  'TITLE'  'LABEL_TITLE'  'BUTTON_CB'  'GUI_CB'  'LISTENER_CB'  'BUTTON_CALC'  'BUTTON_DEL'  'LISTENER_SET'  'LISTENER_MEMORIZED'  'LISTENER_LOCKED'  'TABLE_HEIGHT'  'SELECTED'  'TABLE'  'CONTEXTMENU' };
+				converterneuroimaging2pdfs_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'BA_LIST'  'BA_NIFTI_FILES'  'BA_MAPPING_FILES'  'GR_NEUROIMAGING'  'GR_LIST_ANAT_REF'  'THRESHOLD_ANAT_REF'  'ANAT_REF_COMBINE_RULE'  'CONVERT_BR'  'BIN_EDGES'  'BIN_CENTERS'  'BR_LABEL_IN_MAPS'  'BA'  'GR_FUN'  'WAITBAR' };
 				tag = converterneuroimaging2pdfs_tag_list{pointer}; % prop = pointer
 			end
 		end
@@ -495,11 +508,11 @@ classdef ConverterNeuroimaging2PDFs < PanelProp
 			%  property with tag TAG.
 			%
 			% Alternative forms to call this method are (POINTER = PROP or TAG):
-			%  CATEGORY = PR.GETPROPCATEGORY(POINTER) returns category of POINTER of PR.
+			%  CATEGORY = CN.GETPROPCATEGORY(POINTER) returns category of POINTER of CN.
 			%  CATEGORY = Element.GETPROPCATEGORY(ConverterNeuroimaging2PDFs, POINTER) returns category of POINTER of ConverterNeuroimaging2PDFs.
-			%  CATEGORY = PR.GETPROPCATEGORY(ConverterNeuroimaging2PDFs, POINTER) returns category of POINTER of ConverterNeuroimaging2PDFs.
+			%  CATEGORY = CN.GETPROPCATEGORY(ConverterNeuroimaging2PDFs, POINTER) returns category of POINTER of ConverterNeuroimaging2PDFs.
 			%
-			% Note that the Element.GETPROPCATEGORY(PR) and Element.GETPROPCATEGORY('ConverterNeuroimaging2PDFs')
+			% Note that the Element.GETPROPCATEGORY(CN) and Element.GETPROPCATEGORY('ConverterNeuroimaging2PDFs')
 			%  are less computationally efficient.
 			%
 			% See also Category, getPropProp, getPropTag, getPropSettings,
@@ -508,7 +521,7 @@ classdef ConverterNeuroimaging2PDFs < PanelProp
 			prop = ConverterNeuroimaging2PDFs.getPropProp(pointer);
 			
 			%CET: Computational Efficiency Trick
-			converterneuroimaging2pdfs_category_list = { 1  1  1  3  4  2  2  6  9  7  6  6  9  8  7  6  6  6  6  6  6  6  4  4  9  9  7  7  4  7  7  7  7  7  7  9  9  7  7 };
+			converterneuroimaging2pdfs_category_list = { 1  1  1  3  4  2  2  6  4  4  4  4  4  3  3  4  3  6  6  5  5  9 };
 			prop_category = converterneuroimaging2pdfs_category_list{prop};
 		end
 		function prop_format = getPropFormat(pointer)
@@ -521,11 +534,11 @@ classdef ConverterNeuroimaging2PDFs < PanelProp
 			%  format of the property with tag TAG.
 			%
 			% Alternative forms to call this method are (POINTER = PROP or TAG):
-			%  FORMAT = PR.GETPROPFORMAT(POINTER) returns format of POINTER of PR.
+			%  FORMAT = CN.GETPROPFORMAT(POINTER) returns format of POINTER of CN.
 			%  FORMAT = Element.GETPROPFORMAT(ConverterNeuroimaging2PDFs, POINTER) returns format of POINTER of ConverterNeuroimaging2PDFs.
-			%  FORMAT = PR.GETPROPFORMAT(ConverterNeuroimaging2PDFs, POINTER) returns format of POINTER of ConverterNeuroimaging2PDFs.
+			%  FORMAT = CN.GETPROPFORMAT(ConverterNeuroimaging2PDFs, POINTER) returns format of POINTER of ConverterNeuroimaging2PDFs.
 			%
-			% Note that the Element.GETPROPFORMAT(PR) and Element.GETPROPFORMAT('ConverterNeuroimaging2PDFs')
+			% Note that the Element.GETPROPFORMAT(CN) and Element.GETPROPFORMAT('ConverterNeuroimaging2PDFs')
 			%  are less computationally efficient.
 			%
 			% See also Format, getPropProp, getPropTag, getPropCategory,
@@ -534,7 +547,7 @@ classdef ConverterNeuroimaging2PDFs < PanelProp
 			prop = ConverterNeuroimaging2PDFs.getPropProp(pointer);
 			
 			%CET: Computational Efficiency Trick
-			converterneuroimaging2pdfs_format_list = { 2  2  2  8  2  2  2  2  4  18  4  4  8  20  18  4  4  4  4  4  4  4  8  11  22  2  18  18  8  18  18  18  19  19  19  22  13  18  18 };
+			converterneuroimaging2pdfs_format_list = { 2  2  2  8  2  2  2  2  9  3  3  8  9  11  5  3  12  12  16  8  8  4 };
 			prop_format = converterneuroimaging2pdfs_format_list{prop};
 		end
 		function prop_description = getPropDescription(pointer)
@@ -547,11 +560,11 @@ classdef ConverterNeuroimaging2PDFs < PanelProp
 			%  description of the property with tag TAG.
 			%
 			% Alternative forms to call this method are (POINTER = PROP or TAG):
-			%  DESCRIPTION = PR.GETPROPDESCRIPTION(POINTER) returns description of POINTER of PR.
+			%  DESCRIPTION = CN.GETPROPDESCRIPTION(POINTER) returns description of POINTER of CN.
 			%  DESCRIPTION = Element.GETPROPDESCRIPTION(ConverterNeuroimaging2PDFs, POINTER) returns description of POINTER of ConverterNeuroimaging2PDFs.
-			%  DESCRIPTION = PR.GETPROPDESCRIPTION(ConverterNeuroimaging2PDFs, POINTER) returns description of POINTER of ConverterNeuroimaging2PDFs.
+			%  DESCRIPTION = CN.GETPROPDESCRIPTION(ConverterNeuroimaging2PDFs, POINTER) returns description of POINTER of ConverterNeuroimaging2PDFs.
 			%
-			% Note that the Element.GETPROPDESCRIPTION(PR) and Element.GETPROPDESCRIPTION('ConverterNeuroimaging2PDFs')
+			% Note that the Element.GETPROPDESCRIPTION(CN) and Element.GETPROPDESCRIPTION('ConverterNeuroimaging2PDFs')
 			%  are less computationally efficient.
 			%
 			% See also getPropProp, getPropTag, getPropCategory,
@@ -560,7 +573,7 @@ classdef ConverterNeuroimaging2PDFs < PanelProp
 			prop = ConverterNeuroimaging2PDFs.getPropProp(pointer);
 			
 			%CET: Computational Efficiency Trick
-			converterneuroimaging2pdfs_description_list = { 'ELCLASS (constant, string) is the class of the % % % .'  'NAME (constant, string) is the name of the graph and measure panel.'  'DESCRIPTION (constant, string) is the description of the graph and measure panel.'  'TEMPLATE (parameter, item) is the template of the graph and measure panel.'  'ID (data, string) is a few-letter code for the graph and measure panel.'  'LABEL (metadata, string) is an extended label of the graph and measure panel.'  'NOTES (metadata, string) are some specific notes about the graph and measure panel.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'WAITBAR (gui, logical) detemines whether to show the waitbar.'  'H_WAITBAR (evanescent, handle) is the waitbar handle.'  'DRAW (query, logical) draws the property panel.'  'DRAWN (query, logical) returns whether the panel has been drawn.'  'PARENT (gui, item) is the panel parent.'  'BKGCOLOR (figure, color) is the panel background color.'  'H (evanescent, handle) is the panel handle.'  'SHOW (query, logical) shows the figure containing the panel and, possibly, the item figures.'  'HIDE (query, logical) hides the figure containing the panel and, possibly, the item figures.'  'DELETE (query, logical) resets the handles when the panel is deleted.'  'CLOSE (query, logical) closes the figure containing the panel and, possibly, the item figures.'  'X_DRAW (query, logical) draws the property panel.'  'UPDATE (query, logical) updates the content and permissions of the table.'  'REDRAW (query, logical) resizes the property panel and repositions its graphical objects.'  'EL (data, item) is the element.'  'PROP (data, scalar) is the property number.'  'HEIGHT (gui, size) is the pixel height of the prop panel.'  'TITLE (gui, string) is the property title.'  'LABEL_TITLE (evanescent, handle) is the handle for the title uilabel.'  'BUTTON_CB (evanescent, handle) is the handle for the callback button [only for PARAMETER, DATA, FIGURE and GUI].'  'GUI_CB (data, item) is the handle to the item figure.'  'LISTENER_CB (evanescent, handle) contains the listener to the updates in the property callback.'  'BUTTON_CALC (evanescent, handle) is the handle for the calculate button [only for RESULT, QUERY and EVANESCENT].'  'BUTTON_DEL (evanescent, handle) is the handle for the delete button [only for RESULT, QUERY and EVANESCENT].'  'LISTENER_SET (evanescent, handlelist) contains the listeners to the PropSet events.'  'LISTENER_MEMORIZED (evanescent, handlelist) contains the listeners to the PropMemorized events.'  'LISTENER_LOCKED (evanescent, handlelist) contains the listeners to the PropLocked events.'  'TABLE_HEIGHT (gui, size) is the pixel height of the property panel when the table is shown.'  'SELECTED (gui, cvector) is the list of selected items.'  'TABLE (evanescent, handle) is the table.'  'CONTEXTMENU (evanescent, handle) is the context menu.' };
+			converterneuroimaging2pdfs_description_list = { 'ELCLASS (constant, string) is the class of the converter of neuroimaging data to PDFs.'  'NAME (constant, string) is the name of the converter of neuroimaging data to PDFs.'  'DESCRIPTION (constant, string) is the description of the converter of neuroimaging data to PDFs.'  'TEMPLATE (parameter, item) is the template of the converter of neuroimaging data to PDFs.'  'ID (data, string) is a few-letter code for the converter of neuroimaging data to PDFs.'  'LABEL (metadata, string) is an extended label of the converter of neuroimaging data to PDFs.'  'NOTES (metadata, string) are some specific notes about the converter of neuroimaging data to PDFs.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'BA_LIST (data, itemlist) is the list of brain atlases used to identify the brain regions.'  'BA_NIFTI_FILES (data, stringlist) is the list of atlas NIfTI files aligned with BA_LIST.'  'BA_MAPPING_FILES (data, stringlist) is the list of atlas mapping CSV files aligned with BA_LIST.'  'GR_NEUROIMAGING (data, item) is the group of subject-level neuroimaging data to convert.'  'GR_LIST_ANAT_REF (data, itemlist) is the list of anatomical reference groups used to restrict voxel extraction.'  'THRESHOLD_ANAT_REF (parameter, scalar) is the threshold applied to anatomical reference images.'  'ANAT_REF_COMBINE_RULE (parameter, option) is the rule used to combine multiple anatomical reference masks.'  'CONVERT_BR (data, stringlist) is the list of brain-region IDs to convert into regional PDFs.'  'BIN_EDGES (parameter, rvector) is the bin edges used to calculate regional PDFs.'  'BIN_CENTERS (query, rvector) is the bin centers corresponding to BIN_EDGES.'  'BR_LABEL_IN_MAPS (query, cell) finds the atlas index and numeric atlas label for a brain-region ID.'  'BA (result, item) is the brain atlas containing the converted brain regions.'  'GR_FUN (result, item) is the group of subjects with regional PDFs.'  'WAITBAR (gui, logical) determines whether to show the waitbar.' };
 			prop_description = converterneuroimaging2pdfs_description_list{prop};
 		end
 		function prop_settings = getPropSettings(pointer)
@@ -573,11 +586,11 @@ classdef ConverterNeuroimaging2PDFs < PanelProp
 			%  settings of the property with tag TAG.
 			%
 			% Alternative forms to call this method are (POINTER = PROP or TAG):
-			%  SETTINGS = PR.GETPROPSETTINGS(POINTER) returns settings of POINTER of PR.
+			%  SETTINGS = CN.GETPROPSETTINGS(POINTER) returns settings of POINTER of CN.
 			%  SETTINGS = Element.GETPROPSETTINGS(ConverterNeuroimaging2PDFs, POINTER) returns settings of POINTER of ConverterNeuroimaging2PDFs.
-			%  SETTINGS = PR.GETPROPSETTINGS(ConverterNeuroimaging2PDFs, POINTER) returns settings of POINTER of ConverterNeuroimaging2PDFs.
+			%  SETTINGS = CN.GETPROPSETTINGS(ConverterNeuroimaging2PDFs, POINTER) returns settings of POINTER of ConverterNeuroimaging2PDFs.
 			%
-			% Note that the Element.GETPROPSETTINGS(PR) and Element.GETPROPSETTINGS('ConverterNeuroimaging2PDFs')
+			% Note that the Element.GETPROPSETTINGS(CN) and Element.GETPROPSETTINGS('ConverterNeuroimaging2PDFs')
 			%  are less computationally efficient.
 			%
 			% See also getPropProp, getPropTag, getPropCategory, getPropFormat,
@@ -586,18 +599,38 @@ classdef ConverterNeuroimaging2PDFs < PanelProp
 			prop = ConverterNeuroimaging2PDFs.getPropProp(pointer);
 			
 			switch prop %CET: Computational Efficiency Trick
-				case 36 % ConverterNeuroimaging2PDFs.TABLE_HEIGHT
-					prop_settings = Format.getFormatSettings(22);
-				case 37 % ConverterNeuroimaging2PDFs.SELECTED
-					prop_settings = Format.getFormatSettings(13);
-				case 38 % ConverterNeuroimaging2PDFs.TABLE
-					prop_settings = Format.getFormatSettings(18);
-				case 39 % ConverterNeuroimaging2PDFs.CONTEXTMENU
-					prop_settings = Format.getFormatSettings(18);
+				case 9 % ConverterNeuroimaging2PDFs.BA_LIST
+					prop_settings = 'BrainAtlas';
+				case 10 % ConverterNeuroimaging2PDFs.BA_NIFTI_FILES
+					prop_settings = Format.getFormatSettings(3);
+				case 11 % ConverterNeuroimaging2PDFs.BA_MAPPING_FILES
+					prop_settings = Format.getFormatSettings(3);
+				case 12 % ConverterNeuroimaging2PDFs.GR_NEUROIMAGING
+					prop_settings = 'Group';
+				case 13 % ConverterNeuroimaging2PDFs.GR_LIST_ANAT_REF
+					prop_settings = 'Group';
+				case 14 % ConverterNeuroimaging2PDFs.THRESHOLD_ANAT_REF
+					prop_settings = Format.getFormatSettings(11);
+				case 15 % ConverterNeuroimaging2PDFs.ANAT_REF_COMBINE_RULE
+					prop_settings = {'or' 'and'};
+				case 16 % ConverterNeuroimaging2PDFs.CONVERT_BR
+					prop_settings = Format.getFormatSettings(3);
+				case 17 % ConverterNeuroimaging2PDFs.BIN_EDGES
+					prop_settings = Format.getFormatSettings(12);
+				case 18 % ConverterNeuroimaging2PDFs.BIN_CENTERS
+					prop_settings = Format.getFormatSettings(12);
+				case 19 % ConverterNeuroimaging2PDFs.BR_LABEL_IN_MAPS
+					prop_settings = Format.getFormatSettings(16);
+				case 20 % ConverterNeuroimaging2PDFs.BA
+					prop_settings = 'BrainAtlas';
+				case 21 % ConverterNeuroimaging2PDFs.GR_FUN
+					prop_settings = 'Group';
+				case 22 % ConverterNeuroimaging2PDFs.WAITBAR
+					prop_settings = Format.getFormatSettings(4);
 				case 4 % ConverterNeuroimaging2PDFs.TEMPLATE
-					prop_settings = 'SUVRConstructorPP_BR_DICT';
+					prop_settings = 'ConverterNeuroimaging2PDFs';
 				otherwise
-					prop_settings = getPropSettings@PanelProp(prop);
+					prop_settings = getPropSettings@ConcreteElement(prop);
 			end
 		end
 		function prop_default = getPropDefault(pointer)
@@ -610,11 +643,11 @@ classdef ConverterNeuroimaging2PDFs < PanelProp
 			%  value of the property with tag TAG.
 			%
 			% Alternative forms to call this method are (POINTER = PROP or TAG):
-			%  DEFAULT = PR.GETPROPDEFAULT(POINTER) returns the default value of POINTER of PR.
+			%  DEFAULT = CN.GETPROPDEFAULT(POINTER) returns the default value of POINTER of CN.
 			%  DEFAULT = Element.GETPROPDEFAULT(ConverterNeuroimaging2PDFs, POINTER) returns the default value of POINTER of ConverterNeuroimaging2PDFs.
-			%  DEFAULT = PR.GETPROPDEFAULT(ConverterNeuroimaging2PDFs, POINTER) returns the default value of POINTER of ConverterNeuroimaging2PDFs.
+			%  DEFAULT = CN.GETPROPDEFAULT(ConverterNeuroimaging2PDFs, POINTER) returns the default value of POINTER of ConverterNeuroimaging2PDFs.
 			%
-			% Note that the Element.GETPROPDEFAULT(PR) and Element.GETPROPDEFAULT('ConverterNeuroimaging2PDFs')
+			% Note that the Element.GETPROPDEFAULT(CN) and Element.GETPROPDEFAULT('ConverterNeuroimaging2PDFs')
 			%  are less computationally efficient.
 			%
 			% See also getPropDefaultConditioned, getPropProp, getPropTag, getPropSettings, 
@@ -623,34 +656,50 @@ classdef ConverterNeuroimaging2PDFs < PanelProp
 			prop = ConverterNeuroimaging2PDFs.getPropProp(pointer);
 			
 			switch prop %CET: Computational Efficiency Trick
-				case 36 % ConverterNeuroimaging2PDFs.TABLE_HEIGHT
-					prop_default = 360;
-				case 37 % ConverterNeuroimaging2PDFs.SELECTED
-					prop_default = Format.getFormatDefault(13, ConverterNeuroimaging2PDFs.getPropSettings(prop));
-				case 38 % ConverterNeuroimaging2PDFs.TABLE
-					prop_default = Format.getFormatDefault(18, ConverterNeuroimaging2PDFs.getPropSettings(prop));
-				case 39 % ConverterNeuroimaging2PDFs.CONTEXTMENU
-					prop_default = Format.getFormatDefault(18, ConverterNeuroimaging2PDFs.getPropSettings(prop));
+				case 9 % ConverterNeuroimaging2PDFs.BA_LIST
+					prop_default = Format.getFormatDefault(9, ConverterNeuroimaging2PDFs.getPropSettings(prop));
+				case 10 % ConverterNeuroimaging2PDFs.BA_NIFTI_FILES
+					prop_default = {};
+				case 11 % ConverterNeuroimaging2PDFs.BA_MAPPING_FILES
+					prop_default = {};
+				case 12 % ConverterNeuroimaging2PDFs.GR_NEUROIMAGING
+					prop_default = Group('SUB_CLASS', 'SubjectNeuroimaging', 'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectNeuroimaging'));
+				case 13 % ConverterNeuroimaging2PDFs.GR_LIST_ANAT_REF
+					prop_default = Format.getFormatDefault(9, ConverterNeuroimaging2PDFs.getPropSettings(prop));
+				case 14 % ConverterNeuroimaging2PDFs.THRESHOLD_ANAT_REF
+					prop_default = 0.5;
+				case 15 % ConverterNeuroimaging2PDFs.ANAT_REF_COMBINE_RULE
+					prop_default = 'or';
+				case 16 % ConverterNeuroimaging2PDFs.CONVERT_BR
+					prop_default = {};
+				case 17 % ConverterNeuroimaging2PDFs.BIN_EDGES
+					prop_default = linspace(0, 1, 101);
+				case 18 % ConverterNeuroimaging2PDFs.BIN_CENTERS
+					prop_default = Format.getFormatDefault(12, ConverterNeuroimaging2PDFs.getPropSettings(prop));
+				case 19 % ConverterNeuroimaging2PDFs.BR_LABEL_IN_MAPS
+					prop_default = Format.getFormatDefault(16, ConverterNeuroimaging2PDFs.getPropSettings(prop));
+				case 20 % ConverterNeuroimaging2PDFs.BA
+					prop_default = Format.getFormatDefault(8, ConverterNeuroimaging2PDFs.getPropSettings(prop));
+				case 21 % ConverterNeuroimaging2PDFs.GR_FUN
+					prop_default = Format.getFormatDefault(8, ConverterNeuroimaging2PDFs.getPropSettings(prop));
+				case 22 % ConverterNeuroimaging2PDFs.WAITBAR
+					prop_default = true;
 				case 1 % ConverterNeuroimaging2PDFs.ELCLASS
 					prop_default = 'ConverterNeuroimaging2PDFs';
 				case 2 % ConverterNeuroimaging2PDFs.NAME
-					prop_default = 'SUVRConstructorPP_BR_DICT';
+					prop_default = 'Neuroimaging-to-PDFs Converter';
 				case 3 % ConverterNeuroimaging2PDFs.DESCRIPTION
-					prop_default = 'SUVRConstructorPP_BR_DICT plots the panel to manage the graph and measures of an ensemble analysis.';
+					prop_default = 'ConverterNeuroimaging2PDFs converts subject-level NIfTI neuroimaging data into regional probability density functions using one or more atlas NIfTI files and atlas mapping files. It can optionally restrict voxel extraction with anatomical reference images, such as GM or WM probability maps. The output is a group of SubjectFUN objects, where each subject contains a matrix whose rows are PDF bins and whose columns are converted brain regions.';
 				case 4 % ConverterNeuroimaging2PDFs.TEMPLATE
 					prop_default = Format.getFormatDefault(8, ConverterNeuroimaging2PDFs.getPropSettings(prop));
 				case 5 % ConverterNeuroimaging2PDFs.ID
-					prop_default = 'SUVRConstructorPP_BR_DICT';
+					prop_default = 'ConverterNeuroimaging2PDFs ID';
 				case 6 % ConverterNeuroimaging2PDFs.LABEL
-					prop_default = 'SUVRConstructorPP_BR_DICT label';
+					prop_default = 'ConverterNeuroimaging2PDFs label';
 				case 7 % ConverterNeuroimaging2PDFs.NOTES
-					prop_default = 'SUVRConstructorPP_BR_DICT';
-				case 23 % ConverterNeuroimaging2PDFs.EL
-					prop_default = SUVRConstructor();
-				case 24 % ConverterNeuroimaging2PDFs.PROP
-					prop_default = SUVRConstructor.REF_BR_DICT;
+					prop_default = 'ConverterNeuroimaging2PDFs notes';
 				otherwise
-					prop_default = getPropDefault@PanelProp(prop);
+					prop_default = getPropDefault@ConcreteElement(prop);
 			end
 		end
 		function prop_default = getPropDefaultConditioned(pointer)
@@ -663,11 +712,11 @@ classdef ConverterNeuroimaging2PDFs < PanelProp
 			%  value of the property with tag TAG.
 			%
 			% Alternative forms to call this method are (POINTER = PROP or TAG):
-			%  DEFAULT = PR.GETPROPDEFAULTCONDITIONED(POINTER) returns the conditioned default value of POINTER of PR.
+			%  DEFAULT = CN.GETPROPDEFAULTCONDITIONED(POINTER) returns the conditioned default value of POINTER of CN.
 			%  DEFAULT = Element.GETPROPDEFAULTCONDITIONED(ConverterNeuroimaging2PDFs, POINTER) returns the conditioned default value of POINTER of ConverterNeuroimaging2PDFs.
-			%  DEFAULT = PR.GETPROPDEFAULTCONDITIONED(ConverterNeuroimaging2PDFs, POINTER) returns the conditioned default value of POINTER of ConverterNeuroimaging2PDFs.
+			%  DEFAULT = CN.GETPROPDEFAULTCONDITIONED(ConverterNeuroimaging2PDFs, POINTER) returns the conditioned default value of POINTER of ConverterNeuroimaging2PDFs.
 			%
-			% Note that the Element.GETPROPDEFAULTCONDITIONED(PR) and Element.GETPROPDEFAULTCONDITIONED('ConverterNeuroimaging2PDFs')
+			% Note that the Element.GETPROPDEFAULTCONDITIONED(CN) and Element.GETPROPDEFAULTCONDITIONED('ConverterNeuroimaging2PDFs')
 			%  are less computationally efficient.
 			%
 			% See also conditioning, getPropDefault, getPropProp, getPropTag, 
@@ -679,62 +728,32 @@ classdef ConverterNeuroimaging2PDFs < PanelProp
 			prop_default = ConverterNeuroimaging2PDFs.conditioning(prop, ConverterNeuroimaging2PDFs.getPropDefault(prop));
 		end
 	end
-	methods (Static, Access=protected) % conditioning
-		function value = conditioning(pointer, value)
-			%CONDITIONING conditions a value before setting a property.
-			%
-			% VALUE = CONDITIONING(EL, PROP, VALUE) conditions the value VALUE before
-			%  it is set as the value of the property PROP.
-			%  By default, this function does not do anything, so it should be
-			%  implemented in the subclasses of Element when needed.
-			%
-			% Conditioning is only used for props of 2,
-			%  3, 4, 8 and 9.
-			%
-			% See also preset, checkProp, postset, postprocessing, calculateValue,
-			%  checkValue.
-			
-			prop = ConverterNeuroimaging2PDFs.getPropProp(pointer);
-			
-			switch prop
-				case 37 % ConverterNeuroimaging2PDFs.SELECTED
-					if isrow(value)
-					    value = value';
-					end
-					
-				otherwise
-					if prop <= 35
-						value = conditioning@PanelProp(pointer, value);
-					end
-			end
-		end
-	end
 	methods (Static) % checkProp
 		function prop_check = checkProp(pointer, value)
 			%CHECKPROP checks whether a value has the correct format/error.
 			%
-			% CHECK = PR.CHECKPROP(POINTER, VALUE) checks whether
+			% CHECK = CN.CHECKPROP(POINTER, VALUE) checks whether
 			%  VALUE is an acceptable value for the format of the property
 			%  POINTER (POINTER = PROP or TAG).
 			% 
 			% Alternative forms to call this method are (POINTER = PROP or TAG):
-			%  CHECK = PR.CHECKPROP(POINTER, VALUE) checks VALUE format for PROP of PR.
+			%  CHECK = CN.CHECKPROP(POINTER, VALUE) checks VALUE format for PROP of CN.
 			%  CHECK = Element.CHECKPROP(ConverterNeuroimaging2PDFs, PROP, VALUE) checks VALUE format for PROP of ConverterNeuroimaging2PDFs.
-			%  CHECK = PR.CHECKPROP(ConverterNeuroimaging2PDFs, PROP, VALUE) checks VALUE format for PROP of ConverterNeuroimaging2PDFs.
+			%  CHECK = CN.CHECKPROP(ConverterNeuroimaging2PDFs, PROP, VALUE) checks VALUE format for PROP of ConverterNeuroimaging2PDFs.
 			% 
-			% PR.CHECKPROP(POINTER, VALUE) throws an error if VALUE is
+			% CN.CHECKPROP(POINTER, VALUE) throws an error if VALUE is
 			%  NOT an acceptable value for the format of the property POINTER.
 			%  Error id: BRAPH2:ConverterNeuroimaging2PDFs:WrongInput
 			% 
 			% Alternative forms to call this method are (POINTER = PROP or TAG):
-			%  PR.CHECKPROP(POINTER, VALUE) throws error if VALUE has not a valid format for PROP of PR.
+			%  CN.CHECKPROP(POINTER, VALUE) throws error if VALUE has not a valid format for PROP of CN.
 			%   Error id: BRAPH2:ConverterNeuroimaging2PDFs:WrongInput
 			%  Element.CHECKPROP(ConverterNeuroimaging2PDFs, PROP, VALUE) throws error if VALUE has not a valid format for PROP of ConverterNeuroimaging2PDFs.
 			%   Error id: BRAPH2:ConverterNeuroimaging2PDFs:WrongInput
-			%  PR.CHECKPROP(ConverterNeuroimaging2PDFs, PROP, VALUE) throws error if VALUE has not a valid format for PROP of ConverterNeuroimaging2PDFs.
+			%  CN.CHECKPROP(ConverterNeuroimaging2PDFs, PROP, VALUE) throws error if VALUE has not a valid format for PROP of ConverterNeuroimaging2PDFs.
 			%   Error id: BRAPH2:ConverterNeuroimaging2PDFs:WrongInput]
 			% 
-			% Note that the Element.CHECKPROP(PR) and Element.CHECKPROP('ConverterNeuroimaging2PDFs')
+			% Note that the Element.CHECKPROP(CN) and Element.CHECKPROP('ConverterNeuroimaging2PDFs')
 			%  are less computationally efficient.
 			%
 			% See also Format, getPropProp, getPropTag, getPropSettings,
@@ -743,19 +762,39 @@ classdef ConverterNeuroimaging2PDFs < PanelProp
 			prop = ConverterNeuroimaging2PDFs.getPropProp(pointer);
 			
 			switch prop
-				case 36 % ConverterNeuroimaging2PDFs.TABLE_HEIGHT
-					check = Format.checkFormat(22, value, ConverterNeuroimaging2PDFs.getPropSettings(prop));
-				case 37 % ConverterNeuroimaging2PDFs.SELECTED
-					check = Format.checkFormat(13, value, ConverterNeuroimaging2PDFs.getPropSettings(prop));
-				case 38 % ConverterNeuroimaging2PDFs.TABLE
-					check = Format.checkFormat(18, value, ConverterNeuroimaging2PDFs.getPropSettings(prop));
-				case 39 % ConverterNeuroimaging2PDFs.CONTEXTMENU
-					check = Format.checkFormat(18, value, ConverterNeuroimaging2PDFs.getPropSettings(prop));
+				case 9 % ConverterNeuroimaging2PDFs.BA_LIST
+					check = Format.checkFormat(9, value, ConverterNeuroimaging2PDFs.getPropSettings(prop));
+				case 10 % ConverterNeuroimaging2PDFs.BA_NIFTI_FILES
+					check = Format.checkFormat(3, value, ConverterNeuroimaging2PDFs.getPropSettings(prop));
+				case 11 % ConverterNeuroimaging2PDFs.BA_MAPPING_FILES
+					check = Format.checkFormat(3, value, ConverterNeuroimaging2PDFs.getPropSettings(prop));
+				case 12 % ConverterNeuroimaging2PDFs.GR_NEUROIMAGING
+					check = Format.checkFormat(8, value, ConverterNeuroimaging2PDFs.getPropSettings(prop));
+				case 13 % ConverterNeuroimaging2PDFs.GR_LIST_ANAT_REF
+					check = Format.checkFormat(9, value, ConverterNeuroimaging2PDFs.getPropSettings(prop));
+				case 14 % ConverterNeuroimaging2PDFs.THRESHOLD_ANAT_REF
+					check = Format.checkFormat(11, value, ConverterNeuroimaging2PDFs.getPropSettings(prop));
+				case 15 % ConverterNeuroimaging2PDFs.ANAT_REF_COMBINE_RULE
+					check = Format.checkFormat(5, value, ConverterNeuroimaging2PDFs.getPropSettings(prop));
+				case 16 % ConverterNeuroimaging2PDFs.CONVERT_BR
+					check = Format.checkFormat(3, value, ConverterNeuroimaging2PDFs.getPropSettings(prop));
+				case 17 % ConverterNeuroimaging2PDFs.BIN_EDGES
+					check = Format.checkFormat(12, value, ConverterNeuroimaging2PDFs.getPropSettings(prop));
+				case 18 % ConverterNeuroimaging2PDFs.BIN_CENTERS
+					check = Format.checkFormat(12, value, ConverterNeuroimaging2PDFs.getPropSettings(prop));
+				case 19 % ConverterNeuroimaging2PDFs.BR_LABEL_IN_MAPS
+					check = Format.checkFormat(16, value, ConverterNeuroimaging2PDFs.getPropSettings(prop));
+				case 20 % ConverterNeuroimaging2PDFs.BA
+					check = Format.checkFormat(8, value, ConverterNeuroimaging2PDFs.getPropSettings(prop));
+				case 21 % ConverterNeuroimaging2PDFs.GR_FUN
+					check = Format.checkFormat(8, value, ConverterNeuroimaging2PDFs.getPropSettings(prop));
+				case 22 % ConverterNeuroimaging2PDFs.WAITBAR
+					check = Format.checkFormat(4, value, ConverterNeuroimaging2PDFs.getPropSettings(prop));
 				case 4 % ConverterNeuroimaging2PDFs.TEMPLATE
 					check = Format.checkFormat(8, value, ConverterNeuroimaging2PDFs.getPropSettings(prop));
 				otherwise
-					if prop <= 35
-						check = checkProp@PanelProp(prop, value);
+					if prop <= 8
+						check = checkProp@ConcreteElement(prop, value);
 					end
 			end
 			
@@ -771,7 +810,7 @@ classdef ConverterNeuroimaging2PDFs < PanelProp
 		end
 	end
 	methods (Access=protected) % calculate value
-		function value = calculateValue(pr, prop, varargin)
+		function value = calculateValue(cn, prop, varargin)
 			%CALCULATEVALUE calculates the value of a property.
 			%
 			% VALUE = CALCULATEVALUE(EL, PROP) calculates the value of the property
@@ -787,303 +826,308 @@ classdef ConverterNeuroimaging2PDFs < PanelProp
 			%  postset, postprocessing, checkValue.
 			
 			switch prop
-				case 38 % ConverterNeuroimaging2PDFs.TABLE
-					table = uitable( ...
-					    'Parent', pr.memorize('H'), ... % H = p for Panel
-					    'Tag', 'table', ...
-					    'FontSize', 12, ...
-					    'ColumnSortable', true, ...
-					    'ColumnName', {'', 'Brain Region', 'ID', 'Label', 'Notes', 'Description'}, ...
-					    'ColumnFormat', {'logical',  'char', 'char', 'char', 'char', 'char'}, ...
-					    'ColumnWidth', {30, 'auto', 'auto', 'auto', 'auto', 'auto'}, ...
-					    'ColumnEditable', [true false false false false false], ...
-					    'CellEditCallback', {@cb_table} ...
-					    );
-					value = table;
+				case 18 % ConverterNeuroimaging2PDFs.BIN_CENTERS
+					bin_edges = cn.get('BIN_EDGES');
 					
-				case 39 % ConverterNeuroimaging2PDFs.CONTEXTMENU
-					contextmenu = uicontextmenu( ...
-					    'Parent', ancestor(pr.get('H'), 'figure'), ...
-					    'Tag', 'CONTEXTMENU' ...
-					    );
-					menu_select_all = uimenu( ...
-						'Separator', 'on', ...
-					    'Parent', contextmenu, ...
-					    'Tag', 'MENU_SELECT_ALL', ...
-					    'Text', 'Select All Measures', ...
-					    'MenuSelectedFcn', {@cb_select_all} ...
-					    );
-					menu_clear_selection = uimenu( ...
-					    'Parent', contextmenu, ...
-					    'Tag', 'MENU_CLEAR_SELECTION', ...
-					    'Text', 'Clear Selection', ...
-					    'MenuSelectedFcn', {@cb_clear_selection} ...
-					    );
-					menu_invert_selection = uimenu( ...
-					    'Parent', contextmenu, ...
-					    'Tag', 'MENU_INVERT_SELECTION', ...
-					    'Text', 'Invert Selection', ...
-					    'MenuSelectedFcn', {@cb_invert_selection} ...
-					    );
-					menu_set = uimenu( ...
-						'Separator', 'on', ...
-						'Parent', contextmenu, ...
-						'Tag', 'MENU_CALCULATE', ...
-					    'Text', 'Set Selected Brain Regions', ...
-						'MenuSelectedFcn', {@cb_set} ...
-					    );
-					
-					set(pr.get('TABLE'), 'ContextMenu', contextmenu)
-					
-					value = contextmenu;
-					
-				case 20 % ConverterNeuroimaging2PDFs.X_DRAW
-					value = calculateValue@PanelProp(pr, 20, varargin{:}); % also warning
-					if value
-					    pr.memorize('TABLE')
-					    pr.memorize('CONTEXTMENU')
-					    
-					    % % Create the button
-					    % uicontrol('Parent', pr.get('H'), ...
-					    %     'Style', 'pushbutton', ...
-					    %     'String', 'Load Region-Index Files', ...
-					    %     'Position', [10, 10, 120, 30], ...
-					    %     'Callback', @cb_load_mapping_files);
-					end
-					% %% ¡calculate_callbacks!
-					% function cb_load_mapping_files(~, ~)
-					%     roic = pr.get('EL');
-					%     [files, path] = uigetfile('*.csv', 'Select Region-Index CSV Files', 'MultiSelect', 'on');
-					%     if ~isequal(files, 0)
-					%         if ~iscell(files)
-					%             files = {files};
-					%         end
-					%         % Construct IndexedDictionary for MAPPING_PATH_DICT
-					%         mapping_paths = cellfun(@(f) FILE_PATH('PATH', fullfile(path, f)), files, 'UniformOutput', false);
-					%         mapping_dict = IndexedDictionary('IT_CLASS', 'FILE_PATH', 'IT_LIST', mapping_paths);
-					%         roic.set('MAPPING_PATH_DICT', mapping_dict);
-					%     end
-					% end
-					
-				case 21 % ConverterNeuroimaging2PDFs.UPDATE
-					value = calculateValue@PanelProp(pr, 21, varargin{:}); % also warning
-					if value
-						el = pr.get('EL');
-					    prop = pr.get('PROP');
-					    set_table()
-					    pr.set('HEIGHT', pr.getPropDefault('HEIGHT') + pr.get('TABLE_HEIGHT'))
-					    set(pr.get('TABLE'), 'Visible', 'on')
+					if numel(bin_edges) < 2
+					    error('BIN_EDGES must contain at least two values.')
 					end
 					
-				case 22 % ConverterNeuroimaging2PDFs.REDRAW
-					value = calculateValue@PanelProp(pr, 22, varargin{:}); % also warning
-					if value
-					    w_p = get_from_varargin(w(pr.get('H'), 'pixels'), 'Width', varargin);
-					    
-					    set(pr.get('TABLE'), 'Position', [4 4 w_p-8 max(1, pr.get('HEIGHT')-27)])
+					value = (bin_edges(1:end-1) + bin_edges(2:end)) / 2;
+					
+				case 19 % ConverterNeuroimaging2PDFs.BR_LABEL_IN_MAPS
+					br_id = varargin{1};
+					region_label_map_list = varargin{2};
+					
+					atlas_idx = [];
+					region_label = [];
+					
+					for i = 1:numel(region_label_map_list)
+					    region_label_map = region_label_map_list{i};
+					
+					    if isKey(region_label_map, br_id)
+					        atlas_idx = i;
+					        region_label = region_label_map(br_id);
+					        value = {atlas_idx, region_label};
+					        return
+					    end
 					end
 					
-				case 16 % ConverterNeuroimaging2PDFs.SHOW
-					value = calculateValue@PanelProp(pr, 16, varargin{:}); % also warning
+					value = {atlas_idx, region_label};
 					
-				case 17 % ConverterNeuroimaging2PDFs.HIDE
-					value = calculateValue@PanelProp(pr, 17, varargin{:}); % also warning
+				case 20 % ConverterNeuroimaging2PDFs.BA
+					rng_settings_ = rng(); rng(cn.getPropSeed(20), 'twister')
 					
-				case 18 % ConverterNeuroimaging2PDFs.DELETE
-					value = calculateValue@PanelProp(pr, 18, varargin{:}); % also warning
-					if value
-					    pr.set('TABLE', Element.getNoValue())
-					    pr.set('CONTEXTMENU', Element.getNoValue())
+					ba_list = cn.get('BA_LIST');
+					convert_br = cn.get('CONVERT_BR');
+					
+					if isempty(ba_list)
+					    value = BrainAtlas( ...
+					        'ID', 'RegionalPDFAtlas', ...
+					        'BR_DICT', IndexedDictionary('IT_CLASS', 'BrainRegion') ...
+					        );
+					    return
 					end
 					
-				case 19 % ConverterNeuroimaging2PDFs.CLOSE
-					value = calculateValue@PanelProp(pr, 19, varargin{:}); % also warning
+					if isempty(convert_br)
+					    ba = ba_list{1};
+					    value = ba;
+					    return
+					end
+					
+					selected_br_list = {};
+					
+					for br_i = 1:numel(convert_br)
+					    br_id = convert_br{br_i};
+					    br_found = false;
+					
+					    for ba_i = 1:numel(ba_list)
+					        ba = ba_list{ba_i};
+					        br_dict = ba.get('BR_DICT');
+					
+					        for j = 1:br_dict.get('LENGTH')
+					            br = br_dict.get('IT', j);
+					
+					            if strcmp(br.get('ID'), br_id)
+					                selected_br_list{end + 1} = br; %#ok<AGROW>
+					                br_found = true;
+					                break
+					            end
+					        end
+					
+					        if br_found
+					            break
+					        end
+					    end
+					
+					    if ~br_found
+					        warning('Brain region "%s" was not found in BA_LIST and will be skipped.', br_id)
+					    end
+					end
+					
+					value = BrainAtlas( ...
+					    'ID', 'RegionalPDFAtlas', ...
+					    'LABEL', 'Regional PDF atlas', ...
+					    'NOTES', 'Brain atlas containing the regions converted from subject-level NIfTI data into PDFs.', ...
+					    'BR_DICT', IndexedDictionary('IT_CLASS', 'BrainRegion', 'IT_LIST', selected_br_list) ...
+					    );
+					
+					rng(rng_settings_)
+					
+				case 21 % ConverterNeuroimaging2PDFs.GR_FUN
+					rng_settings_ = rng(); rng(cn.getPropSeed(21), 'twister')
+					
+					ba_list = cn.get('BA_LIST');
+					ba_nifti_files = cn.get('BA_NIFTI_FILES');
+					ba_mapping_files = cn.get('BA_MAPPING_FILES');
+					gr_neuroimaging = cn.get('GR_NEUROIMAGING');
+					gr_list_anat_ref = cn.get('GR_LIST_ANAT_REF');
+					threshold_anat_ref = cn.get('THRESHOLD_ANAT_REF');
+					anat_ref_combine_rule = cn.get('ANAT_REF_COMBINE_RULE');
+					convert_br = cn.get('CONVERT_BR');
+					bin_edges = cn.get('BIN_EDGES');
+					
+					if gr_neuroimaging.get('SUB_DICT').get('LENGTH') == 0
+					    value = Group( ...
+					        'SUB_CLASS', 'SubjectFUN', ...
+					        'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectFUN') ...
+					        );
+					    return
+					end
+					
+					if isempty(ba_list)
+					    error('BA_LIST must not be empty.')
+					end
+					
+					if isempty(ba_nifti_files)
+					    error('BA_NIFTI_FILES must not be empty.')
+					end
+					
+					if isempty(ba_mapping_files)
+					    error('BA_MAPPING_FILES must not be empty.')
+					end
+					
+					if numel(ba_nifti_files) ~= numel(ba_mapping_files)
+					    error('BA_NIFTI_FILES and BA_MAPPING_FILES must have the same length.')
+					end
+					
+					if numel(ba_list) ~= numel(ba_nifti_files)
+					    error('BA_LIST and BA_NIFTI_FILES must have the same length.')
+					end
+					
+					if isempty(convert_br)
+					    error('CONVERT_BR must not be empty.')
+					end
+					
+					if numel(bin_edges) < 2
+					    error('BIN_EDGES must contain at least two values.')
+					end
+					
+					% Load atlas NIfTI files and mapping tables.
+					atlas_data_list = cell(1, numel(ba_nifti_files));
+					region_label_map_list = cell(1, numel(ba_mapping_files));
+					
+					for atlas_i = 1:numel(ba_nifti_files)
+					    atlas_file = ba_nifti_files{atlas_i};
+					    mapping_file = ba_mapping_files{atlas_i};
+					
+					    if ~isfile(atlas_file)
+					        error('Atlas NIfTI file not found: %s', atlas_file)
+					    end
+					
+					    if ~isfile(mapping_file)
+					        error('Atlas mapping file not found: %s', mapping_file)
+					    end
+					
+					    atlas_data_list{atlas_i} = niftiread(atlas_file);
+					
+					    mapping_table = readtable(mapping_file, 'TextType', 'string');
+					
+					    if width(mapping_table) < 4
+					        error('Atlas mapping file must have at least 4 columns: %s', mapping_file)
+					    end
+					
+					    atlas_labels = mapping_table{:, 3};
+					    atlas_br_ids = string(mapping_table{:, 4});
+					
+					    region_label_map = containers.Map();
+					
+					    for row_i = 1:numel(atlas_br_ids)
+					        br_id = char(atlas_br_ids(row_i));
+					
+					        if isempty(br_id) || ismissing(string(br_id))
+					            continue
+					        end
+					
+					        region_label_map(br_id) = double(atlas_labels(row_i));
+					    end
+					
+					    region_label_map_list{atlas_i} = region_label_map;
+					end
+					
+					% Build output brain atlas from CONVERT_BR.
+					ba_fun = cn.get('BA');
+					
+					% Create output group.
+					gr_fun = Group( ...
+					    'SUB_CLASS', 'SubjectFUN', ...
+					    'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectFUN') ...
+					    );
+					
+					sub_dict = gr_fun.memorize('SUB_DICT');
+					sub_dict_neuroimaging = gr_neuroimaging.get('SUB_DICT');
+					subject_number = sub_dict_neuroimaging.get('LENGTH');
+					
+					n_bins = numel(bin_edges) - 1;
+					
+					wb = braph2waitbar(cn.get('WAITBAR'), 0, 'Converting neuroimaging data to regional PDFs ...');
+					
+					for sub_i = 1:subject_number
+					    sub_neuroimaging = sub_dict_neuroimaging.get('IT', sub_i);
+					    subject_id = sub_neuroimaging.get('ID');
+					
+					    neuroimaging_file = sub_neuroimaging.get('ABSOLUTE_NIFTI_PATH');
+					
+					    if ~isfile(neuroimaging_file)
+					        error('Subject neuroimaging file not found: %s', neuroimaging_file)
+					    end
+					
+					    neuroimaging_data = double(niftiread(neuroimaging_file));
+					
+					    % Build anatomical reference mask.
+					    anat_mask = true(size(neuroimaging_data));
+					
+					    if ~isempty(gr_list_anat_ref)
+					        if strcmpi(anat_ref_combine_rule, 'and')
+					            anat_mask = true(size(neuroimaging_data));
+					        else
+					            anat_mask = false(size(neuroimaging_data));
+					        end
+					
+					        for anat_i = 1:numel(gr_list_anat_ref)
+					            gr_anat = gr_list_anat_ref{anat_i};
+					            sub_anat = gr_anat.get('SUB_DICT').get('IT', sub_i);
+					
+					            if ~strcmp(sub_anat.get('ID'), subject_id)
+					                error('Subject ID mismatch between GR_NEUROIMAGING and GR_LIST_ANAT_REF{%d}: %s versus %s.', ...
+					                    anat_i, subject_id, sub_anat.get('ID'))
+					            end
+					
+					            anat_file = sub_anat.get('ABSOLUTE_NIFTI_PATH');
+					
+					            if ~isfile(anat_file)
+					                error('Anatomical reference file not found: %s', anat_file)
+					            end
+					
+					            anat_data = double(niftiread(anat_file));
+					            anat_mask_i = anat_data >= threshold_anat_ref;
+					
+					            if strcmpi(anat_ref_combine_rule, 'and')
+					                anat_mask = anat_mask & anat_mask_i;
+					            else
+					                anat_mask = anat_mask | anat_mask_i;
+					            end
+					        end
+					    end
+					
+					    % Convert each target brain region into a PDF.
+					    pdf_matrix = nan(n_bins, numel(convert_br));
+					
+					    for br_i = 1:numel(convert_br)
+					        br_id = convert_br{br_i};
+					        br_label_info = cn.get('BR_LABEL_IN_MAPS', br_id, region_label_map_list);
+					        atlas_idx = br_label_info{1};
+					        region_label = br_label_info{2};
+					
+					        if isempty(atlas_idx)
+					            warning('Converted brain region "%s" was not found in BA_MAPPING_FILES. Setting PDF to NaN.', br_id)
+					            pdf_matrix(:, br_i) = NaN;
+					            continue
+					        end
+					
+					        roi_mask = (atlas_data_list{atlas_idx} == region_label);
+					        final_mask = roi_mask & anat_mask;
+					
+					        roi_values = neuroimaging_data(final_mask);
+					        roi_values = roi_values(~isnan(roi_values));
+					
+					        if isempty(roi_values)
+					            pdf_matrix(:, br_i) = NaN;
+					        else
+					            pdf_values = histcounts(roi_values, bin_edges, 'Normalization', 'pdf');
+					            pdf_matrix(:, br_i) = pdf_values(:);
+					        end
+					    end
+					
+					    sub_fun = SubjectFUN( ...
+					        'ID', subject_id, ...
+					        'LABEL', sub_neuroimaging.get('LABEL'), ...
+					        'NOTES', sub_neuroimaging.get('NOTES'), ...
+					        'BA', ba_fun, ...
+					        'FUN', pdf_matrix, ...
+					        'VOI_DICT', sub_neuroimaging.get('VOI_DICT') ...
+					        );
+					
+					    sub_dict.get('ADD', sub_fun);
+					
+					    braph2waitbar(wb, sub_i / subject_number, ...
+					        ['Converting neuroimaging data to PDFs for subject ' num2str(sub_i) ' of ' num2str(subject_number) ' ...'])
+					end
+					
+					braph2waitbar(wb, 'close')
+					
+					value = gr_fun;
+					
+					rng(rng_settings_)
 					
 				otherwise
-					if prop <= 35
-						value = calculateValue@PanelProp(pr, prop, varargin{:});
+					if prop <= 8
+						value = calculateValue@ConcreteElement(cn, prop, varargin{:});
 					else
-						value = calculateValue@Element(pr, prop, varargin{:});
+						value = calculateValue@Element(cn, prop, varargin{:});
 					end
 			end
 			
-			function cb_table(~, event) % (src, event)
-			    % only needs to update the selector
-			
-			        i = event.Indices(1);
-			        
-			        selected = pr.get('SELECTED');
-			        if event.NewData == 1
-			            pr.set('SELECTED', sort(unique([selected; i])));
-			        else
-			            pr.set('SELECTED', selected(selected ~= i));
-			        end
-			        
-			        pr.get('UPDATE')    
-			end
-			function cb_select_all(~, ~)
-			    roic = pr.get('EL');
-			    
-			    % Get the list of brain atlases
-			    ba_list = roic.get('BA');
-			    br_it_list = {};
-			    for i = 1:length(ba_list)
-			        ba = ba_list{i};
-			        br_dict = ba.get('BR_DICT');
-			        br_it = br_dict.get('IT_LIST');
-			        br_it_list{i} = br_it;
-			    end
-			    br_it_list = [br_it_list{:}];
-			    % Select all brain regions
-			    pr.set('SELECTED', [1:1:length(br_it_list)]);
-			    
-			    % Update the panel
-			    pr.get('UPDATE');
-			end
-			function cb_clear_selection(~, ~)
-			    pr.set('SELECTED', [])
-			    
-			    pr.get('UPDATE')
-			end
-			function cb_invert_selection(~, ~)
-			    roic = pr.get('EL');
-			    
-			    % Get the list of brain atlases
-			    ba_list = roic.get('BA');
-			    br_it_list = {};
-			    for i = 1:length(ba_list)
-			        ba = ba_list{i};
-			        br_dict = ba.get('BR_DICT');
-			        br_it = br_dict.get('IT_LIST');
-			        br_it_list{i} = br_it;
-			    end
-			    br_it_list = [br_it_list{:}];
-			    % Invert the current selection
-			    selected = pr.get('SELECTED');
-			    all_indices = [1:1:length(br_it_list)];
-			    selected_tmp = setdiff(all_indices, selected);
-			    pr.set('SELECTED', selected_tmp);
-			    
-			    % Update the panel
-			    pr.get('UPDATE');
-			end
-			function cb_set(~, ~)
-			    roic = pr.get('EL');
-			    prop = pr.get('PROP');
-			    eff_br_dict = roic.get(prop);
-			    
-			    % Get the list of brain atlases and aggregate brain regions
-			    ba_list = roic.get('BA');
-			    br_it_list = {};
-			    for i = 1:length(ba_list)
-			        ba = ba_list{i};
-			        br_dict = ba.get('BR_DICT');
-			        br_it = br_dict.get('IT_LIST');
-			        br_it_list{i} = br_it;
-			    end
-			    br_it_list = [br_it_list{:}];
-			    % Get selected indices
-			    selected = pr.get('SELECTED');
-			    
-			    % Clear existing REF_BR_DICT
-			    eff_br_dict.get('REMOVE_ALL', 1:eff_br_dict.get('LENGTH'));
-			    
-			    % Add selected brain regions
-			    for s = 1:length(selected)
-			        br = br_it_list{selected(s)};
-			        eff_br_dict.get('ADD', br);
-			    end
-			    
-			    % Update the element and refresh the panel
-			    roic.set(prop, eff_br_dict);
-			    pr.get('UPDATE');
-			end
-			function set_table()
-			    % Retrieve core objects and properties
-			    roic = pr.get('EL');
-			    prop = pr.get('PROP');
-			    ba_list = roic.get('BA');
-			    
-			    % Determine which atlases to use based on prop
-			    if prop == 14  % REF_BR_DICT: Use all atlases
-			        selected_atlases = ba_list;
-			    elseif prop == 19  % SUVR_REGION_SELECTION: Use one atlas
-			        atlas_index = roic.get('ATLAS_INDEX');
-			        if atlas_index < 1 || atlas_index > length(ba_list)
-			            warning('Invalid ATLAS_INDEX. No atlas selected.');
-			            return;
-			        end
-			        selected_atlases = {ba_list{atlas_index}};
-			    else
-			        warning('Invalid property number.');
-			        return;
-			    end
-			    
-			    % Aggregate brain regions and atlas IDs
-			    br_it_list = {};
-			    atlas_ids = {};
-			    for i = 1:length(selected_atlases)
-			        ba = selected_atlases{i};
-			        atlas_id = ba.get('ID');
-			        br_dict = ba.get('BR_DICT');
-			        br_it = br_dict.get('IT_LIST');
-			        br_it_list{i} =  br_it;
-			        atlas_ids = [atlas_ids; repmat({atlas_id}, length(br_it), 1)];
-			    end
-			    br_it_list = [br_it_list{:}];
-			    % Extract brain region IDs
-			
-			    if ~isempty(br_it_list)
-			        br_list = cellfun(@(x) x.get('ID'), br_it_list, 'UniformOutput', false);
-			    else
-			        br_list = {};
-			    end
-			    % br_list = cellfun(@(x) x.get('ID'), br_it_list, 'UniformOutput', false);
-			    % Get the effective (selected) brain regions
-			    if isa(roic.getr(prop), 'NoValue')
-			        eff_br_list = {};
-			    else
-			        eff_br_list = cellfun(@(x) x.get('ID'), roic.get(prop).get('IT_LIST'), 'UniformOutput', false);
-			    end
-			    % Prepare table data with 6 columns (same for both properties)
-			    data = cell(length(br_list), 6);
-			    for bri = 1:length(br_list)
-			        data{bri, 1} = any(pr.get('SELECTED') == bri);         % Checkbox
-			        data{bri, 2} = atlas_ids{bri};                         % Atlas
-			        data{bri, 3} = br_it_list{bri}.get('ID');              % ID
-			        data{bri, 4} = br_it_list{bri}.get('LABEL');           % Label
-			        data{bri, 5} = br_it_list{bri}.get('NOTES');           % Notes
-			        data{bri, 6} = br_it_list{bri}.get('DESCRIPTION');     % Description
-			    end
-			    
-			    % Configure the table with the same columns and format
-			    set(pr.get('TABLE'), ...
-			        'Data', data, ...
-			        'ColumnName', {'', 'Atlas', 'ID', 'Label', 'Notes', 'Description'}, ...
-			        'ColumnFormat', {'logical', 'char', 'char', 'char', 'char', 'char'}, ...
-			        'ColumnWidth', {30, 'auto', 'auto', 'auto', 'auto', 'auto'} ...
-			        )
-			    
-			    % Set row names to indicate selected regions
-			    rowname = cell(length(br_list), 1);
-			    for bri = 1:length(br_list)
-			        if any(ismember(eff_br_list, br_list{bri})) && ~isa(roic.get(prop).get('IT', br_list{bri}).getr('X'), 'NoValue')
-			            rowname{bri} = 'S';  % Selected
-			        else
-			            rowname{bri} = '';   % Unselected
-			        end
-			    end
-			    set(pr.get('TABLE'), 'RowName', rowname);
-			    
-			    % Style selected rows
-			    styles_row = find(pr.get('TABLE').StyleConfigurations.Target == 'row');
-			    if ~isempty(styles_row)
-			        removeStyle(pr.get('TABLE'), styles_row)
-			    end
-			    if ~isempty(pr.get('SELECTED'))
-			        addStyle(pr.get('TABLE'), uistyle('FontWeight', 'bold'), 'row', pr.get('SELECTED'))
-			    end
-			end
 		end
 	end
 end
