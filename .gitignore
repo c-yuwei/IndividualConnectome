@@ -10016,3 +10016,26 @@ braph2genesis/pipelines/distance_suvr connectivity/SUVRDistanceConMx.m
 braph2genesis/pipelines/distance_suvr connectivity/example_Individual_DistanceCon_WU.m
 braph2genesis/pipelines/correlation_suvr connectivity/SUVRCorrelationConMx.m
 braph2genesis/pipelines/correlation_suvr connectivity/example_Individual_CorrelationCon_WU.m
+recyclle/example_Individual_CorrelationCon_WU.m
+recyclle/example_Individual_CorrelationCon_WU3Class.m
+recyclle/example_Individual_DistanceCon_WU.m
+recyclle/example_Individual_DivergenceCon_WU.m
+recyclle/example_Individual_DivergenceCon_WU3Class.m
+recyclle/example_Individual_PerturbationCon_WU.m
+region-of-interest gmv/_ClassifierSVM.gen.m
+region-of-interest gmv/_GMVConstructor.gen.m
+region-of-interest suvr/create_example_NIfTI_DiversedPDF.m
+region-of-interest suvr/create_example_NIfTI_DiversedSUVR.m
+region-of-interest suvr/create_example_NIfTI_SUVR_for_Perturbation.m
+region-of-interest suvr/SUVRCombinedMultilayerConMx.m
+Results/FDG PET/indiviudalConntome/distG1.png
+Results/FDG PET/indiviudalConntome/distG2.png
+Results/FDG PET/indiviudalConntome/divergence distance meansure.png
+Results/FDG PET/indiviudalConntome/divG1.png
+Results/FDG PET/indiviudalConntome/divG2.png
+Results/FDG PET/indiviudalConntome/FDG by Groups 21.png
+Results/FDG PET/indiviudalConntome/FDG by Groups 30.png
+Results/FDG PET/indiviudalConntome/mahala. distance distance meansure.png
+Results/Plotsforpaper/makeplots.m
+Results/SaveMeanandCI.m
+test.b2
