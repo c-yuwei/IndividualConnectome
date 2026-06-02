@@ -1,12 +1,13 @@
 %% ¡header!
-ConverterNeuroimaging2PDFs < PanelProp (pr, graph and measure plot) plots the panel to manage the graph and measures of an ensemble analysis.
+ConverterNeuroimaging2PDFs < ConcreteElement (cn, converter of neuroimaging data to PDFs) converts subject-level NIfTI neuroimaging data into regional probability density functions.
 
 %%% ¡description!
-SUVRConstructorPP_BR_DICT plots the panel to manage the graph and measures of an ensemble analysis.
-It is intended to be used only with the property ME_DICT of AnalyzeEnsemble.
+ConverterNeuroimaging2PDFs converts subject-level NIfTI neuroimaging data into regional probability density functions using one or more atlas NIfTI files and atlas mapping files. 
+ It can optionally restrict voxel extraction with anatomical reference images, such as GM or WM probability maps. The output is a group of SubjectFUN objects, 
+ where each subject contains a matrix whose rows are PDF bins and whose columns are converted brain regions.
 
 %%% ¡seealso!
-uitable, AnalyzeEnsemble, Graph, Measure
+ConverterNeuroimaging2RegionalValues, Group, SubjectNeuroimaging, SubjectFUN, BrainAtlas, BrainRegion, ImporterGroupSubjectNeuroimaging_NIfTI, ExporterGroupSubjectFUN_XLS, ExporterBrainAtlasXLS
 
 %%% ¡build!
 1
@@ -14,386 +15,547 @@ uitable, AnalyzeEnsemble, Graph, Measure
 %% ¡props_update!
 
 %%% ¡prop!
-ELCLASS (constant, string) is the class of the % % % .
+ELCLASS (constant, string) is the class of the converter of neuroimaging data to PDFs.
 %%%% ¡default!
 'ConverterNeuroimaging2PDFs'
 
 %%% ¡prop!
-NAME (constant, string) is the name of the graph and measure panel.
+NAME (constant, string) is the name of the converter of neuroimaging data to PDFs.
 %%%% ¡default!
-'SUVRConstructorPP_BR_DICT'
+'Neuroimaging-to-PDFs Converter'
 
 %%% ¡prop!
-DESCRIPTION (constant, string) is the description of the graph and measure panel.
+DESCRIPTION (constant, string) is the description of the converter of neuroimaging data to PDFs.
 %%%% ¡default!
-'SUVRConstructorPP_BR_DICT plots the panel to manage the graph and measures of an ensemble analysis.'
+'ConverterNeuroimaging2PDFs converts subject-level NIfTI neuroimaging data into regional probability density functions using one or more atlas NIfTI files and atlas mapping files. It can optionally restrict voxel extraction with anatomical reference images, such as GM or WM probability maps. The output is a group of SubjectFUN objects, where each subject contains a matrix whose rows are PDF bins and whose columns are converted brain regions.'
 
 %%% ¡prop!
-TEMPLATE (parameter, item) is the template of the graph and measure panel.
+TEMPLATE (parameter, item) is the template of the converter of neuroimaging data to PDFs.
 %%%% ¡settings!
-'SUVRConstructorPP_BR_DICT'
+'ConverterNeuroimaging2PDFs'
 
 %%% ¡prop!
-ID (data, string) is a few-letter code for the graph and measure panel.
+ID (data, string) is a few-letter code for the converter of neuroimaging data to PDFs.
 %%%% ¡default!
-'SUVRConstructorPP_BR_DICT'
+'ConverterNeuroimaging2PDFs ID'
 
 %%% ¡prop!
-LABEL (metadata, string) is an extended label of the graph and measure panel.
+LABEL (metadata, string) is an extended label of the converter of neuroimaging data to PDFs.
 %%%% ¡default!
-'SUVRConstructorPP_BR_DICT label'
+'ConverterNeuroimaging2PDFs label'
 
 %%% ¡prop!
-NOTES (metadata, string) are some specific notes about the graph and measure panel.
+NOTES (metadata, string) are some specific notes about the converter of neuroimaging data to PDFs.
 %%%% ¡default!
-'SUVRConstructorPP_BR_DICT'
-
-%%% ¡prop!
-EL (data, item) is the element.
-%%%% ¡default!
-SUVRConstructor()
-
-%%% ¡prop!
-PROP (data, scalar) is the property number.
-%%%% ¡default!
-SUVRConstructor.REF_BR_DICT
-
-%%% ¡prop!
-X_DRAW (query, logical) draws the property panel.
-%%%% ¡calculate!
-value = calculateValue@PanelProp(pr, PanelProp.X_DRAW, varargin{:}); % also warning
-if value
-    pr.memorize('TABLE')
-    pr.memorize('CONTEXTMENU')
-    
-    % % Create the button
-    % uicontrol('Parent', pr.get('H'), ...
-    %     'Style', 'pushbutton', ...
-    %     'String', 'Load Region-Index Files', ...
-    %     'Position', [10, 10, 120, 30], ...
-    %     'Callback', @cb_load_mapping_files);
-end
-% %%%% ¡calculate_callbacks!
-% function cb_load_mapping_files(~, ~)
-%     roic = pr.get('EL');
-%     [files, path] = uigetfile('*.csv', 'Select Region-Index CSV Files', 'MultiSelect', 'on');
-%     if ~isequal(files, 0)
-%         if ~iscell(files)
-%             files = {files};
-%         end
-%         % Construct IndexedDictionary for MAPPING_PATH_DICT
-%         mapping_paths = cellfun(@(f) FILE_PATH('PATH', fullfile(path, f)), files, 'UniformOutput', false);
-%         mapping_dict = IndexedDictionary('IT_CLASS', 'FILE_PATH', 'IT_LIST', mapping_paths);
-%         roic.set('MAPPING_PATH_DICT', mapping_dict);
-%     end
-% end
-
-%%% ¡prop!
-UPDATE (query, logical) updates the content and permissions of the table.
-%%%% ¡calculate!
-value = calculateValue@PanelProp(pr, PanelProp.UPDATE, varargin{:}); % also warning
-if value
-	el = pr.get('EL');
-    prop = pr.get('PROP');
-    set_table()
-    pr.set('HEIGHT', pr.getPropDefault('HEIGHT') + pr.get('TABLE_HEIGHT'))
-    set(pr.get('TABLE'), 'Visible', 'on')
-end
-%%%% ¡calculate_callbacks!
-function set_table()
-    % Retrieve core objects and properties
-    roic = pr.get('EL');
-    prop = pr.get('PROP');
-    ba_list = roic.get('BA');
-    
-    % Determine which atlases to use based on prop
-    if prop == 14  % REF_BR_DICT: Use all atlases
-        selected_atlases = ba_list;
-    elseif prop == 19  % SUVR_REGION_SELECTION: Use one atlas
-        atlas_index = roic.get('ATLAS_INDEX');
-        if atlas_index < 1 || atlas_index > length(ba_list)
-            warning('Invalid ATLAS_INDEX. No atlas selected.');
-            return;
-        end
-        selected_atlases = {ba_list{atlas_index}};
-    else
-        warning('Invalid property number.');
-        return;
-    end
-    
-    % Aggregate brain regions and atlas IDs
-    br_it_list = {};
-    atlas_ids = {};
-    for i = 1:length(selected_atlases)
-        ba = selected_atlases{i};
-        atlas_id = ba.get('ID');
-        br_dict = ba.get('BR_DICT');
-        br_it = br_dict.get('IT_LIST');
-        br_it_list{i} =  br_it;
-        atlas_ids = [atlas_ids; repmat({atlas_id}, length(br_it), 1)];
-    end
-    br_it_list = [br_it_list{:}];
-    % Extract brain region IDs
-
-    if ~isempty(br_it_list)
-        br_list = cellfun(@(x) x.get('ID'), br_it_list, 'UniformOutput', false);
-    else
-        br_list = {};
-    end
-    % br_list = cellfun(@(x) x.get('ID'), br_it_list, 'UniformOutput', false);
-    % Get the effective (selected) brain regions
-    if isa(roic.getr(prop), 'NoValue')
-        eff_br_list = {};
-    else
-        eff_br_list = cellfun(@(x) x.get('ID'), roic.get(prop).get('IT_LIST'), 'UniformOutput', false);
-    end
-    % Prepare table data with 6 columns (same for both properties)
-    data = cell(length(br_list), 6);
-    for bri = 1:length(br_list)
-        data{bri, 1} = any(pr.get('SELECTED') == bri);         % Checkbox
-        data{bri, 2} = atlas_ids{bri};                         % Atlas
-        data{bri, 3} = br_it_list{bri}.get('ID');              % ID
-        data{bri, 4} = br_it_list{bri}.get('LABEL');           % Label
-        data{bri, 5} = br_it_list{bri}.get('NOTES');           % Notes
-        data{bri, 6} = br_it_list{bri}.get('DESCRIPTION');     % Description
-    end
-    
-    % Configure the table with the same columns and format
-    set(pr.get('TABLE'), ...
-        'Data', data, ...
-        'ColumnName', {'', 'Atlas', 'ID', 'Label', 'Notes', 'Description'}, ...
-        'ColumnFormat', {'logical', 'char', 'char', 'char', 'char', 'char'}, ...
-        'ColumnWidth', {30, 'auto', 'auto', 'auto', 'auto', 'auto'} ...
-        )
-    
-    % Set row names to indicate selected regions
-    rowname = cell(length(br_list), 1);
-    for bri = 1:length(br_list)
-        if any(ismember(eff_br_list, br_list{bri})) && ~isa(roic.get(prop).get('IT', br_list{bri}).getr('X'), 'NoValue')
-            rowname{bri} = 'S';  % Selected
-        else
-            rowname{bri} = '';   % Unselected
-        end
-    end
-    set(pr.get('TABLE'), 'RowName', rowname);
-    
-    % Style selected rows
-    styles_row = find(pr.get('TABLE').StyleConfigurations.Target == 'row');
-    if ~isempty(styles_row)
-        removeStyle(pr.get('TABLE'), styles_row)
-    end
-    if ~isempty(pr.get('SELECTED'))
-        addStyle(pr.get('TABLE'), uistyle('FontWeight', 'bold'), 'row', pr.get('SELECTED'))
-    end
-end
-
-%%% ¡prop!
-REDRAW (query, logical) resizes the property panel and repositions its graphical objects.
-%%%% ¡calculate!
-value = calculateValue@PanelProp(pr, PanelProp.REDRAW, varargin{:}); % also warning
-if value
-    w_p = get_from_varargin(w(pr.get('H'), 'pixels'), 'Width', varargin);
-    
-    set(pr.get('TABLE'), 'Position', [s(.3) s(.3) w_p-s(.6) max(1, pr.get('HEIGHT')-s(2.2))])
-end
-
-%%% ¡prop!
-SHOW (query, logical) shows the figure containing the panel and, possibly, the item figures.
-%%%% ¡calculate!
-value = calculateValue@PanelProp(pr, PanelProp.SHOW, varargin{:}); % also warning
-
-%%% ¡prop!
-HIDE (query, logical) hides the figure containing the panel and, possibly, the item figures.
-%%%% ¡calculate!
-value = calculateValue@PanelProp(pr, PanelProp.HIDE, varargin{:}); % also warning
-
-%%% ¡prop!
-DELETE (query, logical) resets the handles when the panel is deleted.
-%%%% ¡calculate!
-value = calculateValue@PanelProp(pr, PanelProp.DELETE, varargin{:}); % also warning
-if value
-    pr.set('TABLE', Element.getNoValue())
-    pr.set('CONTEXTMENU', Element.getNoValue())
-end
-
-%%% ¡prop!
-CLOSE (query, logical) closes the figure containing the panel and, possibly, the item figures.
-%%%% ¡calculate!
-value = calculateValue@PanelProp(pr, PanelProp.CLOSE, varargin{:}); % also warning
+'ConverterNeuroimaging2PDFs notes'
 
 %% ¡props!
 
 %%% ¡prop!
-TABLE_HEIGHT (gui, size) is the pixel height of the property panel when the table is shown.
+BA_LIST (data, itemlist) is the list of brain atlases used to identify the brain regions.
+%%%% ¡settings!
+'BrainAtlas'
+
+%%% ¡prop!
+BA_NIFTI_FILES (data, stringlist) is the list of atlas NIfTI files aligned with BA_LIST.
 %%%% ¡default!
-s(30)
+{}
 
 %%% ¡prop!
-SELECTED (gui, cvector) is the list of selected items.
-%%%% ¡conditioning!
-if isrow(value)
-    value = value';
+BA_MAPPING_FILES (data, stringlist) is the list of atlas mapping CSV files aligned with BA_LIST.
+%%%% ¡default!
+{}
+
+%%% ¡prop!
+GR_NEUROIMAGING (data, item) is the group of subject-level neuroimaging data to convert.
+%%%% ¡settings!
+'Group'
+%%%% ¡default!
+Group('SUB_CLASS', 'SubjectNeuroimaging', 'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectNeuroimaging'))
+
+%%% ¡prop!
+GR_LIST_ANAT_REF (data, itemlist) is the list of anatomical reference groups used to restrict voxel extraction.
+%%%% ¡settings!
+'Group'
+
+%%% ¡prop!
+THRESHOLD_ANAT_REF (parameter, scalar) is the threshold applied to anatomical reference images.
+%%%% ¡default!
+0.5
+
+%%% ¡prop!
+ANAT_REF_COMBINE_RULE (parameter, option) is the rule used to combine multiple anatomical reference masks.
+%%%% ¡settings!
+{'or' 'and'}
+%%%% ¡default!
+'or'
+
+%%% ¡prop!
+CONVERT_BR (data, stringlist) is the list of brain-region IDs to convert into regional PDFs.
+%%%% ¡default!
+{}
+
+%%% ¡prop!
+BIN_EDGES (parameter, rvector) is the bin edges used to calculate regional PDFs.
+%%%% ¡default!
+linspace(0, 1, 101)
+
+%%% ¡prop!
+BIN_CENTERS (query, rvector) is the bin centers corresponding to BIN_EDGES.
+%%%% ¡calculate!
+bin_edges = cn.get('BIN_EDGES');
+
+if numel(bin_edges) < 2
+    error('BIN_EDGES must contain at least two values.')
 end
 
-%%% ¡prop!
-TABLE (evanescent, handle) is the table.
-%%%% ¡calculate!
-table = uitable( ...
-    'Parent', pr.memorize('H'), ... % H = p for Panel
-    'Tag', 'table', ...
-    'FontSize', BRAPH2.FONTSIZE, ...
-    'ColumnSortable', true, ...
-    'ColumnName', {'', 'Brain Region', 'ID', 'Label', 'Notes', 'Description'}, ...
-    'ColumnFormat', {'logical',  'char', 'char', 'char', 'char', 'char'}, ...
-    'ColumnWidth', {30, 'auto', 'auto', 'auto', 'auto', 'auto'}, ...
-    'ColumnEditable', [true false false false false false], ...
-    'CellEditCallback', {@cb_table} ...
-    );
-value = table;
-%%%% ¡calculate_callbacks!
-function cb_table(~, event) % (src, event)
-    % only needs to update the selector
+value = (bin_edges(1:end-1) + bin_edges(2:end)) / 2;
 
-        i = event.Indices(1);
-        
-        selected = pr.get('SELECTED');
-        if event.NewData == 1
-            pr.set('SELECTED', sort(unique([selected; i])));
-        else
-            pr.set('SELECTED', selected(selected ~= i));
+%%% ¡prop!
+BR_LABEL_IN_MAPS (query, cell) finds the atlas index and numeric atlas label for a brain-region ID.
+%%%% ¡calculate!
+br_id = varargin{1};
+region_label_map_list = varargin{2};
+
+atlas_idx = [];
+region_label = [];
+
+for i = 1:numel(region_label_map_list)
+    region_label_map = region_label_map_list{i};
+
+    if isKey(region_label_map, br_id)
+        atlas_idx = i;
+        region_label = region_label_map(br_id);
+        value = {atlas_idx, region_label};
+        return
+    end
+end
+
+value = {atlas_idx, region_label};
+
+%%% ¡prop!
+BA (result, item) is the brain atlas containing the converted brain regions.
+%%%% ¡settings!
+'BrainAtlas'
+%%%% ¡calculate!
+ba_list = cn.get('BA_LIST');
+convert_br = cn.get('CONVERT_BR');
+
+if isempty(ba_list)
+    value = BrainAtlas( ...
+        'ID', 'RegionalPDFAtlas', ...
+        'BR_DICT', IndexedDictionary('IT_CLASS', 'BrainRegion') ...
+        );
+    return
+end
+
+if isempty(convert_br)
+    ba = ba_list{1};
+    value = ba;
+    return
+end
+
+selected_br_list = {};
+
+for br_i = 1:numel(convert_br)
+    br_id = convert_br{br_i};
+    br_found = false;
+
+    for ba_i = 1:numel(ba_list)
+        ba = ba_list{ba_i};
+        br_dict = ba.get('BR_DICT');
+
+        for j = 1:br_dict.get('LENGTH')
+            br = br_dict.get('IT', j);
+
+            if strcmp(br.get('ID'), br_id)
+                selected_br_list{end + 1} = br; %#ok<AGROW>
+                br_found = true;
+                break
+            end
         end
-        
-        pr.get('UPDATE')    
+
+        if br_found
+            break
+        end
+    end
+
+    if ~br_found
+        warning('Brain region "%s" was not found in BA_LIST and will be skipped.', br_id)
+    end
 end
+
+value = BrainAtlas( ...
+    'ID', 'RegionalPDFAtlas', ...
+    'LABEL', 'Regional PDF atlas', ...
+    'NOTES', 'Brain atlas containing the regions converted from subject-level NIfTI data into PDFs.', ...
+    'BR_DICT', IndexedDictionary('IT_CLASS', 'BrainRegion', 'IT_LIST', selected_br_list) ...
+    );
 
 %%% ¡prop!
-CONTEXTMENU (evanescent, handle) is the context menu.
+GR_FUN (result, item) is the group of subjects with regional PDFs.
+%%%% ¡settings!
+'Group'
 %%%% ¡calculate!
-contextmenu = uicontextmenu( ...
-    'Parent', ancestor(pr.get('H'), 'figure'), ...
-    'Tag', 'CONTEXTMENU' ...
-    );
-menu_select_all = uimenu( ...
-	'Separator', 'on', ...
-    'Parent', contextmenu, ...
-    'Tag', 'MENU_SELECT_ALL', ...
-    'Text', 'Select All Measures', ...
-    'MenuSelectedFcn', {@cb_select_all} ...
-    );
-menu_clear_selection = uimenu( ...
-    'Parent', contextmenu, ...
-    'Tag', 'MENU_CLEAR_SELECTION', ...
-    'Text', 'Clear Selection', ...
-    'MenuSelectedFcn', {@cb_clear_selection} ...
-    );
-menu_invert_selection = uimenu( ...
-    'Parent', contextmenu, ...
-    'Tag', 'MENU_INVERT_SELECTION', ...
-    'Text', 'Invert Selection', ...
-    'MenuSelectedFcn', {@cb_invert_selection} ...
-    );
-menu_set = uimenu( ...
-	'Separator', 'on', ...
-	'Parent', contextmenu, ...
-	'Tag', 'MENU_CALCULATE', ...
-    'Text', 'Set Selected Brain Regions', ...
-	'MenuSelectedFcn', {@cb_set} ...
+ba_list = cn.get('BA_LIST');
+ba_nifti_files = cn.get('BA_NIFTI_FILES');
+ba_mapping_files = cn.get('BA_MAPPING_FILES');
+gr_neuroimaging = cn.get('GR_NEUROIMAGING');
+gr_list_anat_ref = cn.get('GR_LIST_ANAT_REF');
+threshold_anat_ref = cn.get('THRESHOLD_ANAT_REF');
+anat_ref_combine_rule = cn.get('ANAT_REF_COMBINE_RULE');
+convert_br = cn.get('CONVERT_BR');
+bin_edges = cn.get('BIN_EDGES');
+
+if gr_neuroimaging.get('SUB_DICT').get('LENGTH') == 0
+    value = Group( ...
+        'SUB_CLASS', 'SubjectFUN', ...
+        'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectFUN') ...
+        );
+    return
+end
+
+if isempty(ba_list)
+    error('BA_LIST must not be empty.')
+end
+
+if isempty(ba_nifti_files)
+    error('BA_NIFTI_FILES must not be empty.')
+end
+
+if isempty(ba_mapping_files)
+    error('BA_MAPPING_FILES must not be empty.')
+end
+
+if numel(ba_nifti_files) ~= numel(ba_mapping_files)
+    error('BA_NIFTI_FILES and BA_MAPPING_FILES must have the same length.')
+end
+
+if numel(ba_list) ~= numel(ba_nifti_files)
+    error('BA_LIST and BA_NIFTI_FILES must have the same length.')
+end
+
+if isempty(convert_br)
+    error('CONVERT_BR must not be empty.')
+end
+
+if numel(bin_edges) < 2
+    error('BIN_EDGES must contain at least two values.')
+end
+
+% Load atlas NIfTI files and mapping tables.
+atlas_data_list = cell(1, numel(ba_nifti_files));
+region_label_map_list = cell(1, numel(ba_mapping_files));
+
+for atlas_i = 1:numel(ba_nifti_files)
+    atlas_file = ba_nifti_files{atlas_i};
+    mapping_file = ba_mapping_files{atlas_i};
+
+    if ~isfile(atlas_file)
+        error('Atlas NIfTI file not found: %s', atlas_file)
+    end
+
+    if ~isfile(mapping_file)
+        error('Atlas mapping file not found: %s', mapping_file)
+    end
+
+    atlas_data_list{atlas_i} = niftiread(atlas_file);
+
+    mapping_table = readtable(mapping_file, 'TextType', 'string');
+
+    if width(mapping_table) < 4
+        error('Atlas mapping file must have at least 4 columns: %s', mapping_file)
+    end
+
+    atlas_labels = mapping_table{:, 3};
+    atlas_br_ids = string(mapping_table{:, 4});
+
+    region_label_map = containers.Map();
+
+    for row_i = 1:numel(atlas_br_ids)
+        br_id = char(atlas_br_ids(row_i));
+
+        if isempty(br_id) || ismissing(string(br_id))
+            continue
+        end
+
+        region_label_map(br_id) = double(atlas_labels(row_i));
+    end
+
+    region_label_map_list{atlas_i} = region_label_map;
+end
+
+% Build output brain atlas from CONVERT_BR.
+ba_fun = cn.get('BA');
+
+% Create output group.
+gr_fun = Group( ...
+    'SUB_CLASS', 'SubjectFUN', ...
+    'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectFUN') ...
     );
 
-set(pr.get('TABLE'), 'ContextMenu', contextmenu)
+sub_dict = gr_fun.memorize('SUB_DICT');
+sub_dict_neuroimaging = gr_neuroimaging.get('SUB_DICT');
+subject_number = sub_dict_neuroimaging.get('LENGTH');
 
-value = contextmenu;
-%%%% ¡calculate_callbacks!
-function cb_select_all(~, ~)
-    roic = pr.get('EL');
-    
-    % Get the list of brain atlases
-    ba_list = roic.get('BA');
-    br_it_list = {};
-    for i = 1:length(ba_list)
-        ba = ba_list{i};
-        br_dict = ba.get('BR_DICT');
-        br_it = br_dict.get('IT_LIST');
-        br_it_list{i} = br_it;
+n_bins = numel(bin_edges) - 1;
+
+wb = braph2waitbar(cn.get('WAITBAR'), 0, 'Converting neuroimaging data to regional PDFs ...');
+
+for sub_i = 1:subject_number
+    sub_neuroimaging = sub_dict_neuroimaging.get('IT', sub_i);
+    subject_id = sub_neuroimaging.get('ID');
+
+    neuroimaging_file = sub_neuroimaging.get('ABSOLUTE_NIFTI_PATH');
+
+    if ~isfile(neuroimaging_file)
+        error('Subject neuroimaging file not found: %s', neuroimaging_file)
     end
-    br_it_list = [br_it_list{:}];
-    % Select all brain regions
-    pr.set('SELECTED', [1:1:length(br_it_list)]);
-    
-    % Update the panel
-    pr.get('UPDATE');
-end
-function cb_clear_selection(~, ~)
-    pr.set('SELECTED', [])
-    
-    pr.get('UPDATE')
-end
-function cb_invert_selection(~, ~)
-    roic = pr.get('EL');
-    
-    % Get the list of brain atlases
-    ba_list = roic.get('BA');
-    br_it_list = {};
-    for i = 1:length(ba_list)
-        ba = ba_list{i};
-        br_dict = ba.get('BR_DICT');
-        br_it = br_dict.get('IT_LIST');
-        br_it_list{i} = br_it;
+
+    neuroimaging_data = double(niftiread(neuroimaging_file));
+
+    % Build anatomical reference mask.
+    anat_mask = true(size(neuroimaging_data));
+
+    if ~isempty(gr_list_anat_ref)
+        if strcmpi(anat_ref_combine_rule, 'and')
+            anat_mask = true(size(neuroimaging_data));
+        else
+            anat_mask = false(size(neuroimaging_data));
+        end
+
+        for anat_i = 1:numel(gr_list_anat_ref)
+            gr_anat = gr_list_anat_ref{anat_i};
+            sub_anat = gr_anat.get('SUB_DICT').get('IT', sub_i);
+
+            if ~strcmp(sub_anat.get('ID'), subject_id)
+                error('Subject ID mismatch between GR_NEUROIMAGING and GR_LIST_ANAT_REF{%d}: %s versus %s.', ...
+                    anat_i, subject_id, sub_anat.get('ID'))
+            end
+
+            anat_file = sub_anat.get('ABSOLUTE_NIFTI_PATH');
+
+            if ~isfile(anat_file)
+                error('Anatomical reference file not found: %s', anat_file)
+            end
+
+            anat_data = double(niftiread(anat_file));
+            anat_mask_i = anat_data >= threshold_anat_ref;
+
+            if strcmpi(anat_ref_combine_rule, 'and')
+                anat_mask = anat_mask & anat_mask_i;
+            else
+                anat_mask = anat_mask | anat_mask_i;
+            end
+        end
     end
-    br_it_list = [br_it_list{:}];
-    % Invert the current selection
-    selected = pr.get('SELECTED');
-    all_indices = [1:1:length(br_it_list)];
-    selected_tmp = setdiff(all_indices, selected);
-    pr.set('SELECTED', selected_tmp);
-    
-    % Update the panel
-    pr.get('UPDATE');
-end
-function cb_set(~, ~)
-    roic = pr.get('EL');
-    prop = pr.get('PROP');
-    eff_br_dict = roic.get(prop);
-    
-    % Get the list of brain atlases and aggregate brain regions
-    ba_list = roic.get('BA');
-    br_it_list = {};
-    for i = 1:length(ba_list)
-        ba = ba_list{i};
-        br_dict = ba.get('BR_DICT');
-        br_it = br_dict.get('IT_LIST');
-        br_it_list{i} = br_it;
+
+    % Convert each target brain region into a PDF.
+    pdf_matrix = nan(n_bins, numel(convert_br));
+
+    for br_i = 1:numel(convert_br)
+        br_id = convert_br{br_i};
+        br_label_info = cn.get('BR_LABEL_IN_MAPS', br_id, region_label_map_list);
+        atlas_idx = br_label_info{1};
+        region_label = br_label_info{2};
+
+        if isempty(atlas_idx)
+            warning('Converted brain region "%s" was not found in BA_MAPPING_FILES. Setting PDF to NaN.', br_id)
+            pdf_matrix(:, br_i) = NaN;
+            continue
+        end
+
+        roi_mask = (atlas_data_list{atlas_idx} == region_label);
+        final_mask = roi_mask & anat_mask;
+
+        roi_values = neuroimaging_data(final_mask);
+        roi_values = roi_values(~isnan(roi_values));
+
+        if isempty(roi_values)
+            pdf_matrix(:, br_i) = NaN;
+        else
+            pdf_values = histcounts(roi_values, bin_edges, 'Normalization', 'pdf');
+            pdf_matrix(:, br_i) = pdf_values(:);
+        end
     end
-    br_it_list = [br_it_list{:}];
-    % Get selected indices
-    selected = pr.get('SELECTED');
-    
-    % Clear existing REF_BR_DICT
-    eff_br_dict.get('REMOVE_ALL', 1:eff_br_dict.get('LENGTH'));
-    
-    % Add selected brain regions
-    for s = 1:length(selected)
-        br = br_it_list{selected(s)};
-        eff_br_dict.get('ADD', br);
-    end
-    
-    % Update the element and refresh the panel
-    roic.set(prop, eff_br_dict);
-    pr.get('UPDATE');
+
+    sub_fun = SubjectFUN( ...
+        'ID', subject_id, ...
+        'LABEL', sub_neuroimaging.get('LABEL'), ...
+        'NOTES', sub_neuroimaging.get('NOTES'), ...
+        'BA', ba_fun, ...
+        'FUN', pdf_matrix, ...
+        'VOI_DICT', sub_neuroimaging.get('VOI_DICT') ...
+        );
+
+    sub_dict.get('ADD', sub_fun);
+
+    braph2waitbar(wb, sub_i / subject_number, ...
+        ['Converting neuroimaging data to PDFs for subject ' num2str(sub_i) ' of ' num2str(subject_number) ' ...'])
 end
+
+braph2waitbar(wb, 'close')
+
+value = gr_fun;
+
+%%% ¡prop!
+WAITBAR (gui, logical) determines whether to show the waitbar.
+%%%% ¡default!
+true
+
 %% ¡tests!
 
 %%% ¡excluded_props!
-[SUVRConstructorPP_BR_DICT.PARENT SUVRConstructorPP_BR_DICT.H SUVRConstructorPP_BR_DICT.EL SUVRConstructorPP_BR_DICT.LISTENER_CB SUVRConstructorPP_BR_DICT.HEIGHT SUVRConstructorPP_BR_DICT.TABLE SUVRConstructorPP_BR_DICT.CONTEXTMENU]
-
-%%% ¡warning_off!
-true
+[ConverterNeuroimaging2PDFs.BR_LABEL_IN_MAPS ConverterNeuroimaging2PDFs.BIN_CENTERS]
 
 %%% ¡test!
 %%%% ¡name!
-Remove Figures
+Sanity check - convert GM probability NIfTI data to regional PDFs
+%%%% ¡probability!
+.01
 %%%% ¡code!
-warning('off', [BRAPH2.STR ':SUVRConstructorPP_BR_DICT'])
-assert(length(findall(0, 'type', 'figure')) == 1)
-delete(findall(0, 'type', 'figure'))
-warning('on', [BRAPH2.STR ':SUVRConstructorPP_BR_DICT'])
+example_data_dir = fullfile(fileparts(which('ConverterNeuroimaging2PDFs')), 'Example data NIfTI');
+example_atlas_dir = fullfile(fileparts(which('ConverterNeuroimaging2PDFs')), 'example atlases NIfTI');
+
+if isempty(dir(fullfile(example_data_dir, 'sub-*', 'ses-*', 'anat', '*_GMprob.nii')))
+    create_data_NIfTI_GMProb();
+end
+
+im_ba = ImporterBrainAtlasXLS( ...
+    'FILE', fullfile(example_atlas_dir, 'aal120_atlas.xlsx'), ...
+    'WAITBAR', false ...
+    );
+
+ba_aal120 = im_ba.get('BA');
+
+im_gr = ImporterGroupSubjectNeuroimaging_NIfTI( ...
+    'DIRECTORY', example_data_dir, ...
+    'MODALITY', 'anat', ...
+    'TARGET', 'GMprob', ...
+    'BA', ba_aal120, ...
+    'WAITBAR', false ...
+    );
+
+gr_gmprob = im_gr.get('GR');
+
+brain_regions_to_convert = {};
+for i = 1:5
+    brain_regions_to_convert{i} = ba_aal120.get('BR_DICT').get('IT', i).get('ID'); %#ok<AGROW>
+end
+
+bin_edges = linspace(0, 1, 101);
+
+cn = ConverterNeuroimaging2PDFs( ...
+    'BA_LIST', {ba_aal120}, ...
+    'BA_NIFTI_FILES', {fullfile(example_atlas_dir, 'aal120_atlas.nii')}, ...
+    'BA_MAPPING_FILES', {fullfile(example_atlas_dir, 'aal120_atlas_mapping.csv')}, ...
+    'CONVERT_BR', brain_regions_to_convert, ...
+    'GR_NEUROIMAGING', gr_gmprob, ...
+    'BIN_EDGES', bin_edges, ...
+    'WAITBAR', false ...
+    );
+
+gr_fun = cn.get('GR_FUN');
+
+assert(isequal(gr_fun.get('SUB_DICT').get('LENGTH'), 10), ...
+    'The converted group should contain 10 subjects.')
+
+sub_fun = gr_fun.get('SUB_DICT').get('IT', 1);
+fun = sub_fun.get('FUN');
+
+assert(isequal(size(fun), [100 5]), ...
+    'The converted subject should contain a 100-by-5 PDF matrix.')
+
+assert(all(~isnan(fun(:))), ...
+    'The converted regional PDFs should not contain NaN values.')
+
+%%% ¡test!
+%%%% ¡name!
+Sanity check - convert PET NIfTI data to regional PDFs
+%%%% ¡probability!
+.01
+%%%% ¡code!
+example_data_dir = fullfile(fileparts(which('ConverterNeuroimaging2PDFs')), 'Example data NIfTI');
+example_atlas_dir = fullfile(fileparts(which('ConverterNeuroimaging2PDFs')), 'example atlases NIfTI');
+
+if isempty(dir(fullfile(example_data_dir, 'sub-*', 'ses-*', 'pet', '*_pet.nii')))
+    create_data_NIfTI_PET();
+end
+
+if isempty(dir(fullfile(example_data_dir, 'sub-*', 'ses-*', 'anat', '*_GMprob.nii')))
+    create_data_NIfTI_GMProb();
+end
+
+if isempty(dir(fullfile(example_data_dir, 'sub-*', 'ses-*', 'anat', '*_WMprob.nii')))
+    create_data_NIfTI_WMProb();
+end
+
+im_ba = ImporterBrainAtlasXLS( ...
+    'FILE', fullfile(example_atlas_dir, 'aal120_atlas.xlsx'), ...
+    'WAITBAR', false ...
+    );
+
+ba_aal120 = im_ba.get('BA');
+
+im_gr_pet = ImporterGroupSubjectNeuroimaging_NIfTI( ...
+    'DIRECTORY', example_data_dir, ...
+    'MODALITY', 'pet', ...
+    'BA', ba_aal120, ...
+    'WAITBAR', false ...
+    );
+
+gr_pet = im_gr_pet.get('GR');
+
+im_gr_gm = ImporterGroupSubjectNeuroimaging_NIfTI( ...
+    'DIRECTORY', example_data_dir, ...
+    'MODALITY', 'anat', ...
+    'TARGET', 'GMprob', ...
+    'BA', ba_aal120, ...
+    'WAITBAR', false ...
+    );
+
+gr_gmprob = im_gr_gm.get('GR');
+
+im_gr_wm = ImporterGroupSubjectNeuroimaging_NIfTI( ...
+    'DIRECTORY', example_data_dir, ...
+    'MODALITY', 'anat', ...
+    'TARGET', 'WMprob', ...
+    'BA', ba_aal120, ...
+    'WAITBAR', false ...
+    );
+
+gr_wmprob = im_gr_wm.get('GR');
+
+brain_regions_to_convert = {};
+for i = 1:5
+    brain_regions_to_convert{end + 1} = ba_aal120.get('BR_DICT').get('IT', i).get('ID'); %#ok<AGROW>
+end
+
+bin_edges = linspace(0, 3, 101);
+
+cn = ConverterNeuroimaging2PDFs( ...
+    'BA_LIST', {ba_aal120}, ...
+    'BA_NIFTI_FILES', {fullfile(example_atlas_dir, 'aal120_atlas.nii')}, ...
+    'BA_MAPPING_FILES', {fullfile(example_atlas_dir, 'aal120_atlas_mapping.csv')}, ...
+    'CONVERT_BR', brain_regions_to_convert, ...
+    'GR_NEUROIMAGING', gr_pet, ...
+    'GR_LIST_ANAT_REF', {gr_gmprob, gr_wmprob}, ...
+    'THRESHOLD_ANAT_REF', 0.5, ...
+    'ANAT_REF_COMBINE_RULE', 'or', ...
+    'BIN_EDGES', bin_edges, ...
+    'WAITBAR', false ...
+    );
+
+gr_fun = cn.get('GR_FUN');
+
+assert(isequal(gr_fun.get('SUB_DICT').get('LENGTH'), 10), ...
+    'The converted PET group should contain 10 subjects.')
+
+sub_fun = gr_fun.get('SUB_DICT').get('IT', 1);
+fun = sub_fun.get('FUN');
+
+assert(isequal(size(fun), [100 5]), ...
+    'The converted PET subject should contain a 100-by-5 PDF matrix.')
+
+assert(all(~isnan(fun(:))), ...
+    'The converted PET regional PDFs should not contain NaN values.')

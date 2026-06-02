@@ -51,8 +51,6 @@ NOTES (metadata, string) are some specific notes about the converter of neuroima
 
 %%% ¡prop!
 BA_LIST (data, itemlist) is the list of brain atlases used to identify the brain regions.
-%%%% ¡default!
-{BrainAtlas()}
 
 %%% ¡prop!
 BA_NIFTI_FILES (data, stringlist) is the list of atlas NIfTI files aligned with BA_LIST.
@@ -72,7 +70,7 @@ GR_NEUROIMAGING (data, item) is the group of subject-level neuroimaging data to 
 Group('SUB_CLASS', 'SubjectNeuroimaging', 'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectNeuroimaging'))
 
 %%% ¡prop!
-GR_LIST_ANAT_REF (data, cell) is the list of anatomical reference groups used to restrict voxel averaging.
+GR_LIST_ANAT_REF (data, itemlist) is the list of anatomical reference groups used to restrict voxel averaging.
 %%%% ¡default!
 {}
 
@@ -90,9 +88,33 @@ ANAT_REF_COMBINE_RULE (parameter, option) is the rule used to combine multiple a
 
 %%% ¡prop!
 REF_BR (data, stringlist) is the list of reference brain-region IDs used for optional normalization.
+%%%% ¡default!
+{''}
 
 %%% ¡prop!
 CONVERT_BR (data, stringlist) is the list of brain-region IDs to convert into regional values.
+%%%% ¡default!
+{''}
+
+%%% ¡prop!
+BR_LABEL_IN_MAPS (query, cell) finds the atlas index and numeric atlas label for a brain-region ID.
+%%%% ¡calculate!
+br_id = varargin{1};
+region_label_map_list = varargin{2};
+
+atlas_idx = [];
+region_label = [];
+
+for i = 1:numel(region_label_map_list)
+    region_label_map = region_label_map_list{i};
+
+    if isKey(region_label_map, br_id)
+        atlas_idx = i;
+        region_label = region_label_map(br_id);
+        value = {atlas_idx, region_label};
+        return
+    end
+end
 
 %%% ¡prop!
 BA (result, item) is the brain atlas containing the converted brain regions.
@@ -167,6 +189,11 @@ threshold_anat_ref = cn.get('THRESHOLD_ANAT_REF');
 anat_ref_combine_rule = cn.get('ANAT_REF_COMBINE_RULE');
 ref_br = cn.get('REF_BR');
 convert_br = cn.get('CONVERT_BR');
+
+if gr_neuroimaging.get('SUB_DICT').get('LENGTH') == 0
+    value = Group();
+    return
+end
 
 if isempty(ba_list)
     error('BA_LIST must not be empty.')
@@ -253,7 +280,7 @@ for sub_i = 1:subject_number
     sub_neuroimaging = sub_dict_neuroimaging.get('IT', sub_i);
     subject_id = sub_neuroimaging.get('ID');
 
-    neuroimaging_file = sub_neuroimaging.get('ABSOLUTE_FILE_PATH');
+    neuroimaging_file = sub_neuroimaging.get('ABSOLUTE_NIFTI_PATH');
 
     if ~isfile(neuroimaging_file)
         error('Subject neuroimaging file not found: %s', neuroimaging_file)
@@ -280,7 +307,7 @@ for sub_i = 1:subject_number
                     anat_i, subject_id, sub_anat.get('ID'))
             end
 
-            anat_file = sub_anat.get('ABSOLUTE_FILE_PATH');
+            anat_file = sub_anat.get('ABSOLUTE_NIFTI_PATH');
 
             if ~isfile(anat_file)
                 error('Anatomical reference file not found: %s', anat_file)
@@ -304,7 +331,9 @@ for sub_i = 1:subject_number
     if use_reference_normalization
         for ref_i = 1:numel(ref_br)
             br_id = ref_br{ref_i};
-            [atlas_idx, region_label] = find_region_label_in_maps(br_id, region_label_map_list);
+            br_label_info = cn.get('BR_LABEL_IN_MAPS', br_id, region_label_map_list);
+            atlas_idx = br_label_info{1};
+            region_label = br_label_info{2};
 
             if isempty(atlas_idx)
                 error('Reference brain region "%s" was not found in BA_MAPPING_FILES.', br_id)
@@ -335,8 +364,10 @@ for sub_i = 1:subject_number
 
     for br_i = 1:numel(convert_br)
         br_id = convert_br{br_i};
-        [atlas_idx, region_label] = find_region_label_in_maps(br_id, region_label_map_list);
-
+        br_label_info = cn.get('BR_LABEL_IN_MAPS', br_id, region_label_map_list);
+        atlas_idx = br_label_info{1};
+        region_label = br_label_info{2};
+        
         if isempty(atlas_idx)
             warning('Converted brain region "%s" was not found in BA_MAPPING_FILES. Setting value to NaN.', br_id)
             regional_values(br_i) = NaN;
@@ -361,7 +392,7 @@ for sub_i = 1:subject_number
         'LABEL', sub_neuroimaging.get('LABEL'), ...
         'NOTES', sub_neuroimaging.get('NOTES'), ...
         'BA', ba_st, ...
-        'ST', regional_values, ...
+        'ST', regional_values', ...
         'VOI_DICT', sub_neuroimaging.get('VOI_DICT') ...
         );
 
@@ -381,6 +412,9 @@ WAITBAR (gui, logical) determines whether to show the waitbar.
 true
 
 %% ¡tests!
+
+%%% ¡excluded_props!
+[ConverterNeuroimaging2RegionalValues.BR_LABEL_IN_MAPS]
 
 %%% ¡test!
 %%%% ¡name!
@@ -527,21 +561,3 @@ assert(isequal(length(sub_st.get('ST')), 5), ...
 assert(all(~isnan(sub_st.get('ST'))), ...
     'The converted PET SUVR values should not contain NaN values.')
 
-%% ¡methods!
-
-function [atlas_idx, region_label] = find_region_label_in_maps(br_id, region_label_map_list)
-% FIND_REGION_LABEL_IN_MAPS finds the atlas index and numeric atlas label for a brain-region ID.
-
-    atlas_idx = [];
-    region_label = [];
-
-    for i = 1:numel(region_label_map_list)
-        region_label_map = region_label_map_list{i};
-
-        if isKey(region_label_map, br_id)
-            atlas_idx = i;
-            region_label = region_label_map(br_id);
-            return
-        end
-    end
-end
