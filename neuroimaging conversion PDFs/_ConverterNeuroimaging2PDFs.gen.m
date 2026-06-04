@@ -2,7 +2,7 @@
 ConverterNeuroimaging2PDFs < ConcreteElement (cn, converter of neuroimaging data to PDFs) converts subject-level NIfTI neuroimaging data into regional probability density functions.
 
 %%% ¡description!
-ConverterNeuroimaging2PDFs converts subject-level NIfTI neuroimaging data into regional probability density functions using one or more atlas NIfTI files and atlas mapping files. It can optionally restrict voxel extraction with anatomical reference images, such as GM or WM probability maps, and can optionally normalize voxel values by reference brain regions before PDF calculation. The output is a group of SubjectFUN objects, where each subject contains a matrix whose rows are PDF bins and whose columns are converted brain regions.
+ConverterNeuroimaging2PDFs converts subject-level NIfTI neuroimaging data into regional probability density functions using one or more atlas NIfTI files and atlas mapping files. It can optionally restrict voxel extraction with anatomical reference images, such as GM or WM probability maps, and can optionally normalize voxel values by reference brain regions before PDF calculation. The output is a group of SubjectFUN objects, where each subject contains a matrix whose rows are PDF evaluation points or bins and whose columns are converted brain regions.
 
 %%% ¡seealso!
 ConverterNeuroimaging2RegionalValues, Group, SubjectNeuroimaging, SubjectFUN, BrainAtlas, BrainRegion, ImporterGroupSubjectNeuroimaging_NIfTI, ExporterGroupSubjectFUN_XLS, ExporterBrainAtlasXLS
@@ -106,20 +106,40 @@ CONVERT_BR (data, stringlist) is the list of brain-region IDs to convert into re
 {}
 
 %%% ¡prop!
-BIN_EDGES (parameter, rvector) is the bin edges used to calculate regional PDFs.
+BIN_EDGES (parameter, rvector) is the value range used to calculate regional PDFs.
 %%%% ¡default!
 linspace(0, 1, 101)
 
 %%% ¡prop!
-BIN_CENTERS (query, rvector) is the bin centers corresponding to BIN_EDGES.
+PDF_METHOD (parameter, option) is the method used to estimate the regional PDFs: kernel density estimation or histogram.
+%%%% ¡settings!
+{'kde' 'histogram'}
+%%%% ¡default!
+'kde'
+
+%%% ¡prop!
+KDE_NUM_POINTS (parameter, scalar) is the number of evaluation points used for kernel density estimation.
+%%%% ¡default!
+500
+%%%% ¡check_value!
+check = value > 1 && mod(value, 1) == 0;
+
+%%% ¡prop!
+BIN_CENTERS (query, rvector) is the PDF evaluation grid, using bin centres for histogram and evenly spaced evaluation points for kernel density estimation.
 %%%% ¡calculate!
 bin_edges = cn.get('BIN_EDGES');
+pdf_method = cn.get('PDF_METHOD');
+kde_num_points = cn.get('KDE_NUM_POINTS');
 
 if numel(bin_edges) < 2
     error('BIN_EDGES must contain at least two values.')
 end
 
-value = (bin_edges(1:end-1) + bin_edges(2:end)) / 2;
+if strcmpi(pdf_method, 'kde')
+    value = linspace(bin_edges(1), bin_edges(end), kde_num_points);
+else
+    value = (bin_edges(1:end-1) + bin_edges(2:end)) / 2;
+end
 
 %%% ¡prop!
 BR_LABEL_IN_MAPS (query, cell) finds the atlas index and numeric atlas label for a brain-region ID.
@@ -142,6 +162,68 @@ for i = 1:numel(region_label_map_list)
 end
 
 value = {atlas_idx, region_label};
+
+%%% ¡prop!
+PDF_VALUES (query, rvector) calculates one regional PDF from voxel values.
+%%%% ¡calculate!
+roi_values = varargin{1};
+pdf_method = varargin{2};
+bin_edges = varargin{3};
+kde_num_points = varargin{4};
+
+roi_values = double(roi_values(:));
+roi_values = roi_values(~isnan(roi_values));
+
+if numel(bin_edges) < 2
+    error('BIN_EDGES must contain at least two values.')
+end
+
+switch lower(pdf_method)
+    case 'histogram'
+        if isempty(roi_values)
+            value = nan(1, numel(bin_edges) - 1);
+            return
+        end
+
+        pdf_values = histcounts(roi_values, bin_edges, 'Normalization', 'pdf');
+        value = pdf_values(:)';
+
+    case 'kde'
+        if exist('ksdensity', 'file') ~= 2
+            error(['Kernel density estimation requires ksdensity, ' ...
+                'which is provided by the Statistics and Machine Learning Toolbox.'])
+        end
+
+        if isempty(roi_values)
+            value = nan(1, kde_num_points);
+            return
+        end
+
+        kde_x = linspace(bin_edges(1), bin_edges(end), kde_num_points);
+
+        if numel(roi_values) < 2 || std(roi_values) == 0
+            pdf_values = zeros(1, kde_num_points);
+
+            [~, nearest_idx] = min(abs(kde_x - roi_values(1)));
+            pdf_values(nearest_idx) = 1;
+
+            area_value = trapz(kde_x, pdf_values);
+            if area_value > 0
+                pdf_values = pdf_values / area_value;
+            end
+
+            value = pdf_values(:)';
+            return
+        end
+
+        pdf_values = ksdensity(roi_values, kde_x, ...
+            'Function', 'pdf');
+
+        value = pdf_values(:)';
+
+    otherwise
+        error('Unknown PDF_METHOD: %s', pdf_method)
+end
 
 %%% ¡prop!
 BA (result, item) is the brain atlas containing the converted brain regions.
@@ -218,6 +300,8 @@ ref_br = cn.get('REF_BR');
 ref_top_percentage = cn.get('REF_TOP_PERCENTAGE');
 convert_br = cn.get('CONVERT_BR');
 bin_edges = cn.get('BIN_EDGES');
+pdf_method = cn.get('PDF_METHOD');
+kde_num_points = cn.get('KDE_NUM_POINTS');
 
 if gr_neuroimaging.get('SUB_DICT').get('LENGTH') == 0
     value = Group( ...
@@ -253,6 +337,12 @@ end
 
 if numel(bin_edges) < 2
     error('BIN_EDGES must contain at least two values.')
+end
+
+if strcmpi(pdf_method, 'kde')
+    n_pdf_points = kde_num_points;
+else
+    n_pdf_points = numel(bin_edges) - 1;
 end
 
 % Load atlas NIfTI files and mapping tables.
@@ -309,8 +399,6 @@ gr_fun = Group( ...
 sub_dict = gr_fun.memorize('SUB_DICT');
 sub_dict_neuroimaging = gr_neuroimaging.get('SUB_DICT');
 subject_number = sub_dict_neuroimaging.get('LENGTH');
-
-n_bins = numel(bin_edges) - 1;
 
 wb = braph2waitbar(cn.get('WAITBAR'), 0, 'Converting neuroimaging data to regional PDFs ...');
 
@@ -404,7 +492,7 @@ for sub_i = 1:subject_number
     end
 
     % Convert each target brain region into a PDF.
-    pdf_matrix = nan(n_bins, numel(convert_br));
+    pdf_matrix = nan(n_pdf_points, numel(convert_br));
 
     for br_i = 1:numel(convert_br)
         br_id = convert_br{br_i};
@@ -428,7 +516,14 @@ for sub_i = 1:subject_number
             pdf_matrix(:, br_i) = NaN;
         else
             roi_values = roi_values / reference_mean;
-            pdf_values = histcounts(roi_values, bin_edges, 'Normalization', 'pdf');
+
+            pdf_values = cn.get('PDF_VALUES', ...
+                roi_values, ...
+                pdf_method, ...
+                bin_edges, ...
+                kde_num_points ...
+                );
+
             pdf_matrix(:, br_i) = pdf_values(:);
         end
     end
@@ -460,11 +555,75 @@ true
 %% ¡tests!
 
 %%% ¡excluded_props!
-[ConverterNeuroimaging2PDFs.BR_LABEL_IN_MAPS ConverterNeuroimaging2PDFs.BIN_CENTERS]
+[ConverterNeuroimaging2PDFs.BR_LABEL_IN_MAPS ConverterNeuroimaging2PDFs.BIN_CENTERS ConverterNeuroimaging2PDFs.PDF_VALUES]
 
 %%% ¡test!
 %%%% ¡name!
-Sanity check - convert GM probability NIfTI data to regional PDFs
+Sanity check - convert GM probability NIfTI data to regional PDFs with KDE
+%%%% ¡probability!
+.01
+%%%% ¡code!
+example_data_dir = fullfile(fileparts(which('ConverterNeuroimaging2PDFs')), 'Example data NIfTI');
+example_atlas_dir = fullfile(fileparts(which('ConverterNeuroimaging2PDFs')), 'example atlases NIfTI');
+
+if isempty(dir(fullfile(example_data_dir, 'sub-*', 'ses-*', 'anat', '*_GMprob.nii')))
+    create_data_NIfTI_GMProb();
+end
+
+im_ba = ImporterBrainAtlasXLS( ...
+    'FILE', fullfile(example_atlas_dir, 'aal120_atlas.xlsx'), ...
+    'WAITBAR', false ...
+    );
+
+ba_aal120 = im_ba.get('BA');
+
+im_gr = ImporterGroupSubjectNeuroimaging_NIfTI( ...
+    'DIRECTORY', example_data_dir, ...
+    'MODALITY', 'anat', ...
+    'TARGET', 'GMprob', ...
+    'BA', ba_aal120, ...
+    'WAITBAR', false ...
+    );
+
+gr_gmprob = im_gr.get('GR');
+
+brain_regions_to_convert = {};
+for i = 1:5
+    brain_regions_to_convert{i} = ba_aal120.get('BR_DICT').get('IT', i).get('ID'); %#ok<AGROW>
+end
+
+bin_edges = linspace(0, 1, 101);
+kde_num_points = 500;
+
+cn = ConverterNeuroimaging2PDFs( ...
+    'BA_LIST', {ba_aal120}, ...
+    'BA_NIFTI_FILES', {fullfile(example_atlas_dir, 'aal120_atlas.nii')}, ...
+    'BA_MAPPING_FILES', {fullfile(example_atlas_dir, 'aal120_atlas_mapping.csv')}, ...
+    'CONVERT_BR', brain_regions_to_convert, ...
+    'GR_NEUROIMAGING', gr_gmprob, ...
+    'BIN_EDGES', bin_edges, ...
+    'PDF_METHOD', 'kde', ...
+    'KDE_NUM_POINTS', kde_num_points, ...
+    'WAITBAR', false ...
+    );
+
+gr_fun = cn.get('GR_FUN');
+
+assert(isequal(gr_fun.get('SUB_DICT').get('LENGTH'), 10), ...
+    'The converted group should contain 10 subjects.')
+
+sub_fun = gr_fun.get('SUB_DICT').get('IT', 1);
+fun = sub_fun.get('FUN');
+
+assert(isequal(size(fun), [kde_num_points 5]), ...
+    'The converted subject should contain a KDE_NUM_POINTS-by-5 PDF matrix.')
+
+assert(all(~isnan(fun(:))), ...
+    'The converted regional KDE PDFs should not contain NaN values.')
+
+%%% ¡test!
+%%%% ¡name!
+Sanity check - convert GM probability NIfTI data to regional PDFs with histogram
 %%%% ¡probability!
 .01
 %%%% ¡code!
@@ -506,6 +665,7 @@ cn = ConverterNeuroimaging2PDFs( ...
     'CONVERT_BR', brain_regions_to_convert, ...
     'GR_NEUROIMAGING', gr_gmprob, ...
     'BIN_EDGES', bin_edges, ...
+    'PDF_METHOD', 'histogram', ...
     'WAITBAR', false ...
     );
 
@@ -521,11 +681,11 @@ assert(isequal(size(fun), [100 5]), ...
     'The converted subject should contain a 100-by-5 PDF matrix.')
 
 assert(all(~isnan(fun(:))), ...
-    'The converted regional PDFs should not contain NaN values.')
+    'The converted regional histogram PDFs should not contain NaN values.')
 
 %%% ¡test!
 %%%% ¡name!
-Sanity check - convert PET SUVR NIfTI data to regional PDFs
+Sanity check - convert PET SUVR NIfTI data to regional PDFs with KDE
 %%%% ¡probability!
 .01
 %%%% ¡code!
@@ -580,12 +740,18 @@ im_gr_wm = ImporterGroupSubjectNeuroimaging_NIfTI( ...
 
 gr_wmprob = im_gr_wm.get('GR');
 
+ref_brain_regions = {};
+for i = 95:120
+    ref_brain_regions{end + 1} = ba_aal120.get('BR_DICT').get('IT', i).get('ID'); %#ok<AGROW>
+end
+
 brain_regions_to_convert = {};
 for i = 1:5
     brain_regions_to_convert{end + 1} = ba_aal120.get('BR_DICT').get('IT', i).get('ID'); %#ok<AGROW>
 end
 
 bin_edges = linspace(0, 3, 101);
+kde_num_points = 500;
 
 cn = ConverterNeuroimaging2PDFs( ...
     'BA_LIST', {ba_aal120}, ...
@@ -596,8 +762,11 @@ cn = ConverterNeuroimaging2PDFs( ...
     'GR_LIST_ANAT_REF', {gr_gmprob, gr_wmprob}, ...
     'THRESHOLD_ANAT_REF', 0.5, ...
     'ANAT_REF_COMBINE_RULE', 'or', ...
-    'REF_BR', {}, ...
+    'REF_BR', ref_brain_regions, ...
+    'REF_TOP_PERCENTAGE', 1, ...
     'BIN_EDGES', bin_edges, ...
+    'PDF_METHOD', 'kde', ...
+    'KDE_NUM_POINTS', kde_num_points, ...
     'WAITBAR', false ...
     );
 
@@ -609,8 +778,8 @@ assert(isequal(gr_fun.get('SUB_DICT').get('LENGTH'), 10), ...
 sub_fun = gr_fun.get('SUB_DICT').get('IT', 1);
 fun = sub_fun.get('FUN');
 
-assert(isequal(size(fun), [100 5]), ...
-    'The converted PET subject should contain a 100-by-5 PDF matrix.')
+assert(isequal(size(fun), [kde_num_points 5]), ...
+    'The converted PET subject should contain a KDE_NUM_POINTS-by-5 PDF matrix.')
 
 assert(all(~isnan(fun(:))), ...
-    'The converted PET regional PDFs should not contain NaN values.')
+    'The converted PET KDE PDFs should not contain NaN values.')

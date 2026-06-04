@@ -47,6 +47,8 @@ cn = ConverterNeuroimaging2PDFs( ...
     'BA_MAPPING_FILES', ba_mapping_files, ...
     'REF_BR', {}, ...
     'CONVERT_BR', brain_regions_to_convert, ...
+    'PDF_METHOD', 'kde', ...
+    'KDE_NUM_POINTS', 500, ...
     'GR_NEUROIMAGING', gr_anat_gmprob);
 
 gr_pdfs = cn.get('GR_FUN');
@@ -67,3 +69,54 @@ ex = ExporterBrainAtlasXLS( ...
     'BA', ba_pdfs ...
     );
 ex.get('SAVE');
+
+%% Verification
+% Verify that KDE-based PDFs preserve the designed covarying ROI pattern.
+
+gt_file = [example_data_dir filesep 'reference_data' filesep 'groundtruth_covarying_rois_gmprob.xlsx'];
+gt = readtable(gt_file, 'VariableNamingRule', 'preserve');
+
+num_regions = numel(brain_regions_to_convert);
+num_subjects = gr_pdfs.get('SUB_DICT').get('LENGTH');
+
+is_covarying = logical(gt.IsCovarying(1:num_regions));
+
+% Extract one compact PDF-shape feature per subject and ROI.
+% Here we use the variance of each PDF along the KDE point axis.
+pdf_shape = nan(num_subjects, num_regions);
+
+for sub_i = 1:num_subjects
+    fun = gr_pdfs.get('SUB_DICT').get('IT', sub_i).get('FUN'); % KDE points x ROIs
+
+    assert(isequal(size(fun, 2), num_regions), ...
+        'Verification failed: unexpected number of converted regions.')
+
+    x = (1:size(fun, 1))';
+
+    for br_i = 1:num_regions
+        p = fun(:, br_i);
+        p = p / sum(p); % normalize PDF scale
+
+        mu = sum(x .* p);
+        pdf_shape(sub_i, br_i) = sum(((x - mu) .^ 2) .* p);
+    end
+end
+
+% Correlate ROI PDF-shape features across subjects.
+roi_corr = corr(pdf_shape, 'Rows', 'pairwise');
+
+cov_idx = find(is_covarying);
+noncov_idx = find(~is_covarying);
+
+within_cov = roi_corr(cov_idx, cov_idx);
+between_cov_noncov = roi_corr(cov_idx, noncov_idx);
+
+within_cov_mean = mean(within_cov(triu(true(size(within_cov)), 1)), 'omitnan');
+between_mean = mean(between_cov_noncov(:), 'omitnan');
+
+assert(within_cov_mean > between_mean, ...
+    'Verification failed: covarying ROIs do not show stronger PDF-shape similarity.')
+
+fprintf('Verification passed: KDE PDFs preserve the designed covarying ROI pattern.\n')
+fprintf('Mean within-covarying similarity: %.4f\n', within_cov_mean)
+fprintf('Mean between covarying/non-covarying similarity: %.4f\n', between_mean)
