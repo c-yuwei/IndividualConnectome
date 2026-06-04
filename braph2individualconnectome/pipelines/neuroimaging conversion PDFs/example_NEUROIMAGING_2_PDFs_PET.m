@@ -92,8 +92,8 @@ cn = ConverterNeuroimaging2PDFs( ...
     'THRESHOLD_ANAT_REF', 0.5, ...
     'REF_TOP_PERCENTAGE', 1.0);
 
-gr_pdfs = cn.get('GR_FUN')
-ba_pdfs = cn.get('BA')
+gr_pdfs = cn.get('GR_FUN');
+ba_pdfs = cn.get('BA');
 
 %% Export data
 directory_base = [fileparts(which('ConverterNeuroimaging2PDFs')) filesep 'Converted data PET'];

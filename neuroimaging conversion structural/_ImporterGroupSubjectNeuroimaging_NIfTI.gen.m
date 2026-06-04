@@ -96,7 +96,6 @@ check = any(strcmp(value.get(Group.SUB_CLASS_TAG), subclasses('SubjectNeuroimagi
 %%%% ¡default!
 Group('SUB_CLASS', 'SubjectNeuroimaging', 'SUB_DICT', IndexedDictionary('IT_CLASS', 'SubjectNeuroimaging'))
 %%%% ¡calculate!
-
 % Creates empty Group
 gr = Group( ...
     'SUB_CLASS', 'SubjectNeuroimaging', ...
@@ -108,7 +107,7 @@ gr.lock('SUB_CLASS');
 directory = im.get('DIRECTORY');
 session = im.get('SESSION');      % e.g. 'ses-01', can be empty
 modality = im.get('MODALITY');    % e.g. 'pet' or 'anat'
-target = im.get('TARGET');        % e.g. 'FDG', mainly for pet
+target = im.get('TARGET');        % e.g. 'FDG', 'GMprob', 'WMprob'
 
 if isfolder(directory)
 
@@ -125,7 +124,7 @@ if isfolder(directory)
 
         braph2waitbar(wb, 0.05, 'Scanning subject folders ...')
 
-        % Find subject folders: sub-*
+        %% Find subject folders: sub-*
         sub_folders = dir(fullfile(directory, 'sub-*'));
         sub_folders = sub_folders([sub_folders.isdir]);
 
@@ -147,7 +146,6 @@ if isfolder(directory)
             sub_root = fullfile(sub_folders(s).folder, sub_folders(s).name);
 
             %% Resolve session folder
-
             if ~isempty(session)
 
                 ses_dir = fullfile(sub_root, session);
@@ -163,16 +161,15 @@ if isfolder(directory)
                 ses_candidates = ses_candidates([ses_candidates.isdir]);
 
                 if isempty(ses_candidates)
-                    % Allow no-session layout
+                    % Allow no-session layout.
                     ses_dir = sub_root;
                 else
-                    % Default: first session found
+                    % Default: first session found.
                     ses_dir = fullfile(ses_candidates(1).folder, ses_candidates(1).name);
                 end
             end
 
             %% Resolve modality folder
-
             modality_dir = fullfile(ses_dir, modality);
 
             if ~isfolder(modality_dir)
@@ -181,7 +178,6 @@ if isfolder(directory)
             end
 
             %% Find NIfTI files
-
             nii_files = [ ...
                 dir(fullfile(modality_dir, '*.nii')); ...
                 dir(fullfile(modality_dir, '*.nii.gz')) ...
@@ -193,7 +189,6 @@ if isfolder(directory)
             end
 
             %% Target-specific file selection
-
             chosen_file = [];
 
             if ~isempty(target)
@@ -213,7 +208,7 @@ if isfolder(directory)
                 end
             end
 
-            % Fallback: first NIfTI found
+            % Fallback: first NIfTI found.
             if isempty(chosen_file)
                 chosen_file = nii_files(1);
             end
@@ -221,13 +216,7 @@ if isfolder(directory)
             chosen_path = fullfile(chosen_file.folder, chosen_file.name);
 
             %% Convert absolute path to BASE_DIR + RELATIVE_NIFTI_PATH
-
-            % The base directory is the root directory being imported.
-            % This should normally be the BIDS-like dataset/group folder,
-            % i.e. the level above sub-* folders.
             base_dir = directory;
-
-            % Store the selected NIfTI file as a path relative to base_dir.
             relative_nifti_path = chosen_path;
 
             if startsWith(chosen_path, [base_dir filesep])
@@ -244,7 +233,6 @@ if isfolder(directory)
             relative_nifti_path = char(relative_nifti_path);
 
             %% Build subject
-
             sub = SubjectNeuroimaging();
 
             sub.set('ID', sub_id);
@@ -257,7 +245,6 @@ if isfolder(directory)
         end
 
         %% Load variables of interest
-
         vois = [];
 
         if isfile(fullfile(directory, 'reference_data', ['group_' modality '.vois.xls']))
@@ -266,6 +253,9 @@ if isfolder(directory)
         elseif isfile(fullfile(directory, 'reference_data', ['group_' modality '.vois.xlsx']))
             [~, ~, vois] = xlsread(fullfile(directory, 'reference_data', ['group_' modality '.vois.xlsx']));
 
+        elseif ~isempty(target) && isfile(fullfile(directory, 'reference_data', ['group_' target '.vois.xlsx']))
+            [~, ~, vois] = xlsread(fullfile(directory, 'reference_data', ['group_' target '.vois.xlsx']));
+
         elseif isfile([directory '.vois.xls'])
             [~, ~, vois] = xlsread([directory '.vois.xls']);
 
@@ -273,19 +263,36 @@ if isfolder(directory)
             [~, ~, vois] = xlsread([directory '.vois.xlsx']);
         end
 
+        %% Add variables of interest to subjects
         if ~isempty(vois)
 
-            for i = 2:size(vois, 1)
+            % VOI file structure:
+            %   row 1 = VOI headers
+            %   row 2 = categorical definitions
+            %   row 3+ = subject values
+            first_subject_row = 3;
+            num_subject_rows = size(vois, 1) - first_subject_row + 1;
+
+            if size(vois, 1) < first_subject_row
+                warning('VOI file does not contain any subject rows. Expected subject data from row %d.', first_subject_row);
+            end
+
+            for i = first_subject_row:size(vois, 1)
 
                 braph2waitbar( ...
                     wb, ...
-                    .6 + .35 * (i - 1) / max(size(vois, 1) - 1, 1), ...
-                    ['Loading VOIs of subject ' num2str(i - 1) ' of ' num2str(size(vois, 1) - 1) ' ...'] ...
+                    .6 + .35 * (i - first_subject_row + 1) / max(num_subject_rows, 1), ...
+                    ['Loading VOIs of subject ' num2str(i - first_subject_row + 1) ...
+                    ' of ' num2str(num_subject_rows) ' ...'] ...
                     )
 
                 target_id = vois{i, 1};
 
-                if isempty(target_id)
+                if isempty(target_id) || ...
+                        (isstring(target_id) && strlength(target_id) == 0) || ...
+                        (ischar(target_id) && isempty(strtrim(target_id))) || ...
+                        (isnumeric(target_id) && isscalar(target_id) && isnan(target_id))
+
                     warning('Empty subject ID found in VOI row %d. Skipping.', i);
                     continue;
                 end
@@ -298,6 +305,9 @@ if isfolder(directory)
                     target_id = num2str(target_id);
                 end
 
+                target_id = strtrim(target_id);
+
+                %% Match VOI row to loaded subject
                 IT_LIST = sub_dict.get('IT_LIST');
                 sub_idx = [];
 
@@ -318,11 +328,15 @@ if isfolder(directory)
 
                 sub = sub_dict.get('IT', sub_idx);
 
+                %% Add each VOI
                 for v = 2:size(vois, 2)
 
                     voi_id = vois{1, v};
 
-                    if isempty(voi_id)
+                    if isempty(voi_id) || ...
+                            (isstring(voi_id) && strlength(voi_id) == 0) || ...
+                            (ischar(voi_id) && isempty(strtrim(voi_id))) || ...
+                            (isnumeric(voi_id) && isscalar(voi_id) && isnan(voi_id))
                         continue;
                     end
 
@@ -334,14 +348,18 @@ if isfolder(directory)
                         voi_id = num2str(voi_id);
                     end
 
+                    voi_id = strtrim(voi_id);
+
                     voi_value = vois{i, v};
 
-                    if isempty(voi_value)
+                    if isempty(voi_value) || ...
+                            (isstring(voi_value) && strlength(voi_value) == 0) || ...
+                            (ischar(voi_value) && isempty(strtrim(voi_value))) || ...
+                            (isnumeric(voi_value) && isscalar(voi_value) && isnan(voi_value))
                         continue;
                     end
 
                     %% Numeric VOI
-
                     if isnumeric(voi_value) && isscalar(voi_value) && ~isnan(voi_value)
 
                         sub.memorize('VOI_DICT').get('ADD', ...
@@ -351,40 +369,51 @@ if isfolder(directory)
                             ) ...
                             );
 
-                    %% Categoric VOI
-
+                    %% Categorical VOI
                     elseif ischar(voi_value) || isstring(voi_value)
 
-                        voi_value = char(voi_value);
+                        voi_value = strtrim(char(voi_value));
 
                         categories = {};
 
-                        if size(vois, 1) >= 2 && (ischar(vois{2, v}) || isstring(vois{2, v}))
-                            categories = str2cell(char(vois{2, v}));
-                        end
+                        if size(vois, 1) >= 2
+                            category_definition = vois{2, v};
 
-                        if ~isempty(categories)
-
-                            category_index = find(strcmp(voi_value, categories), 1, 'first');
-
-                            if isempty(category_index)
-                                warning( ...
-                                    'Value %s for VOI %s in subject %s is not listed in categories. Skipping.', ...
-                                    voi_value, ...
-                                    voi_id, ...
-                                    target_id ...
-                                    );
-                                continue;
+                            if ischar(category_definition) || isstring(category_definition)
+                                categories = str2cell(char(category_definition));
+                                categories = categories(~cellfun(@isempty, categories));
+                                categories = cellfun(@strtrim, categories, 'UniformOutput', false);
                             end
-
-                            sub.memorize('VOI_DICT').get('ADD', ...
-                                VOICategoric( ...
-                                'ID', voi_id, ...
-                                'CATEGORIES', categories, ...
-                                'V', category_index ...
-                                ) ...
-                                );
                         end
+
+                        if isempty(categories)
+                            warning( ...
+                                'No categories defined for categorical VOI %s. Skipping value for subject %s.', ...
+                                voi_id, ...
+                                target_id ...
+                                );
+                            continue;
+                        end
+
+                        category_index = find(strcmp(voi_value, categories), 1, 'first');
+
+                        if isempty(category_index)
+                            warning( ...
+                                'Value %s for VOI %s in subject %s is not listed in categories. Skipping.', ...
+                                voi_value, ...
+                                voi_id, ...
+                                target_id ...
+                                );
+                            continue;
+                        end
+
+                        sub.memorize('VOI_DICT').get('ADD', ...
+                            VOICategoric( ...
+                            'ID', voi_id, ...
+                            'CATEGORIES', categories, ...
+                            'V', category_index ...
+                            ) ...
+                            );
                     end
                 end
             end

@@ -31,18 +31,6 @@ function create_data_NIfTI_PET_PDFShape(atlas_path, output_dir, group_names, num
 %
 % Outputs per subject:
 %   - sub-XXXX/ses-01/pet/sub-XXXX_ses-01_pet.nii
-%
-% Notes:
-%   - The saved PET image is an SUVR-like image, not raw uptake.
-%   - Covarying ROIs share a subject-level PDF-shape factor.
-%   - ROI means are re-centred to a fixed target SUVR, so the designed signal
-%     is mainly in the PDF shape rather than the ROI mean.
-%   - This dataset is intended to test PDF-based individual connectome methods,
-%     such as PDF correlation or PDF divergence.
-%   - Reference ROIs are excluded from the covarying ROI block.
-%   - Per-subject PDF matrices are saved with:
-%       rows    = common PDF bins
-%       columns = ROIs in atlas order
 
     %% Defaults
     if nargin < 1 || isempty(atlas_path)
@@ -115,16 +103,17 @@ function create_data_NIfTI_PET_PDFShape(atlas_path, output_dir, group_names, num
         error('aal120_atlas_mapping.csv must have at least 4 columns: index, full region name, atlas label, short region name.');
     end
 
-    mapping_full_names  = string(mapping_table{:, 2});  % Var2 = full region name
-    mapping_labels      = mapping_table{:, 3};          % Var3 = atlas numeric code
-    mapping_short_names = string(mapping_table{:, 4});  % Var4 = short ROI code
+    mapping_full_names  = string(mapping_table{:, 2});
+    mapping_labels      = mapping_table{:, 3};
+    mapping_short_names = string(mapping_table{:, 4});
 
     %% Build ROI names aligned to atlas labels
-    roi_names = strings(1, num_regions);       % short names for Excel headers
-    roi_full_names = strings(1, num_regions);  % full names for logic
+    roi_names = strings(1, num_regions);
+    roi_full_names = strings(1, num_regions);
 
     for i = 1:num_regions
         idx = find(double(mapping_labels) == double(region_labels(i)), 1, 'first');
+
         if isempty(idx)
             roi_names(i) = "Region_" + string(region_labels(i));
             roi_full_names(i) = "Region_" + string(region_labels(i));
@@ -141,7 +130,6 @@ function create_data_NIfTI_PET_PDFShape(atlas_path, output_dir, group_names, num
     end
 
     atlas_xlsx_cell = readcell(atlas_xlsx);
-
     atlas_short_name_cells = atlas_xlsx_cell(5:end, 1);
     atlas_short_names = string(atlas_short_name_cells(~cellfun(@isempty, atlas_short_name_cells)));
 
@@ -184,7 +172,6 @@ function create_data_NIfTI_PET_PDFShape(atlas_path, output_dir, group_names, num
         end
     end
 
-    % Reference ROIs should not be part of the covarying disease-like PET block
     covarying_roi_indices = setdiff(covarying_roi_indices, reference_roi_indices);
 
     if isempty(covarying_roi_indices)
@@ -193,8 +180,21 @@ function create_data_NIfTI_PET_PDFShape(atlas_path, output_dir, group_names, num
 
     fprintf('Number of covarying non-reference ROIs: %d\n', numel(covarying_roi_indices));
 
+    %% Subject metadata settings
+    sex_options = {'Female', 'Male'};
+    education_range = [8, 20];
+
     %% Headers
-    vois_headers = {'ID', 'Label', 'Notes', 'Age', 'Sex', 'Education'};
+    % VOI format:
+    %   row 1 = headers
+    %   row 2 = categorical definitions
+    %   row 3+ = subject data
+    %
+    % Sex categorical definition must contain one category per line.
+    vois_headers = {'ID', 'Age', 'Sex', 'Education'};
+    vois_definitions = {'', '', sprintf('Female\nMale'), ''};
+
+    % Ground-truth ROI mean table keeps Label and Notes.
     roi_mean_headers = [{'ID', 'Label', 'Notes'}, cellstr(roi_names)];
 
     %% Simulation design
@@ -207,10 +207,10 @@ function create_data_NIfTI_PET_PDFShape(atlas_path, output_dir, group_names, num
     reference_suvr_std  = 0.08;
 
     % PDF-shape parameters for non-reference ROIs
-    base_shape_delta = 0.28;          % baseline half-separation between low/high components
-    shared_shape_shift_std = 0.12;   % subject-level shared shape variation for covarying ROIs
-    indep_shape_shift_std  = 0.05;   % independent shape variation for non-covarying ROIs
-    voxel_noise_std = 0.04;          % voxel-level noise
+    base_shape_delta = 0.28;
+    shared_shape_shift_std = 0.12;
+    indep_shape_shift_std  = 0.05;
+    voxel_noise_std = 0.04;
 
     % Safety range to avoid clipping-induced mean shifts
     min_shape_delta = 0.06;
@@ -226,7 +226,7 @@ function create_data_NIfTI_PET_PDFShape(atlas_path, output_dir, group_names, num
     pet_info.BitsPerPixel = 32;
 
     %% PET PDF settings
-    pet_pdf_edges = linspace(0, 3, 101);  % 100 bins
+    pet_pdf_edges = linspace(0, 3, 101);
     pet_pdf_bin_centers = (pet_pdf_edges(1:end-1) + pet_pdf_edges(2:end)) / 2;
 
     %% Save PET PDF bin centres
@@ -235,11 +235,16 @@ function create_data_NIfTI_PET_PDFShape(atlas_path, output_dir, group_names, num
     fprintf('Saved PET PDF bin centres to: %s\n', pet_pdf_bins_file);
 
     %% Global tables
-    all_vois_cell = vois_headers;
+    all_vois_cell = [
+        vois_headers
+        vois_definitions
+        ];
+
     all_roi_means_cell = roi_mean_headers;
 
     covarying_info = cell(num_regions + 1, 5);
     covarying_info(1, :) = {'RegionIndex', 'RegionLabel', 'RegionName', 'IsCovarying', 'CovaryingBlockID'};
+
     for r = 1:num_regions
         is_covarying = ismember(r, covarying_roi_indices);
         covarying_info(r + 1, :) = { ...
@@ -253,6 +258,7 @@ function create_data_NIfTI_PET_PDFShape(atlas_path, output_dir, group_names, num
 
     reference_info = cell(numel(reference_roi_indices) + 1, 3);
     reference_info(1, :) = {'RegionIndex', 'RegionLabel', 'RegionName'};
+
     for k = 1:numel(reference_roi_indices)
         r = reference_roi_indices(k);
         reference_info(k + 1, :) = {r, region_labels(r), roi_names(r)};
@@ -264,9 +270,6 @@ function create_data_NIfTI_PET_PDFShape(atlas_path, output_dir, group_names, num
     %% Process each group
     for group_idx = 1:numel(group_names)
         group_name = group_names{group_idx}; %#ok<NASGU>
-
-        sex_options = {'Female', 'Male'};
-        education_range = [8, 20];
 
         for file_idx = 1:num_files_per_group
             global_subject_counter = global_subject_counter + 1;
@@ -281,7 +284,6 @@ function create_data_NIfTI_PET_PDFShape(atlas_path, output_dir, group_names, num
                 mkdir(pet_dir);
             end
 
-            % Subject label/note fields
             row_label = sprintf('Label %d', global_subject_counter);
             row_notes = sprintf('Note %d', global_subject_counter);
 
@@ -310,8 +312,6 @@ function create_data_NIfTI_PET_PDFShape(atlas_path, output_dir, group_names, num
                 n_vox = nnz(region_mask);
 
                 if ismember(region_idx, reference_roi_indices)
-                    % Reference ROIs are simulated around SUVR ~= 1 and are not part
-                    % of the designed PDF-shape covarying block.
                     roi_values = reference_suvr_mean ...
                         + reference_suvr_std * randn(n_vox, 1);
 
@@ -322,8 +322,6 @@ function create_data_NIfTI_PET_PDFShape(atlas_path, output_dir, group_names, num
                         suvr_upper_bound ...
                         );
                 else
-                    % Use ROI depth profile to assign voxels into two components.
-                    % This keeps spatial structure while varying the within-ROI PDF.
                     inward_distance = bwdist(~region_mask);
                     region_dist = inward_distance(region_mask);
 
@@ -337,9 +335,6 @@ function create_data_NIfTI_PET_PDFShape(atlas_path, output_dir, group_names, num
                         component_sign(region_dist <= median_dist) = -1;
                     end
 
-                    % Shape variation:
-                    % - covarying ROIs share the same subject-level shape shift
-                    % - non-covarying ROIs have independent shape shifts
                     if ismember(region_idx, covarying_roi_indices)
                         shape_delta = base_shape_delta + shared_shape_shift + 0.01 * randn();
                     else
@@ -352,8 +347,6 @@ function create_data_NIfTI_PET_PDFShape(atlas_path, output_dir, group_names, num
                         + shape_delta * component_sign ...
                         + voxel_noise_std * randn(n_vox, 1);
 
-                    % Re-centre the ROI to the same target SUVR mean.
-                    % This suppresses mean-level differences while preserving PDF-shape differences.
                     roi_values = match_mean_within_bounds( ...
                         roi_values, ...
                         target_suvr_mean, ...
@@ -378,7 +371,7 @@ function create_data_NIfTI_PET_PDFShape(atlas_path, output_dir, group_names, num
             fprintf('Saved PET ROI PDF matrix to: %s\n', pet_pdf_file);
 
             %% Add row to VOI table
-            all_vois_cell = [all_vois_cell; {subject_id, row_label, row_notes, age, sex, education}];
+            all_vois_cell = [all_vois_cell; {subject_id, age, sex, education}];
 
             %% Add row to ROI means table
             roi_means_row = num2cell(realized_means_all_regions);
@@ -388,8 +381,7 @@ function create_data_NIfTI_PET_PDFShape(atlas_path, output_dir, group_names, num
 
     %% Save combined VOI table
     vois_file_path = fullfile(reference_dir, 'group_pet.vois.xlsx');
-    vois_table = cell2table(all_vois_cell(2:end, :), 'VariableNames', all_vois_cell(1, :));
-    writetable(vois_table, vois_file_path);
+    writecell(all_vois_cell, vois_file_path);
     fprintf('Saved VOIs to: %s\n', vois_file_path);
 
     %% Save ROI means table
@@ -411,6 +403,7 @@ function create_data_NIfTI_PET_PDFShape(atlas_path, output_dir, group_names, num
 end
 
 %% Helper functions
+
 function pdf_matrix = compute_roi_pdf_matrix(volume_data, atlas_data, region_labels, bin_edges)
 % COMPUTE_ROI_PDF_MATRIX
 % Compute histogram-based ROI PDFs on a common bin grid.

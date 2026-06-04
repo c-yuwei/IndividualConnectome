@@ -80,6 +80,13 @@ THRESHOLD_ANAT_REF (parameter, scalar) is the threshold applied to anatomical re
 0.5
 
 %%% ¡prop!
+REF_TOP_PERCENTAGE (parameter, scalar) is the fraction of highest voxel values in the reference regions used for normalization.
+%%%% ¡default!
+1
+%%%% ¡check_value!
+check = value >= 0.1 && value <= 1;
+
+%%% ¡prop!
 ANAT_REF_COMBINE_RULE (parameter, option) is the rule used to combine multiple anatomical reference masks.
 %%%% ¡settings!
 {'or' 'and'}
@@ -189,6 +196,7 @@ threshold_anat_ref = cn.get('THRESHOLD_ANAT_REF');
 anat_ref_combine_rule = cn.get('ANAT_REF_COMBINE_RULE');
 ref_br = cn.get('REF_BR');
 convert_br = cn.get('CONVERT_BR');
+ref_top_percentage = cn.get('REF_TOP_PERCENTAGE');
 
 if gr_neuroimaging.get('SUB_DICT').get('LENGTH') == 0
     value = Group();
@@ -350,7 +358,16 @@ for sub_i = 1:subject_number
             error('Reference mask is empty for subject %s.', subject_id)
         end
 
-        reference_mean = mean(reference_values);
+        % Use only the top REF_TOP_PERCENTAGE of reference-region voxel values.
+        % REF_TOP_PERCENTAGE = 1 keeps the current behaviour and uses all reference voxels.
+        reference_values = sort(reference_values, 'descend');
+
+        num_reference_values = numel(reference_values);
+        num_values_to_use = ceil(num_reference_values * ref_top_percentage);
+        num_values_to_use = max(num_values_to_use, 1);
+
+        reference_values_to_use = reference_values(1:num_values_to_use);
+        reference_mean = mean(reference_values_to_use);
 
         if reference_mean == 0 || isnan(reference_mean)
             error('Invalid reference mean for subject %s.', subject_id)

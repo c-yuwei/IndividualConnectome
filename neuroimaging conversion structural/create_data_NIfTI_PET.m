@@ -38,11 +38,10 @@ function create_data_NIfTI_PET(atlas_path, output_dir, group_names, num_files_pe
 %     subject-specific mean uptake in the whole-cerebellum reference region.
 %   - ROI column names in group_roi_means_pet.xlsx are taken from
 %     aal120_atlas_mapping.csv.
-%   - The ground-truth ROI SUVR means are exact only under the assumption
-%     that ROI averaging is performed on voxel supports matching the
-%     simulated PET regional support exactly. In practice, this corresponds
-%     to using a perfectly aligned gray-matter probability mask whose
-%     effective threshold preserves the same contributing voxels.
+%   - The VOI file follows the BRAPH 2 VOI format:
+%       row 1 = headers
+%       row 2 = categorical definitions
+%       row 3+ = subject values
 %   - Per-subject PDF matrices are saved with:
 %       rows    = common PDF bins
 %       columns = ROIs in atlas order
@@ -123,11 +122,12 @@ function create_data_NIfTI_PET(atlas_path, output_dir, group_names, num_files_pe
     mapping_short_names = string(mapping_table{:, 4});  % Var4 = short ROI code
 
     %% Build ROI names aligned to atlas labels
-    roi_names = strings(1, num_regions);       % short names for Excel headers
-    roi_full_names = strings(1, num_regions);  % full names for logic
+    roi_names = strings(1, num_regions);
+    roi_full_names = strings(1, num_regions);
 
     for i = 1:num_regions
         idx = find(double(mapping_labels) == double(region_labels(i)), 1, 'first');
+
         if isempty(idx)
             roi_names(i) = "Region_" + string(region_labels(i));
             roi_full_names(i) = "Region_" + string(region_labels(i));
@@ -187,7 +187,7 @@ function create_data_NIfTI_PET(atlas_path, output_dir, group_names, num_files_pe
         end
     end
 
-    % Reference ROIs should not be part of the covarying disease-like PET block
+    % Reference ROIs should not be part of the covarying disease-like PET block.
     covarying_roi_indices = setdiff(covarying_roi_indices, reference_roi_indices);
 
     if isempty(covarying_roi_indices)
@@ -197,20 +197,20 @@ function create_data_NIfTI_PET(atlas_path, output_dir, group_names, num_files_pe
     fprintf('Number of covarying non-reference ROIs: %d\n', numel(covarying_roi_indices));
 
     %% Headers
-    vois_headers = {'ID', 'Label', 'Notes', 'Age', 'Sex', 'Education'};
+    vois_headers = {'Subject ID', 'Age', 'Sex', 'Education'};
+    vois_definitions = {'', '', ['Female' newline 'Male'], ''};
+
     roi_mean_headers = [{'ID', 'Label', 'Notes'}, cellstr(roi_names)];
 
     %% Simulation design
+    raw_ref_mean = 10.0;
+    raw_ref_std  = 1.0;
 
-    % Raw uptake scale before SUVR normalization
-    raw_ref_mean = 10.0;      % mean raw uptake in reference region
-    raw_ref_std  = 1.0;       % voxel-level std in reference region
+    raw_nonref_base_mean = 10.5;
+    raw_nonref_base_std  = 3.0;
 
-    raw_nonref_base_mean = 10.5;  % baseline non-reference mean, giving SUVR ~1.0 after normalization
-    raw_nonref_base_std  = 3.0;   % voxel-level std in non-reference regions
-
-    shared_sd = 2.5;          % strength of shared latent factor for covarying ROIs
-    indep_sd  = 1.5;          % between-subject variation for independent ROIs
+    shared_sd = 2.5;
+    indep_sd  = 1.5;
 
     %% PET NIfTI header
     pet_info = atlas_info;
@@ -218,7 +218,7 @@ function create_data_NIfTI_PET(atlas_path, output_dir, group_names, num_files_pe
     pet_info.BitsPerPixel = 32;
 
     %% PET PDF settings
-    pet_pdf_edges = linspace(0, 3, 101);  % 100 bins
+    pet_pdf_edges = linspace(0, 3, 101);
     pet_pdf_bin_centers = (pet_pdf_edges(1:end-1) + pet_pdf_edges(2:end)) / 2;
 
     %% Save PET PDF bin centres
@@ -227,11 +227,16 @@ function create_data_NIfTI_PET(atlas_path, output_dir, group_names, num_files_pe
     fprintf('Saved PET PDF bin centres to: %s\n', pet_pdf_bins_file);
 
     %% Global tables
-    all_vois_cell = vois_headers;
+    all_vois_cell = [
+        vois_headers
+        vois_definitions
+        ];
+
     all_roi_means_cell = roi_mean_headers;
 
     covarying_info = cell(num_regions + 1, 5);
     covarying_info(1, :) = {'RegionIndex', 'RegionLabel', 'RegionName', 'IsCovarying', 'CovaryingBlockID'};
+
     for r = 1:num_regions
         is_covarying = ismember(r, covarying_roi_indices);
         covarying_info(r + 1, :) = { ...
@@ -245,6 +250,7 @@ function create_data_NIfTI_PET(atlas_path, output_dir, group_names, num_files_pe
 
     reference_info = cell(numel(reference_roi_indices) + 1, 3);
     reference_info(1, :) = {'RegionIndex', 'RegionLabel', 'RegionName'};
+
     for k = 1:numel(reference_roi_indices)
         r = reference_roi_indices(k);
         reference_info(k + 1, :) = {r, region_labels(r), roi_names(r)};
@@ -273,24 +279,24 @@ function create_data_NIfTI_PET(atlas_path, output_dir, group_names, num_files_pe
                 mkdir(pet_dir);
             end
 
-            % Subject label/note fields
             row_label = sprintf('Label %d', global_subject_counter);
             row_notes = sprintf('Note %d', global_subject_counter);
 
-            % Demographics
+            %% Demographics
             age = randi([18, 90]);
             sex = sex_options{randi(numel(sex_options))};
             education = randi(education_range);
 
-            % Initialize subject data in raw uptake space
+            %% Initialize subject data in raw uptake space
             raw_data = zeros(size(atlas_data), 'single');
             realized_means_all_regions = zeros(1, num_regions);
 
-            % Shared latent effect for covarying ROI block
+            %% Shared latent effect for covarying ROI block
             shared_latent = shared_sd * randn();
 
-            % Build ROI target mean vector in raw uptake space
+            %% Build ROI target mean vector in raw uptake space
             target_means_all_regions = zeros(1, num_regions);
+
             for region_idx = 1:num_regions
                 if ismember(region_idx, reference_roi_indices)
                     target_mean = raw_ref_mean + raw_ref_std * randn();
@@ -304,7 +310,7 @@ function create_data_NIfTI_PET(atlas_path, output_dir, group_names, num_files_pe
                 target_means_all_regions(region_idx) = target_mean;
             end
 
-            % Generate raw uptake voxel values region by region
+            %% Generate raw uptake voxel values region by region
             for region_idx = 1:num_regions
                 label = region_labels(region_idx);
                 region_mask = (atlas_data == label);
@@ -323,13 +329,14 @@ function create_data_NIfTI_PET(atlas_path, output_dir, group_names, num_files_pe
                 mean_val = target_means_all_regions(region_idx);
 
                 simulated_values = mean_val + std_val * randn(n_vox, 1);
-                simulated_values = max(simulated_values, 0);  % PET-like nonnegative raw uptake
+                simulated_values = max(simulated_values, 0);
 
                 raw_data(region_mask) = single(simulated_values);
             end
 
-            % Compute whole-cerebellum reference mean from raw uptake
+            %% Compute whole-cerebellum reference mean from raw uptake
             reference_mask = false(size(atlas_data));
+
             for rr = reference_roi_indices
                 reference_mask = reference_mask | (atlas_data == region_labels(rr));
             end
@@ -341,10 +348,10 @@ function create_data_NIfTI_PET(atlas_path, output_dir, group_names, num_files_pe
                 error('Invalid reference mean encountered for subject %s.', subject_id);
             end
 
-            % Convert raw uptake image to SUVR image
+            %% Convert raw uptake image to SUVR image
             simulated_data = raw_data / single(reference_mean);
 
-            % Extract realized ROI means from SUVR image
+            %% Extract realized ROI means from SUVR image
             for region_idx = 1:num_regions
                 label = region_labels(region_idx);
                 region_mask = (atlas_data == label);
@@ -369,7 +376,7 @@ function create_data_NIfTI_PET(atlas_path, output_dir, group_names, num_files_pe
             fprintf('Saved PET ROI PDF matrix to: %s\n', pet_pdf_file);
 
             %% Add row to VOI table
-            all_vois_cell = [all_vois_cell; {subject_id, row_label, row_notes, age, sex, education}];
+            all_vois_cell = [all_vois_cell; {subject_id, age, sex, education}];
 
             %% Add row to ROI means table
             roi_means_row = num2cell(realized_means_all_regions);
@@ -379,8 +386,7 @@ function create_data_NIfTI_PET(atlas_path, output_dir, group_names, num_files_pe
 
     %% Save combined VOI table
     vois_file_path = fullfile(reference_dir, 'group_pet.vois.xlsx');
-    vois_table = cell2table(all_vois_cell(2:end, :), 'VariableNames', all_vois_cell(1, :));
-    writetable(vois_table, vois_file_path);
+    writecell(all_vois_cell, vois_file_path);
     fprintf('Saved VOIs to: %s\n', vois_file_path);
 
     %% Save ROI means table

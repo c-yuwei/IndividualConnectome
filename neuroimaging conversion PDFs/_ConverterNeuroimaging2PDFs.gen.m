@@ -2,9 +2,7 @@
 ConverterNeuroimaging2PDFs < ConcreteElement (cn, converter of neuroimaging data to PDFs) converts subject-level NIfTI neuroimaging data into regional probability density functions.
 
 %%% ¡description!
-ConverterNeuroimaging2PDFs converts subject-level NIfTI neuroimaging data into regional probability density functions using one or more atlas NIfTI files and atlas mapping files. 
- It can optionally restrict voxel extraction with anatomical reference images, such as GM or WM probability maps. The output is a group of SubjectFUN objects, 
- where each subject contains a matrix whose rows are PDF bins and whose columns are converted brain regions.
+ConverterNeuroimaging2PDFs converts subject-level NIfTI neuroimaging data into regional probability density functions using one or more atlas NIfTI files and atlas mapping files. It can optionally restrict voxel extraction with anatomical reference images, such as GM or WM probability maps, and can optionally normalize voxel values by reference brain regions before PDF calculation. The output is a group of SubjectFUN objects, where each subject contains a matrix whose rows are PDF bins and whose columns are converted brain regions.
 
 %%% ¡seealso!
 ConverterNeuroimaging2RegionalValues, Group, SubjectNeuroimaging, SubjectFUN, BrainAtlas, BrainRegion, ImporterGroupSubjectNeuroimaging_NIfTI, ExporterGroupSubjectFUN_XLS, ExporterBrainAtlasXLS
@@ -27,7 +25,7 @@ NAME (constant, string) is the name of the converter of neuroimaging data to PDF
 %%% ¡prop!
 DESCRIPTION (constant, string) is the description of the converter of neuroimaging data to PDFs.
 %%%% ¡default!
-'ConverterNeuroimaging2PDFs converts subject-level NIfTI neuroimaging data into regional probability density functions using one or more atlas NIfTI files and atlas mapping files. It can optionally restrict voxel extraction with anatomical reference images, such as GM or WM probability maps. The output is a group of SubjectFUN objects, where each subject contains a matrix whose rows are PDF bins and whose columns are converted brain regions.'
+'ConverterNeuroimaging2PDFs converts subject-level NIfTI neuroimaging data into regional probability density functions using one or more atlas NIfTI files and atlas mapping files. It can optionally restrict voxel extraction with anatomical reference images and optionally normalize voxel values by reference brain regions before PDF calculation.'
 
 %%% ¡prop!
 TEMPLATE (parameter, item) is the template of the converter of neuroimaging data to PDFs.
@@ -89,6 +87,18 @@ ANAT_REF_COMBINE_RULE (parameter, option) is the rule used to combine multiple a
 {'or' 'and'}
 %%%% ¡default!
 'or'
+
+%%% ¡prop!
+REF_BR (data, stringlist) is the list of reference brain-region IDs used for optional normalization before PDF calculation.
+%%%% ¡default!
+{}
+
+%%% ¡prop!
+REF_TOP_PERCENTAGE (parameter, scalar) is the top percentage of reference-region voxel values used to calculate the reference mean.
+%%%% ¡default!
+1
+%%%% ¡check_value!
+check = value >= 0.1 && value <= 1;
 
 %%% ¡prop!
 CONVERT_BR (data, stringlist) is the list of brain-region IDs to convert into regional PDFs.
@@ -204,6 +214,8 @@ gr_neuroimaging = cn.get('GR_NEUROIMAGING');
 gr_list_anat_ref = cn.get('GR_LIST_ANAT_REF');
 threshold_anat_ref = cn.get('THRESHOLD_ANAT_REF');
 anat_ref_combine_rule = cn.get('ANAT_REF_COMBINE_RULE');
+ref_br = cn.get('REF_BR');
+ref_top_percentage = cn.get('REF_TOP_PERCENTAGE');
 convert_br = cn.get('CONVERT_BR');
 bin_edges = cn.get('BIN_EDGES');
 
@@ -350,6 +362,47 @@ for sub_i = 1:subject_number
         end
     end
 
+    % Build reference mask if needed.
+    use_reference_normalization = ~isempty(ref_br);
+    reference_mask = false(size(neuroimaging_data));
+
+    if use_reference_normalization
+        for ref_i = 1:numel(ref_br)
+            br_id = ref_br{ref_i};
+            br_label_info = cn.get('BR_LABEL_IN_MAPS', br_id, region_label_map_list);
+            atlas_idx = br_label_info{1};
+            region_label = br_label_info{2};
+
+            if isempty(atlas_idx)
+                error('Reference brain region "%s" was not found in BA_MAPPING_FILES.', br_id)
+            end
+
+            reference_mask = reference_mask | (atlas_data_list{atlas_idx} == region_label);
+        end
+
+        reference_mask = reference_mask & anat_mask;
+        reference_values = neuroimaging_data(reference_mask);
+        reference_values = reference_values(~isnan(reference_values));
+
+        if isempty(reference_values)
+            error('Reference mask is empty for subject %s.', subject_id)
+        end
+
+        reference_values = sort(reference_values(:), 'descend');
+
+        top_count = ceil(numel(reference_values) * ref_top_percentage);
+        top_count = max(top_count, 1);
+
+        reference_values = reference_values(1:top_count);
+        reference_mean = mean(reference_values);
+
+        if reference_mean == 0 || isnan(reference_mean)
+            error('Invalid reference mean for subject %s.', subject_id)
+        end
+    else
+        reference_mean = 1;
+    end
+
     % Convert each target brain region into a PDF.
     pdf_matrix = nan(n_bins, numel(convert_br));
 
@@ -374,6 +427,7 @@ for sub_i = 1:subject_number
         if isempty(roi_values)
             pdf_matrix(:, br_i) = NaN;
         else
+            roi_values = roi_values / reference_mean;
             pdf_values = histcounts(roi_values, bin_edges, 'Normalization', 'pdf');
             pdf_matrix(:, br_i) = pdf_values(:);
         end
@@ -471,7 +525,7 @@ assert(all(~isnan(fun(:))), ...
 
 %%% ¡test!
 %%%% ¡name!
-Sanity check - convert PET NIfTI data to regional PDFs
+Sanity check - convert PET SUVR NIfTI data to regional PDFs
 %%%% ¡probability!
 .01
 %%%% ¡code!
@@ -542,6 +596,7 @@ cn = ConverterNeuroimaging2PDFs( ...
     'GR_LIST_ANAT_REF', {gr_gmprob, gr_wmprob}, ...
     'THRESHOLD_ANAT_REF', 0.5, ...
     'ANAT_REF_COMBINE_RULE', 'or', ...
+    'REF_BR', {}, ...
     'BIN_EDGES', bin_edges, ...
     'WAITBAR', false ...
     );

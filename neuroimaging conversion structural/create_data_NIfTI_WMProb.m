@@ -48,18 +48,23 @@ function create_data_NIfTI_WMProb(atlas_path, output_dir, group_names, num_files
             'td_atlas.nii' ...
             );
     end
+
     if nargin < 2 || isempty(output_dir)
         output_dir = fullfile(fileparts(which('create_data_NIfTI_WMProb')), 'Example data NIfTI');
     end
+
     if nargin < 3 || isempty(group_names)
         group_names = {'Group1'};
     end
+
     if nargin < 4 || isempty(num_files_per_group)
         num_files_per_group = 10;
     end
+
     if nargin < 5 || isempty(seed)
         seed = 42;
     end
+
     if nargin < 6
         covarying_roi_indices = [];
     end
@@ -79,17 +84,20 @@ function create_data_NIfTI_WMProb(atlas_path, output_dir, group_names, num_files
     end
 
     reference_dir = fullfile(output_dir, 'reference_data');
+
     if ~isfolder(reference_dir)
         mkdir(reference_dir);
     end
 
     pdf_wmprob_dir = fullfile(reference_dir, 'pdf_wmprob');
+
     if ~isfolder(pdf_wmprob_dir)
         mkdir(pdf_wmprob_dir);
     end
 
     %% Load atlas
     fprintf('Loading atlas from %s...\n', atlas_path);
+
     atlas_info = niftiinfo(atlas_path);
     atlas_data = niftiread(atlas_path);
 
@@ -114,6 +122,7 @@ function create_data_NIfTI_WMProb(atlas_path, output_dir, group_names, num_files
 
     %% Load atlas mapping CSV
     mapping_csv = fullfile(fileparts(atlas_path), 'td_atlas_mapping.csv');
+
     if ~isfile(mapping_csv)
         error('Mapping CSV not found: %s', mapping_csv);
     end
@@ -129,8 +138,10 @@ function create_data_NIfTI_WMProb(atlas_path, output_dir, group_names, num_files
 
     %% Build ROI names aligned to atlas labels
     roi_names = strings(1, num_regions);
+
     for i = 1:num_regions
         idx = find(double(mapping_labels) == double(region_labels(i)), 1, 'first');
+
         if isempty(idx)
             roi_names(i) = "Region_" + string(region_labels(i));
         else
@@ -140,6 +151,7 @@ function create_data_NIfTI_WMProb(atlas_path, output_dir, group_names, num_files
 
     %% Cross-check ROI order and names against td_atlas.xlsx
     atlas_xlsx = fullfile(fileparts(atlas_path), 'td_atlas.xlsx');
+
     if ~isfile(atlas_xlsx)
         error('Atlas XLSX not found: %s', atlas_xlsx);
     end
@@ -156,6 +168,7 @@ function create_data_NIfTI_WMProb(atlas_path, output_dir, group_names, num_files
 
     if ~isequal(string(roi_names(:)), string(atlas_short_names(:)))
         mismatch_idx = find(string(roi_names(:)) ~= string(atlas_short_names(:)), 1, 'first');
+
         error(['ROI name/order mismatch between mapping-derived roi_names and td_atlas.xlsx ' ...
             'at position %d: roi_names="%s", atlas_xlsx="%s".'], ...
             mismatch_idx, string(roi_names(mismatch_idx)), string(atlas_short_names(mismatch_idx)));
@@ -168,13 +181,22 @@ function create_data_NIfTI_WMProb(atlas_path, output_dir, group_names, num_files
     wm_info.Datatype = 'single';
     wm_info.BitsPerPixel = 32;
 
+    %% Subject metadata settings
+    sex_options = {'Female', 'Male'};
+    education_range = [8, 20];
+
     %% Headers
-    vois_headers = {'ID', 'Label', 'Notes', 'Age', 'Sex', 'Education'};
+    % VOI format:
+    %   row 1 = headers
+    %   row 2 = categorical definitions
+    %   row 3+ = subject data
+    vois_headers = {'Subject ID', 'Age', 'Sex', 'Education'};
+    vois_definitions = {'', '', ['Female' newline 'Male'], ''};
+
     wmprob_headers = [{'ID', 'Label', 'Notes'}, cellstr(roi_names)];
 
     %% Simulation design
-
-    % White-matter-like probability profile
+    % White-matter-like probability profile.
     % Here we keep probabilities generally high but not saturated.
     boundary_prob = 0.35;
     core_prob     = 0.92;
@@ -194,16 +216,23 @@ function create_data_NIfTI_WMProb(atlas_path, output_dir, group_names, num_files
     %% Save WM probability PDF bin centres
     wm_pdf_bins_file = fullfile(reference_dir, 'group_pdf_bins_wmprob.xlsx');
     writecell([{'BinCenter'}; num2cell(wm_pdf_bin_centers(:))], wm_pdf_bins_file);
+
     fprintf('Saved WM probability PDF bin centres to: %s\n', wm_pdf_bins_file);
 
     %% Global tables
-    all_vois_cell = vois_headers;
+    all_vois_cell = [
+        vois_headers
+        vois_definitions
+        ];
+
     all_wmprob_means_cell = wmprob_headers;
 
     covarying_info = cell(num_regions + 1, 5);
     covarying_info(1, :) = {'RegionIndex', 'RegionLabel', 'RegionName', 'IsCovarying', 'CovaryingBlockID'};
+
     for r = 1:num_regions
         is_covarying = ismember(r, covarying_roi_indices);
+
         covarying_info(r + 1, :) = { ...
             r, ...
             region_labels(r), ...
@@ -219,9 +248,6 @@ function create_data_NIfTI_WMProb(atlas_path, output_dir, group_names, num_files
     %% Process each group
     for group_idx = 1:numel(group_names)
         group_name = group_names{group_idx}; %#ok<NASGU>
-
-        sex_options = {'Female', 'Male'};
-        education_range = [8, 20];
 
         for file_idx = 1:num_files_per_group
             global_subject_counter = global_subject_counter + 1;
@@ -258,11 +284,11 @@ function create_data_NIfTI_WMProb(atlas_path, output_dir, group_names, num_files
             %% Generate ROI-specific WM probabilities
             for region_idx = 1:num_regions
                 label = region_labels(region_idx);
-                region_mask = (atlas_data == label);
+                region_mask = atlas_data == label;
 
                 if ~any(region_mask(:))
                     realized_wmprob_means(region_idx) = NaN;
-                    continue;
+                    continue
                 end
 
                 inward_distance = bwdist(~region_mask);
@@ -298,16 +324,18 @@ function create_data_NIfTI_WMProb(atlas_path, output_dir, group_names, num_files
             %% Save WM probability NIfTI
             wm_file = fullfile(anat_dir, sprintf('%s_%s_WMprob.nii', subject_id, session_id));
             niftiwrite(single(wm_prob_data), wm_file, wm_info);
+
             fprintf('Saved WM probability NIfTI file: %s\n', wm_file);
 
             %% Compute and save WM probability ROI PDFs
             wm_pdf_matrix = compute_roi_pdf_matrix(wm_prob_data, atlas_data, region_labels, wm_pdf_edges);
             wm_pdf_file = fullfile(pdf_wmprob_dir, sprintf('%s_%s_WMprob_pdf.xlsx', subject_id, session_id));
             save_subject_pdf_xlsx(wm_pdf_matrix, wm_pdf_file);
+
             fprintf('Saved WM probability ROI PDF matrix to: %s\n', wm_pdf_file);
 
             %% Add row to VOI table
-            all_vois_cell = [all_vois_cell; {subject_id, row_label, row_notes, age, sex, education}];
+            all_vois_cell = [all_vois_cell; {subject_id, age, sex, education}];
 
             %% Add row to WM probability means table
             wmprob_row = num2cell(realized_wmprob_means);
@@ -317,40 +345,62 @@ function create_data_NIfTI_WMProb(atlas_path, output_dir, group_names, num_files
 
     %% Save combined VOI table
     vois_file_path = fullfile(reference_dir, 'group_wmprob.vois.xlsx');
-    vois_table = cell2table(all_vois_cell(2:end, :), 'VariableNames', all_vois_cell(1, :));
-    writetable(vois_table, vois_file_path);
+    writecell(all_vois_cell, vois_file_path);
+
     fprintf('Saved VOIs to: %s\n', vois_file_path);
 
     %% Save WM probability means table
     wmprob_means_file = fullfile(reference_dir, 'group_roi_means_wmprob.xlsx');
     writecell(all_wmprob_means_cell, wmprob_means_file);
+
     fprintf('Saved WM probability ROI means to: %s\n', wmprob_means_file);
 
     %% Save covarying ROI information
     covarying_file_path = fullfile(reference_dir, 'groundtruth_covarying_rois_wmprob.xlsx');
     covarying_table = cell2table(covarying_info(2:end, :), 'VariableNames', covarying_info(1, :));
     writetable(covarying_table, covarying_file_path);
+
     fprintf('Saved covarying ROI information to: %s\n', covarying_file_path);
 end
 
 function [age, sex, education] = get_subject_metadata_or_random(reference_dir, subject_id, sex_options, education_range)
 % Try to load metadata from reference_data/group_pet.vois.xlsx.
 % If not available, generate random fallback values.
+%
+% Expected VOI format:
+%   row 1 = headers
+%   row 2 = categorical definitions
+%   row 3+ = subject data
 
     pet_vois_file = fullfile(reference_dir, 'group_pet.vois.xlsx');
 
     if isfile(pet_vois_file)
-        pet_vois = readtable(pet_vois_file, 'TextType', 'string');
+        pet_vois_cell = readcell(pet_vois_file);
 
-        required_cols = {'ID', 'Age', 'Sex', 'Education'};
-        if all(ismember(required_cols, pet_vois.Properties.VariableNames))
-            row_idx = find(string(pet_vois.ID) == string(subject_id), 1, 'first');
+        if size(pet_vois_cell, 1) >= 3
+            headers = string(pet_vois_cell(1, :));
 
-            if ~isempty(row_idx)
-                age = pet_vois.Age(row_idx);
-                sex = char(pet_vois.Sex(row_idx));
-                education = pet_vois.Education(row_idx);
-                return
+            id_col = find(headers == "Subject ID", 1);
+            age_col = find(headers == "Age", 1);
+            sex_col = find(headers == "Sex", 1);
+            education_col = find(headers == "Education", 1);
+
+            required_cols_found = ~isempty(id_col) && ...
+                ~isempty(age_col) && ...
+                ~isempty(sex_col) && ...
+                ~isempty(education_col);
+
+            if required_cols_found
+                data_rows = 3:size(pet_vois_cell, 1); % skip header and categorical-definition row
+
+                for row_i = data_rows
+                    if strcmp(string(pet_vois_cell{row_i, id_col}), string(subject_id))
+                        age = pet_vois_cell{row_i, age_col};
+                        sex = char(string(pet_vois_cell{row_i, sex_col}));
+                        education = pet_vois_cell{row_i, education_col};
+                        return
+                    end
+                end
             end
         end
     end
@@ -374,12 +424,12 @@ function pdf_matrix = compute_roi_pdf_matrix(volume_data, atlas_data, region_lab
     pdf_matrix = zeros(n_bins, num_regions);
 
     for region_idx = 1:num_regions
-        region_mask = (atlas_data == region_labels(region_idx));
+        region_mask = atlas_data == region_labels(region_idx);
         values = double(volume_data(region_mask));
 
         if isempty(values) || all(isnan(values))
             pdf_matrix(:, region_idx) = NaN;
-            continue;
+            continue
         end
 
         pdf_vals = histcounts(values, bin_edges, 'Normalization', 'pdf');

@@ -168,8 +168,21 @@ function create_data_NIfTI_GMProb_PDFShape(atlas_path, output_dir, group_names, 
     gm_info.Datatype = 'single';
     gm_info.BitsPerPixel = 32;
 
+    %% Subject metadata settings
+    sex_options = {'Female', 'Male'};
+    education_range = [8, 20];
+
     %% Headers
-    vois_headers = {'ID', 'Label', 'Notes', 'Age', 'Sex', 'Education'};
+    % VOI format:
+    %   row 1 = headers
+    %   row 2 = categorical definitions
+    %   row 3+ = subject data
+    %
+    % For Sex, the categorical definition must contain one category per line.
+    vois_headers = {'ID', 'Age', 'Sex', 'Education'};
+    vois_definitions = {'', '', sprintf('Female\nMale'), ''};
+
+    % Ground-truth ROI mean table keeps Label and Notes.
     gmprob_headers = [{'ID', 'Label', 'Notes'}, cellstr(roi_names)];
 
     %% Simulation design
@@ -178,10 +191,10 @@ function create_data_NIfTI_GMProb_PDFShape(atlas_path, output_dir, group_names, 
     target_gm_mean = 0.60;
 
     % PDF-shape parameters
-    base_shape_delta = 0.16;          % baseline half-separation between low/high components
-    shared_shape_shift_std = 0.07;   % subject-level shared shape variation for covarying ROIs
-    indep_shape_shift_std  = 0.03;   % independent shape variation for non-covarying ROIs
-    voxel_noise_std = 0.015;         % voxel-level noise
+    base_shape_delta = 0.16;         % baseline half-separation between low/high components
+    shared_shape_shift_std = 0.07;  % subject-level shared shape variation for covarying ROIs
+    indep_shape_shift_std  = 0.03;  % independent shape variation for non-covarying ROIs
+    voxel_noise_std = 0.015;        % voxel-level noise
 
     % Safety range to avoid clipping-induced mean shifts
     min_shape_delta = 0.04;
@@ -197,7 +210,11 @@ function create_data_NIfTI_GMProb_PDFShape(atlas_path, output_dir, group_names, 
     fprintf('Saved GM probability PDF bin centres to: %s\n', gm_pdf_bins_file);
 
     %% Global tables
-    all_vois_cell = vois_headers;
+    all_vois_cell = [
+        vois_headers
+        vois_definitions
+        ];
+
     all_gmprob_means_cell = gmprob_headers;
 
     covarying_info = cell(num_regions + 1, 5);
@@ -219,9 +236,6 @@ function create_data_NIfTI_GMProb_PDFShape(atlas_path, output_dir, group_names, 
     %% Process each group
     for group_idx = 1:numel(group_names)
         group_name = group_names{group_idx}; %#ok<NASGU>
-
-        sex_options = {'Female', 'Male'};
-        education_range = [8, 20];
 
         for file_idx = 1:num_files_per_group
             global_subject_counter = global_subject_counter + 1;
@@ -314,7 +328,7 @@ function create_data_NIfTI_GMProb_PDFShape(atlas_path, output_dir, group_names, 
             fprintf('Saved GM probability ROI PDF matrix to: %s\n', gm_pdf_file);
 
             %% Add row to VOI table
-            all_vois_cell = [all_vois_cell; {subject_id, row_label, row_notes, age, sex, education}];
+            all_vois_cell = [all_vois_cell; {subject_id, age, sex, education}];
 
             %% Add row to GM probability means table
             gmprob_row = num2cell(realized_gmprob_means);
@@ -324,8 +338,7 @@ function create_data_NIfTI_GMProb_PDFShape(atlas_path, output_dir, group_names, 
 
     %% Save combined VOI table
     vois_file_path = fullfile(reference_dir, 'group_gmprob.vois.xlsx');
-    vois_table = cell2table(all_vois_cell(2:end, :), 'VariableNames', all_vois_cell(1, :));
-    writetable(vois_table, vois_file_path);
+    writecell(all_vois_cell, vois_file_path);
     fprintf('Saved VOIs to: %s\n', vois_file_path);
 
     %% Save GM probability means table
@@ -343,21 +356,41 @@ end
 function [age, sex, education] = get_subject_metadata_or_random(reference_dir, subject_id, sex_options, education_range)
 % Try to load metadata from reference_data/group_pet.vois.xlsx.
 % If not available, generate random fallback values.
+%
+% Expected VOI format:
+%   row 1 = headers
+%   row 2 = categorical definitions
+%   row 3+ = subject data
 
     pet_vois_file = fullfile(reference_dir, 'group_pet.vois.xlsx');
 
     if isfile(pet_vois_file)
-        pet_vois = readtable(pet_vois_file, 'TextType', 'string');
+        pet_vois_cell = readcell(pet_vois_file);
 
-        required_cols = {'ID', 'Age', 'Sex', 'Education'};
-        if all(ismember(required_cols, pet_vois.Properties.VariableNames))
-            row_idx = find(string(pet_vois.ID) == string(subject_id), 1, 'first');
+        if size(pet_vois_cell, 1) >= 3
+            headers = string(pet_vois_cell(1, :));
 
-            if ~isempty(row_idx)
-                age = pet_vois.Age(row_idx);
-                sex = char(pet_vois.Sex(row_idx));
-                education = pet_vois.Education(row_idx);
-                return
+            id_col = find(headers == "ID", 1);
+            age_col = find(headers == "Age", 1);
+            sex_col = find(headers == "Sex", 1);
+            education_col = find(headers == "Education", 1);
+
+            required_cols_found = ~isempty(id_col) && ...
+                ~isempty(age_col) && ...
+                ~isempty(sex_col) && ...
+                ~isempty(education_col);
+
+            if required_cols_found
+                data_rows = 3:size(pet_vois_cell, 1); % skip header and categorical-definition row
+
+                for row_i = data_rows
+                    if strcmp(string(pet_vois_cell{row_i, id_col}), string(subject_id))
+                        age = pet_vois_cell{row_i, age_col};
+                        sex = char(string(pet_vois_cell{row_i, sex_col}));
+                        education = pet_vois_cell{row_i, education_col};
+                        return
+                    end
+                end
             end
         end
     end
