@@ -1251,7 +1251,7 @@ classdef ConverterNeuroimaging2PDFs < ConcreteElement
 					    % Convert each target brain region into a PDF.
 					    pdf_matrix = nan(n_pdf_points, numel(convert_br));
 					
-					    for br_i = 1:numel(convert_br)
+					    parfor br_i = 1:numel(convert_br)
 					        br_id = convert_br{br_i};
 					        br_label_info = cn.get('BR_LABEL_IN_MAPS', br_id, region_label_map_list);
 					        atlas_idx = br_label_info{1};
