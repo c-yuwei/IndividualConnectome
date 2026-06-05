@@ -2,7 +2,7 @@ classdef ConverterNeuroimaging2PDFs < ConcreteElement
 	%ConverterNeuroimaging2PDFs converts subject-level NIfTI neuroimaging data into regional probability density functions.
 	% It is a subclass of <a href="matlab:help ConcreteElement">ConcreteElement</a>.
 	%
-	% ConverterNeuroimaging2PDFs converts subject-level NIfTI neuroimaging data into regional probability density functions using one or more atlas NIfTI files and atlas mapping files. It can optionally restrict voxel extraction with anatomical reference images, such as GM or WM probability maps, and can optionally normalize voxel values by reference brain regions before PDF calculation. The output is a group of SubjectFUN objects, where each subject contains a matrix whose rows are PDF bins and whose columns are converted brain regions.
+	% ConverterNeuroimaging2PDFs converts subject-level NIfTI neuroimaging data into regional probability density functions using one or more atlas NIfTI files and atlas mapping files. It can optionally restrict voxel extraction with anatomical reference images, such as GM or WM probability maps, and can optionally normalize voxel values by reference brain regions before PDF calculation. The output is a group of SubjectFUN objects, where each subject contains a matrix whose rows are PDF evaluation points or bins and whose columns are converted brain regions.
 	%
 	% The list of ConverterNeuroimaging2PDFs properties is:
 	%  <strong>1</strong> <strong>ELCLASS</strong> 	ELCLASS (constant, string) is the class of the converter of neuroimaging data to PDFs.
@@ -23,12 +23,15 @@ classdef ConverterNeuroimaging2PDFs < ConcreteElement
 	%  <strong>16</strong> <strong>REF_BR</strong> 	REF_BR (data, stringlist) is the list of reference brain-region IDs used for optional normalization before PDF calculation.
 	%  <strong>17</strong> <strong>REF_TOP_PERCENTAGE</strong> 	REF_TOP_PERCENTAGE (parameter, scalar) is the top percentage of reference-region voxel values used to calculate the reference mean.
 	%  <strong>18</strong> <strong>CONVERT_BR</strong> 	CONVERT_BR (data, stringlist) is the list of brain-region IDs to convert into regional PDFs.
-	%  <strong>19</strong> <strong>BIN_EDGES</strong> 	BIN_EDGES (parameter, rvector) is the bin edges used to calculate regional PDFs.
-	%  <strong>20</strong> <strong>BIN_CENTERS</strong> 	BIN_CENTERS (query, rvector) is the bin centers corresponding to BIN_EDGES.
-	%  <strong>21</strong> <strong>BR_LABEL_IN_MAPS</strong> 	BR_LABEL_IN_MAPS (query, cell) finds the atlas index and numeric atlas label for a brain-region ID.
-	%  <strong>22</strong> <strong>BA</strong> 	BA (result, item) is the brain atlas containing the converted brain regions.
-	%  <strong>23</strong> <strong>GR_FUN</strong> 	GR_FUN (result, item) is the group of subjects with regional PDFs.
-	%  <strong>24</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) determines whether to show the waitbar.
+	%  <strong>19</strong> <strong>BIN_EDGES</strong> 	BIN_EDGES (parameter, rvector) is the value range used to calculate regional PDFs.
+	%  <strong>20</strong> <strong>PDF_METHOD</strong> 	PDF_METHOD (parameter, option) is the method used to estimate the regional PDFs: kernel density estimation or histogram.
+	%  <strong>21</strong> <strong>KDE_NUM_POINTS</strong> 	KDE_NUM_POINTS (parameter, scalar) is the number of evaluation points used for kernel density estimation.
+	%  <strong>22</strong> <strong>BIN_CENTERS</strong> 	BIN_CENTERS (query, rvector) is the PDF evaluation grid, using bin centres for histogram and evenly spaced evaluation points for kernel density estimation.
+	%  <strong>23</strong> <strong>BR_LABEL_IN_MAPS</strong> 	BR_LABEL_IN_MAPS (query, cell) finds the atlas index and numeric atlas label for a brain-region ID.
+	%  <strong>24</strong> <strong>PDF_VALUES</strong> 	PDF_VALUES (query, rvector) calculates one regional PDF from voxel values.
+	%  <strong>25</strong> <strong>BA</strong> 	BA (result, item) is the brain atlas containing the converted brain regions.
+	%  <strong>26</strong> <strong>GR_FUN</strong> 	GR_FUN (result, item) is the group of subjects with regional PDFs.
+	%  <strong>27</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) determines whether to show the waitbar.
 	%
 	% ConverterNeuroimaging2PDFs methods (constructor):
 	%  ConverterNeuroimaging2PDFs - constructor
@@ -176,27 +179,42 @@ classdef ConverterNeuroimaging2PDFs < ConcreteElement
 		BIN_EDGES_CATEGORY = 3;
 		BIN_EDGES_FORMAT = 12;
 		
-		BIN_CENTERS = 20; %CET: Computational Efficiency Trick
+		PDF_METHOD = 20; %CET: Computational Efficiency Trick
+		PDF_METHOD_TAG = 'PDF_METHOD';
+		PDF_METHOD_CATEGORY = 3;
+		PDF_METHOD_FORMAT = 5;
+		
+		KDE_NUM_POINTS = 21; %CET: Computational Efficiency Trick
+		KDE_NUM_POINTS_TAG = 'KDE_NUM_POINTS';
+		KDE_NUM_POINTS_CATEGORY = 3;
+		KDE_NUM_POINTS_FORMAT = 11;
+		
+		BIN_CENTERS = 22; %CET: Computational Efficiency Trick
 		BIN_CENTERS_TAG = 'BIN_CENTERS';
 		BIN_CENTERS_CATEGORY = 6;
 		BIN_CENTERS_FORMAT = 12;
 		
-		BR_LABEL_IN_MAPS = 21; %CET: Computational Efficiency Trick
+		BR_LABEL_IN_MAPS = 23; %CET: Computational Efficiency Trick
 		BR_LABEL_IN_MAPS_TAG = 'BR_LABEL_IN_MAPS';
 		BR_LABEL_IN_MAPS_CATEGORY = 6;
 		BR_LABEL_IN_MAPS_FORMAT = 16;
 		
-		BA = 22; %CET: Computational Efficiency Trick
+		PDF_VALUES = 24; %CET: Computational Efficiency Trick
+		PDF_VALUES_TAG = 'PDF_VALUES';
+		PDF_VALUES_CATEGORY = 6;
+		PDF_VALUES_FORMAT = 12;
+		
+		BA = 25; %CET: Computational Efficiency Trick
 		BA_TAG = 'BA';
 		BA_CATEGORY = 5;
 		BA_FORMAT = 8;
 		
-		GR_FUN = 23; %CET: Computational Efficiency Trick
+		GR_FUN = 26; %CET: Computational Efficiency Trick
 		GR_FUN_TAG = 'GR_FUN';
 		GR_FUN_CATEGORY = 5;
 		GR_FUN_FORMAT = 8;
 		
-		WAITBAR = 24; %CET: Computational Efficiency Trick
+		WAITBAR = 27; %CET: Computational Efficiency Trick
 		WAITBAR_TAG = 'WAITBAR';
 		WAITBAR_CATEGORY = 9;
 		WAITBAR_FORMAT = 4;
@@ -231,12 +249,15 @@ classdef ConverterNeuroimaging2PDFs < ConcreteElement
 			%  <strong>16</strong> <strong>REF_BR</strong> 	REF_BR (data, stringlist) is the list of reference brain-region IDs used for optional normalization before PDF calculation.
 			%  <strong>17</strong> <strong>REF_TOP_PERCENTAGE</strong> 	REF_TOP_PERCENTAGE (parameter, scalar) is the top percentage of reference-region voxel values used to calculate the reference mean.
 			%  <strong>18</strong> <strong>CONVERT_BR</strong> 	CONVERT_BR (data, stringlist) is the list of brain-region IDs to convert into regional PDFs.
-			%  <strong>19</strong> <strong>BIN_EDGES</strong> 	BIN_EDGES (parameter, rvector) is the bin edges used to calculate regional PDFs.
-			%  <strong>20</strong> <strong>BIN_CENTERS</strong> 	BIN_CENTERS (query, rvector) is the bin centers corresponding to BIN_EDGES.
-			%  <strong>21</strong> <strong>BR_LABEL_IN_MAPS</strong> 	BR_LABEL_IN_MAPS (query, cell) finds the atlas index and numeric atlas label for a brain-region ID.
-			%  <strong>22</strong> <strong>BA</strong> 	BA (result, item) is the brain atlas containing the converted brain regions.
-			%  <strong>23</strong> <strong>GR_FUN</strong> 	GR_FUN (result, item) is the group of subjects with regional PDFs.
-			%  <strong>24</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) determines whether to show the waitbar.
+			%  <strong>19</strong> <strong>BIN_EDGES</strong> 	BIN_EDGES (parameter, rvector) is the value range used to calculate regional PDFs.
+			%  <strong>20</strong> <strong>PDF_METHOD</strong> 	PDF_METHOD (parameter, option) is the method used to estimate the regional PDFs: kernel density estimation or histogram.
+			%  <strong>21</strong> <strong>KDE_NUM_POINTS</strong> 	KDE_NUM_POINTS (parameter, scalar) is the number of evaluation points used for kernel density estimation.
+			%  <strong>22</strong> <strong>BIN_CENTERS</strong> 	BIN_CENTERS (query, rvector) is the PDF evaluation grid, using bin centres for histogram and evenly spaced evaluation points for kernel density estimation.
+			%  <strong>23</strong> <strong>BR_LABEL_IN_MAPS</strong> 	BR_LABEL_IN_MAPS (query, cell) finds the atlas index and numeric atlas label for a brain-region ID.
+			%  <strong>24</strong> <strong>PDF_VALUES</strong> 	PDF_VALUES (query, rvector) calculates one regional PDF from voxel values.
+			%  <strong>25</strong> <strong>BA</strong> 	BA (result, item) is the brain atlas containing the converted brain regions.
+			%  <strong>26</strong> <strong>GR_FUN</strong> 	GR_FUN (result, item) is the group of subjects with regional PDFs.
+			%  <strong>27</strong> <strong>WAITBAR</strong> 	WAITBAR (gui, logical) determines whether to show the waitbar.
 			%
 			% See also Category, Format.
 			
@@ -313,7 +334,7 @@ classdef ConverterNeuroimaging2PDFs < ConcreteElement
 			%CET: Computational Efficiency Trick
 			
 			if nargin == 0
-				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24];
+				prop_list = [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27];
 				return
 			end
 			
@@ -323,15 +344,15 @@ classdef ConverterNeuroimaging2PDFs < ConcreteElement
 				case 2 % Category.METADATA
 					prop_list = [6 7];
 				case 3 % Category.PARAMETER
-					prop_list = [4 14 15 17 19];
+					prop_list = [4 14 15 17 19 20 21];
 				case 4 % Category.DATA
 					prop_list = [5 9 10 11 12 13 16 18];
 				case 5 % Category.RESULT
-					prop_list = [22 23];
+					prop_list = [25 26];
 				case 6 % Category.QUERY
-					prop_list = [8 20 21];
+					prop_list = [8 22 23 24];
 				case 9 % Category.GUI
-					prop_list = 24;
+					prop_list = 27;
 				otherwise
 					prop_list = [];
 			end
@@ -357,7 +378,7 @@ classdef ConverterNeuroimaging2PDFs < ConcreteElement
 			%CET: Computational Efficiency Trick
 			
 			if nargin == 0
-				prop_number = 24;
+				prop_number = 27;
 				return
 			end
 			
@@ -367,13 +388,13 @@ classdef ConverterNeuroimaging2PDFs < ConcreteElement
 				case 2 % Category.METADATA
 					prop_number = 2;
 				case 3 % Category.PARAMETER
-					prop_number = 5;
+					prop_number = 7;
 				case 4 % Category.DATA
 					prop_number = 8;
 				case 5 % Category.RESULT
 					prop_number = 2;
 				case 6 % Category.QUERY
-					prop_number = 3;
+					prop_number = 4;
 				case 9 % Category.GUI
 					prop_number = 1;
 				otherwise
@@ -406,7 +427,7 @@ classdef ConverterNeuroimaging2PDFs < ConcreteElement
 			%
 			% See also getProps, existsTag.
 			
-			check = prop >= 1 && prop <= 24 && round(prop) == prop; %CET: Computational Efficiency Trick
+			check = prop >= 1 && prop <= 27 && round(prop) == prop; %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
@@ -444,7 +465,7 @@ classdef ConverterNeuroimaging2PDFs < ConcreteElement
 			%
 			% See also getProps, existsTag.
 			
-			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'BA_LIST'  'BA_NIFTI_FILES'  'BA_MAPPING_FILES'  'GR_NEUROIMAGING'  'GR_LIST_ANAT_REF'  'THRESHOLD_ANAT_REF'  'ANAT_REF_COMBINE_RULE'  'REF_BR'  'REF_TOP_PERCENTAGE'  'CONVERT_BR'  'BIN_EDGES'  'BIN_CENTERS'  'BR_LABEL_IN_MAPS'  'BA'  'GR_FUN'  'WAITBAR' })); %CET: Computational Efficiency Trick
+			check = any(strcmp(tag, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'BA_LIST'  'BA_NIFTI_FILES'  'BA_MAPPING_FILES'  'GR_NEUROIMAGING'  'GR_LIST_ANAT_REF'  'THRESHOLD_ANAT_REF'  'ANAT_REF_COMBINE_RULE'  'REF_BR'  'REF_TOP_PERCENTAGE'  'CONVERT_BR'  'BIN_EDGES'  'PDF_METHOD'  'KDE_NUM_POINTS'  'BIN_CENTERS'  'BR_LABEL_IN_MAPS'  'PDF_VALUES'  'BA'  'GR_FUN'  'WAITBAR' })); %CET: Computational Efficiency Trick
 			
 			if nargout == 1
 				check_out = check;
@@ -477,7 +498,7 @@ classdef ConverterNeuroimaging2PDFs < ConcreteElement
 			%  getPropSettings, getPropDefault, checkProp.
 			
 			if ischar(pointer)
-				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'BA_LIST'  'BA_NIFTI_FILES'  'BA_MAPPING_FILES'  'GR_NEUROIMAGING'  'GR_LIST_ANAT_REF'  'THRESHOLD_ANAT_REF'  'ANAT_REF_COMBINE_RULE'  'REF_BR'  'REF_TOP_PERCENTAGE'  'CONVERT_BR'  'BIN_EDGES'  'BIN_CENTERS'  'BR_LABEL_IN_MAPS'  'BA'  'GR_FUN'  'WAITBAR' })); % tag = pointer %CET: Computational Efficiency Trick
+				prop = find(strcmp(pointer, { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'BA_LIST'  'BA_NIFTI_FILES'  'BA_MAPPING_FILES'  'GR_NEUROIMAGING'  'GR_LIST_ANAT_REF'  'THRESHOLD_ANAT_REF'  'ANAT_REF_COMBINE_RULE'  'REF_BR'  'REF_TOP_PERCENTAGE'  'CONVERT_BR'  'BIN_EDGES'  'PDF_METHOD'  'KDE_NUM_POINTS'  'BIN_CENTERS'  'BR_LABEL_IN_MAPS'  'PDF_VALUES'  'BA'  'GR_FUN'  'WAITBAR' })); % tag = pointer %CET: Computational Efficiency Trick
 			else % numeric
 				prop = pointer;
 			end
@@ -506,7 +527,7 @@ classdef ConverterNeuroimaging2PDFs < ConcreteElement
 				tag = pointer;
 			else % numeric
 				%CET: Computational Efficiency Trick
-				converterneuroimaging2pdfs_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'BA_LIST'  'BA_NIFTI_FILES'  'BA_MAPPING_FILES'  'GR_NEUROIMAGING'  'GR_LIST_ANAT_REF'  'THRESHOLD_ANAT_REF'  'ANAT_REF_COMBINE_RULE'  'REF_BR'  'REF_TOP_PERCENTAGE'  'CONVERT_BR'  'BIN_EDGES'  'BIN_CENTERS'  'BR_LABEL_IN_MAPS'  'BA'  'GR_FUN'  'WAITBAR' };
+				converterneuroimaging2pdfs_tag_list = { 'ELCLASS'  'NAME'  'DESCRIPTION'  'TEMPLATE'  'ID'  'LABEL'  'NOTES'  'TOSTRING'  'BA_LIST'  'BA_NIFTI_FILES'  'BA_MAPPING_FILES'  'GR_NEUROIMAGING'  'GR_LIST_ANAT_REF'  'THRESHOLD_ANAT_REF'  'ANAT_REF_COMBINE_RULE'  'REF_BR'  'REF_TOP_PERCENTAGE'  'CONVERT_BR'  'BIN_EDGES'  'PDF_METHOD'  'KDE_NUM_POINTS'  'BIN_CENTERS'  'BR_LABEL_IN_MAPS'  'PDF_VALUES'  'BA'  'GR_FUN'  'WAITBAR' };
 				tag = converterneuroimaging2pdfs_tag_list{pointer}; % prop = pointer
 			end
 		end
@@ -533,7 +554,7 @@ classdef ConverterNeuroimaging2PDFs < ConcreteElement
 			prop = ConverterNeuroimaging2PDFs.getPropProp(pointer);
 			
 			%CET: Computational Efficiency Trick
-			converterneuroimaging2pdfs_category_list = { 1  1  1  3  4  2  2  6  4  4  4  4  4  3  3  4  3  4  3  6  6  5  5  9 };
+			converterneuroimaging2pdfs_category_list = { 1  1  1  3  4  2  2  6  4  4  4  4  4  3  3  4  3  4  3  3  3  6  6  6  5  5  9 };
 			prop_category = converterneuroimaging2pdfs_category_list{prop};
 		end
 		function prop_format = getPropFormat(pointer)
@@ -559,7 +580,7 @@ classdef ConverterNeuroimaging2PDFs < ConcreteElement
 			prop = ConverterNeuroimaging2PDFs.getPropProp(pointer);
 			
 			%CET: Computational Efficiency Trick
-			converterneuroimaging2pdfs_format_list = { 2  2  2  8  2  2  2  2  9  3  3  8  9  11  5  3  11  3  12  12  16  8  8  4 };
+			converterneuroimaging2pdfs_format_list = { 2  2  2  8  2  2  2  2  9  3  3  8  9  11  5  3  11  3  12  5  11  12  16  12  8  8  4 };
 			prop_format = converterneuroimaging2pdfs_format_list{prop};
 		end
 		function prop_description = getPropDescription(pointer)
@@ -585,7 +606,7 @@ classdef ConverterNeuroimaging2PDFs < ConcreteElement
 			prop = ConverterNeuroimaging2PDFs.getPropProp(pointer);
 			
 			%CET: Computational Efficiency Trick
-			converterneuroimaging2pdfs_description_list = { 'ELCLASS (constant, string) is the class of the converter of neuroimaging data to PDFs.'  'NAME (constant, string) is the name of the converter of neuroimaging data to PDFs.'  'DESCRIPTION (constant, string) is the description of the converter of neuroimaging data to PDFs.'  'TEMPLATE (parameter, item) is the template of the converter of neuroimaging data to PDFs.'  'ID (data, string) is a few-letter code for the converter of neuroimaging data to PDFs.'  'LABEL (metadata, string) is an extended label of the converter of neuroimaging data to PDFs.'  'NOTES (metadata, string) are some specific notes about the converter of neuroimaging data to PDFs.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'BA_LIST (data, itemlist) is the list of brain atlases used to identify the brain regions.'  'BA_NIFTI_FILES (data, stringlist) is the list of atlas NIfTI files aligned with BA_LIST.'  'BA_MAPPING_FILES (data, stringlist) is the list of atlas mapping CSV files aligned with BA_LIST.'  'GR_NEUROIMAGING (data, item) is the group of subject-level neuroimaging data to convert.'  'GR_LIST_ANAT_REF (data, itemlist) is the list of anatomical reference groups used to restrict voxel extraction.'  'THRESHOLD_ANAT_REF (parameter, scalar) is the threshold applied to anatomical reference images.'  'ANAT_REF_COMBINE_RULE (parameter, option) is the rule used to combine multiple anatomical reference masks.'  'REF_BR (data, stringlist) is the list of reference brain-region IDs used for optional normalization before PDF calculation.'  'REF_TOP_PERCENTAGE (parameter, scalar) is the top percentage of reference-region voxel values used to calculate the reference mean.'  'CONVERT_BR (data, stringlist) is the list of brain-region IDs to convert into regional PDFs.'  'BIN_EDGES (parameter, rvector) is the bin edges used to calculate regional PDFs.'  'BIN_CENTERS (query, rvector) is the bin centers corresponding to BIN_EDGES.'  'BR_LABEL_IN_MAPS (query, cell) finds the atlas index and numeric atlas label for a brain-region ID.'  'BA (result, item) is the brain atlas containing the converted brain regions.'  'GR_FUN (result, item) is the group of subjects with regional PDFs.'  'WAITBAR (gui, logical) determines whether to show the waitbar.' };
+			converterneuroimaging2pdfs_description_list = { 'ELCLASS (constant, string) is the class of the converter of neuroimaging data to PDFs.'  'NAME (constant, string) is the name of the converter of neuroimaging data to PDFs.'  'DESCRIPTION (constant, string) is the description of the converter of neuroimaging data to PDFs.'  'TEMPLATE (parameter, item) is the template of the converter of neuroimaging data to PDFs.'  'ID (data, string) is a few-letter code for the converter of neuroimaging data to PDFs.'  'LABEL (metadata, string) is an extended label of the converter of neuroimaging data to PDFs.'  'NOTES (metadata, string) are some specific notes about the converter of neuroimaging data to PDFs.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'BA_LIST (data, itemlist) is the list of brain atlases used to identify the brain regions.'  'BA_NIFTI_FILES (data, stringlist) is the list of atlas NIfTI files aligned with BA_LIST.'  'BA_MAPPING_FILES (data, stringlist) is the list of atlas mapping CSV files aligned with BA_LIST.'  'GR_NEUROIMAGING (data, item) is the group of subject-level neuroimaging data to convert.'  'GR_LIST_ANAT_REF (data, itemlist) is the list of anatomical reference groups used to restrict voxel extraction.'  'THRESHOLD_ANAT_REF (parameter, scalar) is the threshold applied to anatomical reference images.'  'ANAT_REF_COMBINE_RULE (parameter, option) is the rule used to combine multiple anatomical reference masks.'  'REF_BR (data, stringlist) is the list of reference brain-region IDs used for optional normalization before PDF calculation.'  'REF_TOP_PERCENTAGE (parameter, scalar) is the top percentage of reference-region voxel values used to calculate the reference mean.'  'CONVERT_BR (data, stringlist) is the list of brain-region IDs to convert into regional PDFs.'  'BIN_EDGES (parameter, rvector) is the value range used to calculate regional PDFs.'  'PDF_METHOD (parameter, option) is the method used to estimate the regional PDFs: kernel density estimation or histogram.'  'KDE_NUM_POINTS (parameter, scalar) is the number of evaluation points used for kernel density estimation.'  'BIN_CENTERS (query, rvector) is the PDF evaluation grid, using bin centres for histogram and evenly spaced evaluation points for kernel density estimation.'  'BR_LABEL_IN_MAPS (query, cell) finds the atlas index and numeric atlas label for a brain-region ID.'  'PDF_VALUES (query, rvector) calculates one regional PDF from voxel values.'  'BA (result, item) is the brain atlas containing the converted brain regions.'  'GR_FUN (result, item) is the group of subjects with regional PDFs.'  'WAITBAR (gui, logical) determines whether to show the waitbar.' };
 			prop_description = converterneuroimaging2pdfs_description_list{prop};
 		end
 		function prop_settings = getPropSettings(pointer)
@@ -633,15 +654,21 @@ classdef ConverterNeuroimaging2PDFs < ConcreteElement
 					prop_settings = Format.getFormatSettings(3);
 				case 19 % ConverterNeuroimaging2PDFs.BIN_EDGES
 					prop_settings = Format.getFormatSettings(12);
-				case 20 % ConverterNeuroimaging2PDFs.BIN_CENTERS
+				case 20 % ConverterNeuroimaging2PDFs.PDF_METHOD
+					prop_settings = {'kde' 'histogram'};
+				case 21 % ConverterNeuroimaging2PDFs.KDE_NUM_POINTS
+					prop_settings = Format.getFormatSettings(11);
+				case 22 % ConverterNeuroimaging2PDFs.BIN_CENTERS
 					prop_settings = Format.getFormatSettings(12);
-				case 21 % ConverterNeuroimaging2PDFs.BR_LABEL_IN_MAPS
+				case 23 % ConverterNeuroimaging2PDFs.BR_LABEL_IN_MAPS
 					prop_settings = Format.getFormatSettings(16);
-				case 22 % ConverterNeuroimaging2PDFs.BA
+				case 24 % ConverterNeuroimaging2PDFs.PDF_VALUES
+					prop_settings = Format.getFormatSettings(12);
+				case 25 % ConverterNeuroimaging2PDFs.BA
 					prop_settings = 'BrainAtlas';
-				case 23 % ConverterNeuroimaging2PDFs.GR_FUN
+				case 26 % ConverterNeuroimaging2PDFs.GR_FUN
 					prop_settings = 'Group';
-				case 24 % ConverterNeuroimaging2PDFs.WAITBAR
+				case 27 % ConverterNeuroimaging2PDFs.WAITBAR
 					prop_settings = Format.getFormatSettings(4);
 				case 4 % ConverterNeuroimaging2PDFs.TEMPLATE
 					prop_settings = 'ConverterNeuroimaging2PDFs';
@@ -694,15 +721,21 @@ classdef ConverterNeuroimaging2PDFs < ConcreteElement
 					prop_default = {};
 				case 19 % ConverterNeuroimaging2PDFs.BIN_EDGES
 					prop_default = linspace(0, 1, 101);
-				case 20 % ConverterNeuroimaging2PDFs.BIN_CENTERS
+				case 20 % ConverterNeuroimaging2PDFs.PDF_METHOD
+					prop_default = 'kde';
+				case 21 % ConverterNeuroimaging2PDFs.KDE_NUM_POINTS
+					prop_default = 500;
+				case 22 % ConverterNeuroimaging2PDFs.BIN_CENTERS
 					prop_default = Format.getFormatDefault(12, ConverterNeuroimaging2PDFs.getPropSettings(prop));
-				case 21 % ConverterNeuroimaging2PDFs.BR_LABEL_IN_MAPS
+				case 23 % ConverterNeuroimaging2PDFs.BR_LABEL_IN_MAPS
 					prop_default = Format.getFormatDefault(16, ConverterNeuroimaging2PDFs.getPropSettings(prop));
-				case 22 % ConverterNeuroimaging2PDFs.BA
+				case 24 % ConverterNeuroimaging2PDFs.PDF_VALUES
+					prop_default = Format.getFormatDefault(12, ConverterNeuroimaging2PDFs.getPropSettings(prop));
+				case 25 % ConverterNeuroimaging2PDFs.BA
 					prop_default = Format.getFormatDefault(8, ConverterNeuroimaging2PDFs.getPropSettings(prop));
-				case 23 % ConverterNeuroimaging2PDFs.GR_FUN
+				case 26 % ConverterNeuroimaging2PDFs.GR_FUN
 					prop_default = Format.getFormatDefault(8, ConverterNeuroimaging2PDFs.getPropSettings(prop));
-				case 24 % ConverterNeuroimaging2PDFs.WAITBAR
+				case 27 % ConverterNeuroimaging2PDFs.WAITBAR
 					prop_default = true;
 				case 1 % ConverterNeuroimaging2PDFs.ELCLASS
 					prop_default = 'ConverterNeuroimaging2PDFs';
@@ -804,15 +837,21 @@ classdef ConverterNeuroimaging2PDFs < ConcreteElement
 					check = Format.checkFormat(3, value, ConverterNeuroimaging2PDFs.getPropSettings(prop));
 				case 19 % ConverterNeuroimaging2PDFs.BIN_EDGES
 					check = Format.checkFormat(12, value, ConverterNeuroimaging2PDFs.getPropSettings(prop));
-				case 20 % ConverterNeuroimaging2PDFs.BIN_CENTERS
+				case 20 % ConverterNeuroimaging2PDFs.PDF_METHOD
+					check = Format.checkFormat(5, value, ConverterNeuroimaging2PDFs.getPropSettings(prop));
+				case 21 % ConverterNeuroimaging2PDFs.KDE_NUM_POINTS
+					check = Format.checkFormat(11, value, ConverterNeuroimaging2PDFs.getPropSettings(prop));
+				case 22 % ConverterNeuroimaging2PDFs.BIN_CENTERS
 					check = Format.checkFormat(12, value, ConverterNeuroimaging2PDFs.getPropSettings(prop));
-				case 21 % ConverterNeuroimaging2PDFs.BR_LABEL_IN_MAPS
+				case 23 % ConverterNeuroimaging2PDFs.BR_LABEL_IN_MAPS
 					check = Format.checkFormat(16, value, ConverterNeuroimaging2PDFs.getPropSettings(prop));
-				case 22 % ConverterNeuroimaging2PDFs.BA
+				case 24 % ConverterNeuroimaging2PDFs.PDF_VALUES
+					check = Format.checkFormat(12, value, ConverterNeuroimaging2PDFs.getPropSettings(prop));
+				case 25 % ConverterNeuroimaging2PDFs.BA
 					check = Format.checkFormat(8, value, ConverterNeuroimaging2PDFs.getPropSettings(prop));
-				case 23 % ConverterNeuroimaging2PDFs.GR_FUN
+				case 26 % ConverterNeuroimaging2PDFs.GR_FUN
 					check = Format.checkFormat(8, value, ConverterNeuroimaging2PDFs.getPropSettings(prop));
-				case 24 % ConverterNeuroimaging2PDFs.WAITBAR
+				case 27 % ConverterNeuroimaging2PDFs.WAITBAR
 					check = Format.checkFormat(4, value, ConverterNeuroimaging2PDFs.getPropSettings(prop));
 				case 4 % ConverterNeuroimaging2PDFs.TEMPLATE
 					check = Format.checkFormat(8, value, ConverterNeuroimaging2PDFs.getPropSettings(prop));
@@ -850,16 +889,22 @@ classdef ConverterNeuroimaging2PDFs < ConcreteElement
 			%  postset, postprocessing, checkValue.
 			
 			switch prop
-				case 20 % ConverterNeuroimaging2PDFs.BIN_CENTERS
+				case 22 % ConverterNeuroimaging2PDFs.BIN_CENTERS
 					bin_edges = cn.get('BIN_EDGES');
+					pdf_method = cn.get('PDF_METHOD');
+					kde_num_points = cn.get('KDE_NUM_POINTS');
 					
 					if numel(bin_edges) < 2
 					    error('BIN_EDGES must contain at least two values.')
 					end
 					
-					value = (bin_edges(1:end-1) + bin_edges(2:end)) / 2;
+					if strcmpi(pdf_method, 'kde')
+					    value = linspace(bin_edges(1), bin_edges(end), kde_num_points);
+					else
+					    value = (bin_edges(1:end-1) + bin_edges(2:end)) / 2;
+					end
 					
-				case 21 % ConverterNeuroimaging2PDFs.BR_LABEL_IN_MAPS
+				case 23 % ConverterNeuroimaging2PDFs.BR_LABEL_IN_MAPS
 					br_id = varargin{1};
 					region_label_map_list = varargin{2};
 					
@@ -879,8 +924,68 @@ classdef ConverterNeuroimaging2PDFs < ConcreteElement
 					
 					value = {atlas_idx, region_label};
 					
-				case 22 % ConverterNeuroimaging2PDFs.BA
-					rng_settings_ = rng(); rng(cn.getPropSeed(22), 'twister')
+				case 24 % ConverterNeuroimaging2PDFs.PDF_VALUES
+					roi_values = varargin{1};
+					pdf_method = varargin{2};
+					bin_edges = varargin{3};
+					kde_num_points = varargin{4};
+					
+					roi_values = double(roi_values(:));
+					roi_values = roi_values(~isnan(roi_values));
+					
+					if numel(bin_edges) < 2
+					    error('BIN_EDGES must contain at least two values.')
+					end
+					
+					switch lower(pdf_method)
+					    case 'histogram'
+					        if isempty(roi_values)
+					            value = nan(1, numel(bin_edges) - 1);
+					            return
+					        end
+					
+					        pdf_values = histcounts(roi_values, bin_edges, 'Normalization', 'pdf');
+					        value = pdf_values(:)';
+					
+					    case 'kde'
+					        if exist('ksdensity', 'file') ~= 2
+					            error(['Kernel density estimation requires ksdensity, ' ...
+					                'which is provided by the Statistics and Machine Learning Toolbox.'])
+					        end
+					
+					        if isempty(roi_values)
+					            value = nan(1, kde_num_points);
+					            return
+					        end
+					
+					        kde_x = linspace(bin_edges(1), bin_edges(end), kde_num_points);
+					
+					        if numel(roi_values) < 2 || std(roi_values) == 0
+					            pdf_values = zeros(1, kde_num_points);
+					
+					            [~, nearest_idx] = min(abs(kde_x - roi_values(1)));
+					            pdf_values(nearest_idx) = 1;
+					
+					            area_value = trapz(kde_x, pdf_values);
+					            if area_value > 0
+					                pdf_values = pdf_values / area_value;
+					            end
+					
+					            value = pdf_values(:)';
+					            return
+					        end
+					
+					        pdf_values = ksdensity(roi_values, kde_x, ...
+					            'Function', 'pdf');
+					
+					        value = pdf_values(:)';
+					
+					    otherwise
+					        error('Unknown PDF_METHOD: %s', pdf_method)
+					end
+					
+				case 25 % ConverterNeuroimaging2PDFs.BA
+					rng_settings_ = rng(); rng(cn.getPropSeed(25), 'twister')
 					
 					ba_list = cn.get('BA_LIST');
 					convert_br = cn.get('CONVERT_BR');
@@ -938,8 +1043,8 @@ classdef ConverterNeuroimaging2PDFs < ConcreteElement
 					
 					rng(rng_settings_)
 					
-				case 23 % ConverterNeuroimaging2PDFs.GR_FUN
-					rng_settings_ = rng(); rng(cn.getPropSeed(23), 'twister')
+				case 26 % ConverterNeuroimaging2PDFs.GR_FUN
+					rng_settings_ = rng(); rng(cn.getPropSeed(26), 'twister')
 					
 					ba_list = cn.get('BA_LIST');
 					ba_nifti_files = cn.get('BA_NIFTI_FILES');
@@ -952,6 +1057,8 @@ classdef ConverterNeuroimaging2PDFs < ConcreteElement
 					ref_top_percentage = cn.get('REF_TOP_PERCENTAGE');
 					convert_br = cn.get('CONVERT_BR');
 					bin_edges = cn.get('BIN_EDGES');
+					pdf_method = cn.get('PDF_METHOD');
+					kde_num_points = cn.get('KDE_NUM_POINTS');
 					
 					if gr_neuroimaging.get('SUB_DICT').get('LENGTH') == 0
 					    value = Group( ...
@@ -987,6 +1094,12 @@ classdef ConverterNeuroimaging2PDFs < ConcreteElement
 					
 					if numel(bin_edges) < 2
 					    error('BIN_EDGES must contain at least two values.')
+					end
+					
+					if strcmpi(pdf_method, 'kde')
+					    n_pdf_points = kde_num_points;
+					else
+					    n_pdf_points = numel(bin_edges) - 1;
 					end
 					
 					% Load atlas NIfTI files and mapping tables.
@@ -1043,8 +1156,6 @@ classdef ConverterNeuroimaging2PDFs < ConcreteElement
 					sub_dict = gr_fun.memorize('SUB_DICT');
 					sub_dict_neuroimaging = gr_neuroimaging.get('SUB_DICT');
 					subject_number = sub_dict_neuroimaging.get('LENGTH');
-					
-					n_bins = numel(bin_edges) - 1;
 					
 					wb = braph2waitbar(cn.get('WAITBAR'), 0, 'Converting neuroimaging data to regional PDFs ...');
 					
@@ -1138,7 +1249,7 @@ classdef ConverterNeuroimaging2PDFs < ConcreteElement
 					    end
 					
 					    % Convert each target brain region into a PDF.
-					    pdf_matrix = nan(n_bins, numel(convert_br));
+					    pdf_matrix = nan(n_pdf_points, numel(convert_br));
 					
 					    for br_i = 1:numel(convert_br)
 					        br_id = convert_br{br_i};
@@ -1162,7 +1273,14 @@ classdef ConverterNeuroimaging2PDFs < ConcreteElement
 					            pdf_matrix(:, br_i) = NaN;
 					        else
 					            roi_values = roi_values / reference_mean;
-					            pdf_values = histcounts(roi_values, bin_edges, 'Normalization', 'pdf');
+					
+					            pdf_values = cn.get('PDF_VALUES', ...
+					                roi_values, ...
+					                pdf_method, ...
+					                bin_edges, ...
+					                kde_num_points ...
+					                );
+					
 					            pdf_matrix(:, br_i) = pdf_values(:);
 					        end
 					    end
@@ -1216,6 +1334,9 @@ classdef ConverterNeuroimaging2PDFs < ConcreteElement
 			switch prop
 				case 17 % ConverterNeuroimaging2PDFs.REF_TOP_PERCENTAGE
 					check = value >= 0.1 && value <= 1;
+					
+				case 21 % ConverterNeuroimaging2PDFs.KDE_NUM_POINTS
+					check = value > 1 && mod(value, 1) == 0;
 					
 				otherwise
 					if prop <= 8
