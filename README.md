@@ -101,6 +101,7 @@ To run **BRAPH 2 Individual Connectome**, you need:
 - MATLAB (R2022a or later is recommended)
 - The following toolboxes:
   - **Statistics and Machine Learning Toolbox**
+  - **Image Processing Toolbox**
   - **Deep Learning Toolbox**
   - **Parallel Computing Toolbox**
 
