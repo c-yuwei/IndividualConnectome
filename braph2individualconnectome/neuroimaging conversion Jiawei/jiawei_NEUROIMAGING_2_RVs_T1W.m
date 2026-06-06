@@ -111,6 +111,8 @@ age18_30_gr = ConverterNeuroimaging2RegionalValues( ...
 
 gr1830_st = age18_30_gr.get('GR_ST');
 ba_st = age50_60_gr.get('BA');
+%% comparison
+
 
 %% Export data
 directory = [fileparts(which('age-18-30.vois.xlsx')) filesep 'Converted data structural T1w'];
@@ -186,11 +188,6 @@ converted_file1830 = [directory filesep 'group_subjects_VOLUME1830.xlsx'];
 groundtruth1830_table = readtable(groundtruth_file1830, 'VariableNamingRule', 'preserve');
 converted_table1830 = readtable(converted_file1830, 'VariableNamingRule', 'preserve');
 
-%%
-% The first three columns are assumed to be:
-%   ID, Label, Notes
-%
-% The next 94 columns correspond to the selected AAL120 cerebral regions.
 num_regions_to_check = 246;
 region_col_start = 4;
 region_col_end = region_col_start + num_regions_to_check - 1;
