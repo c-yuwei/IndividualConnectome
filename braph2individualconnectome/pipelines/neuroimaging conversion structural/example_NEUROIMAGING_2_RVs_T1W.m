@@ -4,9 +4,10 @@
 clear variables %#ok<*NASGU>
 
 %% Create dataset
+%group_names = {'Group1' 'Group2'};
 atlas_path = [fileparts(which('ConverterNeuroimaging2RegionalValues')) filesep 'Example atlases NIfTI' filesep 'aal120_atlas.nii'];
 example_data_dir = [fileparts(which('ConverterNeuroimaging2RegionalValues')) filesep 'Example data NIfTI'];
-create_data_NIfTI_GMProb(atlas_path, example_data_dir)
+create_data_NIfTI_GMProb(atlas_path, example_data_dir,group_names)
 
 %% Load BrainAtlases
 im_ba = ImporterBrainAtlasXLS( ...
