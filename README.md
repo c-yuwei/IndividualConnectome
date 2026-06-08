@@ -13,8 +13,7 @@ The **BRAPH 2 Individual Connectome** distribution provides end-to-end pipelines
 This distribution supports the analyses presented in the following manuscript and enables users to apply the same workflow to their own datasets, via both command-line scripts and a ready-to-use graphical user interface:
 
 > Zhao et al., *A Framework for Multi-Method Individual
-Connectome Construction* (preprint).  
-> [arXiv:XXX.XXXX]
+Connectome Construction* (In preparation).  
 
 This distribution reuses the core analytical infrastructure of the standard BRAPH 2 distribution. For a general introduction to BRAPH 2, please refer to the main [BRAPH 2](https://github.com/braph-software/BRAPH-2/tree/develop) repository and its [tutorials](https://github.com/braph-software/BRAPH-2/tree/develop/tutorials).
 
