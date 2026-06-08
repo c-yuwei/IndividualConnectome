@@ -150,7 +150,5 @@ Before recompiling, remove the existing compiled distribution folder and take it
 
 If you use BRAPH 2 Individual Connectome in your work, please cite:
 
-> Reference to be added.
-
 > Chang et al., *BRAPH 2: a flexible, open-source, reproducible, community-oriented, easy-to-use framework for network analyses in neurosciences* (preprint).
 > [biorXiv:10.1101/2025.04.11.648455](https://doi.org/10.1101/2025.04.11.648455)
