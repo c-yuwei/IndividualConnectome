@@ -59,11 +59,12 @@ This implementation is informed by the following study and adapted here within t
 - **Pipeline folder:** `braph2individualconnectome/pipelines/Structural perturbation connectivity/`
 - **Example script:** `braph2individualconnectome/pipelines/Structural perturbation connectivity/example_ST_PERTURBATION_CON.m`
 
-This pipeline constructs an **individual similarity connectome** from ROI values using a perturbation-based strategy. It is designed to quantify subject-level inter-regional similarity through controlled perturbation of the regional feature representation.
-This implementation is informed by the following study and adapted here within the BRAPH 2 Individual Connectome workflow.
+This pipeline constructs an individual connectivity matrix from subject-level regional values using a perturbation-based strategy. It quantifies how the inter-regional association pattern changes when one target subject is added to a reference population. In the default setting, the reference and perturbed networks are estimated using partial correlation with covariate adjustment, and the final individual matrix is calculated as a z-score-like normalized deviation from the reference network.
 
-> Severino et al., *Single-Subject Network Analysis of FDOPA PET in Parkinson's Disease and Psychosis Spectrum*.
-> [Human Brain Mapping 46(8), e70253 (2025)](https://doi.org/10.1002/hbm.70253)
+This implementation is informed by the individual molecular connectome framework introduced by Xu et al. and adapted here within the BRAPH 2 Individual Connectome workflow.
+
+> Xu et al., *Mapping individual molecular connectomes in Alzheimer’s disease*.
+> [Alzheimer’s & Dementia 22, e71310 (2026).](https://doi.org/10.1002/alz.71310)
 
 ### 5. PDFs conversion to connectivity with correlation
 - **Pipeline folder:** `braph2individualconnectome/pipelines/PDFs correlation connectivity/`
