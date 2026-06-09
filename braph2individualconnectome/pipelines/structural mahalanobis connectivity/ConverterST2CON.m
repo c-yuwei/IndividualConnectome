@@ -17,7 +17,7 @@ classdef ConverterST2CON < ConcreteElement
 	%  <strong>10</strong> <strong>GR_REFERENCE</strong> 	GR_REFERENCE (data, item) is the external reference group of subject-level structural regional values.
 	%  <strong>11</strong> <strong>METHOD</strong> 	METHOD (parameter, option) is the method used to construct individual connectivity matrices.
 	%  <strong>12</strong> <strong>REFERENCE_MODE</strong> 	REFERENCE_MODE (parameter, option) is the rule used to define the reference population.
-	%  <strong>13</strong> <strong>VOI_SELECTION</strong> 	VOI_SELECTION (data, stringlist) is the list of variables of interest used as covariates for perturbation-based partial correlation.
+	%  <strong>13</strong> <strong>VOI_SELECTION</strong> 	VOI_SELECTION (data, stringlist) is the list of variables of interest used as covariates for perturbation-based partial correlation; if empty or unavailable, ordinary correlation is used.
 	%  <strong>14</strong> <strong>PERTURBATION_RULE</strong> 	PERTURBATION_RULE (parameter, option) is the rule used to calculate the perturbation matrix.
 	%  <strong>15</strong> <strong>REGULARIZATION</strong> 	REGULARIZATION (parameter, scalar) is the covariance regularization used for Mahalanobis-distance calculation.
 	%  <strong>16</strong> <strong>OUTPUT_RULE</strong> 	OUTPUT_RULE (parameter, option) determines whether the output matrix stores raw distance/deviation values or similarity-like values.
@@ -255,7 +255,7 @@ classdef ConverterST2CON < ConcreteElement
 			%  <strong>10</strong> <strong>GR_REFERENCE</strong> 	GR_REFERENCE (data, item) is the external reference group of subject-level structural regional values.
 			%  <strong>11</strong> <strong>METHOD</strong> 	METHOD (parameter, option) is the method used to construct individual connectivity matrices.
 			%  <strong>12</strong> <strong>REFERENCE_MODE</strong> 	REFERENCE_MODE (parameter, option) is the rule used to define the reference population.
-			%  <strong>13</strong> <strong>VOI_SELECTION</strong> 	VOI_SELECTION (data, stringlist) is the list of variables of interest used as covariates for perturbation-based partial correlation.
+			%  <strong>13</strong> <strong>VOI_SELECTION</strong> 	VOI_SELECTION (data, stringlist) is the list of variables of interest used as covariates for perturbation-based partial correlation; if empty or unavailable, ordinary correlation is used.
 			%  <strong>14</strong> <strong>PERTURBATION_RULE</strong> 	PERTURBATION_RULE (parameter, option) is the rule used to calculate the perturbation matrix.
 			%  <strong>15</strong> <strong>REGULARIZATION</strong> 	REGULARIZATION (parameter, scalar) is the covariance regularization used for Mahalanobis-distance calculation.
 			%  <strong>16</strong> <strong>OUTPUT_RULE</strong> 	OUTPUT_RULE (parameter, option) determines whether the output matrix stores raw distance/deviation values or similarity-like values.
@@ -620,7 +620,7 @@ classdef ConverterST2CON < ConcreteElement
 			prop = ConverterST2CON.getPropProp(pointer);
 			
 			%CET: Computational Efficiency Trick
-			converterst2con_description_list = { 'ELCLASS (constant, string) is the class of the converter of structural data to individual connectivity data.'  'NAME (constant, string) is the name of the converter of structural data to individual connectivity data.'  'DESCRIPTION (constant, string) is the description of the converter of structural data to individual connectivity data.'  'TEMPLATE (parameter, item) is the template of the converter of structural data to individual connectivity data.'  'ID (data, string) is a few-letter code for the converter of structural data to individual connectivity data.'  'LABEL (metadata, string) is an extended label of the converter of structural data to individual connectivity data.'  'NOTES (metadata, string) are some specific notes about the converter of structural data to individual connectivity data.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'GR_ST (data, item) is the group of subject-level structural regional values to convert.'  'GR_REFERENCE (data, item) is the external reference group of subject-level structural regional values.'  'METHOD (parameter, option) is the method used to construct individual connectivity matrices.'  'REFERENCE_MODE (parameter, option) is the rule used to define the reference population.'  'VOI_SELECTION (data, stringlist) is the list of variables of interest used as covariates for perturbation-based partial correlation.'  'PERTURBATION_RULE (parameter, option) is the rule used to calculate the perturbation matrix.'  'REGULARIZATION (parameter, scalar) is the covariance regularization used for Mahalanobis-distance calculation.'  'OUTPUT_RULE (parameter, option) determines whether the output matrix stores raw distance/deviation values or similarity-like values.'  'BA (query, item) is the brain atlas of the converted connectivity data.'  'ST_MATRIX (query, matrix) is the subject-by-region structural matrix of GR_ST.'  'ST_REF_MATRIX (query, matrix) is the subject-by-region structural matrix of GR_REFERENCE.'  'VOI_MATRIX (query, matrix) is the subject-by-covariate VOI matrix of GR_ST.'  'VOI_REF_MATRIX (query, matrix) is the subject-by-covariate VOI matrix of GR_REFERENCE.'  'EXTRACT_VOI_MATRIX (query, matrix) extracts selected VOIs from a SubjectST group as a numeric matrix.'  'REFERENCE_MATRIX_FOR_SUBJECT (query, matrix) returns the reference structural matrix for one target subject.'  'REFERENCE_VOI_MATRIX_FOR_SUBJECT (query, matrix) returns the reference VOI matrix for one target subject.'  'MAHALANOBIS_CONNECTOMES (query, cell) calculates Mahalanobis-distance individual connectivity matrices.'  'PERTURBATION_CONNECTOMES (query, cell) calculates perturbation-based individual connectivity matrices.'  'CONNECTOMES (query, cell) returns the individual connectivity matrices calculated by the selected method.'  'GR_CON (result, item) is the group of subjects with individual connectivity matrices.'  'WAITBAR (gui, logical) determines whether to show the waitbar.' };
+			converterst2con_description_list = { 'ELCLASS (constant, string) is the class of the converter of structural data to individual connectivity data.'  'NAME (constant, string) is the name of the converter of structural data to individual connectivity data.'  'DESCRIPTION (constant, string) is the description of the converter of structural data to individual connectivity data.'  'TEMPLATE (parameter, item) is the template of the converter of structural data to individual connectivity data.'  'ID (data, string) is a few-letter code for the converter of structural data to individual connectivity data.'  'LABEL (metadata, string) is an extended label of the converter of structural data to individual connectivity data.'  'NOTES (metadata, string) are some specific notes about the converter of structural data to individual connectivity data.'  'TOSTRING (query, string) returns a string that represents the concrete element.'  'GR_ST (data, item) is the group of subject-level structural regional values to convert.'  'GR_REFERENCE (data, item) is the external reference group of subject-level structural regional values.'  'METHOD (parameter, option) is the method used to construct individual connectivity matrices.'  'REFERENCE_MODE (parameter, option) is the rule used to define the reference population.'  'VOI_SELECTION (data, stringlist) is the list of variables of interest used as covariates for perturbation-based partial correlation; if empty or unavailable, ordinary correlation is used.'  'PERTURBATION_RULE (parameter, option) is the rule used to calculate the perturbation matrix.'  'REGULARIZATION (parameter, scalar) is the covariance regularization used for Mahalanobis-distance calculation.'  'OUTPUT_RULE (parameter, option) determines whether the output matrix stores raw distance/deviation values or similarity-like values.'  'BA (query, item) is the brain atlas of the converted connectivity data.'  'ST_MATRIX (query, matrix) is the subject-by-region structural matrix of GR_ST.'  'ST_REF_MATRIX (query, matrix) is the subject-by-region structural matrix of GR_REFERENCE.'  'VOI_MATRIX (query, matrix) is the subject-by-covariate VOI matrix of GR_ST.'  'VOI_REF_MATRIX (query, matrix) is the subject-by-covariate VOI matrix of GR_REFERENCE.'  'EXTRACT_VOI_MATRIX (query, matrix) extracts selected VOIs from a SubjectST group as a numeric matrix.'  'REFERENCE_MATRIX_FOR_SUBJECT (query, matrix) returns the reference structural matrix for one target subject.'  'REFERENCE_VOI_MATRIX_FOR_SUBJECT (query, matrix) returns the reference VOI matrix for one target subject.'  'MAHALANOBIS_CONNECTOMES (query, cell) calculates Mahalanobis-distance individual connectivity matrices.'  'PERTURBATION_CONNECTOMES (query, cell) calculates perturbation-based individual connectivity matrices.'  'CONNECTOMES (query, cell) returns the individual connectivity matrices calculated by the selected method.'  'GR_CON (result, item) is the group of subjects with individual connectivity matrices.'  'WAITBAR (gui, logical) determines whether to show the waitbar.' };
 			prop_description = converterst2con_description_list{prop};
 		end
 		function prop_settings = getPropSettings(pointer)
@@ -1194,28 +1194,45 @@ classdef ConverterST2CON < ConcreteElement
 					        error('Perturbation-based individual connectome construction requires at least three reference subjects.')
 					    end
 					
-					    if isempty(voi_selection)
-					        % No covariate adjustment:
-					        % build ordinary reference and perturbed correlation networks.
-					        ref_corr = corr(ref_matrix, 'Rows', 'pairwise');
-					        pert_corr = corr([ref_matrix; x], 'Rows', 'pairwise');
-					    else
-					        % Covariate adjustment:
-					        % build reference and perturbed partial-correlation networks.
-					        voi_matrix = cn.get('VOI_MATRIX');
-					        ref_voi_matrix = cn.get('REFERENCE_VOI_MATRIX_FOR_SUBJECT', sub_i);
-					        x_voi = voi_matrix(sub_i, :);
+					    use_partialcorr = ~isempty(voi_selection);
 					
-					        if size(ref_voi_matrix, 1) ~= n_ref
-					            error('Reference structural matrix and reference VOI matrix have different numbers of subjects.')
+					    if use_partialcorr
+					        try
+					            voi_matrix = cn.get('VOI_MATRIX');
+					            ref_voi_matrix = cn.get('REFERENCE_VOI_MATRIX_FOR_SUBJECT', sub_i);
+					            x_voi = voi_matrix(sub_i, :);
+					
+					            if size(ref_voi_matrix, 1) ~= n_ref
+					                warning('Reference structural matrix and reference VOI matrix have different numbers of subjects. Using ordinary correlation for subject %s.', ...
+					                    num2str(sub_i))
+					                use_partialcorr = false;
+					            end
+					
+					            if use_partialcorr && size(ref_voi_matrix, 2) ~= numel(voi_selection)
+					                warning('Reference VOI matrix has a different number of covariates than VOI_SELECTION. Using ordinary correlation for subject %s.', ...
+					                    num2str(sub_i))
+					                use_partialcorr = false;
+					            end
+					
+					            if use_partialcorr && (any(isnan(ref_voi_matrix(:))) || any(isnan(x_voi(:))))
+					                warning('Missing VOI values found for subject %s. Using ordinary correlation instead of partial correlation.', ...
+					                    num2str(sub_i))
+					                use_partialcorr = false;
+					            end
+					
+					        catch
+					            warning('Selected VOIs are not fully available for subject %s. Using ordinary correlation instead of partial correlation.', ...
+					                num2str(sub_i))
+					            use_partialcorr = false;
 					        end
+					    end
 					
-					        if size(ref_voi_matrix, 2) ~= numel(voi_selection)
-					            error('Reference VOI matrix has a different number of covariates than VOI_SELECTION.')
-					        end
-					
+					    if use_partialcorr
 					        ref_corr = partialcorr(ref_matrix, ref_voi_matrix, 'Rows', 'pairwise');
 					        pert_corr = partialcorr([ref_matrix; x], [ref_voi_matrix; x_voi], 'Rows', 'pairwise');
+					    else
+					        ref_corr = corr(ref_matrix, 'Rows', 'pairwise');
+					        pert_corr = corr([ref_matrix; x], 'Rows', 'pairwise');
 					    end
 					
 					    switch perturbation_rule
@@ -1225,9 +1242,9 @@ classdef ConverterST2CON < ConcreteElement
 					            %   A(i, j) = (PPCN+1(i, j) - PPCN(i, j)) ...
 					            %             / ((1 - PPCN(i, j)^2) / (N - 1))
 					            %
-					            % If VOI_SELECTION is empty, ref_corr and pert_corr are ordinary
-					            % correlation networks. If VOI_SELECTION is non-empty, they are
-					            % partial-correlation networks adjusted for the selected VOIs.
+					            % If VOI_SELECTION is empty or unavailable, ref_corr and pert_corr
+					            % are ordinary correlation networks. If VOI_SELECTION is complete,
+					            % they are partial-correlation networks adjusted for selected VOIs.
 					            denominator = (1 - ref_corr.^2) ./ (n_ref - 1);
 					            denominator(abs(denominator) < eps) = eps;
 					
