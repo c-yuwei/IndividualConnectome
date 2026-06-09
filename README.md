@@ -13,8 +13,7 @@ The **BRAPH 2 Individual Connectome** distribution provides end-to-end pipelines
 This distribution supports the analyses presented in the following manuscript and enables users to apply the same workflow to their own datasets, via both command-line scripts and a ready-to-use graphical user interface:
 
 > Zhao et al., *A Framework for Multi-Method Individual
-Connectome Construction* (preprint).  
-> [arXiv:XXX.XXXX]
+Connectome Construction* (In preparation).  
 
 This distribution reuses the core analytical infrastructure of the standard BRAPH 2 distribution. For a general introduction to BRAPH 2, please refer to the main [BRAPH 2](https://github.com/braph-software/BRAPH-2/tree/develop) repository and its [tutorials](https://github.com/braph-software/BRAPH-2/tree/develop/tutorials).
 
@@ -59,11 +58,12 @@ This implementation is informed by the following study and adapted here within t
 - **Pipeline folder:** `braph2individualconnectome/pipelines/Structural perturbation connectivity/`
 - **Example script:** `braph2individualconnectome/pipelines/Structural perturbation connectivity/example_ST_PERTURBATION_CON.m`
 
-This pipeline constructs an **individual similarity connectome** from ROI values using a perturbation-based strategy. It is designed to quantify subject-level inter-regional similarity through controlled perturbation of the regional feature representation.
-This implementation is informed by the following study and adapted here within the BRAPH 2 Individual Connectome workflow.
+This pipeline constructs an individual connectivity matrix from subject-level regional values using a perturbation-based strategy. It quantifies how the inter-regional association pattern changes when one target subject is added to a reference population. In the default setting, the reference and perturbed networks are estimated using partial correlation with covariate adjustment, and the final individual matrix is calculated as a z-score-like normalized deviation from the reference network.
 
-> Severino et al., *Single-Subject Network Analysis of FDOPA PET in Parkinson's Disease and Psychosis Spectrum*.
-> [Human Brain Mapping 46(8), e70253 (2025)](https://doi.org/10.1002/hbm.70253)
+This implementation is informed by the individual molecular connectome framework introduced by Xu et al. and adapted here within the BRAPH 2 Individual Connectome workflow.
+
+> Xu et al., *Mapping individual molecular connectomes in Alzheimer’s disease*.
+> [Alzheimer’s & Dementia 22, e71310 (2026).](https://doi.org/10.1002/alz.71310)
 
 ### 5. PDFs conversion to connectivity with correlation
 - **Pipeline folder:** `braph2individualconnectome/pipelines/PDFs correlation connectivity/`
@@ -149,8 +149,6 @@ Before recompiling, remove the existing compiled distribution folder and take it
 ## Citing
 
 If you use BRAPH 2 Individual Connectome in your work, please cite:
-
-> Reference to be added.
 
 > Chang et al., *BRAPH 2: a flexible, open-source, reproducible, community-oriented, easy-to-use framework for network analyses in neurosciences* (preprint).
 > [biorXiv:10.1101/2025.04.11.648455](https://doi.org/10.1101/2025.04.11.648455)
