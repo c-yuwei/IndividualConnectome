@@ -10,6 +10,44 @@ Group, SubjectFUN, SubjectCON, AnalyzeEnsemble_FUN_WU, AnalyzeEnsemble_FUN_Jense
 %%% ¡build!
 1
 
+%% ¡layout!
+
+%%% ¡prop!
+%%%% ¡id!
+ConverterPDFs2CON.ID
+%%%% ¡title!
+Converter ID
+
+%%% ¡prop!
+%%%% ¡id!
+ConverterPDFs2CON.LABEL
+%%%% ¡title!
+Converter LABEL
+
+%%% ¡prop!
+%%%% ¡id!
+ConverterPDFs2CON.GR_PDFS
+%%%% ¡title!
+TARGET PDFs GROUP
+
+%%% ¡prop!
+%%%% ¡id!
+ConverterPDFs2CON.METHOD
+%%%% ¡title!
+CONVERSION METHOD
+
+%%% ¡prop!
+%%%% ¡id!
+ConverterPDFs2CON.GR_CON
+%%%% ¡title!
+CONNECTIVITY GROUP
+
+%%% ¡prop!
+%%%% ¡id!
+ConverterPDFs2CON.NOTES
+%%%% ¡title!
+Converter NOTES
+
 %% ¡props_update!
 
 %%% ¡prop!

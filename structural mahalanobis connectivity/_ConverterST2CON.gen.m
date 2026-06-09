@@ -10,6 +10,80 @@ Group, SubjectST, SubjectCON, BrainAtlas, BrainRegion, ConverterNeuroimaging2Reg
 %%% ¡build!
 1
 
+%% ¡layout!
+
+%%% ¡prop!
+%%%% ¡id!
+ConverterST2CON.ID
+%%%% ¡title!
+Converter ID
+
+%%% ¡prop!
+%%%% ¡id!
+ConverterST2CON.LABEL
+%%%% ¡title!
+Converter LABEL
+
+%%% ¡prop!
+%%%% ¡id!
+ConverterST2CON.GR_ST
+%%%% ¡title!
+TARGET STRUCTURAL GROUP
+
+%%% ¡prop!
+%%%% ¡id!
+ConverterST2CON.GR_REFERENCE
+%%%% ¡title!
+REFERENCE STRUCTURAL GROUP
+
+%%% ¡prop!
+%%%% ¡id!
+ConverterST2CON.METHOD
+%%%% ¡title!
+CONVERSION METHOD
+
+%%% ¡prop!
+%%%% ¡id!
+ConverterST2CON.REFERENCE_MODE
+%%%% ¡title!
+REFERENCE MODE
+
+%%% ¡prop!
+%%%% ¡id!
+ConverterST2CON.VOI_SELECTION
+%%%% ¡title!
+COVARIATES
+
+%%% ¡prop!
+%%%% ¡id!
+ConverterST2CON.PERTURBATION_RULE
+%%%% ¡title!
+PERTURBATION RULE
+
+%%% ¡prop!
+%%%% ¡id!
+ConverterST2CON.OUTPUT_RULE
+%%%% ¡title!
+OUTPUT RULE
+
+%%% ¡prop!
+%%%% ¡id!
+ConverterST2CON.BA
+%%%% ¡title!
+BRAIN ATLAS
+
+%%% ¡prop!
+%%%% ¡id!
+ConverterST2CON.GR_CON
+%%%% ¡title!
+CONNECTIVITY GROUP
+
+%%% ¡prop!
+%%%% ¡id!
+ConverterST2CON.NOTES
+%%%% ¡title!
+Converter NOTES
+
 %% ¡props_update!
 
 %%% ¡prop!
