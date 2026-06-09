@@ -7,7 +7,8 @@ clear variables %#ok<*NASGU>
 atlas_path = [fileparts(which('ConverterNeuroimaging2RegionalValues')) filesep 'Example atlases NIfTI' filesep 'aal120_atlas.nii'];
 example_data_dir = [fileparts(which('ConverterNeuroimaging2RegionalValues')) filesep 'Example data NIfTI'];
 create_data_NIfTI_GMProb(atlas_path, example_data_dir)
-
+example_data_dir = [fileparts(which('ConverterNeuroimaging2RegionalValues')) filesep 'Example data NIfTI2'];
+create_data_NIfTI_GMProb(atlas_path, example_data_dir)
 %% Load BrainAtlases
 im_ba = ImporterBrainAtlasXLS( ...
     'FILE', [fileparts(which('ConverterNeuroimaging2RegionalValues')) filesep 'Example atlases NIfTI' filesep 'aal120_atlas.xlsx'], ...
