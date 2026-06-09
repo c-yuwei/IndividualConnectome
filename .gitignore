@@ -1342,3 +1342,4 @@ group_data/test/atlas/TD_atlas.xlsx
 group_data/test/atlas/TD_Atlas_Labels.csv
 group_data/test/atlas/upsampled_AAL2.nii
 group_data/test/atlas/upsampled_TD.nii
+sub-CC110045/ses-01/mri/sub-CC110045.nii
