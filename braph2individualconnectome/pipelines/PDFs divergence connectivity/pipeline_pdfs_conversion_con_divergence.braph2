@@ -1,0 +1,25 @@
+%% Pipeline PDFs to Connectivity Divergence
+
+% This is the pipeline script to convert regional probability density functions (PDFs)
+% into individual connectivity data using Jensen-Shannon divergence.
+
+% 1. It loads a brain atlas from an XLS file.
+% 2. It loads a group of subjects with regional PDFs from XLS files.
+% 3. It converts the PDF data into connectivity matrices using divergence.
+% 4. It exports the resulting connectivity data and brain atlas.
+
+% PDF: 
+% README: 
+
+%% Brain Atlas
+ba = ImporterBrainAtlasXLS('WAITBAR', true).get('GET_FILE').get('BA'); % Load Brain Atlas from XLS % Brain Atlas
+
+%% Group PDFs
+gr_pdfs = ImporterGroupSubjectFUN_XLS('BA', ba, 'WAITBAR', true).get('GET_DIR').get('GR'); % Load Group FUN from XLS % Group PDFs
+
+%% Convert PDFs to Connectivity
+cn = ConverterPDFs2CON('GR_PDFS', gr_pdfs, 'METHOD', 'jensen-shannon'); % Convert PDFs to CON using divergence % PDFs-to-CON Converter
+
+%% Export Data
+ExporterGroupSubjectCON_XLS('GR', cn.get('GR_CON'), 'WAITBAR', true).get('GET_DIR').get('SAVE'); % Export Group CON to XLS % Export Group CON
+ExporterBrainAtlasXLS('BA', ba, 'WAITBAR', true).get('GET_FILE').get('SAVE'); % Export Brain Atlas to XLS % Export Brain Atlas
