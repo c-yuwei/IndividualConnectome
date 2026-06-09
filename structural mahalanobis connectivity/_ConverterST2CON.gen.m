@@ -28,13 +28,13 @@ Converter LABEL
 %%%% ¡id!
 ConverterST2CON.GR_ST
 %%%% ¡title!
-TARGET STRUCTURAL GROUP
+TARGET GROUP
 
 %%% ¡prop!
 %%%% ¡id!
 ConverterST2CON.GR_REFERENCE
 %%%% ¡title!
-REFERENCE STRUCTURAL GROUP
+REFERENCE GROUP
 
 %%% ¡prop!
 %%%% ¡id!
@@ -50,21 +50,9 @@ REFERENCE MODE
 
 %%% ¡prop!
 %%%% ¡id!
-ConverterST2CON.VOI_SELECTION
-%%%% ¡title!
-COVARIATES
-
-%%% ¡prop!
-%%%% ¡id!
 ConverterST2CON.PERTURBATION_RULE
 %%%% ¡title!
 PERTURBATION RULE
-
-%%% ¡prop!
-%%%% ¡id!
-ConverterST2CON.OUTPUT_RULE
-%%%% ¡title!
-OUTPUT RULE
 
 %%% ¡prop!
 %%%% ¡id!
