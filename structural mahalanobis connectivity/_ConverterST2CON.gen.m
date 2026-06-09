@@ -78,7 +78,7 @@ REFERENCE_MODE (parameter, option) is the rule used to define the reference popu
 'external'
 
 %%% ¡prop!
-VOI_SELECTION (data, stringlist) is the list of variables of interest used as covariates for perturbation-based partial correlation.
+VOI_SELECTION (data, stringlist) is the list of variables of interest used as covariates for perturbation-based partial correlation; if empty or unavailable, ordinary correlation is used.
 %%%% ¡default!
 {'Age', 'Sex', 'Education'}
 
@@ -402,28 +402,45 @@ for sub_i = 1:subject_number
         error('Perturbation-based individual connectome construction requires at least three reference subjects.')
     end
 
-    if isempty(voi_selection)
-        % No covariate adjustment:
-        % build ordinary reference and perturbed correlation networks.
-        ref_corr = corr(ref_matrix, 'Rows', 'pairwise');
-        pert_corr = corr([ref_matrix; x], 'Rows', 'pairwise');
-    else
-        % Covariate adjustment:
-        % build reference and perturbed partial-correlation networks.
-        voi_matrix = cn.get('VOI_MATRIX');
-        ref_voi_matrix = cn.get('REFERENCE_VOI_MATRIX_FOR_SUBJECT', sub_i);
-        x_voi = voi_matrix(sub_i, :);
+    use_partialcorr = ~isempty(voi_selection);
 
-        if size(ref_voi_matrix, 1) ~= n_ref
-            error('Reference structural matrix and reference VOI matrix have different numbers of subjects.')
+    if use_partialcorr
+        try
+            voi_matrix = cn.get('VOI_MATRIX');
+            ref_voi_matrix = cn.get('REFERENCE_VOI_MATRIX_FOR_SUBJECT', sub_i);
+            x_voi = voi_matrix(sub_i, :);
+
+            if size(ref_voi_matrix, 1) ~= n_ref
+                warning('Reference structural matrix and reference VOI matrix have different numbers of subjects. Using ordinary correlation for subject %s.', ...
+                    num2str(sub_i))
+                use_partialcorr = false;
+            end
+
+            if use_partialcorr && size(ref_voi_matrix, 2) ~= numel(voi_selection)
+                warning('Reference VOI matrix has a different number of covariates than VOI_SELECTION. Using ordinary correlation for subject %s.', ...
+                    num2str(sub_i))
+                use_partialcorr = false;
+            end
+
+            if use_partialcorr && (any(isnan(ref_voi_matrix(:))) || any(isnan(x_voi(:))))
+                warning('Missing VOI values found for subject %s. Using ordinary correlation instead of partial correlation.', ...
+                    num2str(sub_i))
+                use_partialcorr = false;
+            end
+
+        catch
+            warning('Selected VOIs are not fully available for subject %s. Using ordinary correlation instead of partial correlation.', ...
+                num2str(sub_i))
+            use_partialcorr = false;
         end
+    end
 
-        if size(ref_voi_matrix, 2) ~= numel(voi_selection)
-            error('Reference VOI matrix has a different number of covariates than VOI_SELECTION.')
-        end
-
+    if use_partialcorr
         ref_corr = partialcorr(ref_matrix, ref_voi_matrix, 'Rows', 'pairwise');
         pert_corr = partialcorr([ref_matrix; x], [ref_voi_matrix; x_voi], 'Rows', 'pairwise');
+    else
+        ref_corr = corr(ref_matrix, 'Rows', 'pairwise');
+        pert_corr = corr([ref_matrix; x], 'Rows', 'pairwise');
     end
 
     switch perturbation_rule
@@ -433,9 +450,9 @@ for sub_i = 1:subject_number
             %   A(i, j) = (PPCN+1(i, j) - PPCN(i, j)) ...
             %             / ((1 - PPCN(i, j)^2) / (N - 1))
             %
-            % If VOI_SELECTION is empty, ref_corr and pert_corr are ordinary
-            % correlation networks. If VOI_SELECTION is non-empty, they are
-            % partial-correlation networks adjusted for the selected VOIs.
+            % If VOI_SELECTION is empty or unavailable, ref_corr and pert_corr
+            % are ordinary correlation networks. If VOI_SELECTION is complete,
+            % they are partial-correlation networks adjusted for selected VOIs.
             denominator = (1 - ref_corr.^2) ./ (n_ref - 1);
             denominator(abs(denominator) < eps) = eps;
 
