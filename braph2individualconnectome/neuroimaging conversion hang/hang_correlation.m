@@ -6,15 +6,15 @@ clear variables %#ok<*NASGU>
 %% Create dataset
 example_data_dir =  [fileparts(which('ConverterNeuroimaging2PDFs')) filesep 'Example data NIfTI PDF shape covariation'];
 
-atlas_path = [fileparts(which('ConverterNeuroimaging2PDFs')) filesep 'Example atlases NIfTI' filesep 'aal120_atlas.nii'];
-create_data_NIfTI_GMProb_PDFShape(atlas_path, example_data_dir)
-
-atlas_path = [fileparts(which('ConverterNeuroimaging2PDFs')) filesep 'Example atlases NIfTI' filesep 'td_atlas.nii'];
-create_data_NIfTI_WMProb_PDFShape(atlas_path, example_data_dir)
-
-atlas_path = [fileparts(which('ConverterNeuroimaging2PDFs')) filesep 'Example atlases NIfTI' filesep 'aal120_atlas.nii'];
-create_data_NIfTI_PET_PDFShape(atlas_path, example_data_dir)
-
+% atlas_path = [fileparts(which('ConverterNeuroimaging2PDFs')) filesep 'Example atlases NIfTI' filesep 'aal120_atlas.nii'];
+% create_data_NIfTI_GMProb_PDFShape(atlas_path, example_data_dir)
+% 
+% atlas_path = [fileparts(which('ConverterNeuroimaging2PDFs')) filesep 'Example atlases NIfTI' filesep 'td_atlas.nii'];
+% create_data_NIfTI_WMProb_PDFShape(atlas_path, example_data_dir)
+% 
+% atlas_path = [fileparts(which('ConverterNeuroimaging2PDFs')) filesep 'Example atlases NIfTI' filesep 'aal120_atlas.nii'];
+% create_data_NIfTI_PET_PDFShape(atlas_path, example_data_dir)
+% 
 
 %% Load BrainAtlases
 im_ba = ImporterBrainAtlasXLS( ...
@@ -32,7 +32,7 @@ im_ba = ImporterBrainAtlasXLS( ...
 ba_td = im_ba.get('BA');
 
 %% Load Groups of SubjectNeuroimaging
-base_Dir = '/home/hang/GitHub/IndividualConnectome-WithYuwei/group_data/HangFDG_dataBIDS';
+base_Dir = '/home/hang/GitHub/IndividualConnectome-YuweiHangRefator/group_data/HangFDG_dataBIDS';
 im_gr_pet = ImporterGroupSubjectNeuroimaging_NIfTI( ...
     'DIRECTORY', [base_Dir, '/AD_PositiveAmyloid'], ...
     'MODALITY', 'pet', ...
@@ -195,7 +195,28 @@ ad = ConverterNeuroimaging2PDFs( ...
 
 ad_pdfs = ad.get('GR_FUN');
 ba_pdfs = ad.get('BA');
+%% export pdf
 
+directory_base = [fileparts(which('hang_NNCV_PET_ST_CLA.m')) filesep 'Converted data PET PDF'];
+mkdir(directory_base);
+mkdir([directory_base filesep 'CN']);
+ex = ExporterGroupSubjectFUN_XLS( ...
+    'DIRECTORY', [directory_base filesep 'CN'], ...
+    'GR', CN_pdfs ...
+    );
+ex.get('SAVE');
+mkdir([directory_base filesep 'AD']);
+ex = ExporterGroupSubjectFUN_XLS( ...
+    'DIRECTORY', [directory_base filesep 'AD'], ...
+    'GR', ad_pdfs ...
+    );
+ex.get('SAVE');
+mkdir([directory_base filesep 'MCI']);
+ex = ExporterGroupSubjectFUN_XLS( ...
+    'DIRECTORY', [directory_base filesep 'MCI'], ...
+    'GR', mci_pdfs ...
+    );
+ex.get('SAVE');
 %% convert correlation conn.
 cad = ConverterPDFs2CON( ...
     'GR_PDFS', ad_pdfs, ...
@@ -219,3 +240,92 @@ ccn = ConverterPDFs2CON( ...
 
 gr_concn = ccn.get('GR_CON');
 
+%% Export CON data
+directory_base = [fileparts(which('hang_NNCV_PET_ST_CLA.m')) filesep 'Converted Correlation CON data'];
+
+if ~isfolder(directory_base)
+    mkdir(directory_base);
+end
+mkdir([directory_base filesep 'CN']);
+mkdir([directory_base filesep 'MCI']);
+mkdir([directory_base filesep 'AD']);
+ex = ExporterGroupSubjectCON_XLS( ...
+    'DIRECTORY', [directory_base filesep 'CN'], ...
+    'GR', gr_concn ...
+    );
+
+ex.get('SAVE');
+ex = ExporterGroupSubjectCON_XLS( ...
+    'DIRECTORY', [directory_base filesep 'MCI'], ...
+    'GR', gr_concn ...
+    );
+
+ex.get('SAVE');
+ex = ExporterGroupSubjectCON_XLS( ...
+    'DIRECTORY', [directory_base filesep 'AD'], ...
+    'GR', gr_concn ...
+    );
+
+ex.get('SAVE');
+
+file = [directory_base filesep 'brain_atlas.xlsx'];
+
+ex = ExporterBrainAtlasXLS( ...
+    'FILE', file, ...
+    'BA', ba_aal120 ...
+    );
+
+ex.get('SAVE');
+
+%% COMPARISON
+
+a_WU1 = AnalyzeEnsemble_CON_WU( ...
+    'GR', gr_conmci);
+
+a_WU2 = AnalyzeEnsemble_CON_WU( ...
+    'TEMPLATE', a_WU1, ...
+    'GR', gr_concn ...
+    );
+
+
+% comparison
+c_WU = CompareEnsemble( ...
+    'P', 500, ...
+    'A1', a_WU1, ...
+    'A2', a_WU2, ...
+    'WAITBAR', true, ...
+    'VERBOSE', false, ...
+    'MEMORIZE', true ...
+    );
+
+Clustering_WU_diff = c_WU.get('COMPARISON', 'Clustering').get('DIFF');
+Clustering_WU_p1 = c_WU.get('COMPARISON', 'Clustering').get('P1');
+Clustering_WU_p2 = c_WU.get('COMPARISON', 'Clustering').get('P2');
+Clustering_WU_cil = c_WU.get('COMPARISON', 'Clustering').get('CIL');
+Clustering_WU_ciu = c_WU.get('COMPARISON', 'Clustering').get('CIU');
+
+GlobalEfficiency_av_WU_diff = c_WU.get('COMPARISON', 'GlobalEfficiency').get('DIFF');
+GlobalEfficiency_av_WU_p1 = c_WU.get('COMPARISON', 'GlobalEfficiency').get('P1');
+GlobalEfficiency_av_WU_p2 = c_WU.get('COMPARISON', 'GlobalEfficiency').get('P2');
+GlobalEfficiency_av_WU_cil = c_WU.get('COMPARISON', 'GlobalEfficiency').get('CIL');
+GlobalEfficiency_av_WU_ciu = c_WU.get('COMPARISON', 'GlobalEfficiency').get('CIU');
+
+distance_WU_diff = c_WU.get('COMPARISON', 'Distance').get('DIFF');
+distance_WU_p1 = c_WU.get('COMPARISON', 'Distance').get('P1');
+distance_WU_p2 = c_WU.get('COMPARISON', 'Distance').get('P2');
+distance_WU_cil = c_WU.get('COMPARISON', 'Distance').get('CIL');
+distance_WU_ciu = c_WU.get('COMPARISON', 'Distance').get('CIU');
+%% VISUALIZATION
+c_WU.get('COMPARISON', 'Clustering').get('PFB').set('VIEW',[0 90])
+c_WU.get('COMPARISON', 'Clustering').get('PFB').get('DRAWN')
+c_WU.get('COMPARISON', 'Clustering').get('PFB').get('DRAW')
+c_WU.get('COMPARISON', 'Clustering').get('PFB').get('SHOW')
+% 
+c_WU.get('COMPARISON', 'GlobalEfficiency').get('PFB').set('VIEW',[0 90])
+c_WU.get('COMPARISON', 'GlobalEfficiency').get('PFB').get('DRAWN')
+c_WU.get('COMPARISON', 'GlobalEfficiency').get('PFB').get('DRAW')
+c_WU.get('COMPARISON', 'GlobalEfficiency').get('PFB').get('SHOW')
+
+c_WU.get('COMPARISON', 'Strength').get('PFBG').get('DRAWN')
+c_WU.get('COMPARISON', 'Strength').get('PFBG').get('DRAW')
+c_WU.get('COMPARISON', 'Strength').get('PFBG').get('SHOW')
