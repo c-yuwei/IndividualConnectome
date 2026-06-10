@@ -4,28 +4,29 @@
 clear variables %#ok<*NASGU>
 
 %% Create dataset
+covarying_roi_indices = [1:20];
 example_data_dir =  [fileparts(which('ConverterNeuroimaging2RegionalValues')) filesep 'Example data NIfTI1'];
 
 atlas_path = [fileparts(which('ConverterNeuroimaging2RegionalValues')) filesep 'Example atlases NIfTI' filesep 'aal120_atlas.nii'];
-create_data_NIfTI_GMProb(atlas_path, example_data_dir)
+create_data_NIfTI_GMProb(atlas_path, example_data_dir,[],100,[],covarying_roi_indices)
 
 atlas_path = [fileparts(which('ConverterNeuroimaging2RegionalValues')) filesep 'Example atlases NIfTI' filesep 'td_atlas.nii'];
-create_data_NIfTI_WMProb(atlas_path, example_data_dir)
+create_data_NIfTI_WMProb(atlas_path, example_data_dir,[],100)
 
 atlas_path = [fileparts(which('ConverterNeuroimaging2RegionalValues')) filesep 'Example atlases NIfTI' filesep 'aal120_atlas.nii'];
-create_data_NIfTI_PET(atlas_path, example_data_dir)
+create_data_NIfTI_PET(atlas_path, example_data_dir,[],100,[],covarying_roi_indices)
 
 example_data_dir =  [fileparts(which('ConverterNeuroimaging2RegionalValues')) filesep 'Example data NIfTI2'];
-
+covarying_roi_indices = [21:40];
 atlas_path = [fileparts(which('ConverterNeuroimaging2RegionalValues')) filesep 'Example atlases NIfTI' filesep 'aal120_atlas.nii'];
-create_data_NIfTI_GMProb(atlas_path, example_data_dir)
+create_data_NIfTI_GMProb(atlas_path, example_data_dir,[],100,[],covarying_roi_indices)
 
 atlas_path = [fileparts(which('ConverterNeuroimaging2RegionalValues')) filesep 'Example atlases NIfTI' filesep 'td_atlas.nii'];
-create_data_NIfTI_WMProb(atlas_path, example_data_dir)
+create_data_NIfTI_WMProb(atlas_path, example_data_dir,[],100,[])
 
 atlas_path = [fileparts(which('ConverterNeuroimaging2RegionalValues')) filesep 'Example atlases NIfTI' filesep 'aal120_atlas.nii'];
-covarying_roi_indices = [21:40];
-create_data_NIfTI_PET(atlas_path, example_data_dir,[],[],[],covarying_roi_indices)
+
+create_data_NIfTI_PET(atlas_path, example_data_dir,[],100,[],covarying_roi_indices)
 %% Load BrainAtlases
 im_ba = ImporterBrainAtlasXLS( ...
     'FILE', [fileparts(which('SubjectNeuroimaging')) filesep 'Example atlases NIfTI' filesep 'aal120_atlas.xlsx'], ...
@@ -152,58 +153,58 @@ gr2 = ConverterNeuroimaging2RegionalValues( ...
     'REF_TOP_PERCENTAGE', 1.0);
 
 gr_st2 = gr2.get('GR_ST');
-%%
-a_WU1 = AnalyzeGroup_ST_WU( ...
-    'GR', gr_st1, ...
-    'CORRELATION_RULE', Correlation.PEARSON ...
+%% Training-test split
+% create item lists of NNDataPoint_ST_CLA
+it_list1 = cellfun(@(x) NNDataPoint_ST_CLA( ...
+    'ID', x.get('ID'), ...
+    'SUB', x, ...
+    'TARGET_CLASS', {'Group1'}), ...
+    gr_st1.get('SUB_DICT').get('IT_LIST'), ...
+    'UniformOutput', false);
+
+it_list2 = cellfun(@(x) NNDataPoint_ST_CLA( ...
+    'ID', x.get('ID'), ...
+    'SUB', x, ...
+    'TARGET_CLASS', {'Group2'}), ...
+    gr_st2.get('SUB_DICT').get('IT_LIST'), ...
+    'UniformOutput', false);
+
+
+% create NNDataPoint_ST_CLA DICT items
+dp_list1 = IndexedDictionary(...
+        'IT_CLASS', 'NNDataPoint_ST_CLA', ...
+        'IT_LIST', it_list1 ...
+        );
+
+dp_list2 = IndexedDictionary(...
+        'IT_CLASS', 'NNDataPoint_ST_CLA', ...
+        'IT_LIST', it_list2 ...
+        );
+
+
+
+% create a NNDataset containing the NNDataPoint_ST_CLA DICT
+d1 = NNDataset( ...
+    'DP_CLASS', 'NNDataPoint_ST_CLA', ...
+    'DP_DICT', dp_list1 ...
     );
 
-a_WU2 = AnalyzeGroup_ST_WU( ...
-    'TEMPLATE', a_WU1, ...
-    'GR', gr_st2 ...
+d2 = NNDataset( ...
+    'DP_CLASS', 'NNDataPoint_ST_CLA', ...
+    'DP_DICT', dp_list2 ...
     );
 
 
+%% Create a classifier cross-validation
 
-% comparison
-c_WU = CompareGroup( ...
-    'P', 100, ...
-    'A1', a_WU1, ...
-    'A2', a_WU2, ...
-    'WAITBAR', true, ...
-    'VERBOSE', false, ...
-    'MEMORIZE', true ...
+nn_template_local = NNClassifierMLP( ...
+    'EPOCHS', 75, ...
+    'LAYERS', [128 128] ...
     );
+nncv = NNClassifierMLP_CrossValidation('D', {d1, d2}, 'KFOLDS', 2,'NN_TEMPLATE', nn_template_local);
+nncv.get('TRAIN');
 
-Clustering_WU_diff = c_WU.get('COMPARISON', 'Clustering').get('DIFF');
-Clustering_WU_p1 = c_WU.get('COMPARISON', 'Clustering').get('P1');
-Clustering_WU_p2 = c_WU.get('COMPARISON', 'Clustering').get('P2');
-Clustering_WU_cil = c_WU.get('COMPARISON', 'Clustering').get('CIL');
-Clustering_WU_ciu = c_WU.get('COMPARISON', 'Clustering').get('CIU');
-
-GlobalEfficiency_av_WU_diff = c_WU.get('COMPARISON', 'GlobalEfficiency').get('DIFF');
-GlobalEfficiency_av_WU_p1 = c_WU.get('COMPARISON', 'GlobalEfficiency').get('P1');
-GlobalEfficiency_av_WU_p2 = c_WU.get('COMPARISON', 'GlobalEfficiency').get('P2');
-GlobalEfficiency_av_WU_cil = c_WU.get('COMPARISON', 'GlobalEfficiency').get('CIL');
-GlobalEfficiency_av_WU_ciu = c_WU.get('COMPARISON', 'GlobalEfficiency').get('CIU');
-
-distance_WU_diff = c_WU.get('COMPARISON', 'Distance').get('DIFF');
-distance_WU_p1 = c_WU.get('COMPARISON', 'Distance').get('P1');
-distance_WU_p2 = c_WU.get('COMPARISON', 'Distance').get('P2');
-distance_WU_cil = c_WU.get('COMPARISON', 'Distance').get('CIL');
-distance_WU_ciu = c_WU.get('COMPARISON', 'Distance').get('CIU');
-
-%% VISUALIZATION
-c_WU.get('COMPARISON', 'Clustering').get('PFBG').set('VIEW',[0 90])
-c_WU.get('COMPARISON', 'Clustering').get('PFBG').get('DRAWN')
-c_WU.get('COMPARISON', 'Clustering').get('PFBG').get('DRAW')
-c_WU.get('COMPARISON', 'Clustering').get('PFBG').get('SHOW')
-% 
-c_WU.get('COMPARISON', 'GlobalEfficiency').get('PFBG').set('VIEW',[0 90])
-c_WU.get('COMPARISON', 'GlobalEfficiency').get('PFBG').get('DRAWN')
-c_WU.get('COMPARISON', 'GlobalEfficiency').get('PFBG').get('DRAW')
-c_WU.get('COMPARISON', 'GlobalEfficiency').get('PFBG').get('SHOW')
-
-c_WU.get('COMPARISON', 'Strength').get('PFBG').get('DRAWN')
-c_WU.get('COMPARISON', 'Strength').get('PFBG').get('DRAW')
-c_WU.get('COMPARISON', 'Strength').get('PFBG').get('SHOW')
+%% Evaluate the performance
+confusion_matrix = nncv.get('C_MATRIX');
+av_auc = nncv.get('AV_AUC');
+av_macro_auc = nncv.get('AV_MACRO_AUC');
