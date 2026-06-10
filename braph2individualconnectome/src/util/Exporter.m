@@ -184,7 +184,7 @@ classdef Exporter < ConcreteElement
 			%
 			% See also subclasses.
 			
-			subclass_list = { 'Exporter'  'ExporterGroupSubjectCON_TXT'  'ExporterGroupSubjectCON_XLS'  'ExporterGroupSubjectCON_MP_TXT'  'ExporterGroupSubjectCON_MP_XLS'  'ExporterGroupSubjectFUN_TXT'  'ExporterGroupSubjectFUN_XLS'  'ExporterGroupSubjectST_TXT'  'ExporterGroupSubjectST_XLS'  'ExporterBrainAtlasTXT'  'ExporterBrainAtlasXLS'  'ExporterPipelineBRAPH2' }; %CET: Computational Efficiency Trick
+			subclass_list = { 'Exporter'  'ExporterGroupSubjectCON_TXT'  'ExporterGroupSubjectCON_XLS'  'ExporterGroupSubjectCON_MP_TXT'  'ExporterGroupSubjectCON_MP_XLS'  'ExporterGroupSubjectFUN_TXT'  'ExporterGroupSubjectFUN_XLS'  'ExporterGroupSubjectST_TXT'  'ExporterGroupSubjectST_XLS'  'ExporterGroupSubjectST_MP_XLS'  'ExporterBrainAtlasTXT'  'ExporterBrainAtlasXLS'  'ExporterPipelineBRAPH2' }; %CET: Computational Efficiency Trick
 		end
 		function prop_list = getProps(category)
 			%GETPROPS returns the property list of exporter to a file.

@@ -1,0 +1,26 @@
+%% Pipeline ST to Connectivity Mahalanobis
+
+% This is the pipeline script to convert structural regional values (ST)
+% into individual connectivity data using the mahalanobis approach.
+% 1. It loads a brain atlas from an XLS file.
+% 2. It loads a target group of subjects with structural regional values from an XLS file.
+% 3. It loads a reference group of subjects with structural regional values from an XLS file.
+% 4. It converts the target structural data into connectivity matrices using mahalanobis.
+% 5. It exports the resulting connectivity data and brain atlas.
+
+% PDF:
+% README:
+
+%% Brain Atlas
+ba = ImporterBrainAtlasXLS('WAITBAR', true).get('GET_FILE').get('BA'); % Load Brain Atlas from XLS % Brain Atlas
+
+%% Load Groups
+gr_st = ImporterGroupSubjectST_XLS('BA', ba, 'WAITBAR', true).get('GET_FILE').get('GR'); % Load Target Group ST from XLS % Target Group ST
+gr_reference = ImporterGroupSubjectST_XLS('BA', ba, 'WAITBAR', true).get('GET_FILE').get('GR'); % Load Reference Group ST from XLS % Reference Group ST
+
+%% Convert ST to Connectivity
+cn = ConverterST2CON('GR_ST', gr_st, 'GR_REFERENCE', gr_reference, 'METHOD', 'mahalanobis', 'REFERENCE_MODE', 'external'); % Convert ST to CON using perturbation % ST-to-CON Converter
+
+%% Export Connectivity Data
+ex_con = ExporterGroupSubjectCON_XLS('GR', cn.get('GR_CON'), 'WAITBAR', true); % Export Group CON to XLS % Export Group CON
+ex_ba = ExporterBrainAtlasXLS('BA', ba, 'WAITBAR', true); % Export Brain Atlas to XLS % Export Brain Atlas

@@ -21,6 +21,6 @@ gr_pdfs = ImporterGroupSubjectFUN_XLS('BA', ba, 'WAITBAR', true).get('GET_DIR').
 %% Convert PDFs to Connectivity
 cn = ConverterPDFs2CON('GR_PDFS', gr_pdfs, 'METHOD', 'correlation'); % Convert PDFs to CON using correlation % PDFs-to-CON Converter
 
-%% Export Data
-ExporterGroupSubjectCON_XLS('GR', cn.get('GR_CON'), 'WAITBAR', true).get('GET_DIR').get('SAVE'); % Export Group CON to XLS % Export Group CON
-ExporterBrainAtlasXLS('BA', ba, 'WAITBAR', true).get('GET_FILE').get('SAVE'); % Export Brain Atlas to XLS % Export Brain Atlas
+%% Export Connectivity Data
+ex_con = ExporterGroupSubjectCON_XLS('GR', cn.get('GR_CON'), 'WAITBAR', true); % Export Group CON to XLS % Export Group CON
+ex_ba = ExporterBrainAtlasXLS('BA', ba, 'WAITBAR', true); % Export Brain Atlas to XLS % Export Brain Atlas
