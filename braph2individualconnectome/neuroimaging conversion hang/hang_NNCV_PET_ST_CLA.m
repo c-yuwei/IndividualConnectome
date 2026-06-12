@@ -31,7 +31,7 @@ im_ba = ImporterBrainAtlasXLS( ...
 ba_td = im_ba.get('BA');
 
 %% Load Groups of SubjectNeuroimaging
-base_Dir = '/home/hang/GitHub/IndividualConnectome-WithYuwei/group_data/HangFDG_dataBIDS';
+base_Dir = '/home/hang/GitHub/IndividualConnectome-YuweiHangRefator/group_data/HangFDG_dataBIDS';
 im_gr_pet = ImporterGroupSubjectNeuroimaging_NIfTI( ...
     'DIRECTORY', [base_Dir, '/AD_PositiveAmyloid'], ...
     'MODALITY', 'pet', ...
@@ -240,15 +240,18 @@ d3 = NNDataset( ...
     );
 
 %% Create a classifier cross-validation
-
+av_auc = {};
 nn_template_local = NNClassifierMLP( ...
     'EPOCHS', 75, ...
     'LAYERS', [128 128] ...
     );
+for h = 1:10
 nncv = NNClassifierMLP_CrossValidation('D', {d2, d3}, 'KFOLDS', 2,'NN_TEMPLATE', nn_template_local);
 nncv.get('TRAIN');
 
 %% Evaluate the performance
 confusion_matrix = nncv.get('C_MATRIX');
-av_auc = nncv.get('AV_AUC');
+av_auc{h} = nncv.get('AV_AUC');
 av_macro_auc = nncv.get('AV_MACRO_AUC');
+
+end
