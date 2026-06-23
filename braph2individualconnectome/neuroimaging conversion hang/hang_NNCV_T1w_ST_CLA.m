@@ -79,7 +79,8 @@ ad = ConverterNeuroimaging2RegionalValues( ...
     'REF_BR', {}, ...
     'BA_MAPPING_FILES', ba_mapping_files, ...
     'CONVERT_BR', brain_regions_to_convert, ...
-    'GR_NEUROIMAGING', grad_anat_gmprob);
+    'GR_NEUROIMAGING', grad_anat_gmprob, ...
+    'THRESHOLD_ANAT_REF', 0.5);
 
 gr1 = ad.get('GR_ST');
 
@@ -90,7 +91,8 @@ mci = ConverterNeuroimaging2RegionalValues( ...
     'REF_BR', {}, ...
     'BA_MAPPING_FILES', ba_mapping_files, ...
     'CONVERT_BR', brain_regions_to_convert, ...
-    'GR_NEUROIMAGING', grmci_anat_gmprob);
+    'GR_NEUROIMAGING', grmci_anat_gmprob, ...
+    'THRESHOLD_ANAT_REF', 0.5);
 
 gr2 = mci.get('GR_ST');
 
@@ -101,7 +103,8 @@ cn = ConverterNeuroimaging2RegionalValues( ...
     'BA_MAPPING_FILES', ba_mapping_files, ...
     'REF_BR', {}, ...
     'CONVERT_BR', brain_regions_to_convert, ...
-    'GR_NEUROIMAGING', grcn_anat_gmprob);
+    'GR_NEUROIMAGING', grcn_anat_gmprob, ...
+    'THRESHOLD_ANAT_REF', 0.5);
 
 gr3 = cn.get('GR_ST');
 ba_st = cn.get('BA');
@@ -160,16 +163,105 @@ d3 = NNDataset( ...
     'DP_DICT', dp_list3 ...
     );
 
-%% Create a classifier cross-validation
+%% Create classifier cross-validation
+
+n_repeats = 10;
+kfolds = 4;
+
+confusion_matrix_cnmci = cell(1, n_repeats);
+confusion_matrix_cnad  = cell(1, n_repeats);
+
+av_macro_auc_cnmci = cell(1, n_repeats);
+av_macro_auc_cnad  = cell(1, n_repeats);
+
+split_index_cnmci_all = cell(1, n_repeats);
+split_index_cnad_all  = cell(1, n_repeats);
 
 nn_template_local = NNClassifierMLP( ...
     'EPOCHS', 75, ...
     'LAYERS', [128 128] ...
     );
-nncv = NNClassifierMLP_CrossValidation('D', {d1, d3}, 'KFOLDS', 2,'NN_TEMPLATE', nn_template_local);
-nncv.get('TRAIN');
 
-%% Evaluate the performance
-confusion_matrix = nncv.get('C_MATRIX');
-av_auc = nncv.get('AV_AUC');
-av_macro_auc = nncv.get('AV_MACRO_AUC');
+parfor h = 1:n_repeats
+
+    seed_split = h;
+
+    % Optional but useful for reproducibility of NN initialization
+    rng(seed_split)
+
+    %% CN vs MCI
+    % Dataset order:
+    %   d3 = CN
+    %   d2 = MCI
+    split_index_cnmci = make_kfold_split_index({d3, d2}, kfolds, seed_split);
+
+    nncvcn_mci = NNClassifierMLP_CrossValidation( ...
+        'D', {d3, d2}, ...
+        'KFOLDS', kfolds, ...
+        'SPLIT', split_index_cnmci, ...
+        'NN_TEMPLATE', nn_template_local ...
+        );
+
+    nncvcn_mci.get('TRAIN');
+
+    confusion_matrix_cnmci{h} = nncvcn_mci.get('C_MATRIX');
+    av_macro_auc_cnmci{h} = nncvcn_mci.get('AV_MACRO_AUC');
+    split_index_cnmci_all{h} = split_index_cnmci;
+
+
+    %% CN vs AD
+    % Dataset order:
+    %   d3 = CN
+    %   d1 = AD
+    split_index_cnad = make_kfold_split_index({d3, d1}, kfolds, seed_split);
+
+    nncvcn_ad = NNClassifierMLP_CrossValidation( ...
+        'D', {d3, d1}, ...
+        'KFOLDS', kfolds, ...
+        'SPLIT', split_index_cnad, ...
+        'NN_TEMPLATE', nn_template_local ...
+        );
+
+    nncvcn_ad.get('TRAIN');
+
+    confusion_matrix_cnad{h} = nncvcn_ad.get('C_MATRIX');
+    av_macro_auc_cnad{h} = nncvcn_ad.get('AV_MACRO_AUC');
+    split_index_cnad_all{h} = split_index_cnad;
+
+end
+
+%% Save results and split indices
+save('T1wHang_CV_results.mat', ...
+    'confusion_matrix_cnmci', ...
+    'confusion_matrix_cnad', ...
+    'av_macro_auc_cnmci', ...
+    'av_macro_auc_cnad', ...
+    'split_index_cnmci_all', ...
+    'split_index_cnad_all' ...
+    );
+
+function split_index = make_kfold_split_index(d_list, kfolds, seed)
+%MAKE_KFOLD_SPLIT_INDEX Creates BRAPH2-compatible split indices.
+%
+% Output:
+%   split_index is n_groups x kfolds cell.
+%   split_index{g, k} contains datapoint indices for group g, fold k.
+%
+% Important:
+%   Indices are local to each dataset, not global across both groups.
+
+    rng(seed)
+
+    n_groups = numel(d_list);
+    split_index = cell(n_groups, kfolds);
+
+    for g = 1:n_groups
+        n = d_list{g}.get('DP_DICT').get('LENGTH');
+
+        idx = randperm(n);
+
+        for k = 1:kfolds
+            split_index{g, k} = sort(idx(k:kfolds:end));
+        end
+    end
+end

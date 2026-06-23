@@ -6,14 +6,14 @@ clear variables %#ok<*NASGU>
 %% Create dataset
 example_data_dir =  [fileparts(which('ConverterNeuroimaging2PDFs')) filesep 'Example data NIfTI PDF shape covariation'];
 
-atlas_path = [fileparts(which('ConverterNeuroimaging2PDFs')) filesep 'Example atlases NIfTI' filesep 'aal120_atlas.nii'];
-create_data_NIfTI_GMProb_PDFShape(atlas_path, example_data_dir)
-
-atlas_path = [fileparts(which('ConverterNeuroimaging2PDFs')) filesep 'Example atlases NIfTI' filesep 'td_atlas.nii'];
-create_data_NIfTI_WMProb_PDFShape(atlas_path, example_data_dir)
-
-atlas_path = [fileparts(which('ConverterNeuroimaging2PDFs')) filesep 'Example atlases NIfTI' filesep 'aal120_atlas.nii'];
-create_data_NIfTI_PET_PDFShape(atlas_path, example_data_dir)
+% atlas_path = [fileparts(which('ConverterNeuroimaging2PDFs')) filesep 'Example atlases NIfTI' filesep 'aal120_atlas.nii'];
+% create_data_NIfTI_GMProb_PDFShape(atlas_path, example_data_dir)
+% 
+% atlas_path = [fileparts(which('ConverterNeuroimaging2PDFs')) filesep 'Example atlases NIfTI' filesep 'td_atlas.nii'];
+% create_data_NIfTI_WMProb_PDFShape(atlas_path, example_data_dir)
+% 
+% atlas_path = [fileparts(which('ConverterNeuroimaging2PDFs')) filesep 'Example atlases NIfTI' filesep 'aal120_atlas.nii'];
+% create_data_NIfTI_PET_PDFShape(atlas_path, example_data_dir)
 
 
 %% Load BrainAtlases
@@ -32,7 +32,7 @@ im_ba = ImporterBrainAtlasXLS( ...
 ba_td = im_ba.get('BA');
 
 %% Load Groups of SubjectNeuroimaging
-base_Dir = '/home/hang/GitHub/IndividualConnectome-WithYuwei/group_data/HangFDG_dataBIDS';
+base_Dir = '/home/hang/GitHub/IndividualConnectome-YuweiHangRefator/group_data/HangFDG_dataBIDS';
 im_gr_pet = ImporterGroupSubjectNeuroimaging_NIfTI( ...
     'DIRECTORY', [base_Dir, '/AD_PositiveAmyloid'], ...
     'MODALITY', 'pet', ...
@@ -141,11 +141,6 @@ convert_brain_regions_idx = 1:94; % cerebral all regions in aal120
 for i = 1:length(convert_brain_regions_idx)
     brain_regions_to_convert{i} = ba_aal120.get('BR_DICT').get('IT', convert_brain_regions_idx(i)).get('ID');
 end 
-
-for i = 1:ba_td.get('BR_DICT').get('LENGTH') % all regions in TD
-    brain_regions_to_convert{end + 1} = ba_td.get('BR_DICT').get('IT', i).get('ID');
-end
-
 cn = ConverterNeuroimaging2PDFs( ...
     'BA_LIST', {ba_aal120, ba_td}, ...
     'BA_NIFTI_FILES', ba_nifti_files, ...
@@ -219,3 +214,199 @@ ccn = ConverterPDFs2CON( ...
 
 gr_concn = ccn.get('GR_CON');
 
+%% Classification on Jensen-Shannon PDF connectivity
+
+method_name = 'PDF_JSD_connectivity';
+
+%% Analyze connectivity groups as weighted undirected graphs
+
+a_con_ad = AnalyzeEnsemble_CON_WU( ...
+    'GR', gr_conad ...
+    );
+
+a_con_mci = AnalyzeEnsemble_CON_WU( ...
+    'TEMPLATE', a_con_ad, ...
+    'GR', gr_conmci ...
+    );
+
+a_con_cn = AnalyzeEnsemble_CON_WU( ...
+    'TEMPLATE', a_con_ad, ...
+    'GR', gr_concn ...
+    );
+
+% Force graph calculation
+a_con_ad.memorize('G_DICT');
+a_con_mci.memorize('G_DICT');
+a_con_cn.memorize('G_DICT');
+
+%% Convert graphs to NN datasets
+
+d_ad_con = make_dataset_graph_CLA(a_con_ad, 'AD');
+d_mci_con = make_dataset_graph_CLA(a_con_mci, 'MCI');
+d_cn_con = make_dataset_graph_CLA(a_con_cn, 'CN');
+
+%% Repeated binary classification
+
+number_runs = 10;
+kfolds = 2;
+
+nn_template_local = NNClassifierMLP( ...
+    'EPOCHS', 75, ...
+    'LAYERS', [128 128] ...
+    );
+
+ad_cn_auc  = zeros(number_runs, 1);
+ad_mci_auc = zeros(number_runs, 1);
+mci_cn_auc = zeros(number_runs, 1);
+
+ad_cn_confusion  = cell(number_runs, 1);
+ad_mci_confusion = cell(number_runs, 1);
+mci_cn_confusion = cell(number_runs, 1);
+
+ad_cn_split  = cell(number_runs, 1);
+ad_mci_split = cell(number_runs, 1);
+mci_cn_split = cell(number_runs, 1);
+
+for h = 1:number_runs
+
+    fprintf('\n%s | Run %d / %d\n', method_name, h, number_runs)
+
+    %% AD vs CN
+    split_ad_cn = make_kfold_split_index({d_ad_con, d_cn_con}, kfolds, h);
+
+    nncv_ad_cn = NNClassifierMLP_CrossValidation( ...
+        'D', {d_ad_con, d_cn_con}, ...
+        'KFOLDS', kfolds, ...
+        'SPLIT', split_ad_cn, ...
+        'NN_TEMPLATE', nn_template_local ...
+        );
+
+    nncv_ad_cn.get('TRAIN');
+
+    ad_cn_auc(h) = nncv_ad_cn.get('AV_MACRO_AUC');
+    ad_cn_confusion{h} = nncv_ad_cn.get('C_MATRIX');
+    ad_cn_split{h} = split_ad_cn;
+
+
+    %% AD vs MCI
+    split_ad_mci = make_kfold_split_index({d_ad_con, d_mci_con}, kfolds, h);
+
+    nncv_ad_mci = NNClassifierMLP_CrossValidation( ...
+        'D', {d_ad_con, d_mci_con}, ...
+        'KFOLDS', kfolds, ...
+        'SPLIT', split_ad_mci, ...
+        'NN_TEMPLATE', nn_template_local ...
+        );
+
+    nncv_ad_mci.get('TRAIN');
+
+    ad_mci_auc(h) = nncv_ad_mci.get('AV_MACRO_AUC');
+    ad_mci_confusion{h} = nncv_ad_mci.get('C_MATRIX');
+    ad_mci_split{h} = split_ad_mci;
+
+
+    %% MCI vs CN
+    split_mci_cn = make_kfold_split_index({d_mci_con, d_cn_con}, kfolds, h);
+
+    nncv_mci_cn = NNClassifierMLP_CrossValidation( ...
+        'D', {d_mci_con, d_cn_con}, ...
+        'KFOLDS', kfolds, ...
+        'SPLIT', split_mci_cn, ...
+        'NN_TEMPLATE', nn_template_local ...
+        );
+
+    nncv_mci_cn.get('TRAIN');
+
+    mci_cn_auc(h) = nncv_mci_cn.get('AV_MACRO_AUC');
+    mci_cn_confusion{h} = nncv_mci_cn.get('C_MATRIX');
+    mci_cn_split{h} = split_mci_cn;
+
+end
+
+%% Summarize results
+
+result_table = table( ...
+    {'AD vs CN'; 'AD vs MCI'; 'MCI vs CN'}, ...
+    [mean(ad_cn_auc); mean(ad_mci_auc); mean(mci_cn_auc)], ...
+    [std(ad_cn_auc); std(ad_mci_auc); std(mci_cn_auc)], ...
+    [std(ad_cn_auc) / sqrt(number_runs); ...
+     std(ad_mci_auc) / sqrt(number_runs); ...
+     std(mci_cn_auc) / sqrt(number_runs)], ...
+    [1.96 * std(ad_cn_auc) / sqrt(number_runs); ...
+     1.96 * std(ad_mci_auc) / sqrt(number_runs); ...
+     1.96 * std(mci_cn_auc) / sqrt(number_runs)], ...
+    'VariableNames', {'Comparison', 'Mean_AUC', 'STD_AUC', 'SEM_AUC', 'CI95_AUC'} ...
+    );
+
+disp(result_table)
+
+%% Save results
+
+out_dir = fullfile(pwd, 'PDF_JSD_connectivity_classification_results');
+
+if ~exist(out_dir, 'dir')
+    mkdir(out_dir)
+end
+
+save(fullfile(out_dir, 'JSD_connectivity_CLA_results.mat'), ...
+    'method_name', ...
+    'number_runs', ...
+    'kfolds', ...
+    'ad_cn_auc', ...
+    'ad_mci_auc', ...
+    'mci_cn_auc', ...
+    'ad_cn_confusion', ...
+    'ad_mci_confusion', ...
+    'mci_cn_confusion', ...
+    'ad_cn_split', ...
+    'ad_mci_split', ...
+    'mci_cn_split', ...
+    'result_table' ...
+    );
+
+writetable(result_table, fullfile(out_dir, 'PDF_JSD_connectivity_CLA_summary.csv'));
+
+fprintf('\nSaved results to:\n%s\n', out_dir)
+
+function d = make_dataset_graph_CLA(a_con, target_label)
+%MAKE_DATASET_GRAPH_CLA Creates NNDataset from AnalyzeEnsemble_CON_WU output.
+
+    g_list = a_con.get('G_DICT').get('IT_LIST');
+
+    it_list = cellfun(@(g) NNDataPoint_Graph_CLA( ...
+        'ID', g.get('ID'), ...
+        'G', g, ...
+        'TARGET_CLASS', {target_label} ...
+        ), ...
+        g_list, ...
+        'UniformOutput', false);
+
+    dp_dict = IndexedDictionary( ...
+        'IT_CLASS', 'NNDataPoint_Graph_CLA', ...
+        'IT_LIST', it_list ...
+        );
+
+    d = NNDataset( ...
+        'DP_CLASS', 'NNDataPoint_Graph_CLA', ...
+        'DP_DICT', dp_dict ...
+        );
+end
+
+function split_index = make_kfold_split_index(d_list, kfolds, seed)
+%MAKE_KFOLD_SPLIT_INDEX Creates reproducible split indices for BRAPH2 CV.
+
+    rng(seed)
+
+    n_groups = numel(d_list);
+    split_index = cell(n_groups, kfolds);
+
+    for g = 1:n_groups
+        n = d_list{g}.get('DP_DICT').get('LENGTH');
+
+        idx = randperm(n);
+
+        for k = 1:kfolds
+            split_index{g, k} = sort(idx(k:kfolds:end));
+        end
+    end
+end

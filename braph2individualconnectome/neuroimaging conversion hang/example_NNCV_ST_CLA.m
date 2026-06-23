@@ -153,6 +153,31 @@ gr2 = ConverterNeuroimaging2RegionalValues( ...
     'REF_TOP_PERCENTAGE', 1.0);
 
 gr_st2 = gr2.get('GR_ST');
+
+
+%% Export data
+directory = [fileparts(which('ConverterNeuroimaging2RegionalValues')) filesep 'Converted simulate data'];
+mkdir(directory);
+file = [directory filesep 'group_subjects_group1.xlsx'];
+ex = ExporterGroupSubjectST_XLS( ...
+    'FILE', file, ...
+    'GR', gr_st1 ...
+    );
+ex.get('SAVE');
+file = [directory filesep 'group_subjects_group2.xlsx'];
+ex = ExporterGroupSubjectST_XLS( ...
+    'FILE', file, ...
+    'GR', gr_st2 ...
+    );
+ex.get('SAVE');
+
+file = [directory filesep 'brain_atlas.xlsx'];
+ex = ExporterBrainAtlasXLS( ...
+    'FILE', file, ...
+    'BA', ba_st ...
+    );
+ex.get('SAVE');
+
 %% Training-test split
 % create item lists of NNDataPoint_ST_CLA
 it_list1 = cellfun(@(x) NNDataPoint_ST_CLA( ...
@@ -197,14 +222,55 @@ d2 = NNDataset( ...
 
 %% Create a classifier cross-validation
 
+%% NN template
 nn_template_local = NNClassifierMLP( ...
     'EPOCHS', 75, ...
     'LAYERS', [128 128] ...
     );
-nncv = NNClassifierMLP_CrossValidation('D', {d1, d2}, 'KFOLDS', 2,'NN_TEMPLATE', nn_template_local);
+
+%% Create reproducible 4-fold split index
+kfolds = 4;
+seed_split = 1;
+
+split_index = make_kfold_split_index({d1, d2}, kfolds, seed_split);
+
+%% Cross-validation with fixed split index
+nncv = NNClassifierMLP_CrossValidation( ...
+    'D', {d1, d2}, ...
+    'KFOLDS', kfolds, ...
+    'SPLIT', split_index, ...
+    'NN_TEMPLATE', nn_template_local ...
+    );
+
 nncv.get('TRAIN');
 
 %% Evaluate the performance
 confusion_matrix = nncv.get('C_MATRIX');
 av_auc = nncv.get('AV_AUC');
 av_macro_auc = nncv.get('AV_MACRO_AUC');
+
+function split_index = make_kfold_split_index(d_list, kfolds, seed)
+%MAKE_KFOLD_SPLIT_INDEX Creates BRAPH2-compatible split indices.
+%
+% Output:
+%   split_index is n_groups x kfolds cell.
+%   split_index{g, k} contains datapoint indices for group g, fold k.
+%
+% Important:
+%   Indices are local to each dataset, not global across both groups.
+
+    rng(seed)
+
+    n_groups = numel(d_list);
+    split_index = cell(n_groups, kfolds);
+
+    for g = 1:n_groups
+        n = d_list{g}.get('DP_DICT').get('LENGTH');
+
+        idx = randperm(n);
+
+        for k = 1:kfolds
+            split_index{g, k} = sort(idx(k:kfolds:end));
+        end
+    end
+end
