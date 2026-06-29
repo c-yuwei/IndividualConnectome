@@ -12,10 +12,16 @@ The **BRAPH 2 Individual Connectome** distribution provides end-to-end pipelines
 
 This distribution supports the analyses presented in the following manuscript and enables users to apply the same workflow to their own datasets, via both command-line scripts and a ready-to-use graphical user interface:
 
-> Zhao et al., *A Framework for Multi-Method Individual Connectome Construction* (In preparation).  
+> Sun et al., *Tracking early cognitive decline in preclinical AD with brain MRI similarity*.  
+> [Alzheimer’s & Dementia 22, e71170 (2026).](https://doi.org/10.1002/alz.71170)
+
+> Zufiria-Gerbolés et al., *Similar minds age alike: an MRI similarity approach for predicting age-related cognitive decline*.  
+> [npj Aging 12, 39 (2026).](https://doi.org/10.1038/s41514-026-00345-1)
 
 > Xu et al., *Mapping individual molecular connectomes in Alzheimer’s disease*.
 > [Alzheimer’s & Dementia 22, e71310 (2026).](https://doi.org/10.1002/alz.71310)
+
+> Zhao et al., *A Framework for Multi-Method Individual Connectome Construction* (In preparation).  
 
 This distribution reuses the core analytical infrastructure of the standard BRAPH 2 distribution. For a general introduction to BRAPH 2, please refer to the main [BRAPH 2](https://github.com/braph-software/BRAPH-2/tree/develop) repository and its [tutorials](https://github.com/braph-software/BRAPH-2/tree/develop/tutorials).
 
